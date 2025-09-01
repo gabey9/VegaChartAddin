@@ -72,9 +72,9 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://gabey9.github.io/VegaChartAddin/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="Vega Chart Add-in"/>
+        <bt:String id="GetStarted.Title" DefaultValue="Vega Chart"/>
         <bt:String id="CommandsGroup.Label" DefaultValue="Vega Chart"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Chart"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Vega Chart"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Your add-in loaded successfully. Go to the HOME tab and click the 'Chart' button to get started."/>
