@@ -60,6 +60,9 @@ export async function run() {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
         description: "Radial chart from Excel selection",
         data: { values: data },
+	transform: [
+      	  { sort: [{ field: headers[1], order: "descending" }] }
+    	],
         layer: [{
         mark: { type: "arc", innerRadius: 20, stroke: "#fff" }
         }, {
