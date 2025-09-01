@@ -1,90 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vega Office Add-in</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      padding: 40px;
-      background-color: #f9fafb;
-      color: #333;
-    }
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vega Office Add-in</title>
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 
-    h2 {
-      color: #2563eb;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
+    <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
-    .controls {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    label {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    select,
-    button {
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-      font-size: 14px;
-    }
-
-    button {
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #1d4ed8;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <h2>Vega / Vega-Lite Chart</h2>
-    <div class="controls">
-      <label for="chartType">Chart type:</label>
-      <select id="chartType">
-        <option value="point">Scatter</option>
-        <option value="circle">Circle</option>
-        <option value="bar">Bar</option>
-        <option value="line">Line</option>
-        <option value="area">Area</option>
-        <option value="pie">Pie</option>
-        <option value="radial">Radial</option>
-        <option value="wordcloud">Word Cloud</option>
-        <option value="waterfall">Waterfall</option>
-      </select>
-      <button id="drawChart">Draw Chart</button>
-    </div>
-    <div id="chart"></div>
-  </div>
+    <script type="module" src="./taskpane.js"></script>
+  </head>
+  <body>
+  <h2>Vega Chart</h2>
+  <label for="chartType">Chart type:</label>
+  <select id="chartType">
+  <option value="point">Scatter</option>
+  <option value="circle">Circle</option>
+  <option value="bar">Bar</option>
+  <option value="line">Line</option>
+  <option value="area">Area</option>
+  <option value="pie">Pie</option>
+  <option value="radial">Radial</option>
+  <option value="wordcloud">Word Cloud</option>
+  <option value="waterfall">Waterfall</option>
+</select>
+  <br /><br />
+  <button id="drawChart">Draw Chart</button>
+  <div id="chart"></div>
 </body>
-
 </html>
