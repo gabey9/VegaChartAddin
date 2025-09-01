@@ -1,1 +1,36 @@
-<!doctype html><html><head><meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=Edge"/><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vega Office Add-in</title><script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script><script src="https://cdn.jsdelivr.net/npm/vega@6"></script><script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script><script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script><script type="module" src="73aa4c1c46e330a2f4e2.js"></script><script defer="defer" src="polyfill.js"></script><script defer="defer" src="taskpane.js"></script></head><body><h2>Vega / Vega-Lite Chart</h2><label for="chartType">Chart type:</label> <select id="chartType"><option value="point">Scatter</option><option value="bar">Bar</option><option value="line">Line</option><option value="area">Area</option><option value="pie">Pie</option><option value="circle">Circle</option><option value="square">Square</option><option value="tick">Tick</option><option value="rule">Rule (line)</option><option value="boxplot">Boxplot</option><option value="waterfall">Waterfall</option></select><br/><br/><button id="drawChart">Draw Chart</button><div id="chart"></div></body></html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vega Office Add-in</title>
+
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <script type="module" src="./taskpane.js"></script>
+  </head>
+  <body>
+  <h2>Vega / Vega-Lite Chart</h2>
+  <label for="chartType">Chart type:</label>
+  <select id="chartType">
+  <option value="point">Scatter</option>
+  <option value="circle">Circle</option>
+  <option value="bar">Bar</option>
+  <option value="line">Line</option>
+  <option value="area">Area</option>
+  <option value="pie">Pie</option>
+  <option value="redial">Redial</option>
+  <option value="waterfall">Waterfall</option>
+</select>
+  <br /><br />
+  <button id="drawChart">Draw Chart</button>
+  <div id="chart"></div>
+</body>
+</html>
