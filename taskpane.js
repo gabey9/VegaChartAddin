@@ -135,6 +135,85 @@ else if (chartType === "ribbon") {
   };
 }
 
+else if (chartType === "ridgeline") {
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Ridgeline (Joyplot) chart from Excel selection",
+    data: { values: data },
+    mark: {
+      type: "area",
+      fillOpacity: 0.7,
+      strokeOpacity: 1,
+      strokeWidth: 1,
+      interpolate: "monotone"
+    },
+    width: 400,
+    height: 20,
+    encoding: {
+      x: {
+        field: headers[1],       // date/time column
+        type: "temporal",
+        title: headers[1]
+      },
+      y: {
+        aggregate: "sum",
+        field: headers[2],       // value column
+        type: "quantitative",
+        scale: { range: [20, -40] },
+        axis: {
+          title: null,
+          values: [0],
+          domain: false,
+          labels: false,
+          ticks: false
+        }
+      },
+      row: {
+        field: headers[0],       // category column
+        type: "nominal",
+        title: headers[0],
+        header: {
+          title: null,
+          labelAngle: 0,
+          labelOrient: "left",
+          labelAlign: "left",
+          labelPadding: 0
+        },
+        sort: { field: headers[0], op: "max", order: "ascending" }
+      },
+      fill: {
+        field: headers[0],
+        type: "nominal",
+        legend: null,
+        scale: { scheme: "plasma" }
+      }
+    },
+    resolve: { scale: { y: "independent" } },
+    config: {
+      view: { stroke: "transparent" },
+      facet: { spacing: 20 },
+      header: {
+        labelFontSize: 12,
+        labelFontWeight: 500,
+        labelAngle: 0,
+        labelAnchor: "end",
+        labelOrient: "top",
+        labelPadding: -19
+      },
+      axis: {
+        domain: false,
+        grid: false,
+        ticks: false,
+        tickCount: 5,
+        labelFontSize: 12,
+        titleFontSize: 12,
+        titleFontWeight: 400,
+        titleColor: "#605E5C"
+      }
+    }
+  };
+}
+
       else if (chartType === "wordcloud") {
       spec = {
         $schema: "https://vega.github.io/schema/vega/v5.json",
