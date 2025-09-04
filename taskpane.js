@@ -141,7 +141,7 @@ export async function run() {
       };
       }
 
-else if (chartType === "marimekko") {
+else if (chartType === "mekko") {
   spec = {
     $schema: "https://vega.github.io/schema/vega/v5.json",
     description: "Marimekko chart from Excel selection",
@@ -245,7 +245,7 @@ else if (chartType === "marimekko") {
             align: { value: "center" },
             baseline: { value: "middle" },
             fill: { value: "white" },
-            text: { field: headers[1] },
+            text: { signal: `datum["${headers[1]}"] + ": " + datum["${headers[2]}"]` },
             fontSize: { value: 12 },
             fontWeight: { value: "bold" }
           }
