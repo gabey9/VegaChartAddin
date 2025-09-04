@@ -55,67 +55,67 @@ export async function run() {
         };
       }
 
-else if (chartType === "deviation") {
-  spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Deviation chart from Excel selection",
-    data: { values: data },
-    layer: [
-      {
-        mark: { type: "line", tooltip: true, color: "grey" },
-        encoding: {
-          x: { field: headers[0], type: "ordinal" },
-          y: { field: headers[1], type: "quantitative" }
+      else if (chartType === "deviation") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Deviation chart from Excel selection",
+        data: { values: data },
+        layer: [
+        {
+            mark: { type: "line", tooltip: true, color: "grey" },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[1], type: "quantitative" }
+            }
+        },
+        {
+            mark: { type: "circle", size: 80, color: "grey", tooltip: true },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[1], type: "quantitative" }
+            }
+        },
+        {
+            mark: { type: "rule", strokeWidth: 2, tooltip: true },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[1], type: "quantitative" },
+            y2: { field: headers[2] },
+            color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+            }
+            }
+        },
+        {
+            mark: { type: "circle", size: 60, tooltip: true },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[2], type: "quantitative" },
+            color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+            }
+            }
         }
-      },
-      {
-        mark: { type: "circle", size: 80, color: "grey", tooltip: true },
+        ],
         encoding: {
-          x: { field: headers[0], type: "ordinal" },
-          y: { field: headers[1], type: "quantitative" }
+        x: { field: headers[0], type: "ordinal", axis: null },
+        y: { type: "quantitative", axis: { title: "" } }
+        },
+        config: {
+        view: { stroke: "transparent" },
+        line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+        axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12
         }
-      },
-      {
-        mark: { type: "rule", strokeWidth: 2, tooltip: true },
-        encoding: {
-          x: { field: headers[0], type: "ordinal" },
-          y: { field: headers[1], type: "quantitative" },
-          y2: { field: headers[2] },
-          color: {
-            condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
-            value: "green"
-          }
         }
-      },
-      {
-        mark: { type: "circle", size: 60, tooltip: true },
-        encoding: {
-          x: { field: headers[0], type: "ordinal" },
-          y: { field: headers[2], type: "quantitative" },
-          color: {
-            condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
-            value: "green"
-          }
-        }
+      };
       }
-    ],
-    encoding: {
-      x: { field: headers[0], type: "ordinal", axis: null },
-      y: { type: "quantitative", axis: { title: "" } }
-    },
-    config: {
-      view: { stroke: "transparent" },
-      line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
-      axis: {
-        ticks: false,
-        grid: false,
-        domain: false,
-        labelColor: "#605E5C",
-        labelFontSize: 12
-      }
-    }
-  };
-}
 
       else if (chartType === "radial") {
         spec = {
@@ -141,106 +141,106 @@ else if (chartType === "deviation") {
       };
       }
 
-else if (chartType === "bump") {
-  spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Bump chart from Excel selection",
-    data: { values: data },
-    encoding: {
-      x: {
-        field: headers[0],      // X-Axis (e.g. date)
-        type: "temporal",
-        axis: { title: "" }
-      },
-      y: {
-        field: headers[2],      // Rank values
-        type: "ordinal",
-        axis: false
-      },
-      order: {
-        field: headers[0],
-        type: "temporal"
-      }
-    },
-    layer: [
-      {
-        mark: { type: "line", interpolate: "monotone" },
+      else if (chartType === "bump") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bump chart from Excel selection",
+        data: { values: data },
         encoding: {
-          color: {
-            field: headers[1],   // Category
-            type: "nominal",
-            legend: false
-          }
-        }
-      },
-      {
-        mark: { type: "circle", size: 400, tooltip: true },
-        encoding: {
-          color: {
-            field: headers[1],
-            type: "nominal",
-            legend: false
-          }
-        }
-      },
-      {
-        mark: { type: "text", color: "white" },
-        encoding: {
-          text: { field: headers[2] }
-        }
-      },
-      {
-        // Left-side labels
-        transform: [
-          { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "descending" }] },
-          { filter: "datum.rank === 1" }
-        ],
-        mark: {
-          type: "text",
-          align: "left",
-          baseline: "middle",
-          dx: 15,
-          fontWeight: "bold",
-          fontSize: 12
+        x: {
+            field: headers[0],      // X-Axis (e.g. date)
+            type: "ordinal",
+            axis: { title: "" }
         },
-        encoding: {
-          text: { field: headers[1], type: "nominal" },
-          color: { field: headers[1], type: "nominal", legend: false }
-        }
-      },
-      {
-        // Right-side labels
-        transform: [
-          { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "ascending" }] },
-          { filter: "datum.rank === 1" }
-        ],
-        mark: {
-          type: "text",
-          align: "right",
-          baseline: "middle",
-          dx: -15,
-          fontWeight: "bold",
-          fontSize: 12
+        y: {
+            field: headers[2],      // Rank values
+            type: "ordinal",
+            axis: false
         },
-        encoding: {
-          text: { field: headers[1], type: "nominal" },
-          color: { field: headers[1], type: "nominal", legend: false }
+        order: {
+            field: headers[0],
+            type: "temporal"
         }
+        },
+        layer: [
+        {
+            mark: { type: "line", interpolate: "monotone" },
+            encoding: {
+            color: {
+                field: headers[1],   // Category
+                type: "nominal",
+                legend: false
+            }
+            }
+        },
+        {
+            mark: { type: "circle", size: 400, tooltip: true },
+            encoding: {
+            color: {
+                field: headers[1],
+                type: "nominal",
+                legend: false
+            }
+            }
+        },
+        {
+            mark: { type: "text", color: "white" },
+            encoding: {
+            text: { field: headers[2] }
+            }
+        },
+        {
+            // Left-side labels
+            transform: [
+            { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "descending" }] },
+            { filter: "datum.rank === 1" }
+            ],
+            mark: {
+            type: "text",
+            align: "left",
+            baseline: "middle",
+            dx: 15,
+            fontWeight: "bold",
+            fontSize: 12
+            },
+            encoding: {
+            text: { field: headers[1], type: "nominal" },
+            color: { field: headers[1], type: "nominal", legend: false }
+            }
+        },
+        {
+            // Right-side labels
+            transform: [
+            { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "ascending" }] },
+            { filter: "datum.rank === 1" }
+            ],
+            mark: {
+            type: "text",
+            align: "right",
+            baseline: "middle",
+            dx: -15,
+            fontWeight: "bold",
+            fontSize: 12
+            },
+            encoding: {
+            text: { field: headers[1], type: "nominal" },
+            color: { field: headers[1], type: "nominal", legend: false }
+            }
+        }
+        ],
+        config: {
+        view: { stroke: "transparent" },
+        line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+        axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#666666",
+            labelFontSize: 12
+        }
+        }
+      };
       }
-    ],
-    config: {
-      view: { stroke: "transparent" },
-      line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
-      axis: {
-        ticks: false,
-        grid: false,
-        domain: false,
-        labelColor: "#666666",
-        labelFontSize: 12
-      }
-    }
-  };
-}
 
       else if (chartType === "ribbon") {
       spec = {
