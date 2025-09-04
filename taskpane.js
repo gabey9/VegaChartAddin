@@ -236,44 +236,45 @@ else if (chartType === "mekko") {
         }
       },
       {
-        // Subcategory + value labels inside blocks
-        type: "text",
-        from: { data: "finalTable" },
-        transform: [
-          {
-            filter: "(datum.x1 - datum.x0) * (datum.y1 - datum.y0) > 0.02"
-          }
-        ],
-        encode: {
-          update: {
-            x: { signal: "(datum.x0 + datum.x1)/2" },
-            y: { signal: "(datum.y0 + datum.y1)/2" },
-            align: { value: "center" },
-            baseline: { value: "middle" },
-            fill: { value: "white" },
-            text: { signal: `datum["${headers[1]}"] + ": " + datum["${headers[2]}"]` },
-            fontSize: { value: 12 },
-            fontWeight: { value: "bold" }
-          }
-        }
-      },
-      {
-        // Category totals above bands
-        type: "text",
-        from: { data: "categories" },
-        encode: {
-          update: {
-            x: { signal: "(datum.x0 + datum.x1)/2" },
-            y: { value: -10 },
-            align: { value: "center" },
-            baseline: { value: "bottom" },
-            fill: { value: "#333F50" },
-            fontSize: { value: 14 },
-            fontWeight: { value: "bold" },
-            text: { signal: `datum["${headers[0]}"] + ": " + datum.catTotal` }
-          }
-        }
-      }
+// Subcategory + value labels inside blocks
+{
+  type: "text",
+  from: { data: "finalTable" },
+  transform: [
+    {
+      filter: "(datum.x1 - datum.x0) * (datum.y1 - datum.y0) > 0.02"
+    }
+  ],
+  encode: {
+    update: {
+      x: { signal: "(datum.x0 + datum.x1)/2" },
+      y: { signal: "(datum.y0 + datum.y1)/2" },
+      align: { value: "center" },
+      baseline: { value: "middle" },
+      fill: { value: "white" },
+      text: { signal: `datum["${headers[1]}"] + ": " + datum["${headers[2]}"]` },
+      fontSize: { value: 12 },
+      fontWeight: { value: "bold" }
+    }
+  }
+},
+// Category totals inside bands (centered vertically)
+{
+  type: "text",
+  from: { data: "categories" },
+  encode: {
+    update: {
+      x: { signal: "(datum.x0 + datum.x1)/2" },
+      y: { signal: "height/2" },     // put in middle of band
+      align: { value: "center" },
+      baseline: { value: "middle" },
+      fill: { value: "#000000" },    // black for visibility
+      fontSize: { value: 16 },
+      fontWeight: { value: "bold" },
+      text: { signal: `datum["${headers[0]}"] + ": " + datum.catTotal` }
+    }
+  }
+}
     ]
   };
 }
