@@ -149,7 +149,7 @@ else if (chartType === "mekko") {
     height: 600,
     background: "#ffffff",
     view: { stroke: null },
-    padding: { top: 30, bottom: 20, left: 60, right: 60 },
+    padding: { top: 50, bottom: 20, left: 60, right: 60 },
     title: {
       text: "Marimekko Chart",
       offset: 20,
@@ -163,7 +163,7 @@ else if (chartType === "mekko") {
     data: [
       {
         name: "table",
-        values: data   // use Excel selection directly
+        values: data
       },
       {
         name: "categories",
@@ -236,8 +236,14 @@ else if (chartType === "mekko") {
         }
       },
       {
+        // Subcategory + value labels inside blocks
         type: "text",
         from: { data: "finalTable" },
+        transform: [
+          {
+            filter: "(datum.x1 - datum.x0) * (datum.y1 - datum.y0) > 0.02"
+          }
+        ],
         encode: {
           update: {
             x: { signal: "(datum.x0 + datum.x1)/2" },
@@ -248,6 +254,23 @@ else if (chartType === "mekko") {
             text: { signal: `datum["${headers[1]}"] + ": " + datum["${headers[2]}"]` },
             fontSize: { value: 12 },
             fontWeight: { value: "bold" }
+          }
+        }
+      },
+      {
+        // Category totals above bands
+        type: "text",
+        from: { data: "categories" },
+        encode: {
+          update: {
+            x: { signal: "(datum.x0 + datum.x1)/2" },
+            y: { value: -10 },
+            align: { value: "center" },
+            baseline: { value: "bottom" },
+            fill: { value: "#333F50" },
+            fontSize: { value: 14 },
+            fontWeight: { value: "bold" },
+            text: { signal: `datum["${headers[0]}"] + ": " + datum.catTotal` }
           }
         }
       }
