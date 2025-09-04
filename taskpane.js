@@ -149,7 +149,7 @@ export async function run() {
         encoding: {
         x: {
             field: headers[0],      // X-Axis (e.g. date)
-            type: "ordinal",
+            type: "temporal",	    
             axis: { title: "" }
         },
         y: {
@@ -159,7 +159,7 @@ export async function run() {
         },
         order: {
             field: headers[0],
-            type: "ordinal"
+            type: "temporal"      
         }
         },
         layer: [
