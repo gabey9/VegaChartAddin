@@ -141,6 +141,120 @@ export async function run() {
       };
       }
 
+else if (chartType === "marimekko") {
+  spec = {
+    $schema: "https://vega.github.io/schema/vega/v5.json",
+    description: "Marimekko chart from Excel selection",
+    width: 900,
+    height: 600,
+    background: "#ffffff",
+    view: { stroke: null },
+    padding: { top: 30, bottom: 20, left: 60, right: 60 },
+    title: {
+      text: "Marimekko Chart",
+      offset: 20,
+      align: "center",
+      anchor: "middle",
+      fontSize: 20,
+      fontWeight: "600",
+      font: "Segoe UI",
+      color: "#333F50"
+    },
+    data: [
+      {
+        name: "table",
+        values: data   // use Excel selection directly
+      },
+      {
+        name: "categories",
+        source: "table",
+        transform: [
+          {
+            type: "aggregate",
+            fields: [headers[2]],
+            ops: ["sum"],
+            as: ["catTotal"],
+            groupby: [headers[0]]
+          },
+          {
+            type: "stack",
+            offset: "normalize",
+            sort: { field: "catTotal", order: "descending" },
+            field: "catTotal",
+            as: ["x0", "x1"]
+          }
+        ]
+      },
+      {
+        name: "finalTable",
+        source: "table",
+        transform: [
+          {
+            type: "stack",
+            offset: "normalize",
+            groupby: [headers[0]],
+            sort: { field: headers[2], order: "descending" },
+            field: headers[2],
+            as: ["y0", "y1"]
+          },
+          {
+            type: "lookup",
+            from: "categories",
+            key: headers[0],
+            values: ["x0", "x1"],
+            fields: [headers[0]]
+          }
+        ]
+      }
+    ],
+    scales: [
+      { name: "x", type: "linear", range: "width", domain: { data: "finalTable", field: "x1" } },
+      { name: "y", type: "linear", range: "height", nice: false, zero: true, domain: { data: "finalTable", field: "y1" } },
+      {
+        name: "color",
+        type: "ordinal",
+        domain: { data: "finalTable", field: headers[1] },
+        range: { scheme: "category10" }
+      }
+    ],
+    marks: [
+      {
+        type: "rect",
+        from: { data: "finalTable" },
+        encode: {
+          update: {
+            x: { scale: "x", field: "x0" },
+            x2: { scale: "x", field: "x1" },
+            y: { scale: "y", field: "y0" },
+            y2: { scale: "y", field: "y1" },
+            fill: { scale: "color", field: headers[1] },
+            stroke: { value: "white" },
+            tooltip: {
+              signal: `{Category: datum["${headers[0]}"], Sub: datum["${headers[1]}"], Value: datum["${headers[2]}"]}`
+            }
+          }
+        }
+      },
+      {
+        type: "text",
+        from: { data: "finalTable" },
+        encode: {
+          update: {
+            x: { signal: "(datum.x0 + datum.x1)/2" },
+            y: { signal: "(datum.y0 + datum.y1)/2" },
+            align: { value: "center" },
+            baseline: { value: "middle" },
+            fill: { value: "white" },
+            text: { field: headers[1] },
+            fontSize: { value: 12 },
+            fontWeight: { value: "bold" }
+          }
+        }
+      }
+    ]
+  };
+}
+
       else if (chartType === "bump") {
       spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
