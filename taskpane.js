@@ -151,9 +151,9 @@ else if (chartType === "ridgeline") {
     height: 20,
     encoding: {
       x: {
-        field: headers[1],       // date/time column
-        type: "temporal",
-        title: headers[1]
+        field: headers[0],       // date/time column
+        type: "ordinal",
+        title: headers[0]
       },
       y: {
         aggregate: "sum",
@@ -169,9 +169,9 @@ else if (chartType === "ridgeline") {
         }
       },
       row: {
-        field: headers[0],       // category column
+        field: headers[1],       // category column
         type: "nominal",
-        title: headers[0],
+        title: headers[1],
         header: {
           title: null,
           labelAngle: 0,
@@ -182,7 +182,7 @@ else if (chartType === "ridgeline") {
         sort: { field: headers[0], op: "max", order: "ascending" }
       },
       fill: {
-        field: headers[0],
+        field: headers[1],
         type: "nominal",
         legend: null,
         scale: { scheme: "plasma" }
