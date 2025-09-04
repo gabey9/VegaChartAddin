@@ -159,7 +159,7 @@ export async function run() {
         },
         order: {
             field: headers[0],
-            type: "temporal"
+            type: "ordinal"
         }
         },
         layer: [
