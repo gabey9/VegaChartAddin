@@ -53,7 +53,69 @@ export async function run() {
           color: { field: headers[0], type: "nominal" }
           }
         };
-      } 
+      }
+
+else if (chartType === "deviation") {
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Deviation chart from Excel selection",
+    data: { values: data },
+    layer: [
+      {
+        mark: { type: "line", tooltip: true, color: "grey" },
+        encoding: {
+          x: { field: headers[0], type: "ordinal" },
+          y: { field: headers[1], type: "quantitative" }
+        }
+      },
+      {
+        mark: { type: "circle", size: 80, color: "grey", tooltip: true },
+        encoding: {
+          x: { field: headers[0], type: "ordinal" },
+          y: { field: headers[1], type: "quantitative" }
+        }
+      },
+      {
+        mark: { type: "rule", strokeWidth: 2, tooltip: true },
+        encoding: {
+          x: { field: headers[0], type: "ordinal" },
+          y: { field: headers[1], type: "quantitative" },
+          y2: { field: headers[2] },
+          color: {
+            condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+            value: "green"
+          }
+        }
+      },
+      {
+        mark: { type: "circle", size: 60, tooltip: true },
+        encoding: {
+          x: { field: headers[0], type: "ordinal" },
+          y: { field: headers[2], type: "quantitative" },
+          color: {
+            condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+            value: "green"
+          }
+        }
+      }
+    ],
+    encoding: {
+      x: { field: headers[0], type: "ordinal", axis: null },
+      y: { type: "quantitative", axis: { title: "" } }
+    },
+    config: {
+      view: { stroke: "transparent" },
+      line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+      axis: {
+        ticks: false,
+        grid: false,
+        domain: false,
+        labelColor: "#605E5C",
+        labelFontSize: 12
+      }
+    }
+  };
+}
 
       else if (chartType === "radial") {
         spec = {
@@ -79,140 +141,139 @@ export async function run() {
       };
       }
 
-
-else if (chartType === "ribbon") {
-  spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Ribbon chart from Excel selection",
-    data: { values: data },
-    layer: [
-      {
-        mark: { type: "area", interpolate: "monotone", tooltip: true },
-        encoding: {
-          x: {
-            field: headers[0],
-            type: "ordinal" // temporal change to "ordinal" if your first col is not a date
-          },
-          y: {
-            aggregate: "sum",
-            field: headers[2],
-            type: "quantitative",
-            axis: null,
-            stack: "center"
-          },
-          color: {
-            field: headers[1],
-            type: "nominal"
-          },
-          order: {
-            aggregate: "sum",
-            field: headers[2],
-            type: "quantitative"
-          }
+      else if (chartType === "ribbon") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ribbon chart from Excel selection",
+        data: { values: data },
+        layer: [
+        {
+            mark: { type: "area", interpolate: "monotone", tooltip: true },
+            encoding: {
+            x: {
+                field: headers[0],
+                type: "ordinal" // temporal change to "ordinal" if your first col is not a date
+            },
+            y: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative",
+                axis: null,
+                stack: "center"
+            },
+            color: {
+                field: headers[1],
+                type: "nominal"
+            },
+            order: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative"
+            }
+            }
         }
-      }
-    ],
-    config: {
-      view: { stroke: "transparent" },
-      axis: {
-        ticks: false,
-        grid: true,
-        gridColor: "white",
-        gridWidth: 3,
-        domain: false,
-        labelColor: "#666666"
-      },
-      legend: {
-        titleFont: "Segoe UI",
-        titleFontWeight: "bold",
-        titleColor: "#666666",
-        labelFont: "Segoe UI",
-        labelColor: "#666666",
-        symbolType: "circle",
-        symbolSize: 75
-      }
-    }
-  };
-}
-
-else if (chartType === "ridgeline") {
-  spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Ridgeline (Joyplot) chart from Excel selection",
-    data: { values: data },
-    mark: {
-      type: "area",
-      fillOpacity: 0.7,
-      strokeOpacity: 1,
-      strokeWidth: 1,
-      interpolate: "monotone"
-    },
-    width: 400,
-    height: 20,
-    encoding: {
-      x: {
-        field: headers[0],       // date/time column
-        type: "ordinal",
-        title: headers[0]
-      },
-      y: {
-        aggregate: "sum",
-        field: headers[2],       // value column
-        type: "quantitative",
-        scale: { range: [20, -40] },
+        ],
+        config: {
+        view: { stroke: "transparent" },
         axis: {
-          title: null,
-          values: [0],
-          domain: false,
-          labels: false,
-          ticks: false
-        }
-      },
-      row: {
-        field: headers[1],       // category column
-        type: "nominal",
-        title: headers[1],
-        header: {
-          title: null,
-          labelAngle: 0,
-          labelOrient: "left",
-          labelAlign: "left",
-          labelPadding: 0
+            ticks: false,
+            grid: true,
+            gridColor: "white",
+            gridWidth: 3,
+            domain: false,
+            labelColor: "#666666"
         },
-        sort: { field: headers[0], op: "max", order: "ascending" }
-      },
-      fill: {
-        field: headers[1],
-        type: "nominal",
-        legend: null,
-        scale: { scheme: "plasma" }
+        legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#666666",
+            labelFont: "Segoe UI",
+            labelColor: "#666666",
+            symbolType: "circle",
+            symbolSize: 75
+        }
+        }
+      };
       }
-    },
-    resolve: { scale: { y: "independent" } },
-    config: {
-      view: { stroke: "transparent" },
-      facet: { spacing: 20 },
-      header: {
-        labelFontSize: 12,
-        labelFontWeight: 500,
-        labelAngle: 0,
-        labelAnchor: "end",
-        labelOrient: "top",
-        labelPadding: -19
-      },
-      axis: {
-        domain: false,
-        grid: false,
-        ticks: false,
-        tickCount: 5,
-        labelFontSize: 12,
-        titleFontSize: 12,
-        titleFontWeight: 400,
-        titleColor: "#605E5C"
+
+      else if (chartType === "ridgeline") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ridgeline (Joyplot) chart from Excel selection",
+        data: { values: data },
+        mark: {
+        type: "area",
+        fillOpacity: 0.7,
+        strokeOpacity: 1,
+        strokeWidth: 1,
+        interpolate: "monotone"
+        },
+        width: 400,
+        height: 20,
+        encoding: {
+        x: {
+            field: headers[0],       // date/time column
+            type: "ordinal",
+            title: headers[0]
+        },
+        y: {
+            aggregate: "sum",
+            field: headers[2],       // value column
+            type: "quantitative",
+            scale: { range: [20, -40] },
+            axis: {
+            title: null,
+            values: [0],
+            domain: false,
+            labels: false,
+            ticks: false
+            }
+        },
+        row: {
+            field: headers[1],       // category column
+            type: "nominal",
+            title: headers[1],
+            header: {
+            title: null,
+            labelAngle: 0,
+            labelOrient: "left",
+            labelAlign: "left",
+            labelPadding: 0
+            },
+            sort: { field: headers[0], op: "max", order: "ascending" }
+        },
+        fill: {
+            field: headers[1],
+            type: "nominal",
+            legend: null,
+            scale: { scheme: "plasma" }
+        }
+        },
+        resolve: { scale: { y: "independent" } },
+        config: {
+        view: { stroke: "transparent" },
+        facet: { spacing: 20 },
+        header: {
+            labelFontSize: 12,
+            labelFontWeight: 500,
+            labelAngle: 0,
+            labelAnchor: "end",
+            labelOrient: "top",
+            labelPadding: -19
+        },
+        axis: {
+            domain: false,
+            grid: false,
+            ticks: false,
+            tickCount: 5,
+            labelFontSize: 12,
+            titleFontSize: 12,
+            titleFontWeight: 400,
+            titleColor: "#605E5C"
+        }
+        }
+      };
       }
-    }
-  };
-}
 
       else if (chartType === "wordcloud") {
       spec = {
