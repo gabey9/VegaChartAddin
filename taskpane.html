@@ -76,13 +76,7 @@
         .data-requirements li {
             margin-bottom: 4px;
         }
-        
-        .data-requirements .example {
-            color: #656d76;
-            font-style: italic;
-            margin-top: 6px;
-        }
-        
+               
         .hidden {
             display: none;
         }
@@ -120,7 +114,6 @@
             <li><strong>Column 1:</strong> X-axis values (numbers)</li>
             <li><strong>Column 2:</strong> Y-axis values (numbers)</li>
         </ul>
-        <div class="example">Example: Height vs Weight, Sales vs Marketing Spend</div>
     </div>
     
     <div id="req-circle" class="data-requirements hidden">
@@ -129,7 +122,6 @@
             <li><strong>Column 1:</strong> X-axis values (numbers)</li>
             <li><strong>Column 2:</strong> Y-axis values (numbers)</li>
         </ul>
-        <div class="example">Example: Same as scatter but with circle markers</div>
     </div>
     
     <div id="req-bar" class="data-requirements hidden">
@@ -138,7 +130,6 @@
             <li><strong>Column 1:</strong> Categories or X-axis values</li>
             <li><strong>Column 2:</strong> Values (numbers)</li>
         </ul>
-        <div class="example">Example: Product Names vs Sales, Countries vs Population</div>
     </div>
     
     <div id="req-line" class="data-requirements hidden">
@@ -147,7 +138,6 @@
             <li><strong>Column 1:</strong> X-axis values (often dates/time)</li>
             <li><strong>Column 2:</strong> Y-axis values (numbers)</li>
         </ul>
-        <div class="example">Example: Date vs Stock Price, Month vs Revenue</div>
     </div>
     
     <div id="req-area" class="data-requirements hidden">
@@ -156,7 +146,6 @@
             <li><strong>Column 1:</strong> X-axis values (often dates/time)</li>
             <li><strong>Column 2:</strong> Y-axis values (numbers)</li>
         </ul>
-        <div class="example">Example: Time vs Cumulative Sales, Date vs Website Traffic</div>
     </div>
     
     <div id="req-pie" class="data-requirements hidden">
@@ -165,7 +154,6 @@
             <li><strong>Column 1:</strong> Category names (e.g., "Product A", "Product B")</li>
             <li><strong>Column 2:</strong> Values (numbers for slice sizes)</li>
         </ul>
-        <div class="example">Example: Market Share, Budget Allocation, Survey Responses</div>
     </div>
     
     <div id="req-radial" class="data-requirements hidden">
@@ -174,7 +162,6 @@
             <li><strong>Column 1:</strong> Category names</li>
             <li><strong>Column 2:</strong> Values (determines both angle and radius)</li>
         </ul>
-        <div class="example">Example: Performance Metrics, Survey Ratings</div>
     </div>
     
     <div id="req-wordcloud" class="data-requirements hidden">
@@ -182,16 +169,14 @@
         <ul>
             <li><strong>Column 1:</strong> Text data (sentences, phrases, or words)</li>
         </ul>
-        <div class="example">Example: Survey Comments, Document Text, Social Media Posts</div>
     </div>
  
-<div id="req-waffle" class="data-requirements hidden">
+    <div id="req-waffle" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
         <ul>
             <li><strong>Column 1:</strong> Category names (e.g., "Product A", "Product B")</li>
             <li><strong>Column 2:</strong> Values (numbers that will be converted to percentages)</li>
         </ul>
-        <div class="example">Example: Market Share, Survey Results, Budget Distribution. Creates a 10x10 grid where each dot represents 1% of total.</div>
     </div>
    
     <div id="req-bump" class="data-requirements hidden">
@@ -201,7 +186,6 @@
             <li><strong>Column 2:</strong> Categories (e.g., "Team A", "Team B")</li>
             <li><strong>Column 3:</strong> Rank values (1, 2, 3, etc.)</li>
         </ul>
-        <div class="example">Example: Sports League Rankings, Company Performance Rankings</div>
     </div>
     
     <div id="req-ribbon" class="data-requirements hidden">
@@ -211,7 +195,6 @@
             <li><strong>Column 2:</strong> Categories (different series)</li>
             <li><strong>Column 3:</strong> Values (numbers)</li>
         </ul>
-        <div class="example">Example: Revenue by Product Line Over Time, Population Demographics</div>
     </div>
     
     <div id="req-ridgeline" class="data-requirements hidden">
@@ -221,7 +204,6 @@
             <li><strong>Column 2:</strong> Categories (creates separate ridges)</li>
             <li><strong>Column 3:</strong> Values (creates distribution shape)</li>
         </ul>
-        <div class="example">Example: Temperature by Month, Sales by Region</div>
     </div>
     
     <div id="req-deviation" class="data-requirements hidden">
@@ -231,7 +213,6 @@
             <li><strong>Column 2:</strong> Actual values</li>
             <li><strong>Column 3:</strong> Target/Baseline values</li>
         </ul>
-        <div class="example">Example: Sales vs Targets, Actual vs Budget Performance</div>
     </div>
     
     <div id="req-waterfall" class="data-requirements hidden">
@@ -240,7 +221,6 @@
             <li><strong>Column 1:</strong> Categories/Labels (e.g., "Begin", "Q1", "Q2", "End")</li>
             <li><strong>Column 2:</strong> Amount values (positive/negative numbers)</li>
         </ul>
-        <div class="example">Example: Budget Analysis, Cash Flow, Profit & Loss Breakdown</div>
     </div>
     
     <div id="chart"></div>
@@ -250,15 +230,15 @@
         document.getElementById('chartType').addEventListener('change', function() {
             const selectedChart = this.value;
             
-            // Hide all requirements
-            const allRequirements = document.querySelectorAll('.data-requirements');
-            allRequirements.forEach(req => req.classList.add('hidden'));
+        // Hide all requirements
+        const allRequirements = document.querySelectorAll('.data-requirements');
+        allRequirements.forEach(req => req.classList.add('hidden'));
             
-            // Show selected chart requirements
-            const selectedReq = document.getElementById(`req-${selectedChart}`);
-            if (selectedReq) {
-                selectedReq.classList.remove('hidden');
-            }
+        // Show selected chart requirements
+        const selectedReq = document.getElementById(`req-${selectedChart}`);
+        if (selectedReq) {
+            selectedReq.classList.remove('hidden');
+        }
         });
         
         // Initialize with first option selected
