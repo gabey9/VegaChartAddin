@@ -57,7 +57,9 @@ export async function run() {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v6.json",
           description: "Waterfall chart from Excel selection",
+	  background: "transparent",
           data: { values: processedData },
+	  config: { view: { stroke: "transparent" }},
           width: dynamicWidth,
           height: dynamicHeight,
           transform: [
@@ -446,8 +448,7 @@ export async function run() {
         };
       }
 
-else if (chartType === "mekko") {
-        // Marimekko chart implementation
+      else if (chartType === "mekko") {
         spec = {
           $schema: "https://vega.github.io/schema/vega/v5.json",
           description: "Marimekko chart from Excel selection",
