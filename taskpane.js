@@ -216,6 +216,8 @@ export async function run() {
       else if (chartType === "pie") {
         spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        background: "transparent",
+        config: { view: { stroke: "transparent" }},
         description: "Pie chart from Excel selection",
         data: { values: data },
         mark: { type: "arc", outerRadius: 120 },
@@ -232,7 +234,8 @@ export async function run() {
           description: "Marimekko chart from Excel selection",
           width: 800,
           height: 500,
-          background: "#f8f9fa",
+          background: "transparent",
+          config: { view: { stroke: "transparent" }},
           view: { stroke: null },
           padding: { top: 60, bottom: 80, left: 60, right: 60 },
           data: [
@@ -450,7 +453,7 @@ export async function run() {
         };
       }
 
-      else if (chartType === "mekko") {
+      else if (chartType === "mekko2") {
         spec = {
           $schema: "https://vega.github.io/schema/vega/v5.json",
           description: "Marimekko chart from Excel selection",
