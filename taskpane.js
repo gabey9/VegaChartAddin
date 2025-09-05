@@ -169,46 +169,45 @@ export async function run() {
         };
       }
 
-else if (chartType === "bullet") {
-  // Expect headers like: Title | Subtitle | Range1 | Range2 | Range3 | Measure1 | Measure2 | Marker
-  const data = rows.map(r => ({
-    title: r[0],
-    ranges: [+r[1], +r[2], +r[3]],
-    measures: [+r[4], +r[5]],
-    markers: [+r[6]]
-  }));
+      else if (chartType === "bullet") {
+      const data = rows.map(r => ({
+        title: r[0],
+        ranges: [+r[1], +r[2], +r[3]],
+        measures: [+r[4], +r[5]],
+        markers: [+r[6]]
+      }));
 
-  spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-    "data": { "values": data },
-    "facet": {
-      "row": {
-        "field": "title", "type": "ordinal",
-        "header": { "labelAngle": 0, "title": "", "labelAlign": "left" }
-      }
-    },
-    "spacing": 10,
-    "spec": {
-      "encoding": {
-        "x": {
-          "type": "quantitative",
-          "scale": { "nice": false },
-          "title": null
+      spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        "data": { "values": data },
+        "facet": {
+        "row": {
+            "field": "title", "type": "ordinal",
+            "header": { "labelAngle": 0, "title": "", "labelAlign": "left" }
         }
-      },
-      "layer": [
-        { "mark": { "type": "bar", "color": "#eee" }, "encoding": { "x": { "field": "ranges[2]" } } },
-        { "mark": { "type": "bar", "color": "#ddd" }, "encoding": { "x": { "field": "ranges[1]" } } },
-        { "mark": { "type": "bar", "color": "#ccc" }, "encoding": { "x": { "field": "ranges[0]" } } },
-        { "mark": { "type": "bar", "color": "lightsteelblue", "size": 10 }, "encoding": { "x": { "field": "measures[1]" } } },
-        { "mark": { "type": "bar", "color": "steelblue", "size": 10 }, "encoding": { "x": { "field": "measures[0]" } } },
-        { "mark": { "type": "tick", "color": "black" }, "encoding": { "x": { "field": "markers[0]" } } }
-      ]
-    },
-    "resolve": { "scale": { "x": "independent" } },
-    "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
-  };
-}
+        },
+        "spacing": 10,
+        "spec": {
+        "encoding": {
+            "x": {
+            "type": "quantitative",
+            "scale": { "nice": false },
+            "title": null
+            }
+        },
+        "layer": [
+            { "mark": { "type": "bar", "color": "#eee" }, "encoding": { "x": { "field": "ranges[2]" } } },
+            { "mark": { "type": "bar", "color": "#ddd" }, "encoding": { "x": { "field": "ranges[1]" } } },
+            { "mark": { "type": "bar", "color": "#ccc" }, "encoding": { "x": { "field": "ranges[0]" } } },
+            { "mark": { "type": "bar", "color": "lightsteelblue", "size": 10 }, "encoding": { "x": { "field": "measures[1]" } } },
+            { "mark": { "type": "bar", "color": "steelblue", "size": 10 }, "encoding": { "x": { "field": "measures[0]" } } },
+            { "mark": { "type": "tick", "color": "black" }, "encoding": { "x": { "field": "markers[0]" } } }
+        ]
+        },
+        "resolve": { "scale": { "x": "independent" } },
+        "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
+      };
+      }
 
       else if (chartType === "pie") {
         spec = {
@@ -444,6 +443,532 @@ else if (chartType === "bullet") {
               }
             }
           ]
+        };
+      }
+
+else if (chartType === "mekko") {
+        // Marimekko chart implementation
+        spec = {
+          $schema: "https://vega.github.io/schema/vega/v5.json",
+          description: "Marimekko chart from Excel selection",
+          width: 800,
+          height: 500,
+          background: "#f8f9fa",
+          view: { stroke: null },
+          padding: { top: 60, bottom: 80, left: 60, right: 60 },
+          data: [
+            {
+              name: "table",
+              values: data
+            },
+            {
+              name: "categories",
+              source: "table",
+              transform: [
+                {
+                  type: "aggregate",
+                  fields: [headers[2]],
+                  ops: ["sum"],
+                  as: ["categoryTotal"],
+                  groupby: [headers[0]]
+                },
+                {
+                  type: "stack",
+                  offset: "normalize",
+                  sort: { field: "categoryTotal", order: "descending" },
+                  field: "categoryTotal",
+                  as: ["x0", "x1"]
+                },
+                {
+                  type: "formula",
+                  as: "Percent",
+                  expr: "datum.x1-datum.x0"
+                },
+                {
+                  type: "formula",
+                  as: "Label",
+                  expr: `datum.${headers[0]} + ' (' + format(datum.Percent,'.1%') + ')'`
+                }
+              ]
+            },
+            {
+              name: "finalTable",
+              source: "table",
+              transform: [
+                {
+                  type: "stack",
+                  offset: "normalize",
+                  groupby: [headers[0]],
+                  sort: { field: headers[2], order: "descending" },
+                  field: headers[2],
+                  as: ["y0", "y1"]
+                },
+                {
+                  type: "stack",
+                  groupby: [headers[0]],
+                  sort: { field: headers[2], order: "descending" },
+                  field: headers[2],
+                  as: ["z0", "z1"]
+                },
+                {
+                  type: "lookup",
+                  from: "categories",
+                  key: headers[0],
+                  values: ["x0", "x1"],
+                  fields: [headers[0]]
+                },
+                {
+                  type: "formula",
+                  as: "Percent",
+                  expr: "datum.y1-datum.y0"
+                },
+                {
+                  type: "formula",
+                  as: "Label",
+                  expr: `[datum.${headers[1]}, format(datum.${headers[2]}, '.0f') + ' (' + format(datum.Percent, '.1%') + ')']`
+                },
+                {
+                  type: "window",
+                  sort: { field: "y0", order: "ascending" },
+                  ops: ["row_number"],
+                  fields: [null],
+                  as: ["rank"],
+                  groupby: [headers[0]]
+                }
+              ]
+            }
+          ],
+          scales: [
+            {
+              name: "x",
+              type: "linear",
+              range: "width",
+              domain: { data: "finalTable", field: "x1" }
+            },
+            {
+              name: "y",
+              type: "linear",
+              range: "height",
+              nice: false,
+              zero: true,
+              domain: { data: "finalTable", field: "z1" }
+            },
+            {
+              name: "opacity",
+              type: "linear",
+              range: [1, 0.6],
+              domain: { data: "finalTable", field: "rank" }
+            },
+            {
+              name: "color",
+              type: "ordinal",
+              range: { scheme: "category20" },
+              domain: {
+                data: "categories",
+                field: headers[0],
+                sort: { field: "x0", order: "ascending", op: "sum" }
+              }
+            }
+          ],
+          axes: [
+            {
+              orient: "left",
+              scale: "y",
+              zindex: 1,
+              format: "",
+              tickCount: 5,
+              tickSize: 15,
+              labelColor: { value: "#333740" },
+              labelFontWeight: { value: "normal" },
+              labelFontSize: { value: 12 },
+              labelFont: { value: "Segoe UI" },
+              offset: 5,
+              domain: false,
+              encode: {
+                labels: {
+                  update: {
+                    text: { signal: `format(datum.value, '.0f')` }
+                  }
+                }
+              }
+            }
+          ],
+          marks: [
+            {
+              type: "rect",
+              name: "bars",
+              from: { data: "finalTable" },
+              encode: {
+                update: {
+                  x: { scale: "x", field: "x0" },
+                  x2: { scale: "x", field: "x1" },
+                  y: { scale: "y", field: "z0" },
+                  y2: { scale: "y", field: "z1" },
+                  fill: { scale: "color", field: headers[0] },
+                  stroke: { value: "white" },
+                  strokeWidth: { value: 1 },
+                  fillOpacity: { scale: "opacity", field: "rank" },
+                  tooltip: { signal: "datum" }
+                }
+              }
+            },
+            {
+              type: "text",
+              name: "labels",
+              interactive: false,
+              from: { data: "bars" },
+              encode: {
+                update: {
+                  x: { signal: "(datum.x2 - datum.x)*0.5 + datum.x" },
+                  align: { value: "center" },
+                  text: { field: "datum.Label" },
+                  y: { signal: "(datum.y2 - datum.y)*0.5 + datum.y" },
+                  fill: { value: "white" },
+                  font: { value: "Segoe UI" },
+                  lineHeight: { value: 12 },
+                  fontSize: { value: 10 },
+                  opacity: { signal: "(datum.x2 - datum.x) > 0.05 && (datum.y2 - datum.y) > 20 ? 1 : 0" }
+                }
+              }
+            },
+            {
+              type: "text",
+              name: "categoryLabels",
+              from: { data: "categories" },
+              encode: {
+                update: {
+                  x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                  y: { signal: "-15" },
+                  text: { field: headers[0] },
+                  align: { value: "center" },
+                  baseline: { value: "bottom" },
+                  fill: { value: "#333740" },
+                  fontWeight: { value: "bold" },
+                  fontSize: { value: 12 },
+                  font: { value: "Segoe UI" }
+                }
+              }
+            },
+            {
+              type: "text",
+              name: "categoryPercentages",
+              from: { data: "categories" },
+              encode: {
+                update: {
+                  x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                  y: { signal: "height + 30" },
+                  text: { field: "Label" },
+                  align: { value: "center" },
+                  baseline: { value: "top" },
+                  fill: { value: "#666666" },
+                  fontWeight: { value: "normal" },
+                  fontSize: { value: 10 },
+                  font: { value: "Segoe UI" }
+                }
+              }
+            }
+          ]
+        };
+      }
+
+      else if (chartType === "bullet") {
+        // Transform data for bullet chart
+        const bulletData = data.map(row => {
+          const title = row[headers[0]];
+          const actual = row[headers[1]];
+          const target = row[headers[2]];
+          
+          // Use provided ranges or calculate defaults
+          let ranges = [];
+          if (headers.length >= 6 && row[headers[3]] && row[headers[4]] && row[headers[5]]) {
+            ranges = [row[headers[3]], row[headers[4]], row[headers[5]]];
+          } else {
+            // Default ranges based on target
+            const maxRange = Math.max(actual, target) * 1.2;
+            ranges = [maxRange * 0.6, maxRange * 0.8, maxRange];
+          }
+          
+          return {
+            title: title,
+            actual: actual,
+            target: target,
+            range1: ranges[0],
+            range2: ranges[1], 
+            range3: ranges[2]
+          };
+        });
+
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+          description: "Bullet chart from Excel selection",
+          data: { values: bulletData },
+          facet: {
+            row: {
+              field: "title",
+              type: "ordinal",
+              header: {
+                labelAngle: 0,
+                title: "",
+                labelAlign: "left",
+                labelFontSize: 12,
+                labelFont: "Segoe UI",
+                labelColor: "#323130"
+              }
+            }
+          },
+          spacing: 15,
+          spec: {
+            width: 300,
+            height: 20,
+            encoding: {
+              x: {
+                type: "quantitative",
+                scale: { nice: false },
+                title: null,
+                axis: {
+                  labelFontSize: 10,
+                  labelFont: "Segoe UI",
+                  labelColor: "#605e5c"
+                }
+              }
+            },
+            layer: [
+              {
+                mark: { type: "bar", color: "#eeeeee", height: 15 },
+                encoding: { x: { field: "range3" } }
+              },
+              {
+                mark: { type: "bar", color: "#dddddd", height: 15 },
+                encoding: { x: { field: "range2" } }
+              },
+              {
+                mark: { type: "bar", color: "#cccccc", height: 15 },
+                encoding: { x: { field: "range1" } }
+              },
+              {
+                mark: { type: "bar", color: "#0078d4", size: 8 },
+                encoding: { x: { field: "actual" } }
+              },
+              {
+                mark: { 
+                  type: "tick", 
+                  color: "#323130", 
+                  thickness: 3,
+                  size: 20
+                },
+                encoding: { x: { field: "target" } }
+              },
+              {
+                mark: {
+                  type: "text",
+                  align: "left",
+                  dx: 5,
+                  fontSize: 10,
+                  color: "#605e5c",
+                  font: "Segoe UI"
+                },
+                encoding: {
+                  x: { field: "actual" },
+                  text: { field: "actual", type: "quantitative", format: ".1f" }
+                }
+              }
+            ]
+          },
+          resolve: { scale: { x: "independent" } },
+          config: {
+            tick: { thickness: 3 },
+            scale: { barBandPaddingInner: 0 },
+            view: { stroke: "transparent" },
+            font: "Segoe UI",
+            text: { font: "Segoe UI", fontSize: 10, fill: "#605e5c" }
+          }
+        };
+      }
+
+      else if (chartType === "arc") {
+        // Transform Excel data for arc chart
+        const edges = data.map((row, index) => ({
+          source: row[headers[0]],
+          target: row[headers[1]],
+          value: headers.length >= 3 && row[headers[2]] ? row[headers[2]] : 1,
+          group: headers.length >= 4 && row[headers[3]] ? row[headers[3]] : "default"
+        }));
+
+        // Get unique nodes from edges
+        const nodeMap = new Map();
+        edges.forEach(edge => {
+          if (!nodeMap.has(edge.source)) {
+            nodeMap.set(edge.source, { 
+              name: edge.source, 
+              group: edge.group,
+              index: nodeMap.size
+            });
+          }
+          if (!nodeMap.has(edge.target)) {
+            nodeMap.set(edge.target, { 
+              name: edge.target, 
+              group: edge.group,
+              index: nodeMap.size
+            });
+          }
+        });
+
+        const nodes = Array.from(nodeMap.values());
+
+        // Transform edges to use node indices
+        const edgesWithIndices = edges.map(edge => ({
+          source: nodeMap.get(edge.source).index,
+          target: nodeMap.get(edge.target).index,
+          value: edge.value
+        }));
+
+        spec = {
+          $schema: "https://vega.github.io/schema/vega/v5.json",
+          description: "Arc diagram from Excel selection",
+          width: Math.max(600, nodes.length * 40),
+          height: 300,
+          padding: { top: 20, bottom: 80, left: 20, right: 20 },
+          
+          data: [
+            {
+              name: "edges",
+              values: edgesWithIndices
+            },
+            {
+              name: "sourceDegree",
+              source: "edges",
+              transform: [
+                { type: "aggregate", groupby: ["source"], as: ["count"] }
+              ]
+            },
+            {
+              name: "targetDegree", 
+              source: "edges",
+              transform: [
+                { type: "aggregate", groupby: ["target"], as: ["count"] }
+              ]
+            },
+            {
+              name: "nodes",
+              values: nodes,
+              transform: [
+                { type: "window", ops: ["rank"], as: ["order"] },
+                {
+                  type: "lookup", from: "sourceDegree", key: "source",
+                  fields: ["index"], as: ["sourceDegree"],
+                  default: { count: 0 }
+                },
+                {
+                  type: "lookup", from: "targetDegree", key: "target", 
+                  fields: ["index"], as: ["targetDegree"],
+                  default: { count: 0 }
+                },
+                {
+                  type: "formula", as: "degree",
+                  expr: "(datum.sourceDegree.count || 0) + (datum.targetDegree.count || 0)"
+                }
+              ]
+            }
+          ],
+
+          scales: [
+            {
+              name: "position",
+              type: "band",
+              domain: { data: "nodes", field: "order", sort: true },
+              range: "width"
+            },
+            {
+              name: "color",
+              type: "ordinal",
+              range: { scheme: "category20" },
+              domain: { data: "nodes", field: "group" }
+            }
+          ],
+
+          marks: [
+            {
+              type: "symbol",
+              name: "layout",
+              interactive: false,
+              from: { data: "nodes" },
+              encode: {
+                enter: { opacity: { value: 0 } },
+                update: {
+                  x: { scale: "position", field: "order" },
+                  y: { value: 0 },
+                  size: { field: "degree", mult: 8, offset: 50 },
+                  fill: { scale: "color", field: "group" }
+                }
+              }
+            },
+            {
+              type: "path",
+              from: { data: "edges" },
+              encode: {
+                update: {
+                  stroke: { value: "#0078d4" },
+                  strokeOpacity: { value: 0.4 },
+                  strokeWidth: { field: "value", mult: 2, offset: 1 }
+                }
+              },
+              transform: [
+                {
+                  type: "lookup", from: "layout", key: "datum.index",
+                  fields: ["datum.source", "datum.target"],
+                  as: ["sourceNode", "targetNode"]
+                },
+                {
+                  type: "linkpath",
+                  sourceX: { expr: "min(datum.sourceNode.x, datum.targetNode.x)" },
+                  targetX: { expr: "max(datum.sourceNode.x, datum.targetNode.x)" },
+                  sourceY: { expr: "0" },
+                  targetY: { expr: "0" },
+                  shape: "arc"
+                }
+              ]
+            },
+            {
+              type: "symbol",
+              from: { data: "layout" },
+              encode: {
+                update: {
+                  x: { field: "x" },
+                  y: { field: "y" },
+                  fill: { field: "fill" },
+                  size: { field: "size" },
+                  stroke: { value: "white" },
+                  strokeWidth: { value: 1 },
+                  tooltip: { 
+                    signal: "{'Node': datum.datum.name, 'Group': datum.datum.group, 'Connections': datum.datum.degree}" 
+                  }
+                }
+              }
+            },
+            {
+              type: "text",
+              from: { data: "nodes" },
+              encode: {
+                update: {
+                  x: { scale: "position", field: "order" },
+                  y: { value: 25 },
+                  fontSize: { value: 10 },
+                  align: { value: "center" },
+                  baseline: { value: "top" },
+                  angle: { value: -45 },
+                  text: { field: "name" },
+                  fill: { value: "#323130" },
+                  font: { value: "Segoe UI" }
+                }
+              }
+            }
+          ],
+          
+          config: {
+            view: { stroke: "transparent" },
+            font: "Segoe UI",
+            text: { font: "Segoe UI", fontSize: 10, fill: "#605e5c" }
+          }
         };
       }
 

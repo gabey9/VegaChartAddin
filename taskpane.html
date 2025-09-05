@@ -94,6 +94,7 @@
             <option value="area">Area</option>
             <option value="pie">Pie</option>
             <option value="radial">Radial</option>
+            <option value="arc">Arc</option>
             <option value="wordcloud">Wordcloud</option>
             <option value="bullet">Bullet</option>
             <option value="mekko">Mekko</option>
@@ -159,7 +160,17 @@
             <li><strong>Column 2:</strong> Values (determines both angle and radius)</li>
         </ul>
     </div>
-    
+  
+    <div id="req-arc" class="data-requirements hidden">
+        <h4>Data Requirements:</h4>
+        <ul>
+            <li><strong>Column 1:</strong> Source node/entity (e.g., "Person A", "Department 1")</li>
+            <li><strong>Column 2:</strong> Target node/entity (e.g., "Person B", "Department 2")</li>
+            <li><strong>Column 3:</strong> Connection strength/weight (numbers, optional)</li>
+            <li><strong>Column 4:</strong> Group/Category (optional, for coloring nodes)</li>
+        </ul>
+    </div>
+  
     <div id="req-wordcloud" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
         <ul>
