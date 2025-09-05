@@ -57,9 +57,9 @@ export async function run() {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v6.json",
           description: "Waterfall chart from Excel selection",
-	  background: "transparent",
+	      background: "transparent",
           data: { values: processedData },
-	  config: { view: { stroke: "transparent" }},
+	      config: { view: { stroke: "transparent" }},
           width: dynamicWidth,
           height: dynamicHeight,
           transform: [
@@ -181,6 +181,8 @@ export async function run() {
 
       spec = {
         "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        background: "transparent",
+        config: { view: { stroke: "transparent" }},
         "data": { "values": data },
         "facet": {
         "row": {
