@@ -1,3 +1,731 @@
-/*! For license information please see taskpane.js.LICENSE.txt */
-!function(){"use strict";var e={60947:function(e,t,n){e.exports=n.p+"deea89fe5c1ee6cb40e4.js"}},t={};function n(o){var a=t[o];if(void 0!==a)return a.exports;var r=t[o]={exports:{}};return e[o](r,r.exports,n),r.exports}n.m=e,n.d=function(e,t){for(var o in t)n.o(t,o)&&!n.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:t[o]})},n.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},function(){var e;n.g.importScripts&&(e=n.g.location+"");var t=n.g.document;if(!e&&t&&(t.currentScript&&"SCRIPT"===t.currentScript.tagName.toUpperCase()&&(e=t.currentScript.src),!e)){var o=t.getElementsByTagName("script");if(o.length)for(var a=o.length-1;a>-1&&(!e||!/^http(s?):/.test(e));)e=o[a--].src}if(!e)throw new Error("Automatic publicPath is not supported in this browser");e=e.replace(/^blob:/,"").replace(/#.*$/,"").replace(/\?.*$/,"").replace(/\/[^\/]+$/,"/"),n.p=e}(),n.b=document.baseURI||self.location.href,function(){function e(t){return e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e(t)}function t(){var e,o,a="function"==typeof Symbol?Symbol:{},r=a.iterator||"@@iterator",i=a.toStringTag||"@@toStringTag";function l(t,a,r,i){var l=a&&a.prototype instanceof u?a:u,s=Object.create(l.prototype);return n(s,"_invoke",function(t,n,a){var r,i,l,u=0,s=a||[],d=!1,f={p:0,n:0,v:e,a:p,f:p.bind(e,4),d:function(t,n){return r=t,i=0,l=e,f.n=n,c}};function p(t,n){for(i=t,l=n,o=0;!d&&u&&!a&&o<s.length;o++){var a,r=s[o],p=f.p,m=r[2];t>3?(a=m===n)&&(l=r[(i=r[4])?5:(i=3,3)],r[4]=r[5]=e):r[0]<=p&&((a=t<2&&p<r[1])?(i=0,f.v=n,f.n=r[1]):p<m&&(a=t<3||r[0]>n||n>m)&&(r[4]=t,r[5]=n,f.n=m,i=0))}if(a||t>1)return c;throw d=!0,n}return function(a,s,m){if(u>1)throw TypeError("Generator is already running");for(d&&1===s&&p(s,m),i=s,l=m;(o=i<2?e:l)||!d;){r||(i?i<3?(i>1&&(f.n=-1),p(i,l)):f.n=l:f.v=l);try{if(u=2,r){if(i||(a="next"),o=r[a]){if(!(o=o.call(r,l)))throw TypeError("iterator result is not an object");if(!o.done)return o;l=o.value,i<2&&(i=0)}else 1===i&&(o=r.return)&&o.call(r),i<2&&(l=TypeError("The iterator does not provide a '"+a+"' method"),i=1);r=e}else if((o=(d=f.n<0)?l:t.call(n,f))!==c)break}catch(t){r=e,i=1,l=t}finally{u=1}}return{value:o,done:d}}}(t,r,i),!0),s}var c={};function u(){}function s(){}function d(){}o=Object.getPrototypeOf;var f=[][r]?o(o([][r]())):(n(o={},r,function(){return this}),o),p=d.prototype=u.prototype=Object.create(f);function m(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,d):(e.__proto__=d,n(e,i,"GeneratorFunction")),e.prototype=Object.create(p),e}return s.prototype=d,n(p,"constructor",d),n(d,"constructor",s),s.displayName="GeneratorFunction",n(d,i,"GeneratorFunction"),n(p),n(p,i,"Generator"),n(p,r,function(){return this}),n(p,"toString",function(){return"[object Generator]"}),(t=function(){return{w:l,m:m}})()}function n(e,t,o,a){var r=Object.defineProperty;try{r({},"",{})}catch(e){r=0}n=function(e,t,o,a){function i(t,o){n(e,t,function(e){return this._invoke(t,o,e)})}t?r?r(e,t,{value:o,enumerable:!a,configurable:!a,writable:!a}):e[t]=o:(i("next",0),i("throw",1),i("return",2))},n(e,t,o,a)}function o(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(e);t&&(o=o.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),n.push.apply(n,o)}return n}function a(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?o(Object(n),!0).forEach(function(t){r(e,t,n[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):o(Object(n)).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t))})}return e}function r(t,n,o){return(n=function(t){var n=function(t){if("object"!=e(t)||!t)return t;var n=t[Symbol.toPrimitive];if(void 0!==n){var o=n.call(t,"string");if("object"!=e(o))return o;throw new TypeError("@@toPrimitive must return a primitive value.")}return String(t)}(t);return"symbol"==e(n)?n:n+""}(n))in t?Object.defineProperty(t,n,{value:o,enumerable:!0,configurable:!0,writable:!0}):t[n]=o,t}function i(e){return function(e){if(Array.isArray(e))return l(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||function(e,t){if(e){if("string"==typeof e)return l(e,t);var n={}.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?l(e,t):void 0}}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function l(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,o=Array(t);n<t;n++)o[n]=e[n];return o}function c(e,t,n,o,a,r,i){try{var l=e[r](i),c=l.value}catch(e){return void n(e)}l.done?t(c):Promise.resolve(c).then(o,a)}function u(e){return function(){var t=this,n=arguments;return new Promise(function(o,a){var r=e.apply(t,n);function i(e){c(r,o,a,i,l,"next",e)}function l(e){c(r,o,a,i,l,"throw",e)}i(void 0)})}}function s(){return d.apply(this,arguments)}function d(){return d=u(t().m(function e(){var n;return t().w(function(e){for(;;)switch(e.p=e.n){case 0:return e.p=0,e.n=1,Excel.run(function(){var e=u(t().m(function e(n){var o,l,c,s,d,f,p,m,h,y,g,v,b,w,x,k,O,j,S,E;return t().w(function(e){for(;;)switch(e.n){case 0:return o=n.workbook.worksheets.getActiveWorksheet(),(l=n.workbook.getSelectedRange()).load("values, left, top"),e.n=1,n.sync();case 1:if(!((c=l.values).length<2)){e.n=2;break}return console.warn("Need at least header row + one data row"),e.a(2);case 2:return s=c[0],d=c.slice(1),f=d.map(function(e){var t={};return s.forEach(function(n,o){t[n]=e[o]}),t}),"waterfall"===(p=document.getElementById("chartType").value)?((h=i(f)).length>0&&(h[h.length-1]=a(a({},h[h.length-1]),{},r({},s[1],0))),y=f.length,g=Math.max(400,Math.min(1200,70*y)),v=Math.max.apply(Math,i(f.map(function(e){return Math.abs(e[s[1]])}))),b=Math.max(300,Math.min(600,v/100+200)),m={$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Waterfall chart from Excel selection",data:{values:h},width:g,height:b,transform:[{window:[{op:"sum",field:s[1],as:"sum"}]},{window:[{op:"lead",field:s[0],as:"lead"}]},{calculate:"datum.lead === null ? datum.".concat(s[0]," : datum.lead"),as:"lead"},{calculate:"datum.".concat(s[0]," === '").concat(f[f.length-1][s[0]],"' ? 0 : datum.sum - datum.").concat(s[1]),as:"previous_sum"},{calculate:"datum.".concat(s[0]," === '").concat(f[f.length-1][s[0]],"' ? datum.sum : datum.").concat(s[1]),as:"amount"},{calculate:"datum.".concat(s[0]," === '").concat(f[0][s[0]],"' ? datum.").concat(s[1]," / 2 : datum.").concat(s[0]," === '").concat(f[f.length-1][s[0]],"' ? datum.").concat(s[1]," / 2 : (datum.sum + datum.previous_sum) / 2"),as:"center"},{calculate:"datum.".concat(s[0]," === '").concat(f[f.length-1][s[0]],"' ? datum.sum : (datum.").concat(s[0]," !== '").concat(f[0][s[0]],"' && datum.").concat(s[0]," !== '").concat(f[f.length-1][s[0]],"' && datum.").concat(s[1]," > 0 ? '+' : '') + datum.").concat(s[1]),as:"text_amount"},{calculate:"(datum.sum + datum.previous_sum) / 2",as:"center"}],encoding:{x:{field:s[0],type:"ordinal",sort:null,axis:{labelAngle:0,title:s[0]},scale:{paddingInner:.1,paddingOuter:.05}}},layer:[{mark:{type:"bar",size:60},encoding:{y:{field:"previous_sum",type:"quantitative",title:s[1]},y2:{field:"sum"},color:{condition:[{test:"datum.".concat(s[0]," === '").concat(f[0][s[0]],"' || datum.").concat(s[0]," === '").concat(f[f.length-1][s[0]],"'"),value:"#f7e0b6"},{test:"datum.sum < datum.previous_sum",value:"#f78a64"}],value:"#93c4aa"}}},{mark:{type:"rule",color:"#404040",opacity:1,strokeWidth:2,xOffset:-30,x2Offset:30},encoding:{x2:{field:"lead"},y:{field:"sum",type:"quantitative"}}},{mark:{type:"text",dy:{expr:"datum.amount >= 0 ? -4 : 4"},baseline:{expr:"datum.amount >= 0 ? 'bottom' : 'top'"}},encoding:{y:{field:"sum",type:"quantitative"},text:{field:"sum",type:"nominal"},opacity:{condition:{test:"datum.".concat(s[0]," === '").concat(f[0][s[0]],"' || datum.").concat(s[0]," === '").concat(f[f.length-1][s[0]],"'"),value:0},value:1}}},{mark:{type:"text",fontWeight:"bold",baseline:"middle"},encoding:{y:{field:"center",type:"quantitative"},text:{field:"text_amount",type:"nominal"},color:{condition:[{test:"datum.".concat(s[0]," === '").concat(f[0][s[0]],"' || datum.").concat(s[0]," === '").concat(f[f.length-1][s[0]],"'"),value:"#725a30"}],value:"white"}}}],config:{text:{fontWeight:"bold",color:"#404040"}}}):m="pie"===p?{$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Pie chart from Excel selection",data:{values:f},mark:{type:"arc",outerRadius:120},encoding:{theta:{field:s[1],type:"quantitative"},color:{field:s[0],type:"nominal"}}}:"deviation"===p?{$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Deviation chart from Excel selection",data:{values:f},layer:[{mark:{type:"line",tooltip:!0,color:"grey"},encoding:{x:{field:s[0],type:"ordinal"},y:{field:s[1],type:"quantitative"}}},{mark:{type:"circle",size:80,color:"grey",tooltip:!0},encoding:{x:{field:s[0],type:"ordinal"},y:{field:s[1],type:"quantitative"}}},{mark:{type:"rule",strokeWidth:2,tooltip:!0},encoding:{x:{field:s[0],type:"ordinal"},y:{field:s[1],type:"quantitative"},y2:{field:s[2]},color:{condition:{test:'datum["'.concat(s[1],'"] < datum["').concat(s[2],'"]'),value:"red"},value:"green"}}},{mark:{type:"circle",size:60,tooltip:!0},encoding:{x:{field:s[0],type:"ordinal"},y:{field:s[2],type:"quantitative"},color:{condition:{test:'datum["'.concat(s[1],'"] < datum["').concat(s[2],'"]'),value:"red"},value:"green"}}}],encoding:{x:{field:s[0],type:"ordinal",axis:null},y:{type:"quantitative",axis:{title:""}}},config:{view:{stroke:"transparent"},line:{strokeWidth:3,strokeCap:"round",strokeJoin:"round"},axis:{ticks:!1,grid:!1,domain:!1,labelColor:"#605E5C",labelFontSize:12}}}:"radial"===p?{$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Radial chart from Excel selection",data:{values:f},layer:[{mark:{type:"arc",innerRadius:20,stroke:"#fff"}},{mark:{type:"text",radiusOffset:10},encoding:{text:{field:s[1],type:"quantitative"}}}],encoding:{theta:{field:s[1],type:"quantitative",stack:!0},radius:{field:s[1],scale:{type:"sqrt",zero:!0,rangeMin:20}},color:{field:s[0],type:"nominal",legend:null}}}:"bump"===p?{$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Bump chart from Excel selection",data:{values:f},encoding:{x:{field:s[0],type:"temporal",axis:{title:""}},y:{field:s[2],type:"ordinal",axis:!1},order:{field:s[0],type:"temporal"}},layer:[{mark:{type:"line",interpolate:"monotone"},encoding:{color:{field:s[1],type:"nominal",legend:!1}}},{mark:{type:"circle",size:400,tooltip:!0},encoding:{color:{field:s[1],type:"nominal",legend:!1}}},{mark:{type:"text",color:"white"},encoding:{text:{field:s[2]}}},{transform:[{window:[{op:"rank",as:"rank"}],sort:[{field:s[0],order:"descending"}]},{filter:"datum.rank === 1"}],mark:{type:"text",align:"left",baseline:"middle",dx:15,fontWeight:"bold",fontSize:12},encoding:{text:{field:s[1],type:"nominal"},color:{field:s[1],type:"nominal",legend:!1}}},{transform:[{window:[{op:"rank",as:"rank"}],sort:[{field:s[0],order:"ascending"}]},{filter:"datum.rank === 1"}],mark:{type:"text",align:"right",baseline:"middle",dx:-15,fontWeight:"bold",fontSize:12},encoding:{text:{field:s[1],type:"nominal"},color:{field:s[1],type:"nominal",legend:!1}}}],config:{view:{stroke:"transparent"},line:{strokeWidth:3,strokeCap:"round",strokeJoin:"round"},axis:{ticks:!1,grid:!1,domain:!1,labelColor:"#666666",labelFontSize:12}}}:"ribbon"===p?{$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Ribbon chart from Excel selection",data:{values:f},layer:[{mark:{type:"area",interpolate:"monotone",tooltip:!0},encoding:{x:{field:s[0],type:"ordinal"},y:{aggregate:"sum",field:s[2],type:"quantitative",axis:null,stack:"center"},color:{field:s[1],type:"nominal"},order:{aggregate:"sum",field:s[2],type:"quantitative"}}}],config:{view:{stroke:"transparent"},axis:{ticks:!1,grid:!0,gridColor:"white",gridWidth:3,domain:!1,labelColor:"#666666"},legend:{titleFont:"Segoe UI",titleFontWeight:"bold",titleColor:"#666666",labelFont:"Segoe UI",labelColor:"#666666",symbolType:"circle",symbolSize:75}}}:"ridgeline"===p?{$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Ridgeline (Joyplot) chart from Excel selection",data:{values:f},mark:{type:"area",fillOpacity:.7,strokeOpacity:1,strokeWidth:1,interpolate:"monotone"},width:400,height:20,encoding:{x:{field:s[0],type:"ordinal",title:s[0]},y:{aggregate:"sum",field:s[2],type:"quantitative",scale:{range:[20,-40]},axis:{title:null,values:[0],domain:!1,labels:!1,ticks:!1}},row:{field:s[1],type:"nominal",title:s[1],header:{title:null,labelAngle:0,labelOrient:"left",labelAlign:"left",labelPadding:0},sort:{field:s[0],op:"max",order:"ascending"}},fill:{field:s[1],type:"nominal",legend:null,scale:{scheme:"plasma"}}},resolve:{scale:{y:"independent"}},config:{view:{stroke:"transparent"},facet:{spacing:20},header:{labelFontSize:12,labelFontWeight:500,labelAngle:0,labelAnchor:"end",labelOrient:"top",labelPadding:-19},axis:{domain:!1,grid:!1,ticks:!1,tickCount:5,labelFontSize:12,titleFontSize:12,titleFontWeight:400,titleColor:"#605E5C"}}}:"wordcloud"===p?{$schema:"https://vega.github.io/schema/vega/v5.json",description:"Word cloud from Excel selection",width:800,height:400,padding:0,data:[{name:"table",values:f,transform:[{type:"countpattern",field:s[0],case:"upper",pattern:"[\\w']{3,}",stopwords:"(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall)"},{type:"formula",as:"angle",expr:"[-45, 0, 45][~~(random() * 3)]"},{type:"formula",as:"weight",expr:"if(datum.count > 10, 600, 300)"}]}],scales:[{name:"color",type:"ordinal",domain:{data:"table",field:"text"},range:["#d5a928","#652c90","#939597","#2563eb","#dc2626","#059669"]}],marks:[{type:"text",from:{data:"table"},encode:{enter:{text:{field:"text"},align:{value:"center"},baseline:{value:"alphabetic"},fill:{scale:"color",field:"text"}},update:{fillOpacity:{value:1}},hover:{fillOpacity:{value:.5}}},transform:[{type:"wordcloud",size:[800,400],text:{field:"text"},rotate:{field:"datum.angle"},font:"Helvetica Neue, Arial",fontSize:{field:"datum.count"},fontWeight:{field:"datum.weight"},fontSizeRange:[12,56],padding:2}]}]}:{$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Chart from Excel selection",data:{values:f},mark:p,encoding:{x:{field:s[0],type:"quantitative"},y:{field:s[1],type:"quantitative"}}},(w=document.createElement("div")).style.display="none",document.body.appendChild(w),e.n=3,vegaEmbed(w,m,{actions:!1});case 3:return x=e.v,k=x.view,e.n=4,k.toImageURL("png");case 4:return O=e.v,e.n=5,fetch(O);case 5:return j=e.v,e.n=6,j.blob();case 6:S=e.v,(E=new FileReader).onloadend=u(t().m(function e(){var a,r;return t().w(function(e){for(;;)switch(e.n){case 0:return a=E.result.split(",")[1],(r=o.shapes.addImage(a)).left=l.left,r.top=l.top,r.lockAspectRatio=!0,e.n=1,n.sync();case 1:return e.a(2)}},e)})),E.readAsDataURL(S),document.body.removeChild(w);case 7:return e.a(2)}},e)}));return function(t){return e.apply(this,arguments)}}());case 1:e.n=3;break;case 2:e.p=2,n=e.v,console.error(n);case 3:return e.a(2)}},e,null,[[0,2]])})),d.apply(this,arguments)}Office.onReady(function(){document.getElementById("drawChart").onclick=s})}(),new URL(n(60947),n.b)}();
-//# sourceMappingURL=taskpane.js.map
+/* global console, document, Excel, Office */
+
+Office.onReady(() => {
+  document.getElementById("drawChart").onclick = run;
+});
+
+export async function run() {
+  try {
+    await Excel.run(async (context) => {
+      const sheet = context.workbook.worksheets.getActiveWorksheet();
+
+      // Get current selection
+      const range = context.workbook.getSelectedRange();
+      range.load("values, left, top");
+      await context.sync();
+
+      const values = range.values;
+      if (values.length < 2) {
+        console.warn("Need at least header row + one data row");
+        return;
+      }
+
+      // First row is header
+      const headers = values[0];
+      const rows = values.slice(1);
+
+      // Convert rows -> objects
+      const data = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Get chart type from dropdown
+      const chartType = document.getElementById("chartType").value;
+
+      let spec;
+
+      if (chartType === "waterfall") {
+        // Process waterfall data inline - set last entry's amount to 0
+        const processedData = [...data];
+        if (processedData.length > 0) {
+          processedData[processedData.length - 1] = {
+            ...processedData[processedData.length - 1],
+            [headers[1]]: 0
+          };
+        }
+
+        // Calculate dynamic dimensions
+        const numDataPoints = data.length;
+        const dynamicWidth = Math.max(400, Math.min(1200, numDataPoints * 70));
+        const maxAmount = Math.max(...data.map(d => Math.abs(d[headers[1]])));
+        const dynamicHeight = Math.max(300, Math.min(600, maxAmount / 100 + 200));
+
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+          description: "Waterfall chart from Excel selection",
+          data: { values: processedData },
+          width: dynamicWidth,
+          height: dynamicHeight,
+          transform: [
+            {"window": [{"op": "sum", "field": headers[1], "as": "sum"}]},
+            {"window": [{"op": "lead", "field": headers[0], "as": "lead"}]},
+            {
+              "calculate": `datum.lead === null ? datum.${headers[0]} : datum.lead`,
+              "as": "lead"
+            },
+            {
+              "calculate": `datum.${headers[0]} === '${data[data.length - 1][headers[0]]}' ? 0 : datum.sum - datum.${headers[1]}`,
+              "as": "previous_sum"
+            },
+            {
+              "calculate": `datum.${headers[0]} === '${data[data.length - 1][headers[0]]}' ? datum.sum : datum.${headers[1]}`,
+              "as": "amount"
+            },
+            {
+              "calculate": `datum.${headers[0]} === '${data[0][headers[0]]}' ? datum.${headers[1]} / 2 : datum.${headers[0]} === '${data[data.length - 1][headers[0]]}' ? datum.${headers[1]} / 2 : (datum.sum + datum.previous_sum) / 2`,
+              "as": "center"
+            },
+            {
+              "calculate": `datum.${headers[0]} === '${data[data.length - 1][headers[0]]}' ? datum.sum : (datum.${headers[0]} !== '${data[0][headers[0]]}' && datum.${headers[0]} !== '${data[data.length - 1][headers[0]]}' && datum.${headers[1]} > 0 ? '+' : '') + datum.${headers[1]}`,
+              "as": "text_amount"
+            },
+            {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"}
+          ],
+          encoding: {
+            x: {
+              field: headers[0],
+              type: "ordinal",
+              sort: null,
+              axis: {"labelAngle": 0, "title": headers[0]},
+              scale: {"paddingInner": 0.1, "paddingOuter": 0.05}
+            }
+          },
+          layer: [
+            {
+              mark: {"type": "bar", "size": 60},
+              encoding: {
+                y: {
+                  field: "previous_sum",
+                  type: "quantitative",
+                  title: headers[1]
+                },
+                y2: {"field": "sum"},
+                color: {
+                  condition: [
+                    {
+                      test: `datum.${headers[0]} === '${data[0][headers[0]]}' || datum.${headers[0]} === '${data[data.length - 1][headers[0]]}'`,
+                      value: "#f7e0b6"
+                    },
+                    {"test": "datum.sum < datum.previous_sum", "value": "#f78a64"}
+                  ],
+                  value: "#93c4aa"
+                }
+              }
+            },
+            {
+              mark: {
+                type: "rule",
+                color: "#404040",
+                opacity: 1,
+                strokeWidth: 2,
+                xOffset: -30,
+                x2Offset: 30
+              },
+              encoding: {
+                x2: {"field": "lead"},
+                y: {"field": "sum", "type": "quantitative"}
+              }
+            },
+            {
+              "mark": {
+                type: "text", 
+                dy: {"expr": "datum.amount >= 0 ? -4 : 4"}, 
+                baseline: {"expr": "datum.amount >= 0 ? 'bottom' : 'top'"}
+              },
+              encoding: {
+                y: {"field": "sum", "type": "quantitative"},
+                text: {"field": "sum", "type": "nominal"},
+                opacity: {
+                  "condition": {
+                    "test": `datum.${headers[0]} === '${data[0][headers[0]]}' || datum.${headers[0]} === '${data[data.length - 1][headers[0]]}'`,
+                    "value": 0
+                  },
+                  "value": 1
+                }
+              }
+            },
+            {
+              mark: {"type": "text", "fontWeight": "bold", "baseline": "middle"},
+              encoding: {
+                y: {"field": "center", "type": "quantitative"},
+                text: {"field": "text_amount", "type": "nominal"},
+                color: {
+                  condition: [
+                    {
+                      test: `datum.${headers[0]} === '${data[0][headers[0]]}' || datum.${headers[0]} === '${data[data.length - 1][headers[0]]}'`,
+                      value: "#725a30"
+                    }
+                  ],
+                  value: "white"
+                }
+              }
+            }
+          ],
+          config: {"text": {"fontWeight": "bold", "color": "#404040"}}
+        };
+      }
+
+      else if (chartType === "pie") {
+        spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Pie chart from Excel selection",
+        data: { values: data },
+        mark: { type: "arc", outerRadius: 120 },
+        encoding: {
+          theta: { field: headers[1], type: "quantitative" },
+          color: { field: headers[0], type: "nominal" }
+          }
+        };
+      }
+
+else if (chartType === "waffle") {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+          description: "Waffle chart from Excel selection",
+          data: { values: data },
+          transform: [
+            {
+              joinaggregate: [{"op": "sum", "field": headers[1], "as": "TotalValue"}]
+            },
+            {
+              calculate: `round(datum.${headers[1]}/datum.TotalValue * 100)`,
+              as: "PercentOfTotal"
+            },
+            {
+              aggregate: [{"op": "min", "field": "PercentOfTotal", "as": "Percent"}],
+              groupby: [headers[0]]
+            },
+            {"calculate": "sequence(1,101)", "as": "Sequence"},
+            {"flatten": ["Sequence"]},
+            {
+              calculate: `if(datum.Sequence <= datum.Percent, datum.${headers[0]},'_blank')`,
+              as: "Plot"
+            },
+            {"calculate": "ceil (datum.Sequence / 10)", "as": "row"},
+            {"calculate": "datum.Sequence - datum.row * 10", "as": "col"}
+          ],
+          facet: {"column": {"field": headers[0], "header": {"labelOrient": "bottom"}}},
+          spec: {
+            layer: [
+              {
+                mark: {
+                  type: "circle",
+                  filled: true,
+                  tooltip: true,
+                  stroke: "#9e9b9b",
+                  strokeWidth: 0.7
+                },
+                encoding: {
+                  x: {"field": "col", "type": "ordinal", "axis": null},
+                  y: {"field": "row", "type": "ordinal", "axis": null, "sort": "-y"},
+                  color: {
+                    condition: {"test": "datum.Plot == '_blank'", "value": "#e6e3e3"},
+                    scale: {"scheme": "set1"},
+                    field: "Plot",
+                    type: "nominal",
+                    legend: null
+                  },
+                  size: {"value": 241},
+                  tooltip: [{"field": headers[0], "type": "nominal"}]
+                }
+              },
+              {
+                mark: {"type": "text", "fontSize": 30, "fontWeight": "bold"},
+                encoding: {
+                  y: {"value": 30},
+                  text: {
+                    condition: {
+                      test: "datum.Sequence == 1",
+                      value: {"expr": "datum.Percent + '%'"}
+                    }
+                  },
+                  color: {"scale": {"scheme": "set1"}, "field": "Plot"}
+                }
+              }
+            ]
+          },
+          config: {
+            view: {"stroke": "transparent"},
+            font: "Segoe UI",
+            text: {"font": "Segoe UI", "fontSize": 12, "fill": "#605E5C"},
+            axis: {
+              ticks: false,
+              grid: false,
+              domain: false,
+              labelColor: "#605E5C",
+              labelFontSize: 12
+            },
+            header: {
+              titleFont: "Segoe UI",
+              titleFontSize: 16,
+              titleColor: "#757575",
+              labelFont: "Segoe UI",
+              labelFontSize: 13,
+              labelColor: "#605E5C"
+            },
+            legend: {
+              titleFont: "Segoe UI",
+              titleFontWeight: "bold",
+              titleColor: "#605E5C",
+              labelFont: "Segoe UI",
+              labelFontSize: 13,
+              labelColor: "#605E5C",
+              symbolType: "circle",
+              symbolSize: 75
+            }
+          }
+        };
+      }
+
+      else if (chartType === "deviation") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Deviation chart from Excel selection",
+        data: { values: data },
+        layer: [
+        {
+            mark: { type: "line", tooltip: true, color: "grey" },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[1], type: "quantitative" }
+            }
+        },
+        {
+            mark: { type: "circle", size: 80, color: "grey", tooltip: true },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[1], type: "quantitative" }
+            }
+        },
+        {
+            mark: { type: "rule", strokeWidth: 2, tooltip: true },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[1], type: "quantitative" },
+            y2: { field: headers[2] },
+            color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+            }
+            }
+        },
+        {
+            mark: { type: "circle", size: 60, tooltip: true },
+            encoding: {
+            x: { field: headers[0], type: "ordinal" },
+            y: { field: headers[2], type: "quantitative" },
+            color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+            }
+            }
+        }
+        ],
+        encoding: {
+        x: { field: headers[0], type: "ordinal", axis: null },
+        y: { type: "quantitative", axis: { title: "" } }
+        },
+        config: {
+        view: { stroke: "transparent" },
+        line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+        axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12
+        }
+        }
+      };
+      }
+
+      else if (chartType === "radial") {
+        spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Radial chart from Excel selection",
+        data: { values: data },
+        layer: [{
+        mark: { type: "arc", innerRadius: 20, stroke: "#fff" }
+        }, {
+        mark: { type: "text", radiusOffset: 10 },
+        encoding: {
+            text: { field: headers[1], type: "quantitative" }
+        }
+        }],
+        encoding: {
+        theta: { field: headers[1], type: "quantitative", stack: true },
+        radius: { 
+            field: headers[1], 
+            scale: { type: "sqrt", zero: true, rangeMin: 20 }
+        },
+        color: { field: headers[0], type: "nominal", legend: null }
+        }
+      };
+      }
+
+      else if (chartType === "bump") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bump chart from Excel selection",
+        data: { values: data },
+        encoding: {
+        x: {
+            field: headers[0],      // X-Axis (e.g. date)
+            type: "temporal",	    
+            axis: { title: "" }
+        },
+        y: {
+            field: headers[2],      // Rank values
+            type: "ordinal",
+            axis: false
+        },
+        order: {
+            field: headers[0],
+            type: "temporal"      
+        }
+        },
+        layer: [
+        {
+            mark: { type: "line", interpolate: "monotone" },
+            encoding: {
+            color: {
+                field: headers[1],   // Category
+                type: "nominal",
+                legend: false
+            }
+            }
+        },
+        {
+            mark: { type: "circle", size: 400, tooltip: true },
+            encoding: {
+            color: {
+                field: headers[1],
+                type: "nominal",
+                legend: false
+            }
+            }
+        },
+        {
+            mark: { type: "text", color: "white" },
+            encoding: {
+            text: { field: headers[2] }
+            }
+        },
+        {
+            // Left-side labels
+            transform: [
+            { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "descending" }] },
+            { filter: "datum.rank === 1" }
+            ],
+            mark: {
+            type: "text",
+            align: "left",
+            baseline: "middle",
+            dx: 15,
+            fontWeight: "bold",
+            fontSize: 12
+            },
+            encoding: {
+            text: { field: headers[1], type: "nominal" },
+            color: { field: headers[1], type: "nominal", legend: false }
+            }
+        },
+        {
+            // Right-side labels
+            transform: [
+            { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "ascending" }] },
+            { filter: "datum.rank === 1" }
+            ],
+            mark: {
+            type: "text",
+            align: "right",
+            baseline: "middle",
+            dx: -15,
+            fontWeight: "bold",
+            fontSize: 12
+            },
+            encoding: {
+            text: { field: headers[1], type: "nominal" },
+            color: { field: headers[1], type: "nominal", legend: false }
+            }
+        }
+        ],
+        config: {
+        view: { stroke: "transparent" },
+        line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+        axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#666666",
+            labelFontSize: 12
+        }
+        }
+      };
+      }
+
+      else if (chartType === "ribbon") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ribbon chart from Excel selection",
+        data: { values: data },
+        layer: [
+        {
+            mark: { type: "area", interpolate: "monotone", tooltip: true },
+            encoding: {
+            x: {
+                field: headers[0],
+                type: "ordinal" // temporal change to "ordinal" if your first col is not a date
+            },
+            y: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative",
+                axis: null,
+                stack: "center"
+            },
+            color: {
+                field: headers[1],
+                type: "nominal"
+            },
+            order: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative"
+            }
+            }
+        }
+        ],
+        config: {
+        view: { stroke: "transparent" },
+        axis: {
+            ticks: false,
+            grid: true,
+            gridColor: "white",
+            gridWidth: 3,
+            domain: false,
+            labelColor: "#666666"
+        },
+        legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#666666",
+            labelFont: "Segoe UI",
+            labelColor: "#666666",
+            symbolType: "circle",
+            symbolSize: 75
+        }
+        }
+      };
+      }
+
+      else if (chartType === "ridgeline") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ridgeline (Joyplot) chart from Excel selection",
+        data: { values: data },
+        mark: {
+        type: "area",
+        fillOpacity: 0.7,
+        strokeOpacity: 1,
+        strokeWidth: 1,
+        interpolate: "monotone"
+        },
+        width: 400,
+        height: 20,
+        encoding: {
+        x: {
+            field: headers[0],       // date/time column
+            type: "ordinal",
+            title: headers[0]
+        },
+        y: {
+            aggregate: "sum",
+            field: headers[2],       // value column
+            type: "quantitative",
+            scale: { range: [20, -40] },
+            axis: {
+            title: null,
+            values: [0],
+            domain: false,
+            labels: false,
+            ticks: false
+            }
+        },
+        row: {
+            field: headers[1],       // category column
+            type: "nominal",
+            title: headers[1],
+            header: {
+            title: null,
+            labelAngle: 0,
+            labelOrient: "left",
+            labelAlign: "left",
+            labelPadding: 0
+            },
+            sort: { field: headers[0], op: "max", order: "ascending" }
+        },
+        fill: {
+            field: headers[1],
+            type: "nominal",
+            legend: null,
+            scale: { scheme: "plasma" }
+        }
+        },
+        resolve: { scale: { y: "independent" } },
+        config: {
+        view: { stroke: "transparent" },
+        facet: { spacing: 20 },
+        header: {
+            labelFontSize: 12,
+            labelFontWeight: 500,
+            labelAngle: 0,
+            labelAnchor: "end",
+            labelOrient: "top",
+            labelPadding: -19
+        },
+        axis: {
+            domain: false,
+            grid: false,
+            ticks: false,
+            tickCount: 5,
+            labelFontSize: 12,
+            titleFontSize: 12,
+            titleFontWeight: 400,
+            titleColor: "#605E5C"
+        }
+        }
+      };
+      }
+
+      else if (chartType === "wordcloud") {
+      spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Word cloud from Excel selection",
+        width: 800,
+        height: 400,
+        padding: 0,
+        
+        data: [
+        {
+            name: "table",
+            values: data,
+            transform: [
+            {
+                type: "countpattern",
+                field: headers[0], // Use first column as text source
+                case: "upper",
+                pattern: "[\\w']{3,}",
+                stopwords: "(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall)"
+            },
+            {
+                type: "formula", 
+                as: "angle",
+                expr: "[-45, 0, 45][~~(random() * 3)]"
+            },
+            {
+                type: "formula", 
+                as: "weight",
+                expr: "if(datum.count > 10, 600, 300)"
+            }
+            ]
+        }
+        ],
+        
+        scales: [
+        {
+            name: "color",
+            type: "ordinal",
+            domain: { data: "table", field: "text" },
+            range: ["#d5a928", "#652c90", "#939597", "#2563eb", "#dc2626", "#059669"]
+        }
+        ],
+        
+        marks: [
+        {
+            type: "text",
+            from: { data: "table" },
+            encode: {
+            enter: {
+                text: { field: "text" },
+                align: { value: "center" },
+                baseline: { value: "alphabetic" },
+                fill: { scale: "color", field: "text" }
+            },
+            update: {
+                fillOpacity: { value: 1 }
+            },
+            hover: {
+                fillOpacity: { value: 0.5 }
+            }
+            },
+            transform: [
+            {
+                type: "wordcloud",
+                size: [800, 400],
+                text: { field: "text" },
+                rotate: { field: "datum.angle" },
+                font: "Helvetica Neue, Arial",
+                fontSize: { field: "datum.count" },
+                fontWeight: { field: "datum.weight" },
+                fontSizeRange: [12, 56],
+                padding: 2
+            }
+            ]
+        }
+        ]
+      };
+      }
+
+      else {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+          description: "Chart from Excel selection",
+          data: { values: data },
+          mark: chartType,
+          encoding: {
+            x: { field: headers[0], type: "quantitative" },
+            y: { field: headers[1], type: "quantitative" }
+          }
+        };
+      }
+
+      // Render hidden chart
+      const hiddenDiv = document.createElement("div");
+      hiddenDiv.style.display = "none";
+      document.body.appendChild(hiddenDiv);
+
+      const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+      const view = result.view;
+
+      // Export chart -> PNG
+      const pngUrl = await view.toImageURL("png");
+      const response = await fetch(pngUrl);
+      const blob = await response.blob();
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+      const base64data = reader.result.split(",")[1];
+
+      // Insert picture above selection
+      const image = sheet.shapes.addImage(base64data);
+      image.left = range.left;
+      image.top = range.top;
+      image.lockAspectRatio = true; // keep proportions
+
+      await context.sync();
+      };
+
+      reader.readAsDataURL(blob);
+      
+      // Clean up hidden div
+      document.body.removeChild(hiddenDiv);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
