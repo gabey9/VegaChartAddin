@@ -169,6 +169,48 @@ export async function run() {
         };
       }
 
+else if (chartType === "bullet") {
+  // Expect headers like: Title | Subtitle | Range1 | Range2 | Range3 | Measure1 | Measure2 | Marker
+  const data = rows.map(r => ({
+    title: r[0],
+    subtitle: r[1],
+    ranges: [+r[2], +r[3], +r[4]],
+    measures: [+r[5], +r[6]],
+    markers: [+r[7]]
+  }));
+
+  spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+    "data": { "values": data },
+    "facet": {
+      "row": {
+        "field": "title", "type": "ordinal",
+        "header": { "labelAngle": 0, "title": "", "labelAlign": "left" }
+      }
+    },
+    "spacing": 10,
+    "spec": {
+      "encoding": {
+        "x": {
+          "type": "quantitative",
+          "scale": { "nice": false },
+          "title": null
+        }
+      },
+      "layer": [
+        { "mark": { "type": "bar", "color": "#eee" }, "encoding": { "x": { "field": "ranges[2]" } } },
+        { "mark": { "type": "bar", "color": "#ddd" }, "encoding": { "x": { "field": "ranges[1]" } } },
+        { "mark": { "type": "bar", "color": "#ccc" }, "encoding": { "x": { "field": "ranges[0]" } } },
+        { "mark": { "type": "bar", "color": "lightsteelblue", "size": 10 }, "encoding": { "x": { "field": "measures[1]" } } },
+        { "mark": { "type": "bar", "color": "steelblue", "size": 10 }, "encoding": { "x": { "field": "measures[0]" } } },
+        { "mark": { "type": "tick", "color": "black" }, "encoding": { "x": { "field": "markers[0]" } } }
+      ]
+    },
+    "resolve": { "scale": { "x": "independent" } },
+    "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
+  };
+}
+
       else if (chartType === "pie") {
         spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
