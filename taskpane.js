@@ -281,6 +281,141 @@ else if (chartType === "waffle") {
         };
       }
 
+else if (chartType === "violin") {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+          description: "Violin chart from Excel selection",
+          data: { values: data },
+          spacing: 0,
+          facet: {
+            column: {
+              field: headers[0],
+              header: {
+                orient: "bottom",
+                title: null,
+                labelFontSize: 14
+              }
+            }
+          },
+          spec: {
+            width: 180,
+            height: 400,
+            encoding: {
+              y: {
+                field: headers[1],
+                type: "quantitative",
+                title: headers[1],
+                axis: {
+                  tickCount: 10,
+                  titleFontSize: 16,
+                  labelFontSize: 12
+                }
+              },
+              x: {
+                type: "quantitative",
+                axis: {
+                  labels: false,
+                  title: null,
+                  grid: false,
+                  ticks: false
+                }
+              },
+              color: {
+                field: headers[0],
+                type: "nominal",
+                legend: null,
+                scale: {
+                  scheme: "category10"
+                }
+              }
+            },
+            layer: [
+              {
+                name: "KDE_PLOT",
+                transform: [
+                  {
+                    density: headers[1],
+                    groupby: [headers[0]],
+                    as: ["_kde_value", "_kde_density"]
+                  },
+                  {
+                    calculate: "datum['_kde_density'] * -1",
+                    as: "_negative_kde_density"
+                  }
+                ],
+                layer: [
+                  {
+                    name: "KDE_POSITIVE",
+                    mark: {
+                      type: "area",
+                      orient: "vertical",
+                      opacity: 0.6
+                    },
+                    encoding: {
+                      y: { field: "_kde_value" },
+                      x: { field: "_kde_density" }
+                    }
+                  },
+                  {
+                    name: "KDE_NEGATIVE",
+                    mark: {
+                      type: "area",
+                      orient: "vertical",
+                      opacity: 0.6
+                    },
+                    encoding: {
+                      y: { field: "_kde_value" },
+                      x: { field: "_negative_kde_density" }
+                    }
+                  }
+                ],
+                encoding: {
+                  x2: { datum: 0 }
+                }
+              },
+              {
+                name: "BOX_PLOT",
+                mark: {
+                  type: "boxplot",
+                  extent: "min-max",
+                  median: {
+                    color: "black",
+                    strokeWidth: 2
+                  },
+                  size: 20
+                },
+                encoding: {
+                  y: { field: headers[1] },
+                  fill: { value: "#969696" },
+                  stroke: { value: "black" }
+                }
+              }
+            ]
+          },
+          config: {
+            view: { stroke: "transparent" },
+            font: "Segoe UI",
+            text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+            axis: {
+              ticks: false,
+              grid: true,
+              gridColor: "#e0e0e0",
+              domain: false,
+              labelColor: "#605E5C",
+              labelFontSize: 12
+            },
+            header: {
+              titleFont: "Segoe UI",
+              titleFontSize: 16,
+              titleColor: "#757575",
+              labelFont: "Segoe UI",
+              labelFontSize: 13,
+              labelColor: "#605E5C"
+            }
+          }
+        };
+      }
+
       else if (chartType === "deviation") {
       spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
