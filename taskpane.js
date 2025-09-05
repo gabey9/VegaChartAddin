@@ -182,6 +182,85 @@ export async function run() {
         };
       }
 
+      else if (chartType === "lollipop") {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+          description: "Lollipop chart from Excel selection",
+          data: { values: data },
+          encoding: {
+            y: {
+              field: headers[0],
+              type: "nominal",
+              sort: "-x",
+              axis: {
+                domain: false,
+                title: null,
+                ticks: false,
+                labelFont: "Segoe UI",
+                labelFontSize: 14,
+                labelPadding: 10,
+                labelColor: "#605e5c"
+              }
+            },
+            x: {
+              field: headers[1],
+              type: "quantitative",
+              axis: {
+                domain: false,
+                ticks: false,
+                grid: true,
+                gridColor: "#e0e0e0",
+                labelFont: "Segoe UI",
+                labelFontSize: 12,
+                labelColor: "#605e5c",
+                title: headers[1],
+                titleFont: "Segoe UI",
+                titleFontSize: 14,
+                titleColor: "#323130"
+              }
+            },
+            color: { value: "#0078d4" }
+          },
+          layer: [
+            {
+              mark: {
+                type: "rule",
+                tooltip: true,
+                strokeWidth: 3,
+                opacity: 0.7
+              }
+            },
+            {
+              mark: {
+                type: "circle",
+                tooltip: true,
+                size: 300,
+                opacity: 0.9
+              },
+              encoding: {
+                size: {
+                  field: headers[1],
+                  type: "quantitative",
+                  scale: {
+                    range: [200, 800]
+                  },
+                  legend: null
+                }
+              }
+            }
+          ],
+          config: {
+            autosize: {
+              type: "fit",
+              contains: "padding"
+            },
+            view: { stroke: "transparent" },
+            font: "Segoe UI",
+            text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" }
+          }
+        };
+      }
+
       else if (chartType === "waffle") {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v5.json",
