@@ -182,6 +182,230 @@ export async function run() {
         };
       }
 
+      else if (chartType === "mekko") {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega/v5.json",
+          description: "Marimekko chart from Excel selection",
+          width: 800,
+          height: 500,
+          background: "#f8f9fa",
+          view: { stroke: null },
+          padding: { top: 60, bottom: 80, left: 60, right: 60 },
+          data: [
+            {
+              name: "table",
+              values: data
+            },
+            {
+              name: "categories",
+              source: "table",
+              transform: [
+                {
+                  type: "aggregate",
+                  fields: [headers[2]],
+                  ops: ["sum"],
+                  as: ["categoryTotal"],
+                  groupby: [headers[0]]
+                },
+                {
+                  type: "stack",
+                  offset: "normalize",
+                  sort: { field: "categoryTotal", order: "descending" },
+                  field: "categoryTotal",
+                  as: ["x0", "x1"]
+                },
+                {
+                  type: "formula",
+                  as: "Percent",
+                  expr: "datum.x1-datum.x0"
+                },
+                {
+                  type: "formula",
+                  as: "Label",
+                  expr: `datum.${headers[0]} + ' (' + format(datum.Percent,'.1%') + ')'`
+                }
+              ]
+            },
+            {
+              name: "finalTable",
+              source: "table",
+              transform: [
+                {
+                  type: "stack",
+                  offset: "normalize",
+                  groupby: [headers[0]],
+                  sort: { field: headers[2], order: "descending" },
+                  field: headers[2],
+                  as: ["y0", "y1"]
+                },
+                {
+                  type: "stack",
+                  groupby: [headers[0]],
+                  sort: { field: headers[2], order: "descending" },
+                  field: headers[2],
+                  as: ["z0", "z1"]
+                },
+                {
+                  type: "lookup",
+                  from: "categories",
+                  key: headers[0],
+                  values: ["x0", "x1"],
+                  fields: [headers[0]]
+                },
+                {
+                  type: "formula",
+                  as: "Percent",
+                  expr: "datum.y1-datum.y0"
+                },
+                {
+                  type: "formula",
+                  as: "Label",
+                  expr: `[datum.${headers[1]}, format(datum.${headers[2]}, '.0f') + ' (' + format(datum.Percent, '.1%') + ')']`
+                },
+                {
+                  type: "window",
+                  sort: { field: "y0", order: "ascending" },
+                  ops: ["row_number"],
+                  fields: [null],
+                  as: ["rank"],
+                  groupby: [headers[0]]
+                }
+              ]
+            }
+          ],
+          scales: [
+            {
+              name: "x",
+              type: "linear",
+              range: "width",
+              domain: { data: "finalTable", field: "x1" }
+            },
+            {
+              name: "y",
+              type: "linear",
+              range: "height",
+              nice: false,
+              zero: true,
+              domain: { data: "finalTable", field: "z1" }
+            },
+            {
+              name: "opacity",
+              type: "linear",
+              range: [1, 0.6],
+              domain: { data: "finalTable", field: "rank" }
+            },
+            {
+              name: "color",
+              type: "ordinal",
+              range: { scheme: "category20" },
+              domain: {
+                data: "categories",
+                field: headers[0],
+                sort: { field: "x0", order: "ascending", op: "sum" }
+              }
+            }
+          ],
+          axes: [
+            {
+              orient: "left",
+              scale: "y",
+              zindex: 1,
+              format: "",
+              tickCount: 5,
+              tickSize: 15,
+              labelColor: { value: "#333740" },
+              labelFontWeight: { value: "normal" },
+              labelFontSize: { value: 12 },
+              labelFont: { value: "Segoe UI" },
+              offset: 5,
+              domain: false,
+              encode: {
+                labels: {
+                  update: {
+                    text: { signal: `format(datum.value, '.0f')` }
+                  }
+                }
+              }
+            }
+          ],
+          marks: [
+            {
+              type: "rect",
+              name: "bars",
+              from: { data: "finalTable" },
+              encode: {
+                update: {
+                  x: { scale: "x", field: "x0" },
+                  x2: { scale: "x", field: "x1" },
+                  y: { scale: "y", field: "z0" },
+                  y2: { scale: "y", field: "z1" },
+                  fill: { scale: "color", field: headers[0] },
+                  stroke: { value: "white" },
+                  strokeWidth: { value: 1 },
+                  fillOpacity: { scale: "opacity", field: "rank" },
+                  tooltip: { signal: "datum" }
+                }
+              }
+            },
+            {
+              type: "text",
+              name: "labels",
+              interactive: false,
+              from: { data: "bars" },
+              encode: {
+                update: {
+                  x: { signal: "(datum.x2 - datum.x)*0.5 + datum.x" },
+                  align: { value: "center" },
+                  text: { field: "datum.Label" },
+                  y: { signal: "(datum.y2 - datum.y)*0.5 + datum.y" },
+                  fill: { value: "white" },
+                  font: { value: "Segoe UI" },
+                  lineHeight: { value: 12 },
+                  fontSize: { value: 10 },
+                  opacity: { signal: "(datum.x2 - datum.x) > 0.05 && (datum.y2 - datum.y) > 20 ? 1 : 0" }
+                }
+              }
+            },
+            {
+              type: "text",
+              name: "categoryLabels",
+              from: { data: "categories" },
+              encode: {
+                update: {
+                  x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                  y: { signal: "-15" },
+                  text: { field: headers[0] },
+                  align: { value: "center" },
+                  baseline: { value: "bottom" },
+                  fill: { value: "#333740" },
+                  fontWeight: { value: "bold" },
+                  fontSize: { value: 12 },
+                  font: { value: "Segoe UI" }
+                }
+              }
+            },
+            {
+              type: "text",
+              name: "categoryPercentages",
+              from: { data: "categories" },
+              encode: {
+                update: {
+                  x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                  y: { signal: "height + 30" },
+                  text: { field: "Label" },
+                  align: { value: "center" },
+                  baseline: { value: "top" },
+                  fill: { value: "#666666" },
+                  fontWeight: { value: "normal" },
+                  fontSize: { value: 10 },
+                  font: { value: "Segoe UI" }
+                }
+              }
+            }
+          ]
+        };
+      }
+
       else if (chartType === "lollipop") {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v5.json",
