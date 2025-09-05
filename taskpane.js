@@ -173,10 +173,9 @@ else if (chartType === "bullet") {
   // Expect headers like: Title | Subtitle | Range1 | Range2 | Range3 | Measure1 | Measure2 | Marker
   const data = rows.map(r => ({
     title: r[0],
-    subtitle: r[1],
-    ranges: [+r[2], +r[3], +r[4]],
-    measures: [+r[5], +r[6]],
-    markers: [+r[7]]
+    ranges: [+r[1], +r[2], +r[3]],
+    measures: [+r[4], +r[5]],
+    markers: [+r[6]]
   }));
 
   spec = {
