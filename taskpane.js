@@ -187,7 +187,7 @@ else if (chartType === "line") {
 }
 
 else if (chartType === "horizon") {
-  // Horizon graph implementation
+  // Horizon graph implementation following IDL paper methodology
   // Expected format: X-axis values (time/sequence) and Y-axis values
   
   // Transform data for horizon chart
@@ -196,11 +196,16 @@ else if (chartType === "horizon") {
     y: parseFloat(row[headers[1]]) || 0
   }));
 
-  // Calculate the median or middle value for the horizon split
+  // Calculate data range and bands
   const yValues = horizonData.map(d => d.y);
   const maxY = Math.max(...yValues);
   const minY = Math.min(...yValues);
-  const midPoint = (maxY + minY) / 2;
+  const range = maxY - minY;
+  
+  // Define number of bands (typically 2-4 for horizon graphs)
+  const numBands = 3;
+  const bandHeight = range / (numBands * 2); // Divide by 2 for positive and negative
+  const baseline = minY + range / 2; // Use middle as baseline
   
   // Calculate dynamic dimensions
   const dataPoints = horizonData.length;
@@ -208,9 +213,9 @@ else if (chartType === "horizon") {
 
   spec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-    "description": "Horizon Graph from Excel selection",
+    "description": "Horizon Graph from Excel selection (IDL methodology)",
     "width": dynamicWidth,
-    "height": 80,
+    "height": 60,
     "background": "white",
     "config": { 
       "view": { "stroke": "transparent" },
@@ -233,73 +238,123 @@ else if (chartType === "horizon") {
       }
     },
     "layer": [
+      // Band 1 (lightest positive)
       {
-        "name": "baseline",
-        "mark": {
-          "type": "area",
-          "clip": true,
-          "orient": "vertical",
-          "opacity": 0.7,
-          "color": "#0078d4",
-          "interpolate": "monotone"
-        },
-        "encoding": {
-          "y": {
-            "field": "y",
-            "type": "quantitative",
-            "scale": {"domain": [midPoint, maxY]},
-            "axis": {
-              "title": headers[1],
-              "labelFontSize": 10,
-              "titleFontSize": 12,
-              "labelColor": "#605e5c",
-              "titleColor": "#323130",
-              "font": "Segoe UI"
-            }
-          }
-        }
-      },
-      {
-        "name": "above_median",
         "transform": [
-          {"calculate": `datum.y - ${midPoint}`, "as": "y_above"},
-          {"filter": "datum.y_above > 0"}
+          {"calculate": `max(0, min(datum.y - ${baseline}, ${bandHeight}))`, "as": "band1"}
         ],
         "mark": {
           "type": "area",
           "clip": true,
-          "orient": "vertical",
-          "opacity": 0.8,
-          "color": "#00cc6a",
+          "opacity": 0.3,
+          "color": "#4a90e2",
           "interpolate": "monotone"
         },
         "encoding": {
           "y": {
-            "field": "y_above",
+            "field": "band1",
             "type": "quantitative",
-            "scale": {"domain": [0, maxY - midPoint]}
+            "scale": {"domain": [0, bandHeight]}
           }
         }
       },
+      // Band 2 (medium positive)
       {
-        "name": "below_median",
         "transform": [
-          {"calculate": `${midPoint} - datum.y`, "as": "y_below"},
-          {"filter": "datum.y_below > 0"}
+          {"calculate": `max(0, min(datum.y - ${baseline} - ${bandHeight}, ${bandHeight}))`, "as": "band2"}
         ],
         "mark": {
           "type": "area",
           "clip": true,
-          "orient": "vertical",
           "opacity": 0.6,
-          "color": "#d13438",
+          "color": "#2e7bd6",
           "interpolate": "monotone"
         },
         "encoding": {
           "y": {
-            "field": "y_below",
+            "field": "band2",
             "type": "quantitative",
-            "scale": {"domain": [0, midPoint - minY]}
+            "scale": {"domain": [0, bandHeight]}
+          }
+        }
+      },
+      // Band 3 (darkest positive)
+      {
+        "transform": [
+          {"calculate": `max(0, datum.y - ${baseline} - ${bandHeight * 2})`, "as": "band3"}
+        ],
+        "mark": {
+          "type": "area",
+          "clip": true,
+          "opacity": 0.9,
+          "color": "#1a5bb8",
+          "interpolate": "monotone"
+        },
+        "encoding": {
+          "y": {
+            "field": "band3",
+            "type": "quantitative",
+            "scale": {"domain": [0, bandHeight]}
+          }
+        }
+      },
+      // Band -1 (lightest negative, mirrored)
+      {
+        "transform": [
+          {"calculate": `max(0, min(${baseline} - datum.y, ${bandHeight}))`, "as": "nband1"}
+        ],
+        "mark": {
+          "type": "area",
+          "clip": true,
+          "opacity": 0.3,
+          "color": "#e74c3c",
+          "interpolate": "monotone"
+        },
+        "encoding": {
+          "y": {
+            "field": "nband1",
+            "type": "quantitative",
+            "scale": {"domain": [0, bandHeight]}
+          }
+        }
+      },
+      // Band -2 (medium negative, mirrored)
+      {
+        "transform": [
+          {"calculate": `max(0, min(${baseline} - datum.y - ${bandHeight}, ${bandHeight}))`, "as": "nband2"}
+        ],
+        "mark": {
+          "type": "area",
+          "clip": true,
+          "opacity": 0.6,
+          "color": "#c0392b",
+          "interpolate": "monotone"
+        },
+        "encoding": {
+          "y": {
+            "field": "nband2",
+            "type": "quantitative",
+            "scale": {"domain": [0, bandHeight]}
+          }
+        }
+      },
+      // Band -3 (darkest negative, mirrored)
+      {
+        "transform": [
+          {"calculate": `max(0, ${baseline} - datum.y - ${bandHeight * 2})`, "as": "nband3"}
+        ],
+        "mark": {
+          "type": "area",
+          "clip": true,
+          "opacity": 0.9,
+          "color": "#a93226",
+          "interpolate": "monotone"
+        },
+        "encoding": {
+          "y": {
+            "field": "nband3",
+            "type": "quantitative",
+            "scale": {"domain": [0, bandHeight]}
           }
         }
       }
