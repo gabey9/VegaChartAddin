@@ -207,6 +207,7 @@
                 <div class="chart-item" data-chart="arc" data-folder="special">Arc</div>
 		<div class="chart-item" data-chart="tree" data-folder="special">Tree</div>
                 <div class="chart-item" data-chart="wordcloud" data-folder="special">Wordcloud</div>
+                <div class="chart-item" data-chart="gantt" data-folder="special">Gantt</div>
                 <div class="chart-item" data-chart="strip" data-folder="special">Strip</div>
                 <div class="chart-item" data-chart="heatmap" data-folder="special">Heatmap</div>
                 <div class="chart-item" data-chart="bullet" data-folder="special">Bullet</div>
@@ -244,6 +245,7 @@
         <option value="arc">Arc</option>
         <option value="tree">Tree</option>
         <option value="wordcloud">Wordcloud</option>
+        <option value="gantt">Gantt</option>
         <option value="strip">Strip</option>
         <option value="treemap">Treemap</option>
         <option value="sunburst">Sunburst</option>
@@ -406,6 +408,19 @@
         <h4>Data Requirements:</h4>
         <ul>
             <li><strong>Column 1:</strong> Text data (sentences, phrases, or words)</li>
+        </ul>
+    </div>
+
+    <div id="req-gantt" class="data-requirements hidden">
+        <h4>Data Requirements:</h4>
+        <ul>
+            <li><strong>Column A:</strong> Task ID (number)</li>
+            <li><strong>Column B:</strong> Parent ID (number, empty for root tasks)</li>
+            <li><strong>Column C:</strong> Task Name (text)</li>
+            <li><strong>Column D:</strong> Start Date (date)</li>
+            <li><strong>Column E:</strong> End Date (date)</li>
+            <li><strong>Column F:</strong> Progress (0-1 decimal or percentage)</li>
+            <li><strong>Column G (optional):</strong> Dependencies (comma-separated task IDs)</li>
         </ul>
     </div>
  
