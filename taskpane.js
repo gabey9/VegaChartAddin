@@ -187,32 +187,63 @@ else if (chartType === "line") {
 }
 
 else if (chartType === "slope") {
-  // Process data to get first and last time periods
+  // Get unique time periods and categories
   const timePeriods = [...new Set(data.map(d => d[headers[0]]))];
   const categories = [...new Set(data.map(d => d[headers[1]]))];
   
-  // Filter data for first and last periods only
+  // Get first and last periods
   const firstPeriod = timePeriods[0];
   const lastPeriod = timePeriods[timePeriods.length - 1];
   
-  const slopeData = data.filter(d => 
-    d[headers[0]] === firstPeriod || d[headers[0]] === lastPeriod
-  );
+  // Create a map for easy lookup of values
+  const valueMap = new Map();
+  data.forEach(d => {
+    const key = `${d[headers[0]]}_${d[headers[1]]}`;
+    valueMap.set(key, d[headers[2]]);
+  });
+  
+  // Create slope data with calculated percentage change
+  const slopeData = [];
+  categories.forEach(category => {
+    const firstValue = valueMap.get(`${firstPeriod}_${category}`);
+    const lastValue = valueMap.get(`${lastPeriod}_${category}`);
+    
+    if (firstValue !== undefined && lastValue !== undefined) {
+      const percentChange = ((lastValue - firstValue) / firstValue) * 100;
+      
+      // Add first period data point
+      slopeData.push({
+        [headers[0]]: firstPeriod,
+        [headers[1]]: category,
+        [headers[2]]: firstValue,
+        percentChange: percentChange,
+        isFirst: true,
+        isLast: false
+      });
+      
+      // Add last period data point
+      slopeData.push({
+        [headers[0]]: lastPeriod,
+        [headers[1]]: category,
+        [headers[2]]: lastValue,
+        percentChange: percentChange,
+        isFirst: false,
+        isLast: true
+      });
+    }
+  });
 
-  // Calculate dynamic dimensions based on number of categories
-  const dynamicHeight = Math.max(300, Math.min(600, categories.length * 40));
-  const dynamicWidth = 500;
+  // Calculate dynamic dimensions
+  const dynamicHeight = Math.max(300, Math.min(600, categories.length * 50));
+  const dynamicWidth = 600;
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
     description: "Slope chart from Excel selection",
     background: "white",
-    config: { 
-      view: { stroke: "transparent" },
-      autosize: { type: "fit", contains: "padding" }
-    },
     width: dynamicWidth,
     height: dynamicHeight,
+    padding: { left: 100, right: 150, top: 20, bottom: 20 },
     data: { values: slopeData },
     encoding: {
       x: {
@@ -225,9 +256,10 @@ else if (chartType === "slope") {
           labelPadding: 10,
           domain: false,
           ticks: false,
-          labelColor: "#323130"
+          labelColor: "#323130",
+          orient: "top"
         },
-        scale: { padding: 0.1 }
+        scale: { padding: 0.2 }
       },
       y: {
         field: headers[2],
@@ -239,31 +271,16 @@ else if (chartType === "slope") {
         field: headers[1],
         type: "nominal",
         legend: null,
-        scale: { scheme: "category10" }
+        scale: { scheme: "tableau10" }
       }
     },
     layer: [
-      // Background grid lines
-      {
-        mark: {
-          type: "rule",
-          strokeDash: [2, 2],
-          opacity: 0.3
-        },
-        data: { values: [{}] },
-        encoding: {
-          x: { datum: firstPeriod },
-          x2: { datum: lastPeriod },
-          y: { value: 0 },
-          color: { value: "#e0e0e0" }
-        }
-      },
       // Slope lines
       {
         mark: {
           type: "line",
           strokeWidth: 2,
-          opacity: 0.7,
+          opacity: 0.6,
           tooltip: true
         },
         encoding: {
@@ -271,7 +288,8 @@ else if (chartType === "slope") {
           tooltip: [
             { field: headers[1], type: "nominal", title: "Category" },
             { field: headers[0], type: "nominal", title: "Period" },
-            { field: headers[2], type: "quantitative", title: "Value", format: ",.0f" }
+            { field: headers[2], type: "quantitative", title: "Value", format: ",.0f" },
+            { field: "percentChange", type: "quantitative", title: "Change %", format: "+.1f" }
           ]
         }
       },
@@ -279,23 +297,23 @@ else if (chartType === "slope") {
       {
         mark: {
           type: "circle",
-          size: 100,
-          opacity: 1,
-          tooltip: true
+          size: 80,
+          opacity: 1
         }
       },
       // Left side value labels
       {
         transform: [
-          { filter: `datum['${headers[0]}'] == '${firstPeriod}'` }
+          { filter: "datum.isFirst" }
         ],
         mark: {
           type: "text",
           align: "right",
           baseline: "middle",
-          dx: -8,
+          dx: -10,
           fontSize: 11,
-          fontWeight: "normal"
+          fontWeight: "normal",
+          color: "#605E5C"
         },
         encoding: {
           text: { 
@@ -305,25 +323,27 @@ else if (chartType === "slope") {
           }
         }
       },
-      // Left side category labels (for top values)
+      // Left side category labels (for top/bottom performers)
       {
         transform: [
-          { filter: `datum['${headers[0]}'] == '${firstPeriod}'` },
+          { filter: "datum.isFirst" },
           {
-            window: [{ op: "rank", as: "rank" }],
+            window: [{ op: "rank", as: "rankDesc" }],
             sort: [{ field: headers[2], order: "descending" }]
           },
-          { filter: "datum.rank <= 3" }
+          {
+            window: [{ op: "rank", as: "rankAsc" }],
+            sort: [{ field: headers[2], order: "ascending" }]
+          },
+          { filter: "datum.rankDesc <= 2 || datum.rankAsc <= 2" }
         ],
         mark: {
           type: "text",
           align: "right",
-          baseline: "bottom",
-          dx: -8,
-          dy: -12,
+          baseline: "middle",
+          dx: -55,
           fontSize: 10,
-          fontWeight: "bold",
-          fontStyle: "italic"
+          fontWeight: "bold"
         },
         encoding: {
           text: { field: headers[1], type: "nominal" }
@@ -332,15 +352,16 @@ else if (chartType === "slope") {
       // Right side value labels
       {
         transform: [
-          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+          { filter: "datum.isLast" }
         ],
         mark: {
           type: "text",
           align: "left",
           baseline: "middle",
-          dx: 8,
+          dx: 10,
           fontSize: 11,
-          fontWeight: "normal"
+          fontWeight: "normal",
+          color: "#605E5C"
         },
         encoding: {
           text: { 
@@ -353,13 +374,13 @@ else if (chartType === "slope") {
       // Right side category labels
       {
         transform: [
-          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+          { filter: "datum.isLast" }
         ],
         mark: {
           type: "text",
           align: "left",
           baseline: "middle",
-          dx: 35,
+          dx: 55,
           fontSize: 10,
           fontWeight: "bold"
         },
@@ -367,40 +388,50 @@ else if (chartType === "slope") {
           text: { field: headers[1], type: "nominal" }
         }
       },
-      // Percentage change labels (optional - for significant changes)
+      // Percentage change labels
       {
         transform: [
-          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` },
-          {
-            lookup: headers[1],
-            from: {
-              data: { values: slopeData.filter(d => d[headers[0]] === firstPeriod) },
-              key: headers[1],
-              fields: [headers[2]]
-            },
-            as: ["startValue"]
-          },
-          {
-            calculate: `((datum['${headers[2]}'] - datum.startValue) / datum.startValue) * 100`,
-            as: "percentChange"
-          },
-          { filter: "abs(datum.percentChange) > 10" }  // Only show for changes > 10%
+          { filter: "datum.isLast" }
         ],
         mark: {
           type: "text",
           align: "left",
-          baseline: "top",
-          dx: 8,
-          dy: 8,
-          fontSize: 9,
+          baseline: "middle",
+          dx: 105,
+          fontSize: 10,
           fontStyle: "italic"
         },
         encoding: {
           text: { 
             field: "percentChange", 
             type: "quantitative",
-            format: "+.0f"
+            format: "+.1f"
           },
+          color: {
+            condition: {
+              test: "datum.percentChange > 0",
+              value: "#10893e"
+            },
+            value: "#d13438"
+          }
+        }
+      },
+      // Add percentage symbol
+      {
+        transform: [
+          { filter: "datum.isLast" },
+          { calculate: "'%'", as: "percentSymbol" }
+        ],
+        mark: {
+          type: "text",
+          align: "left",
+          baseline: "middle",
+          dx: 130,
+          fontSize: 10,
+          fontStyle: "italic"
+        },
+        encoding: {
+          text: { field: "percentSymbol", type: "nominal" },
           color: {
             condition: {
               test: "datum.percentChange > 0",
