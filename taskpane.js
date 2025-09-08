@@ -505,17 +505,7 @@ else if (chartType === "sunburst") {
             "innerRadius": {"field": "r0"},
             "outerRadius": {"field": "r1"},
             "fill": {"scale": "color", "field": "depth"},
-            "fillOpacity": {"scale": "opacity", "field": "depth"},
-            "tooltip": {
-              "signal": "{'Name': datum.name, 'Value': datum.size, 'Depth': datum.depth, 'Parent': datum.parent}"
-            },
-            "zindex": {"value": 0}
-          },
-          "hover": {
-            "stroke": {"value": "#323130"},
-            "strokeWidth": {"value": 3},
-            "fillOpacity": {"value": 1.0},
-            "zindex": {"value": 1}
+            "fillOpacity": {"scale": "opacity", "field": "depth"}
           }
         }
       },
@@ -542,6 +532,208 @@ else if (chartType === "sunburst") {
             "opacity": {
               "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"
             }
+          }
+        }
+      }
+    ]
+  };
+}
+
+else if (chartType === "radar") {
+  // Radar chart implementation
+  // Expected format: First column is series name, remaining columns are dimension values
+  
+  // Transform Excel data to radar format
+  const radarData = [];
+  const dimensions = headers.slice(1); // All columns except first are dimensions
+  
+  data.forEach((row, seriesIndex) => {
+    const seriesName = row[headers[0]] || `Series ${seriesIndex + 1}`;
+    
+    dimensions.forEach(dimension => {
+      const value = parseFloat(row[dimension]) || 0;
+      radarData.push({
+        series: seriesName,
+        dimension: dimension,
+        value: value,
+        category: seriesIndex
+      });
+    });
+  });
+
+  // Get unique dimensions for grid
+  const uniqueDimensions = [...new Set(radarData.map(d => d.dimension))];
+
+  spec = {
+    "$schema": "https://vega.github.io/schema/vega/v6.json",
+    "description": "Radar chart from Excel selection",
+    "width": 400,
+    "height": 400,
+    "padding": 60,
+    "autosize": {"type": "none", "contains": "padding"},
+    "background": "white",
+    "config": { "view": { "stroke": "transparent" }},
+
+    "signals": [
+      {"name": "radius", "update": "width / 2"}
+    ],
+
+    "data": [
+      {
+        "name": "table",
+        "values": radarData
+      },
+      {
+        "name": "dimensions",
+        "values": uniqueDimensions.map(d => ({dimension: d}))
+      }
+    ],
+
+    "scales": [
+      {
+        "name": "angular",
+        "type": "point",
+        "range": {"signal": "[-PI, PI]"},
+        "padding": 0.5,
+        "domain": uniqueDimensions
+      },
+      {
+        "name": "radial",
+        "type": "linear",
+        "range": {"signal": "[0, radius]"},
+        "zero": true,
+        "nice": true,
+        "domain": {"data": "table", "field": "value"},
+        "domainMin": 0
+      },
+      {
+        "name": "color",
+        "type": "ordinal",
+        "domain": {"data": "table", "field": "category"},
+        "range": [
+          "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e",
+          "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"
+        ]
+      }
+    ],
+
+    "encode": {
+      "enter": {
+        "x": {"signal": "radius"},
+        "y": {"signal": "radius"}
+      }
+    },
+
+    "marks": [
+      {
+        "type": "group",
+        "name": "categories",
+        "zindex": 1,
+        "from": {
+          "facet": {"data": "table", "name": "facet", "groupby": ["category", "series"]}
+        },
+        "marks": [
+          {
+            "type": "line",
+            "name": "category-line",
+            "from": {"data": "facet"},
+            "encode": {
+              "enter": {
+                "interpolate": {"value": "linear-closed"},
+                "x": {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                "y": {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                "stroke": {"scale": "color", "field": "category"},
+                "strokeWidth": {"value": 2},
+                "fill": {"scale": "color", "field": "category"},
+                "fillOpacity": {"value": 0.1},
+                "strokeOpacity": {"value": 0.8}
+              }
+            }
+          },
+          {
+            "type": "symbol",
+            "name": "category-points",
+            "from": {"data": "facet"},
+            "encode": {
+              "enter": {
+                "x": {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                "y": {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                "size": {"value": 50},
+                "fill": {"scale": "color", "field": "category"},
+                "stroke": {"value": "white"},
+                "strokeWidth": {"value": 1}
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "rule",
+        "name": "radial-grid",
+        "from": {"data": "dimensions"},
+        "zindex": 0,
+        "encode": {
+          "enter": {
+            "x": {"value": 0},
+            "y": {"value": 0},
+            "x2": {"signal": "radius * cos(scale('angular', datum.dimension))"},
+            "y2": {"signal": "radius * sin(scale('angular', datum.dimension))"},
+            "stroke": {"value": "#e1e4e8"},
+            "strokeWidth": {"value": 1}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "name": "dimension-label",
+        "from": {"data": "dimensions"},
+        "zindex": 1,
+        "encode": {
+          "enter": {
+            "x": {"signal": "(radius + 20) * cos(scale('angular', datum.dimension))"},
+            "y": {"signal": "(radius + 20) * sin(scale('angular', datum.dimension))"},
+            "text": {"field": "dimension"},
+            "align": [
+              {
+                "test": "abs(scale('angular', datum.dimension)) > PI / 2",
+                "value": "right"
+              },
+              {
+                "value": "left"
+              }
+            ],
+            "baseline": [
+              {
+                "test": "scale('angular', datum.dimension) > 0", 
+                "value": "top"
+              },
+              {
+                "test": "scale('angular', datum.dimension) == 0", 
+                "value": "middle"
+              },
+              {
+                "value": "bottom"
+              }
+            ],
+            "fill": {"value": "#323130"},
+            "fontWeight": {"value": "bold"},
+            "font": {"value": "Segoe UI"},
+            "fontSize": {"value": 12}
+          }
+        }
+      },
+      {
+        "type": "line",
+        "name": "outer-line",
+        "from": {"data": "radial-grid"},
+        "encode": {
+          "enter": {
+            "interpolate": {"value": "linear-closed"},
+            "x": {"field": "x2"},
+            "y": {"field": "y2"},
+            "stroke": {"value": "#8a8886"},
+            "strokeWidth": {"value": 2},
+            "strokeOpacity": {"value": 0.6}
           }
         }
       }

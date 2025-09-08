@@ -193,7 +193,8 @@
                 <div class="chart-item" data-chart="point" data-folder="basic">Scatter</div>
                 <div class="chart-item" data-chart="pie" data-folder="basic">Pie</div>
                 <div class="chart-item" data-chart="box" data-folder="basic">Box</div>
-                <div class="chart-item" data-chart="histogram" data-folder="basic">Histogram</div>              
+                <div class="chart-item" data-chart="histogram" data-folder="basic">Histogram</div> 
+                <div class="chart-item" data-chart="radar" data-folder="basic">Radar</div>                
                 <div class="chart-item" data-chart="treemap" data-folder="basic">Treemap</div>
 		<div class="chart-item" data-chart="sunburst" data-folder="basic">Sunburst</div>
                 <div class="chart-item" data-chart="waterfall" data-folder="basic">Waterfall</div>                
@@ -235,6 +236,7 @@
         <option value="pie">Pie</option>
         <option value="box">Box</option>
         <option value="histogram">Histogram</option>
+        <option value="radar">Radar</option>
         <option value="heatmap">Heatmap</option>
         <option value="radial">Radial</option>
         <option value="arc">Arc</option>
@@ -293,7 +295,17 @@
             <li><strong>Column 3 (optional):</strong> Series grouping for multiple areas</li>
         </ul>
     </div>
-    
+ 
+<div id="req-radar" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Series/Category name (e.g., "Product A", "Team 1")</li>
+        <li><strong>Columns 2-n:</strong> Dimension values (e.g., "Speed", "Quality", "Cost")</li>
+        <li>Each row represents a different series to compare</li>
+        <li>All value columns should contain numeric data</li>
+    </ul>
+</div>
+   
     <div id="req-box" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
         <ul>
