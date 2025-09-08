@@ -235,6 +235,20 @@ else if (chartType === "horizon") {
           "titleColor": "#323130",
           "font": "Segoe UI"
         }
+      },
+      "y": {
+        "type": "quantitative",
+        "scale": {"domain": [0, bandHeight]},
+        "axis": {
+          "title": headers[1],
+          "orient": "left",
+          "labelFontSize": 10,
+          "titleFontSize": 12,
+          "labelColor": "#605e5c",
+          "titleColor": "#323130",
+          "font": "Segoe UI",
+          "tickCount": 3
+        }
       }
     },
     "layer": [
@@ -251,11 +265,7 @@ else if (chartType === "horizon") {
           "interpolate": "monotone"
         },
         "encoding": {
-          "y": {
-            "field": "band1",
-            "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]}
-          }
+          "y": {"field": "band1"}
         }
       },
       // Band 2 (medium positive)
@@ -271,11 +281,7 @@ else if (chartType === "horizon") {
           "interpolate": "monotone"
         },
         "encoding": {
-          "y": {
-            "field": "band2",
-            "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]}
-          }
+          "y": {"field": "band2"}
         }
       },
       // Band 3 (darkest positive)
@@ -291,11 +297,7 @@ else if (chartType === "horizon") {
           "interpolate": "monotone"
         },
         "encoding": {
-          "y": {
-            "field": "band3",
-            "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]}
-          }
+          "y": {"field": "band3"}
         }
       },
       // Band -1 (lightest negative, mirrored)
@@ -311,11 +313,7 @@ else if (chartType === "horizon") {
           "interpolate": "monotone"
         },
         "encoding": {
-          "y": {
-            "field": "nband1",
-            "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]}
-          }
+          "y": {"field": "nband1"}
         }
       },
       // Band -2 (medium negative, mirrored)
@@ -331,11 +329,7 @@ else if (chartType === "horizon") {
           "interpolate": "monotone"
         },
         "encoding": {
-          "y": {
-            "field": "nband2",
-            "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]}
-          }
+          "y": {"field": "nband2"}
         }
       },
       // Band -3 (darkest negative, mirrored)
@@ -351,20 +345,10 @@ else if (chartType === "horizon") {
           "interpolate": "monotone"
         },
         "encoding": {
-          "y": {
-            "field": "nband3",
-            "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]},
-            "axis": null
-          }
+          "y": {"field": "nband3"}
         }
       }
-    ],
-    "resolve": {
-      "scale": {
-        "y": "independent"
-      }
-    }
+    ]
   };
 }
 
