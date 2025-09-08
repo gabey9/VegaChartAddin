@@ -373,7 +373,7 @@ else if (chartType === "horizon") {
         "ticks": false,
         "domain": false
       },
-      "axisY": null
+      "axisRight": null
     }
   };
 }
