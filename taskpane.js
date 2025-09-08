@@ -199,6 +199,11 @@ else if (chartType === "slope") {
     d[headers[0]] === firstPeriod || d[headers[0]] === lastPeriod
   );
 
+  // Check if values are percentages (between -1 and 1)
+  const allValues = slopeData.map(d => d[headers[2]]);
+  const isPercentage = allValues.every(v => v >= -1 && v <= 1);
+  const formatString = isPercentage ? ".1%" : ",.0f";
+
   // Calculate dynamic dimensions based on number of categories
   const dynamicHeight = Math.max(300, Math.min(600, categories.length * 40));
   const dynamicWidth = 500;
@@ -271,7 +276,7 @@ else if (chartType === "slope") {
           tooltip: [
             { field: headers[1], type: "nominal", title: "Category" },
             { field: headers[0], type: "nominal", title: "Period" },
-            { field: headers[2], type: "quantitative", title: "Value", format: ",.0f" }
+            { field: headers[2], type: "quantitative", title: "Value", format: formatString }
           ]
         }
       },
@@ -301,7 +306,7 @@ else if (chartType === "slope") {
           text: { 
             field: headers[2], 
             type: "quantitative",
-            format: ",.0f"
+            format: formatString
           }
         }
       },
@@ -346,7 +351,7 @@ else if (chartType === "slope") {
           text: { 
             field: headers[2], 
             type: "quantitative",
-            format: ",.0f"
+            format: formatString
           }
         }
       },
@@ -365,49 +370,6 @@ else if (chartType === "slope") {
         },
         encoding: {
           text: { field: headers[1], type: "nominal" }
-        }
-      },
-      // Percentage change labels (optional - for significant changes)
-      {
-        transform: [
-          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` },
-          {
-            lookup: headers[1],
-            from: {
-              data: { values: slopeData.filter(d => d[headers[0]] === firstPeriod) },
-              key: headers[1],
-              fields: [headers[2]]
-            },
-            as: ["startValue"]
-          },
-          {
-            calculate: `((datum['${headers[2]}'] - datum.startValue) / datum.startValue) * 100`,
-            as: "percentChange"
-          },
-          { filter: "abs(datum.percentChange) > 10" }  // Only show for changes > 10%
-        ],
-        mark: {
-          type: "text",
-          align: "left",
-          baseline: "top",
-          dx: 8,
-          dy: 8,
-          fontSize: 9,
-          fontStyle: "italic"
-        },
-        encoding: {
-          text: { 
-            field: "percentChange", 
-            type: "quantitative",
-            format: "+.0f"
-          },
-          color: {
-            condition: {
-              test: "datum.percentChange > 0",
-              value: "#10893e"
-            },
-            value: "#d13438"
-          }
         }
       }
     ],
