@@ -211,6 +211,7 @@
                 <div class="chart-item" data-chart="heatmap" data-folder="special">Heatmap</div>
                 <div class="chart-item" data-chart="bullet" data-folder="special">Bullet</div>
                 <div class="chart-item" data-chart="horizon" data-folder="special">Horizon</div>
+                <div class="chart-item" data-chart="slope" data-folder="special">Slope</div>
                 <div class="chart-item" data-chart="mekko" data-folder="special">Mekko</div>
                 <div class="chart-item" data-chart="marimekko" data-folder="special">Marimekko</div>                
                 <div class="chart-item" data-chart="bump" data-folder="special">Bump</div>
@@ -248,6 +249,7 @@
         <option value="sunburst">Sunburst</option>
         <option value="bullet">Bullet</option>
         <option value="horizon">Horizon</option>
+        <option value="slope">Slope</option>
         <option value="mekko">Mekko</option>
         <option value="marimekko">Marimekko</option>
         <option value="bump">Bump</option>
@@ -303,6 +305,15 @@
     <ul>
         <li><strong>Column 1:</strong> X-axis values (time periods, dates, or sequence numbers)</li>
         <li><strong>Column 2:</strong> Y-axis values (numeric data to visualize)</li>
+    </ul>
+</div>
+
+<div id="req-slope" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Time periods (e.g., "2023", "2024" or "Q1", "Q4")</li>
+        <li><strong>Column 2:</strong> Categories/Series (e.g., "Product A", "Region 1")</li>
+        <li><strong>Column 3:</strong> Values (numbers)</li>
     </ul>
 </div>
 

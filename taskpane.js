@@ -186,6 +186,248 @@ else if (chartType === "line") {
   };
 }
 
+else if (chartType === "slope") {
+  // Process data to get first and last time periods
+  const timePeriods = [...new Set(data.map(d => d[headers[0]]))];
+  const categories = [...new Set(data.map(d => d[headers[1]]))];
+  
+  // Filter data for first and last periods only
+  const firstPeriod = timePeriods[0];
+  const lastPeriod = timePeriods[timePeriods.length - 1];
+  
+  const slopeData = data.filter(d => 
+    d[headers[0]] === firstPeriod || d[headers[0]] === lastPeriod
+  );
+
+  // Calculate dynamic dimensions based on number of categories
+  const dynamicHeight = Math.max(300, Math.min(600, categories.length * 40));
+  const dynamicWidth = 500;
+
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Slope chart from Excel selection",
+    background: "white",
+    config: { 
+      view: { stroke: "transparent" },
+      autosize: { type: "fit", contains: "padding" }
+    },
+    width: dynamicWidth,
+    height: dynamicHeight,
+    data: { values: slopeData },
+    encoding: {
+      x: {
+        field: headers[0],
+        type: "ordinal",
+        axis: {
+          title: null,
+          labelFontSize: 14,
+          labelFontWeight: "bold",
+          labelPadding: 10,
+          domain: false,
+          ticks: false,
+          labelColor: "#323130"
+        },
+        scale: { padding: 0.1 }
+      },
+      y: {
+        field: headers[2],
+        type: "quantitative",
+        axis: null,
+        scale: { zero: false }
+      },
+      color: {
+        field: headers[1],
+        type: "nominal",
+        legend: null,
+        scale: { scheme: "category10" }
+      }
+    },
+    layer: [
+      // Background grid lines
+      {
+        mark: {
+          type: "rule",
+          strokeDash: [2, 2],
+          opacity: 0.3
+        },
+        data: { values: [{}] },
+        encoding: {
+          x: { datum: firstPeriod },
+          x2: { datum: lastPeriod },
+          y: { value: 0 },
+          color: { value: "#e0e0e0" }
+        }
+      },
+      // Slope lines
+      {
+        mark: {
+          type: "line",
+          strokeWidth: 2,
+          opacity: 0.7,
+          tooltip: true
+        },
+        encoding: {
+          detail: { field: headers[1], type: "nominal" },
+          tooltip: [
+            { field: headers[1], type: "nominal", title: "Category" },
+            { field: headers[0], type: "nominal", title: "Period" },
+            { field: headers[2], type: "quantitative", title: "Value", format: ",.0f" }
+          ]
+        }
+      },
+      // Points at the ends
+      {
+        mark: {
+          type: "circle",
+          size: 100,
+          opacity: 1,
+          tooltip: true
+        }
+      },
+      // Left side value labels
+      {
+        transform: [
+          { filter: `datum['${headers[0]}'] == '${firstPeriod}'` }
+        ],
+        mark: {
+          type: "text",
+          align: "right",
+          baseline: "middle",
+          dx: -8,
+          fontSize: 11,
+          fontWeight: "normal"
+        },
+        encoding: {
+          text: { 
+            field: headers[2], 
+            type: "quantitative",
+            format: ",.0f"
+          }
+        }
+      },
+      // Left side category labels (for top values)
+      {
+        transform: [
+          { filter: `datum['${headers[0]}'] == '${firstPeriod}'` },
+          {
+            window: [{ op: "rank", as: "rank" }],
+            sort: [{ field: headers[2], order: "descending" }]
+          },
+          { filter: "datum.rank <= 3" }
+        ],
+        mark: {
+          type: "text",
+          align: "right",
+          baseline: "bottom",
+          dx: -8,
+          dy: -12,
+          fontSize: 10,
+          fontWeight: "bold",
+          fontStyle: "italic"
+        },
+        encoding: {
+          text: { field: headers[1], type: "nominal" }
+        }
+      },
+      // Right side value labels
+      {
+        transform: [
+          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+        ],
+        mark: {
+          type: "text",
+          align: "left",
+          baseline: "middle",
+          dx: 8,
+          fontSize: 11,
+          fontWeight: "normal"
+        },
+        encoding: {
+          text: { 
+            field: headers[2], 
+            type: "quantitative",
+            format: ",.0f"
+          }
+        }
+      },
+      // Right side category labels
+      {
+        transform: [
+          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+        ],
+        mark: {
+          type: "text",
+          align: "left",
+          baseline: "middle",
+          dx: 35,
+          fontSize: 10,
+          fontWeight: "bold"
+        },
+        encoding: {
+          text: { field: headers[1], type: "nominal" }
+        }
+      },
+      // Percentage change labels (optional - for significant changes)
+      {
+        transform: [
+          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` },
+          {
+            lookup: headers[1],
+            from: {
+              data: { values: slopeData.filter(d => d[headers[0]] === firstPeriod) },
+              key: headers[1],
+              fields: [headers[2]]
+            },
+            as: ["startValue"]
+          },
+          {
+            calculate: `((datum['${headers[2]}'] - datum.startValue) / datum.startValue) * 100`,
+            as: "percentChange"
+          },
+          { filter: "abs(datum.percentChange) > 10" }  // Only show for changes > 10%
+        ],
+        mark: {
+          type: "text",
+          align: "left",
+          baseline: "top",
+          dx: 8,
+          dy: 8,
+          fontSize: 9,
+          fontStyle: "italic"
+        },
+        encoding: {
+          text: { 
+            field: "percentChange", 
+            type: "quantitative",
+            format: "+.0f"
+          },
+          color: {
+            condition: {
+              test: "datum.percentChange > 0",
+              value: "#10893e"
+            },
+            value: "#d13438"
+          }
+        }
+      }
+    ],
+    config: {
+      view: { stroke: "transparent" },
+      font: "Segoe UI",
+      text: { 
+        font: "Segoe UI", 
+        fontSize: 11, 
+        fill: "#605E5C" 
+      },
+      axis: {
+        labelColor: "#605e5c",
+        titleColor: "#323130",
+        gridColor: "#f3f2f1"
+      }
+    }
+  };
+}
+
 else if (chartType === "horizon") {
   // Horizon graph implementation following IDL paper methodology
   // Expected format: X-axis values (time/sequence) and Y-axis values
