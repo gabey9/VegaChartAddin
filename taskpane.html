@@ -210,6 +210,7 @@
                 <div class="chart-item" data-chart="strip" data-folder="special">Strip</div>
                 <div class="chart-item" data-chart="heatmap" data-folder="special">Heatmap</div>
                 <div class="chart-item" data-chart="bullet" data-folder="special">Bullet</div>
+                <div class="chart-item" data-chart="horizon" data-folder="special">Horizon</div>
                 <div class="chart-item" data-chart="mekko" data-folder="special">Mekko</div>
                 <div class="chart-item" data-chart="marimekko" data-folder="special">Marimekko</div>                
                 <div class="chart-item" data-chart="bump" data-folder="special">Bump</div>
@@ -246,6 +247,7 @@
         <option value="treemap">Treemap</option>
         <option value="sunburst">Sunburst</option>
         <option value="bullet">Bullet</option>
+        <option value="horizon">Horizon</option>
         <option value="mekko">Mekko</option>
         <option value="marimekko">Marimekko</option>
         <option value="bump">Bump</option>
@@ -283,7 +285,7 @@
         <h4>Data Requirements:</h4>
         <ul>
             <li><strong>Column 1:</strong> X-axis values (often dates/time or categories)</li>
-            <li><strong>Column 2+:</strong> Value series</li>
+            <li><strong>Column 2-n:</strong> Value series</li>
         </ul>
     </div>
     
@@ -295,14 +297,20 @@
             <li><strong>Column 3 (optional):</strong> Series grouping for multiple areas</li>
         </ul>
     </div>
- 
+
+<div id="req-horizon" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> X-axis values (time periods, dates, or sequence numbers)</li>
+        <li><strong>Column 2:</strong> Y-axis values (numeric data to visualize)</li>
+    </ul>
+</div>
+
 <div id="req-radar" class="data-requirements hidden">
     <h4>Data Requirements:</h4>
     <ul>
         <li><strong>Column 1:</strong> Series/Category name (e.g., "Product A", "Team 1")</li>
         <li><strong>Columns 2-n:</strong> Dimension values (e.g., "Speed", "Quality", "Cost")</li>
-        <li>Each row represents a different series to compare</li>
-        <li>All value columns should contain numeric data</li>
     </ul>
 </div>
    

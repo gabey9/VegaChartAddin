@@ -186,6 +186,132 @@ else if (chartType === "line") {
   };
 }
 
+else if (chartType === "horizon") {
+  // Horizon graph implementation
+  // Expected format: X-axis values (time/sequence) and Y-axis values
+  
+  // Transform data for horizon chart
+  const horizonData = data.map((row, index) => ({
+    x: row[headers[0]] || index + 1,
+    y: parseFloat(row[headers[1]]) || 0
+  }));
+
+  // Calculate the median or middle value for the horizon split
+  const yValues = horizonData.map(d => d.y);
+  const maxY = Math.max(...yValues);
+  const minY = Math.min(...yValues);
+  const midPoint = (maxY + minY) / 2;
+  
+  // Calculate dynamic dimensions
+  const dataPoints = horizonData.length;
+  const dynamicWidth = Math.max(300, Math.min(800, dataPoints * 15));
+
+  spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+    "description": "Horizon Graph from Excel selection",
+    "width": dynamicWidth,
+    "height": 80,
+    "background": "white",
+    "config": { 
+      "view": { "stroke": "transparent" },
+      "area": {"interpolate": "monotone"}
+    },
+    "data": { "values": horizonData },
+    "encoding": {
+      "x": {
+        "field": "x",
+        "type": headers[0].toLowerCase().includes('date') ? "temporal" : "quantitative",
+        "scale": {"zero": false, "nice": false},
+        "axis": {
+          "title": headers[0],
+          "labelFontSize": 10,
+          "titleFontSize": 12,
+          "labelColor": "#605e5c",
+          "titleColor": "#323130",
+          "font": "Segoe UI"
+        }
+      }
+    },
+    "layer": [
+      {
+        "name": "baseline",
+        "mark": {
+          "type": "area",
+          "clip": true,
+          "orient": "vertical",
+          "opacity": 0.7,
+          "color": "#0078d4",
+          "interpolate": "monotone"
+        },
+        "encoding": {
+          "y": {
+            "field": "y",
+            "type": "quantitative",
+            "scale": {"domain": [midPoint, maxY]},
+            "axis": {
+              "title": headers[1],
+              "labelFontSize": 10,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI"
+            }
+          }
+        }
+      },
+      {
+        "name": "above_median",
+        "transform": [
+          {"calculate": `datum.y - ${midPoint}`, "as": "y_above"},
+          {"filter": "datum.y_above > 0"}
+        ],
+        "mark": {
+          "type": "area",
+          "clip": true,
+          "orient": "vertical",
+          "opacity": 0.8,
+          "color": "#00cc6a",
+          "interpolate": "monotone"
+        },
+        "encoding": {
+          "y": {
+            "field": "y_above",
+            "type": "quantitative",
+            "scale": {"domain": [0, maxY - midPoint]}
+          }
+        }
+      },
+      {
+        "name": "below_median",
+        "transform": [
+          {"calculate": `${midPoint} - datum.y`, "as": "y_below"},
+          {"filter": "datum.y_below > 0"}
+        ],
+        "mark": {
+          "type": "area",
+          "clip": true,
+          "orient": "vertical",
+          "opacity": 0.6,
+          "color": "#d13438",
+          "interpolate": "monotone"
+        },
+        "encoding": {
+          "y": {
+            "field": "y_below",
+            "type": "quantitative",
+            "scale": {"domain": [0, midPoint - minY]}
+          }
+        }
+      }
+    ],
+    "resolve": {
+      "scale": {
+        "y": "independent"
+      }
+    }
+  };
+}
+
 else if (chartType === "tree") {
   // Tree diagram implementation
   // Expected columns: Parent, Child, Value (optional)
