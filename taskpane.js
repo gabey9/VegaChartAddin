@@ -107,1009 +107,989 @@ export async function run() {
         };
       }
 
-else if (chartType === "line") {
-  const transformedData = [];
-  const valueColumns = headers.slice(1);
-  data.forEach(row => {
-    valueColumns.forEach(colName => {
-      if (row[colName] !== null && row[colName] !== undefined && row[colName] !== "") {
-        transformedData.push({
-          [headers[0]]: row[headers[0]], // x-axis value (first column)
-          series: colName,               // series name (column header)
-          value: parseFloat(row[colName]) || 0  // y-axis value
+      else if (chartType === "line") {
+        const transformedData = [];
+        const valueColumns = headers.slice(1);
+        data.forEach(row => {
+            valueColumns.forEach(colName => {
+            if (row[colName] !== null && row[colName] !== undefined && row[colName] !== "") {
+                transformedData.push({
+                [headers[0]]: row[headers[0]], // x-axis value (first column)
+                series: colName,               // series name (column header)
+                value: parseFloat(row[colName]) || 0  // y-axis value
+                });
+            }
+            });
         });
-      }
-    });
-  });
 
-  spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Multi-series line chart from Excel selection",
-    background: "white",
-    config: { view: { stroke: "transparent" }},
-    data: { values: transformedData },
-    mark: { 
-      type: "line", 
-      point: false,
-      tooltip: true,
-      strokeWidth: 2
-    },
-    encoding: {
-      x: { 
-        field: headers[0], 
-        type: "ordinal",
-        axis: {
-          title: headers[0],
-          labelFontSize: 12,
-          titleFontSize: 14,
-          labelAngle: 0
-        }
-      },
-      y: { 
-        field: "value", 
-        type: "quantitative",
-        axis: {
-          title: "Value",
-          labelFontSize: 12,
-          titleFontSize: 14
-        }
-      },
-      color: { 
-        field: "series", 
-        type: "nominal",
-        scale: {
-          scheme: "category10"
-        },
-        legend: {
-          title: "Series",
-          titleFontSize: 12,
-          labelFontSize: 11
-        }
-      }
-    },
-    config: {
-      font: "Segoe UI",
-      axis: {
-        labelColor: "#605e5c",
-        titleColor: "#323130",
-        gridColor: "#f3f2f1"
-      },
-      legend: {
-        titleColor: "#323130",
-        labelColor: "#605e5c"
-      },
-      point: {
-        size: 60,
-        filled: true
-      }
-    }
-  };
-}
-
-else if (chartType === "slope") {
-  // Process data to get first and last time periods
-  const timePeriods = [...new Set(data.map(d => d[headers[0]]))];
-  const categories = [...new Set(data.map(d => d[headers[1]]))];
-  
-  // Filter data for first and last periods only
-  const firstPeriod = timePeriods[0];
-  const lastPeriod = timePeriods[timePeriods.length - 1];
-  
-  const slopeData = data.filter(d => 
-    d[headers[0]] === firstPeriod || d[headers[0]] === lastPeriod
-  );
-
-  // Check if values are percentages (between -1 and 1)
-  const allValues = slopeData.map(d => d[headers[2]]);
-  const isPercentage = allValues.every(v => v >= -1 && v <= 1);
-  const formatString = isPercentage ? ".1%" : ",.0f";
-
-  // Calculate dynamic dimensions based on number of categories
-  const dynamicHeight = Math.max(300, Math.min(600, categories.length * 40));
-  const dynamicWidth = 500;
-
-  spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Slope chart from Excel selection",
-    background: "white",
-    config: { 
-      view: { stroke: "transparent" },
-      autosize: { type: "fit", contains: "padding" }
-    },
-    width: dynamicWidth,
-    height: dynamicHeight,
-    data: { values: slopeData },
-    encoding: {
-      x: {
-        field: headers[0],
-        type: "ordinal",
-        axis: {
-          title: null,
-          labelFontSize: 14,
-          labelFontWeight: "bold",
-          labelPadding: 10,
-          domain: false,
-          ticks: false,
-          labelColor: "#323130"
-        },
-        scale: { padding: 0.1 }
-      },
-      y: {
-        field: headers[2],
-        type: "quantitative",
-        axis: null,
-        scale: { zero: false }
-      },
-      color: {
-        field: headers[1],
-        type: "nominal",
-        legend: null,
-        scale: { scheme: "category10" }
-      }
-    },
-    layer: [
-      // Background grid lines
-      {
-        mark: {
-          type: "rule",
-          strokeDash: [2, 2],
-          opacity: 0.3
-        },
-        data: { values: [{}] },
-        encoding: {
-          x: { datum: firstPeriod },
-          x2: { datum: lastPeriod },
-          y: { value: 0 },
-          color: { value: "#e0e0e0" }
-        }
-      },
-      // Slope lines
-      {
-        mark: {
-          type: "line",
-          strokeWidth: 2,
-          opacity: 0.7,
-          tooltip: true
-        },
-        encoding: {
-          detail: { field: headers[1], type: "nominal" },
-          tooltip: [
-            { field: headers[1], type: "nominal", title: "Category" },
-            { field: headers[0], type: "nominal", title: "Period" },
-            { field: headers[2], type: "quantitative", title: "Value", format: formatString }
-          ]
-        }
-      },
-      // Points at the ends
-      {
-        mark: {
-          type: "circle",
-          size: 100,
-          opacity: 1,
-          tooltip: true
-        }
-      },
-      // Left side value labels
-      {
-        transform: [
-          { filter: `datum['${headers[0]}'] == '${firstPeriod}'` }
-        ],
-        mark: {
-          type: "text",
-          align: "right",
-          baseline: "middle",
-          dx: -8,
-          fontSize: 11,
-          fontWeight: "normal"
-        },
-        encoding: {
-          text: { 
-            field: headers[2], 
-            type: "quantitative",
-            format: formatString
-          }
-        }
-      },
-      // Left side category labels (for top values)
-      {
-        transform: [
-          { filter: `datum['${headers[0]}'] == '${firstPeriod}'` },
-          {
-            window: [{ op: "rank", as: "rank" }],
-            sort: [{ field: headers[2], order: "descending" }]
-          },
-          { filter: "datum.rank <= 3" }
-        ],
-        mark: {
-          type: "text",
-          align: "right",
-          baseline: "bottom",
-          dx: -8,
-          dy: -12,
-          fontSize: 10,
-          fontWeight: "bold",
-          fontStyle: "italic"
-        },
-        encoding: {
-          text: { field: headers[1], type: "nominal" }
-        }
-      },
-      // Right side value labels
-      {
-        transform: [
-          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
-        ],
-        mark: {
-          type: "text",
-          align: "left",
-          baseline: "middle",
-          dx: 8,
-          fontSize: 11,
-          fontWeight: "normal"
-        },
-        encoding: {
-          text: { 
-            field: headers[2], 
-            type: "quantitative",
-            format: formatString
-          }
-        }
-      },
-      // Right side category labels
-      {
-        transform: [
-          { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
-        ],
-        mark: {
-          type: "text",
-          align: "left",
-          baseline: "middle",
-          dx: 35,
-          fontSize: 10,
-          fontWeight: "bold"
-        },
-        encoding: {
-          text: { field: headers[1], type: "nominal" }
-        }
-      }
-    ],
-    config: {
-      view: { stroke: "transparent" },
-      font: "Segoe UI",
-      text: { 
-        font: "Segoe UI", 
-        fontSize: 11, 
-        fill: "#605E5C" 
-      },
-      axis: {
-        labelColor: "#605e5c",
-        titleColor: "#323130",
-        gridColor: "#f3f2f1"
-      }
-    }
-  };
-}
-
-else if (chartType === "horizon") {
-  // Horizon graph implementation following IDL paper methodology
-  // Expected format: X-axis values (time/sequence) and Y-axis values
-  
-  // Transform data for horizon chart
-  const horizonData = data.map((row, index) => ({
-    x: row[headers[0]] || index + 1,
-    y: parseFloat(row[headers[1]]) || 0
-  }));
-
-  // Calculate data range and bands
-  const yValues = horizonData.map(d => d.y);
-  const maxY = Math.max(...yValues);
-  const minY = Math.min(...yValues);
-  const range = maxY - minY;
-  
-  // Define number of bands (typically 2-4 for horizon graphs)
-  const numBands = 3;
-  const bandHeight = range / (numBands * 2); // Divide by 2 for positive and negative
-  const baseline = minY + range / 2; // Use middle as baseline
-  
-  // Calculate dynamic dimensions
-  const dataPoints = horizonData.length;
-  const dynamicWidth = Math.max(300, Math.min(800, dataPoints * 15));
-
-  spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-    "description": "Horizon Graph from Excel selection (IDL methodology)",
-    "width": dynamicWidth,
-    "height": 60,
-    "background": "white",
-    "config": { 
-      "view": { "stroke": "transparent" },
-      "area": {"interpolate": "monotone"}
-    },
-    "data": { "values": horizonData },
-    "encoding": {
-      "x": {
-        "field": "x",
-        "type": headers[0].toLowerCase().includes('date') ? "temporal" : "quantitative",
-        "scale": {"zero": false, "nice": false},
-        "axis": {
-          "title": headers[0],
-          "labelFontSize": 10,
-          "titleFontSize": 12,
-          "labelColor": "#605e5c",
-          "titleColor": "#323130",
-          "font": "Segoe UI"
-        }
-      },
-      "y": {
-        "type": "quantitative",
-        "scale": {"domain": [0, bandHeight]},
-        "axis": {
-          "title": headers[1],
-          "orient": "left",
-          "labelFontSize": 10,
-          "titleFontSize": 12,
-          "labelColor": "#605e5c",
-          "titleColor": "#323130",
-          "font": "Segoe UI",
-          "tickCount": 3
-        }
-      }
-    },
-    "layer": [
-      // Band 1 (lightest positive)
-      {
-        "transform": [
-          {"calculate": `max(0, min(datum.y - ${baseline}, ${bandHeight}))`, "as": "band1"}
-        ],
-        "mark": {
-          "type": "area",
-          "clip": true,
-          "opacity": 0.3,
-          "color": "#4a90e2",
-          "interpolate": "monotone"
-        },
-        "encoding": {
-          "y": {"field": "band1"}
-        }
-      },
-      // Band 2 (medium positive)
-      {
-        "transform": [
-          {"calculate": `max(0, min(datum.y - ${baseline} - ${bandHeight}, ${bandHeight}))`, "as": "band2"}
-        ],
-        "mark": {
-          "type": "area",
-          "clip": true,
-          "opacity": 0.6,
-          "color": "#2e7bd6",
-          "interpolate": "monotone"
-        },
-        "encoding": {
-          "y": {"field": "band2"}
-        }
-      },
-      // Band 3 (darkest positive)
-      {
-        "transform": [
-          {"calculate": `max(0, datum.y - ${baseline} - ${bandHeight * 2})`, "as": "band3"}
-        ],
-        "mark": {
-          "type": "area",
-          "clip": true,
-          "opacity": 0.9,
-          "color": "#1a5bb8",
-          "interpolate": "monotone"
-        },
-        "encoding": {
-          "y": {"field": "band3"}
-        }
-      },
-      // Band -1 (lightest negative, mirrored)
-      {
-        "transform": [
-          {"calculate": `max(0, min(${baseline} - datum.y, ${bandHeight}))`, "as": "nband1"}
-        ],
-        "mark": {
-          "type": "area",
-          "clip": true,
-          "opacity": 0.3,
-          "color": "#e74c3c",
-          "interpolate": "monotone"
-        },
-        "encoding": {
-          "y": {"field": "nband1"}
-        }
-      },
-      // Band -2 (medium negative, mirrored)
-      {
-        "transform": [
-          {"calculate": `max(0, min(${baseline} - datum.y - ${bandHeight}, ${bandHeight}))`, "as": "nband2"}
-        ],
-        "mark": {
-          "type": "area",
-          "clip": true,
-          "opacity": 0.6,
-          "color": "#c0392b",
-          "interpolate": "monotone"
-        },
-        "encoding": {
-          "y": {"field": "nband2"}
-        }
-      },
-      // Band -3 (darkest negative, mirrored)
-      {
-        "transform": [
-          {"calculate": `max(0, ${baseline} - datum.y - ${bandHeight * 2})`, "as": "nband3"}
-        ],
-        "mark": {
-          "type": "area",
-          "clip": true,
-          "opacity": 0.9,
-          "color": "#a93226",
-          "interpolate": "monotone"
-        },
-        "encoding": {
-          "y": {"field": "nband3"}
-        }
-      }
-    ]
-  };
-}
-
-else if (chartType === "tree") {
-  // Tree diagram implementation
-  // Expected columns: Parent, Child, Value (optional)
-  
-  // Transform parent-child data to hierarchical structure
-  const nodes = new Map();
-  
-  // Collect all unique nodes from data
-  data.forEach((row, i) => {
-    const parent = row[headers[0]] || "";
-    const child = row[headers[1]] || `node_${i}`;
-    const value = headers.length >= 3 ? (parseFloat(row[headers[2]]) || 1) : 1;
-    
-    // Add parent node if it doesn't exist and is not empty
-    if (parent && !nodes.has(parent)) {
-      nodes.set(parent, {
-        id: parent,
-        parent: "",
-        name: parent,
-        value: 1
-      });
-    }
-    
-    // Add child node
-    if (!nodes.has(child)) {
-      nodes.set(child, {
-        id: child,
-        parent: parent,
-        name: child,
-        value: value
-      });
-    } else {
-      // Update parent and value if child already exists
-      const existingNode = nodes.get(child);
-      existingNode.parent = parent;
-      existingNode.value = value;
-    }
-  });
-  
-  // Convert Map to array
-  const treeData = Array.from(nodes.values());
-  
-  // Find root nodes (nodes with no parent or parent not in dataset)
-  const allIds = new Set(treeData.map(d => d.id));
-  treeData.forEach(node => {
-    if (node.parent && !allIds.has(node.parent)) {
-      node.parent = ""; // Make it a root node if parent doesn't exist
-    }
-  });
-
-  // Calculate dynamic dimensions based on data size
-  const nodeCount = treeData.length;
-  const dynamicWidth = Math.max(600, Math.min(1200, nodeCount * 40));
-  const dynamicHeight = Math.max(400, Math.min(1600, nodeCount * 30));
-
-  spec = {
-    "$schema": "https://vega.github.io/schema/vega/v6.json",
-    "description": "Tree diagram from Excel selection",
-    "width": dynamicWidth,
-    "height": dynamicHeight,
-    "padding": 20,
-    "background": "white",
-    "config": { "view": { "stroke": "transparent" }},
-
-    "signals": [
-      {
-        "name": "layout", 
-        "value": "tidy"
-      },
-      {
-        "name": "links", 
-        "value": "diagonal"
-      }
-    ],
-
-    "data": [
-      {
-        "name": "tree",
-        "values": treeData,
-        "transform": [
-          {
-            "type": "stratify",
-            "key": "id",
-            "parentKey": "parent"
-          },
-          {
-            "type": "tree",
-            "method": {"signal": "layout"},
-            "size": [{"signal": "height - 40"}, {"signal": "width - 100"}],
-            "as": ["y", "x", "depth", "children"]
-          }
-        ]
-      },
-      {
-        "name": "links",
-        "source": "tree",
-        "transform": [
-          { "type": "treelinks" },
-          {
-            "type": "linkpath",
-            "orient": "horizontal",
-            "shape": {"signal": "links"}
-          }
-        ]
-      }
-    ],
-
-    "scales": [
-      {
-        "name": "color",
-        "type": "ordinal",
-        "range": ["#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"],
-        "domain": {"data": "tree", "field": "depth"}
-      },
-      {
-        "name": "size",
-        "type": "linear",
-        "range": [100, 400],
-        "domain": {"data": "tree", "field": "value"}
-      }
-    ],
-
-    "marks": [
-      {
-        "type": "path",
-        "from": {"data": "links"},
-        "encode": {
-          "update": {
-            "path": {"field": "path"},
-            "stroke": {"value": "#8a8886"},
-            "strokeWidth": {"value": 2},
-            "strokeOpacity": {"value": 0.6}
-          }
-        }
-      },
-      {
-        "type": "symbol",
-        "from": {"data": "tree"},
-        "encode": {
-          "enter": {
-            "stroke": {"value": "#ffffff"},
-            "strokeWidth": {"value": 2}
-          },
-          "update": {
-            "x": {"field": "x"},
-            "y": {"field": "y"},
-            "size": {"scale": "size", "field": "value"},
-            "fill": {"scale": "color", "field": "depth"},
-            "fillOpacity": {"value": 0.8},
-            "tooltip": {
-              "signal": "{'Name': datum.name, 'ID': datum.id, 'Parent': datum.parent, 'Depth': datum.depth, 'Value': datum.value}"
-            }
-          },
-          "hover": {
-            "fillOpacity": {"value": 1.0},
-            "strokeWidth": {"value": 3}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "from": {"data": "tree"},
-        "encode": {
-          "enter": {
-            "fontSize": {"value": 11},
-            "baseline": {"value": "middle"},
-            "font": {"value": "Segoe UI"},
-            "fontWeight": {"value": "bold"}
-          },
-          "update": {
-            "x": {"field": "x"},
-            "y": {"field": "y"},
-            "text": {"field": "name"},
-            "dx": {"signal": "datum.children ? -12 : 12"},
-            "align": {"signal": "datum.children ? 'right' : 'left'"},
-            "fill": {"value": "#323130"}
-          }
-        }
-      }
-    ]
-  };
-}
-
-else if (chartType === "sunburst") {
-  // Sunburst chart implementation
-  // Expected columns: Parent, Child, Value (optional)
-  
-  // Transform parent-child data to hierarchical structure
-  const nodes = new Map();
-  
-  // Collect all unique nodes from data
-  data.forEach((row, i) => {
-    const parent = row[headers[0]] || "";
-    const child = row[headers[1]] || `node_${i}`;
-    const value = headers.length >= 3 ? (parseFloat(row[headers[2]]) || 1) : 1;
-    
-    // Add parent node if it doesn't exist and is not empty
-    if (parent && !nodes.has(parent)) {
-      nodes.set(parent, {
-        id: parent,
-        parent: "",
-        name: parent,
-        size: 0 // Will be calculated later
-      });
-    }
-    
-    // Add child node
-    if (!nodes.has(child)) {
-      nodes.set(child, {
-        id: child,
-        parent: parent,
-        name: child,
-        size: value
-      });
-    } else {
-      // Update parent and value if child already exists
-      const existingNode = nodes.get(child);
-      existingNode.parent = parent;
-      existingNode.size = value;
-    }
-  });
-  
-  // Convert Map to array
-  const hierarchicalData = Array.from(nodes.values());
-  
-  // Find root nodes (nodes with no parent or parent not in dataset)
-  const allIds = new Set(hierarchicalData.map(d => d.id));
-  hierarchicalData.forEach(node => {
-    if (node.parent && !allIds.has(node.parent)) {
-      node.parent = ""; // Make it a root node if parent doesn't exist
-    }
-  });
-
-  // Calculate chart size based on data complexity
-  const nodeCount = hierarchicalData.length;
-  const chartSize = Math.max(400, Math.min(600, nodeCount * 15 + 300));
-
-  spec = {
-    "$schema": "https://vega.github.io/schema/vega/v6.json",
-    "description": "Sunburst chart from Excel selection",
-    "width": chartSize,
-    "height": chartSize,
-    "padding": 10,
-    "autosize": "none",
-    "background": "white",
-    "config": { "view": { "stroke": "transparent" }},
-
-    "signals": [
-      {
-        "name": "centerX",
-        "update": "width / 2"
-      },
-      {
-        "name": "centerY", 
-        "update": "height / 2"
-      },
-      {
-        "name": "outerRadius",
-        "update": "min(width, height) / 2 - 10"
-      }
-    ],
-
-    "data": [
-      {
-        "name": "tree",
-        "values": hierarchicalData,
-        "transform": [
-          {
-            "type": "stratify",
-            "key": "id",
-            "parentKey": "parent"
-          },
-          {
-            "type": "partition",
-            "field": "size",
-            "sort": {"field": "size", "order": "descending"},
-            "size": [{"signal": "2 * PI"}, {"signal": "outerRadius"}],
-            "as": ["a0", "r0", "a1", "r1", "depth", "children"]
-          }
-        ]
-      }
-    ],
-
-    "scales": [
-      {
-        "name": "color",
-        "type": "ordinal",
-        "domain": {"data": "tree", "field": "depth"},
-        "range": [
-          "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", 
-          "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438",
-          "#8764b8", "#e3008c", "#00b7c3", "#038387", "#486991"
-        ]
-      },
-      {
-        "name": "opacity",
-        "type": "linear",
-        "domain": {"data": "tree", "field": "depth"},
-        "range": [0.8, 0.4]
-      }
-    ],
-
-    "marks": [
-      {
-        "type": "arc",
-        "from": {"data": "tree"},
-        "encode": {
-          "enter": {
-            "x": {"signal": "centerX"},
-            "y": {"signal": "centerY"},
-            "stroke": {"value": "white"},
-            "strokeWidth": {"value": 1}
-          },
-          "update": {
-            "startAngle": {"field": "a0"},
-            "endAngle": {"field": "a1"},
-            "innerRadius": {"field": "r0"},
-            "outerRadius": {"field": "r1"},
-            "fill": {"scale": "color", "field": "depth"},
-            "fillOpacity": {"scale": "opacity", "field": "depth"}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "from": {"data": "tree"},
-        "encode": {
-          "enter": {
-            "x": {"signal": "centerX"},
-            "y": {"signal": "centerY"},
-            "radius": {"signal": "(datum.r0 + datum.r1) / 2"},
-            "theta": {"signal": "(datum.a0 + datum.a1) / 2"},
-            "fill": {"value": "#323130"},
-            "font": {"value": "Segoe UI"},
-            "fontSize": {"value": 10},
-            "fontWeight": {"value": "bold"},
-            "align": {"value": "center"},
-            "baseline": {"value": "middle"}
-          },
-          "update": {
-            "text": {
-              "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"
+        spec = {
+            $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+            description: "Multi-series line chart from Excel selection",
+            background: "white",
+            config: { view: { stroke: "transparent" }},
+            data: { values: transformedData },
+            mark: { 
+            type: "line", 
+            point: false,
+            tooltip: true,
+            strokeWidth: 2
             },
-            "opacity": {
-              "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"
+            encoding: {
+            x: { 
+                field: headers[0], 
+                type: "ordinal",
+                axis: {
+                title: headers[0],
+                labelFontSize: 12,
+                titleFontSize: 14,
+                labelAngle: 0
+                }
+            },
+            y: { 
+                field: "value", 
+                type: "quantitative",
+                axis: {
+                title: "Value",
+                labelFontSize: 12,
+                titleFontSize: 14
+                }
+            },
+            color: { 
+                field: "series", 
+                type: "nominal",
+                scale: {
+                scheme: "category10"
+                },
+                legend: {
+                title: "Series",
+                titleFontSize: 12,
+                labelFontSize: 11
+                }
             }
-          }
-        }
-      }
-    ]
-  };
-}
-
-else if (chartType === "radar") {
-  // Radar chart implementation
-  // Expected format: First column is series name, remaining columns are dimension values
-  
-  // Transform Excel data to radar format
-  const radarData = [];
-  const dimensions = headers.slice(1); // All columns except first are dimensions
-  
-  data.forEach((row, seriesIndex) => {
-    const seriesName = row[headers[0]] || `Series ${seriesIndex + 1}`;
-    
-    dimensions.forEach(dimension => {
-      const value = parseFloat(row[dimension]) || 0;
-      radarData.push({
-        series: seriesName,
-        dimension: dimension,
-        value: value,
-        category: seriesIndex
-      });
-    });
-  });
-
-  // Get unique dimensions for grid
-  const uniqueDimensions = [...new Set(radarData.map(d => d.dimension))];
-
-  spec = {
-    "$schema": "https://vega.github.io/schema/vega/v6.json",
-    "description": "Radar chart from Excel selection",
-    "width": 400,
-    "height": 400,
-    "padding": 60,
-    "autosize": {"type": "none", "contains": "padding"},
-    "background": "white",
-    "config": { "view": { "stroke": "transparent" }},
-
-    "signals": [
-      {"name": "radius", "update": "width / 2"}
-    ],
-
-    "data": [
-      {
-        "name": "table",
-        "values": radarData
-      },
-      {
-        "name": "dimensions",
-        "values": uniqueDimensions.map(d => ({dimension: d}))
-      }
-    ],
-
-    "scales": [
-      {
-        "name": "angular",
-        "type": "point",
-        "range": {"signal": "[-PI, PI]"},
-        "padding": 0.5,
-        "domain": uniqueDimensions
-      },
-      {
-        "name": "radial",
-        "type": "linear",
-        "range": {"signal": "[0, radius]"},
-        "zero": true,
-        "nice": true,
-        "domain": {"data": "table", "field": "value"},
-        "domainMin": 0
-      },
-      {
-        "name": "color",
-        "type": "ordinal",
-        "domain": {"data": "table", "field": "category"},
-        "range": [
-          "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e",
-          "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"
-        ]
-      }
-    ],
-
-    "encode": {
-      "enter": {
-        "x": {"signal": "radius"},
-        "y": {"signal": "radius"}
-      }
-    },
-
-    "marks": [
-      {
-        "type": "group",
-        "name": "categories",
-        "zindex": 1,
-        "from": {
-          "facet": {"data": "table", "name": "facet", "groupby": ["category", "series"]}
-        },
-        "marks": [
-          {
-            "type": "line",
-            "name": "category-line",
-            "from": {"data": "facet"},
-            "encode": {
-              "enter": {
-                "interpolate": {"value": "linear-closed"},
-                "x": {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
-                "y": {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
-                "stroke": {"scale": "color", "field": "category"},
-                "strokeWidth": {"value": 2},
-                "fill": {"scale": "color", "field": "category"},
-                "fillOpacity": {"value": 0.1},
-                "strokeOpacity": {"value": 0.8}
-              }
+            },
+            config: {
+            font: "Segoe UI",
+            axis: {
+                labelColor: "#605e5c",
+                titleColor: "#323130",
+                gridColor: "#f3f2f1"
+            },
+            legend: {
+                titleColor: "#323130",
+                labelColor: "#605e5c"
+            },
+            point: {
+                size: 60,
+                filled: true
             }
-          },
-          {
-            "type": "symbol",
-            "name": "category-points",
-            "from": {"data": "facet"},
-            "encode": {
-              "enter": {
-                "x": {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
-                "y": {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
-                "size": {"value": 50},
-                "fill": {"scale": "color", "field": "category"},
-                "stroke": {"value": "white"},
-                "strokeWidth": {"value": 1}
-              }
             }
-          }
-        ]
-      },
-      {
-        "type": "rule",
-        "name": "radial-grid",
-        "from": {"data": "dimensions"},
-        "zindex": 0,
-        "encode": {
-          "enter": {
-            "x": {"value": 0},
-            "y": {"value": 0},
-            "x2": {"signal": "radius * cos(scale('angular', datum.dimension))"},
-            "y2": {"signal": "radius * sin(scale('angular', datum.dimension))"},
-            "stroke": {"value": "#e1e4e8"},
-            "strokeWidth": {"value": 1}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "name": "dimension-label",
-        "from": {"data": "dimensions"},
-        "zindex": 1,
-        "encode": {
-          "enter": {
-            "x": {"signal": "(radius + 20) * cos(scale('angular', datum.dimension))"},
-            "y": {"signal": "(radius + 20) * sin(scale('angular', datum.dimension))"},
-            "text": {"field": "dimension"},
-            "align": [
-              {
-                "test": "abs(scale('angular', datum.dimension)) > PI / 2",
-                "value": "right"
-              },
-              {
-                "value": "left"
-              }
+        };
+      }
+
+      else if (chartType === "slope") {
+        const timePeriods = [...new Set(data.map(d => d[headers[0]]))];
+        const categories = [...new Set(data.map(d => d[headers[1]]))];
+        
+        // Filter data for first and last periods only
+        const firstPeriod = timePeriods[0];
+        const lastPeriod = timePeriods[timePeriods.length - 1];
+        
+        const slopeData = data.filter(d => 
+            d[headers[0]] === firstPeriod || d[headers[0]] === lastPeriod
+        );
+
+        // Check if values are percentages (between -1 and 1)
+        const allValues = slopeData.map(d => d[headers[2]]);
+        const isPercentage = allValues.every(v => v >= -1 && v <= 1);
+        const formatString = isPercentage ? ".1%" : ",.0f";
+
+        // Calculate dynamic dimensions based on number of categories
+        const dynamicHeight = Math.max(300, Math.min(600, categories.length * 40));
+        const dynamicWidth = 500;
+
+        spec = {
+            $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+            description: "Slope chart from Excel selection",
+            background: "white",
+            config: { 
+            view: { stroke: "transparent" },
+            autosize: { type: "fit", contains: "padding" }
+            },
+            width: dynamicWidth,
+            height: dynamicHeight,
+            data: { values: slopeData },
+            encoding: {
+            x: {
+                field: headers[0],
+                type: "ordinal",
+                axis: {
+                title: null,
+                labelFontSize: 14,
+                labelFontWeight: "bold",
+                labelPadding: 10,
+                domain: false,
+                ticks: false,
+                labelColor: "#323130"
+                },
+                scale: { padding: 0.1 }
+            },
+            y: {
+                field: headers[2],
+                type: "quantitative",
+                axis: null,
+                scale: { zero: false }
+            },
+            color: {
+                field: headers[1],
+                type: "nominal",
+                legend: null,
+                scale: { scheme: "category10" }
+            }
+            },
+            layer: [
+            // Background grid lines
+            {
+                mark: {
+                type: "rule",
+                strokeDash: [2, 2],
+                opacity: 0.3
+                },
+                data: { values: [{}] },
+                encoding: {
+                x: { datum: firstPeriod },
+                x2: { datum: lastPeriod },
+                y: { value: 0 },
+                color: { value: "#e0e0e0" }
+                }
+            },
+            // Slope lines
+            {
+                mark: {
+                type: "line",
+                strokeWidth: 2,
+                opacity: 0.7,
+                tooltip: true
+                },
+                encoding: {
+                detail: { field: headers[1], type: "nominal" },
+                tooltip: [
+                    { field: headers[1], type: "nominal", title: "Category" },
+                    { field: headers[0], type: "nominal", title: "Period" },
+                    { field: headers[2], type: "quantitative", title: "Value", format: formatString }
+                ]
+                }
+            },
+            // Points at the ends
+            {
+                mark: {
+                type: "circle",
+                size: 100,
+                opacity: 1,
+                tooltip: true
+                }
+            },
+            // Left side value labels
+            {
+                transform: [
+                { filter: `datum['${headers[0]}'] == '${firstPeriod}'` }
+                ],
+                mark: {
+                type: "text",
+                align: "right",
+                baseline: "middle",
+                dx: -8,
+                fontSize: 11,
+                fontWeight: "normal"
+                },
+                encoding: {
+                text: { 
+                    field: headers[2], 
+                    type: "quantitative",
+                    format: formatString
+                }
+                }
+            },
+            // Left side category labels (for top values)
+            {
+                transform: [
+                { filter: `datum['${headers[0]}'] == '${firstPeriod}'` },
+                {
+                    window: [{ op: "rank", as: "rank" }],
+                    sort: [{ field: headers[2], order: "descending" }]
+                },
+                { filter: "datum.rank <= 3" }
+                ],
+                mark: {
+                type: "text",
+                align: "right",
+                baseline: "bottom",
+                dx: -8,
+                dy: -12,
+                fontSize: 10,
+                fontWeight: "bold",
+                fontStyle: "italic"
+                },
+                encoding: {
+                text: { field: headers[1], type: "nominal" }
+                }
+            },
+            // Right side value labels
+            {
+                transform: [
+                { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+                ],
+                mark: {
+                type: "text",
+                align: "left",
+                baseline: "middle",
+                dx: 8,
+                fontSize: 11,
+                fontWeight: "normal"
+                },
+                encoding: {
+                text: { 
+                    field: headers[2], 
+                    type: "quantitative",
+                    format: formatString
+                }
+                }
+            },
+            // Right side category labels
+            {
+                transform: [
+                { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+                ],
+                mark: {
+                type: "text",
+                align: "left",
+                baseline: "middle",
+                dx: 35,
+                fontSize: 10,
+                fontWeight: "bold"
+                },
+                encoding: {
+                text: { field: headers[1], type: "nominal" }
+                }
+            }
             ],
-            "baseline": [
-              {
-                "test": "scale('angular', datum.dimension) > 0", 
-                "value": "top"
-              },
-              {
-                "test": "scale('angular', datum.dimension) == 0", 
-                "value": "middle"
-              },
-              {
-                "value": "bottom"
-              }
-            ],
-            "fill": {"value": "#323130"},
-            "fontWeight": {"value": "bold"},
-            "font": {"value": "Segoe UI"},
-            "fontSize": {"value": 12}
-          }
-        }
-      },
-      {
-        "type": "line",
-        "name": "outer-line",
-        "from": {"data": "radial-grid"},
-        "encode": {
-          "enter": {
-            "interpolate": {"value": "linear-closed"},
-            "x": {"field": "x2"},
-            "y": {"field": "y2"},
-            "stroke": {"value": "#8a8886"},
-            "strokeWidth": {"value": 2},
-            "strokeOpacity": {"value": 0.6}
-          }
-        }
+            config: {
+            view: { stroke: "transparent" },
+            font: "Segoe UI",
+            text: { 
+                font: "Segoe UI", 
+                fontSize: 11, 
+                fill: "#605E5C" 
+            },
+            axis: {
+                labelColor: "#605e5c",
+                titleColor: "#323130",
+                gridColor: "#f3f2f1"
+            }
+            }
+        };
       }
-    ]
-  };
-}
+
+      else if (chartType === "horizon") {
+        const horizonData = data.map((row, index) => ({
+            x: row[headers[0]] || index + 1,
+            y: parseFloat(row[headers[1]]) || 0
+        }));
+
+        // Calculate data range and bands
+        const yValues = horizonData.map(d => d.y);
+        const maxY = Math.max(...yValues);
+        const minY = Math.min(...yValues);
+        const range = maxY - minY;
+        
+        // Define number of bands (typically 2-4 for horizon graphs)
+        const numBands = 3;
+        const bandHeight = range / (numBands * 2); // Divide by 2 for positive and negative
+        const baseline = minY + range / 2; // Use middle as baseline
+        
+        // Calculate dynamic dimensions
+        const dataPoints = horizonData.length;
+        const dynamicWidth = Math.max(300, Math.min(800, dataPoints * 15));
+
+        spec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+            "description": "Horizon Graph from Excel selection (IDL methodology)",
+            "width": dynamicWidth,
+            "height": 60,
+            "background": "white",
+            "config": { 
+            "view": { "stroke": "transparent" },
+            "area": {"interpolate": "monotone"}
+            },
+            "data": { "values": horizonData },
+            "encoding": {
+            "x": {
+                "field": "x",
+                "type": headers[0].toLowerCase().includes('date') ? "temporal" : "quantitative",
+                "scale": {"zero": false, "nice": false},
+                "axis": {
+                "title": headers[0],
+                "labelFontSize": 10,
+                "titleFontSize": 12,
+                "labelColor": "#605e5c",
+                "titleColor": "#323130",
+                "font": "Segoe UI"
+                }
+            },
+            "y": {
+                "type": "quantitative",
+                "scale": {"domain": [0, bandHeight]},
+                "axis": {
+                "title": headers[1],
+                "orient": "left",
+                "labelFontSize": 10,
+                "titleFontSize": 12,
+                "labelColor": "#605e5c",
+                "titleColor": "#323130",
+                "font": "Segoe UI",
+                "tickCount": 3
+                }
+            }
+            },
+            "layer": [
+            // Band 1 (lightest positive)
+            {
+                "transform": [
+                {"calculate": `max(0, min(datum.y - ${baseline}, ${bandHeight}))`, "as": "band1"}
+                ],
+                "mark": {
+                "type": "area",
+                "clip": true,
+                "opacity": 0.3,
+                "color": "#4a90e2",
+                "interpolate": "monotone"
+                },
+                "encoding": {
+                "y": {"field": "band1"}
+                }
+            },
+            // Band 2 (medium positive)
+            {
+                "transform": [
+                {"calculate": `max(0, min(datum.y - ${baseline} - ${bandHeight}, ${bandHeight}))`, "as": "band2"}
+                ],
+                "mark": {
+                "type": "area",
+                "clip": true,
+                "opacity": 0.6,
+                "color": "#2e7bd6",
+                "interpolate": "monotone"
+                },
+                "encoding": {
+                "y": {"field": "band2"}
+                }
+            },
+            // Band 3 (darkest positive)
+            {
+                "transform": [
+                {"calculate": `max(0, datum.y - ${baseline} - ${bandHeight * 2})`, "as": "band3"}
+                ],
+                "mark": {
+                "type": "area",
+                "clip": true,
+                "opacity": 0.9,
+                "color": "#1a5bb8",
+                "interpolate": "monotone"
+                },
+                "encoding": {
+                "y": {"field": "band3"}
+                }
+            },
+            // Band -1 (lightest negative, mirrored)
+            {
+                "transform": [
+                {"calculate": `max(0, min(${baseline} - datum.y, ${bandHeight}))`, "as": "nband1"}
+                ],
+                "mark": {
+                "type": "area",
+                "clip": true,
+                "opacity": 0.3,
+                "color": "#e74c3c",
+                "interpolate": "monotone"
+                },
+                "encoding": {
+                "y": {"field": "nband1"}
+                }
+            },
+            // Band -2 (medium negative, mirrored)
+            {
+                "transform": [
+                {"calculate": `max(0, min(${baseline} - datum.y - ${bandHeight}, ${bandHeight}))`, "as": "nband2"}
+                ],
+                "mark": {
+                "type": "area",
+                "clip": true,
+                "opacity": 0.6,
+                "color": "#c0392b",
+                "interpolate": "monotone"
+                },
+                "encoding": {
+                "y": {"field": "nband2"}
+                }
+            },
+            // Band -3 (darkest negative, mirrored)
+            {
+                "transform": [
+                {"calculate": `max(0, ${baseline} - datum.y - ${bandHeight * 2})`, "as": "nband3"}
+                ],
+                "mark": {
+                "type": "area",
+                "clip": true,
+                "opacity": 0.9,
+                "color": "#a93226",
+                "interpolate": "monotone"
+                },
+                "encoding": {
+                "y": {"field": "nband3"}
+                }
+            }
+            ]
+        };
+      }
+
+      else if (chartType === "tree") {
+        const nodes = new Map();
+
+        data.forEach((row, i) => {
+            const parent = row[headers[0]] || "";
+            const child = row[headers[1]] || `node_${i}`;
+            const value = headers.length >= 3 ? (parseFloat(row[headers[2]]) || 1) : 1;
+            
+            // Add parent node if it doesn't exist and is not empty
+            if (parent && !nodes.has(parent)) {
+            nodes.set(parent, {
+                id: parent,
+                parent: "",
+                name: parent,
+                value: 1
+            });
+            }
+            
+            // Add child node
+            if (!nodes.has(child)) {
+            nodes.set(child, {
+                id: child,
+                parent: parent,
+                name: child,
+                value: value
+            });
+            } else {
+            // Update parent and value if child already exists
+            const existingNode = nodes.get(child);
+            existingNode.parent = parent;
+            existingNode.value = value;
+            }
+        });
+        
+        // Convert Map to array
+        const treeData = Array.from(nodes.values());
+        
+        // Find root nodes (nodes with no parent or parent not in dataset)
+        const allIds = new Set(treeData.map(d => d.id));
+        treeData.forEach(node => {
+            if (node.parent && !allIds.has(node.parent)) {
+            node.parent = ""; // Make it a root node if parent doesn't exist
+            }
+        });
+
+        // Calculate dynamic dimensions based on data size
+        const nodeCount = treeData.length;
+        const dynamicWidth = Math.max(600, Math.min(1200, nodeCount * 40));
+        const dynamicHeight = Math.max(400, Math.min(1600, nodeCount * 30));
+
+        spec = {
+            "$schema": "https://vega.github.io/schema/vega/v6.json",
+            "description": "Tree diagram from Excel selection",
+            "width": dynamicWidth,
+            "height": dynamicHeight,
+            "padding": 20,
+            "background": "white",
+            "config": { "view": { "stroke": "transparent" }},
+
+            "signals": [
+            {
+                "name": "layout", 
+                "value": "tidy"
+            },
+            {
+                "name": "links", 
+                "value": "diagonal"
+            }
+            ],
+
+            "data": [
+            {
+                "name": "tree",
+                "values": treeData,
+                "transform": [
+                {
+                    "type": "stratify",
+                    "key": "id",
+                    "parentKey": "parent"
+                },
+                {
+                    "type": "tree",
+                    "method": {"signal": "layout"},
+                    "size": [{"signal": "height - 40"}, {"signal": "width - 100"}],
+                    "as": ["y", "x", "depth", "children"]
+                }
+                ]
+            },
+            {
+                "name": "links",
+                "source": "tree",
+                "transform": [
+                { "type": "treelinks" },
+                {
+                    "type": "linkpath",
+                    "orient": "horizontal",
+                    "shape": {"signal": "links"}
+                }
+                ]
+            }
+            ],
+
+            "scales": [
+            {
+                "name": "color",
+                "type": "ordinal",
+                "range": ["#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"],
+                "domain": {"data": "tree", "field": "depth"}
+            },
+            {
+                "name": "size",
+                "type": "linear",
+                "range": [100, 400],
+                "domain": {"data": "tree", "field": "value"}
+            }
+            ],
+
+            "marks": [
+            {
+                "type": "path",
+                "from": {"data": "links"},
+                "encode": {
+                "update": {
+                    "path": {"field": "path"},
+                    "stroke": {"value": "#8a8886"},
+                    "strokeWidth": {"value": 2},
+                    "strokeOpacity": {"value": 0.6}
+                }
+                }
+            },
+            {
+                "type": "symbol",
+                "from": {"data": "tree"},
+                "encode": {
+                "enter": {
+                    "stroke": {"value": "#ffffff"},
+                    "strokeWidth": {"value": 2}
+                },
+                "update": {
+                    "x": {"field": "x"},
+                    "y": {"field": "y"},
+                    "size": {"scale": "size", "field": "value"},
+                    "fill": {"scale": "color", "field": "depth"},
+                    "fillOpacity": {"value": 0.8},
+                    "tooltip": {
+                    "signal": "{'Name': datum.name, 'ID': datum.id, 'Parent': datum.parent, 'Depth': datum.depth, 'Value': datum.value}"
+                    }
+                },
+                "hover": {
+                    "fillOpacity": {"value": 1.0},
+                    "strokeWidth": {"value": 3}
+                }
+                }
+            },
+            {
+                "type": "text",
+                "from": {"data": "tree"},
+                "encode": {
+                "enter": {
+                    "fontSize": {"value": 11},
+                    "baseline": {"value": "middle"},
+                    "font": {"value": "Segoe UI"},
+                    "fontWeight": {"value": "bold"}
+                },
+                "update": {
+                    "x": {"field": "x"},
+                    "y": {"field": "y"},
+                    "text": {"field": "name"},
+                    "dx": {"signal": "datum.children ? -12 : 12"},
+                    "align": {"signal": "datum.children ? 'right' : 'left'"},
+                    "fill": {"value": "#323130"}
+                }
+                }
+            }
+            ]
+        };
+      }
+
+      else if (chartType === "sunburst") {
+        const nodes = new Map();
+        data.forEach((row, i) => {
+            const parent = row[headers[0]] || "";
+            const child = row[headers[1]] || `node_${i}`;
+            const value = headers.length >= 3 ? (parseFloat(row[headers[2]]) || 1) : 1;
+            
+            // Add parent node if it doesn't exist and is not empty
+            if (parent && !nodes.has(parent)) {
+            nodes.set(parent, {
+                id: parent,
+                parent: "",
+                name: parent,
+                size: 0 // Will be calculated later
+            });
+            }
+            
+            // Add child node
+            if (!nodes.has(child)) {
+            nodes.set(child, {
+                id: child,
+                parent: parent,
+                name: child,
+                size: value
+            });
+            } else {
+            // Update parent and value if child already exists
+            const existingNode = nodes.get(child);
+            existingNode.parent = parent;
+            existingNode.size = value;
+            }
+        });
+        
+        // Convert Map to array
+        const hierarchicalData = Array.from(nodes.values());
+        
+        // Find root nodes (nodes with no parent or parent not in dataset)
+        const allIds = new Set(hierarchicalData.map(d => d.id));
+        hierarchicalData.forEach(node => {
+            if (node.parent && !allIds.has(node.parent)) {
+            node.parent = ""; // Make it a root node if parent doesn't exist
+            }
+        });
+
+        // Calculate chart size based on data complexity
+        const nodeCount = hierarchicalData.length;
+        const chartSize = Math.max(400, Math.min(600, nodeCount * 15 + 300));
+
+        spec = {
+            "$schema": "https://vega.github.io/schema/vega/v6.json",
+            "description": "Sunburst chart from Excel selection",
+            "width": chartSize,
+            "height": chartSize,
+            "padding": 10,
+            "autosize": "none",
+            "background": "white",
+            "config": { "view": { "stroke": "transparent" }},
+
+            "signals": [
+            {
+                "name": "centerX",
+                "update": "width / 2"
+            },
+            {
+                "name": "centerY", 
+                "update": "height / 2"
+            },
+            {
+                "name": "outerRadius",
+                "update": "min(width, height) / 2 - 10"
+            }
+            ],
+
+            "data": [
+            {
+                "name": "tree",
+                "values": hierarchicalData,
+                "transform": [
+                {
+                    "type": "stratify",
+                    "key": "id",
+                    "parentKey": "parent"
+                },
+                {
+                    "type": "partition",
+                    "field": "size",
+                    "sort": {"field": "size", "order": "descending"},
+                    "size": [{"signal": "2 * PI"}, {"signal": "outerRadius"}],
+                    "as": ["a0", "r0", "a1", "r1", "depth", "children"]
+                }
+                ]
+            }
+            ],
+
+            "scales": [
+            {
+                "name": "color",
+                "type": "ordinal",
+                "domain": {"data": "tree", "field": "depth"},
+                "range": [
+                "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", 
+                "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438",
+                "#8764b8", "#e3008c", "#00b7c3", "#038387", "#486991"
+                ]
+            },
+            {
+                "name": "opacity",
+                "type": "linear",
+                "domain": {"data": "tree", "field": "depth"},
+                "range": [0.8, 0.4]
+            }
+            ],
+
+            "marks": [
+            {
+                "type": "arc",
+                "from": {"data": "tree"},
+                "encode": {
+                "enter": {
+                    "x": {"signal": "centerX"},
+                    "y": {"signal": "centerY"},
+                    "stroke": {"value": "white"},
+                    "strokeWidth": {"value": 1}
+                },
+                "update": {
+                    "startAngle": {"field": "a0"},
+                    "endAngle": {"field": "a1"},
+                    "innerRadius": {"field": "r0"},
+                    "outerRadius": {"field": "r1"},
+                    "fill": {"scale": "color", "field": "depth"},
+                    "fillOpacity": {"scale": "opacity", "field": "depth"}
+                }
+                }
+            },
+            {
+                "type": "text",
+                "from": {"data": "tree"},
+                "encode": {
+                "enter": {
+                    "x": {"signal": "centerX"},
+                    "y": {"signal": "centerY"},
+                    "radius": {"signal": "(datum.r0 + datum.r1) / 2"},
+                    "theta": {"signal": "(datum.a0 + datum.a1) / 2"},
+                    "fill": {"value": "#323130"},
+                    "font": {"value": "Segoe UI"},
+                    "fontSize": {"value": 10},
+                    "fontWeight": {"value": "bold"},
+                    "align": {"value": "center"},
+                    "baseline": {"value": "middle"}
+                },
+                "update": {
+                    "text": {
+                    "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"
+                    },
+                    "opacity": {
+                    "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"
+                    }
+                }
+                }
+            }
+            ]
+        };
+      }
+
+      else if (chartType === "radar") {
+        const radarData = [];
+        const dimensions = headers.slice(1); // All columns except first are dimensions
+        
+        data.forEach((row, seriesIndex) => {
+            const seriesName = row[headers[0]] || `Series ${seriesIndex + 1}`;
+            
+            dimensions.forEach(dimension => {
+            const value = parseFloat(row[dimension]) || 0;
+            radarData.push({
+                series: seriesName,
+                dimension: dimension,
+                value: value,
+                category: seriesIndex
+            });
+            });
+        });
+
+        // Get unique dimensions for grid
+        const uniqueDimensions = [...new Set(radarData.map(d => d.dimension))];
+
+        spec = {
+            "$schema": "https://vega.github.io/schema/vega/v6.json",
+            "description": "Radar chart from Excel selection",
+            "width": 400,
+            "height": 400,
+            "padding": 60,
+            "autosize": {"type": "none", "contains": "padding"},
+            "background": "white",
+            "config": { "view": { "stroke": "transparent" }},
+
+            "signals": [
+            {"name": "radius", "update": "width / 2"}
+            ],
+
+            "data": [
+            {
+                "name": "table",
+                "values": radarData
+            },
+            {
+                "name": "dimensions",
+                "values": uniqueDimensions.map(d => ({dimension: d}))
+            }
+            ],
+
+            "scales": [
+            {
+                "name": "angular",
+                "type": "point",
+                "range": {"signal": "[-PI, PI]"},
+                "padding": 0.5,
+                "domain": uniqueDimensions
+            },
+            {
+                "name": "radial",
+                "type": "linear",
+                "range": {"signal": "[0, radius]"},
+                "zero": true,
+                "nice": true,
+                "domain": {"data": "table", "field": "value"},
+                "domainMin": 0
+            },
+            {
+                "name": "color",
+                "type": "ordinal",
+                "domain": {"data": "table", "field": "category"},
+                "range": [
+                "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e",
+                "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"
+                ]
+            }
+            ],
+
+            "encode": {
+            "enter": {
+                "x": {"signal": "radius"},
+                "y": {"signal": "radius"}
+            }
+            },
+
+            "marks": [
+            {
+                "type": "group",
+                "name": "categories",
+                "zindex": 1,
+                "from": {
+                "facet": {"data": "table", "name": "facet", "groupby": ["category", "series"]}
+                },
+                "marks": [
+                {
+                    "type": "line",
+                    "name": "category-line",
+                    "from": {"data": "facet"},
+                    "encode": {
+                    "enter": {
+                        "interpolate": {"value": "linear-closed"},
+                        "x": {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                        "y": {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                        "stroke": {"scale": "color", "field": "category"},
+                        "strokeWidth": {"value": 2},
+                        "fill": {"scale": "color", "field": "category"},
+                        "fillOpacity": {"value": 0.1},
+                        "strokeOpacity": {"value": 0.8}
+                    }
+                    }
+                },
+                {
+                    "type": "symbol",
+                    "name": "category-points",
+                    "from": {"data": "facet"},
+                    "encode": {
+                    "enter": {
+                        "x": {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                        "y": {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                        "size": {"value": 50},
+                        "fill": {"scale": "color", "field": "category"},
+                        "stroke": {"value": "white"},
+                        "strokeWidth": {"value": 1}
+                    }
+                    }
+                }
+                ]
+            },
+            {
+                "type": "rule",
+                "name": "radial-grid",
+                "from": {"data": "dimensions"},
+                "zindex": 0,
+                "encode": {
+                "enter": {
+                    "x": {"value": 0},
+                    "y": {"value": 0},
+                    "x2": {"signal": "radius * cos(scale('angular', datum.dimension))"},
+                    "y2": {"signal": "radius * sin(scale('angular', datum.dimension))"},
+                    "stroke": {"value": "#e1e4e8"},
+                    "strokeWidth": {"value": 1}
+                }
+                }
+            },
+            {
+                "type": "text",
+                "name": "dimension-label",
+                "from": {"data": "dimensions"},
+                "zindex": 1,
+                "encode": {
+                "enter": {
+                    "x": {"signal": "(radius + 20) * cos(scale('angular', datum.dimension))"},
+                    "y": {"signal": "(radius + 20) * sin(scale('angular', datum.dimension))"},
+                    "text": {"field": "dimension"},
+                    "align": [
+                    {
+                        "test": "abs(scale('angular', datum.dimension)) > PI / 2",
+                        "value": "right"
+                    },
+                    {
+                        "value": "left"
+                    }
+                    ],
+                    "baseline": [
+                    {
+                        "test": "scale('angular', datum.dimension) > 0", 
+                        "value": "top"
+                    },
+                    {
+                        "test": "scale('angular', datum.dimension) == 0", 
+                        "value": "middle"
+                    },
+                    {
+                        "value": "bottom"
+                    }
+                    ],
+                    "fill": {"value": "#323130"},
+                    "fontWeight": {"value": "bold"},
+                    "font": {"value": "Segoe UI"},
+                    "fontSize": {"value": 12}
+                }
+                }
+            },
+            {
+                "type": "line",
+                "name": "outer-line",
+                "from": {"data": "radial-grid"},
+                "encode": {
+                "enter": {
+                    "interpolate": {"value": "linear-closed"},
+                    "x": {"field": "x2"},
+                    "y": {"field": "y2"},
+                    "stroke": {"value": "#8a8886"},
+                    "strokeWidth": {"value": 2},
+                    "strokeOpacity": {"value": 0.6}
+                }
+                }
+            }
+            ]
+        };
+      }
 
       else if (chartType === "waterfall") {
         // Process waterfall data inline - set last entry's amount to 0
