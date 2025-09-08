@@ -369,6 +369,186 @@ else if (chartType === "tree") {
   };
 }
 
+else if (chartType === "sunburst") {
+  // Sunburst chart implementation
+  // Expected columns: Parent, Child, Value (optional)
+  
+  // Transform parent-child data to hierarchical structure
+  const nodes = new Map();
+  
+  // Collect all unique nodes from data
+  data.forEach((row, i) => {
+    const parent = row[headers[0]] || "";
+    const child = row[headers[1]] || `node_${i}`;
+    const value = headers.length >= 3 ? (parseFloat(row[headers[2]]) || 1) : 1;
+    
+    // Add parent node if it doesn't exist and is not empty
+    if (parent && !nodes.has(parent)) {
+      nodes.set(parent, {
+        id: parent,
+        parent: "",
+        name: parent,
+        size: 0 // Will be calculated later
+      });
+    }
+    
+    // Add child node
+    if (!nodes.has(child)) {
+      nodes.set(child, {
+        id: child,
+        parent: parent,
+        name: child,
+        size: value
+      });
+    } else {
+      // Update parent and value if child already exists
+      const existingNode = nodes.get(child);
+      existingNode.parent = parent;
+      existingNode.size = value;
+    }
+  });
+  
+  // Convert Map to array
+  const hierarchicalData = Array.from(nodes.values());
+  
+  // Find root nodes (nodes with no parent or parent not in dataset)
+  const allIds = new Set(hierarchicalData.map(d => d.id));
+  hierarchicalData.forEach(node => {
+    if (node.parent && !allIds.has(node.parent)) {
+      node.parent = ""; // Make it a root node if parent doesn't exist
+    }
+  });
+
+  // Calculate chart size based on data complexity
+  const nodeCount = hierarchicalData.length;
+  const chartSize = Math.max(400, Math.min(600, nodeCount * 15 + 300));
+
+  spec = {
+    "$schema": "https://vega.github.io/schema/vega/v6.json",
+    "description": "Sunburst chart from Excel selection",
+    "width": chartSize,
+    "height": chartSize,
+    "padding": 10,
+    "autosize": "none",
+    "background": "white",
+    "config": { "view": { "stroke": "transparent" }},
+
+    "signals": [
+      {
+        "name": "centerX",
+        "update": "width / 2"
+      },
+      {
+        "name": "centerY", 
+        "update": "height / 2"
+      },
+      {
+        "name": "outerRadius",
+        "update": "min(width, height) / 2 - 10"
+      }
+    ],
+
+    "data": [
+      {
+        "name": "tree",
+        "values": hierarchicalData,
+        "transform": [
+          {
+            "type": "stratify",
+            "key": "id",
+            "parentKey": "parent"
+          },
+          {
+            "type": "partition",
+            "field": "size",
+            "sort": {"field": "size", "order": "descending"},
+            "size": [{"signal": "2 * PI"}, {"signal": "outerRadius"}],
+            "as": ["a0", "r0", "a1", "r1", "depth", "children"]
+          }
+        ]
+      }
+    ],
+
+    "scales": [
+      {
+        "name": "color",
+        "type": "ordinal",
+        "domain": {"data": "tree", "field": "depth"},
+        "range": [
+          "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", 
+          "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438",
+          "#8764b8", "#e3008c", "#00b7c3", "#038387", "#486991"
+        ]
+      },
+      {
+        "name": "opacity",
+        "type": "linear",
+        "domain": {"data": "tree", "field": "depth"},
+        "range": [0.8, 0.4]
+      }
+    ],
+
+    "marks": [
+      {
+        "type": "arc",
+        "from": {"data": "tree"},
+        "encode": {
+          "enter": {
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY"},
+            "stroke": {"value": "white"},
+            "strokeWidth": {"value": 1}
+          },
+          "update": {
+            "startAngle": {"field": "a0"},
+            "endAngle": {"field": "a1"},
+            "innerRadius": {"field": "r0"},
+            "outerRadius": {"field": "r1"},
+            "fill": {"scale": "color", "field": "depth"},
+            "fillOpacity": {"scale": "opacity", "field": "depth"},
+            "tooltip": {
+              "signal": "{'Name': datum.name, 'Value': datum.size, 'Depth': datum.depth, 'Parent': datum.parent}"
+            },
+            "zindex": {"value": 0}
+          },
+          "hover": {
+            "stroke": {"value": "#323130"},
+            "strokeWidth": {"value": 3},
+            "fillOpacity": {"value": 1.0},
+            "zindex": {"value": 1}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "tree"},
+        "encode": {
+          "enter": {
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY"},
+            "radius": {"signal": "(datum.r0 + datum.r1) / 2"},
+            "theta": {"signal": "(datum.a0 + datum.a1) / 2"},
+            "fill": {"value": "#323130"},
+            "font": {"value": "Segoe UI"},
+            "fontSize": {"value": 10},
+            "fontWeight": {"value": "bold"},
+            "align": {"value": "center"},
+            "baseline": {"value": "middle"}
+          },
+          "update": {
+            "text": {
+              "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"
+            },
+            "opacity": {
+              "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"
+            }
+          }
+        }
+      }
+    ]
+  };
+}
+
       else if (chartType === "waterfall") {
         // Process waterfall data inline - set last entry's amount to 0
         const processedData = [...data];

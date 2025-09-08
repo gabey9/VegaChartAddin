@@ -195,6 +195,7 @@
                 <div class="chart-item" data-chart="box" data-folder="basic">Box</div>
                 <div class="chart-item" data-chart="histogram" data-folder="basic">Histogram</div>              
                 <div class="chart-item" data-chart="treemap" data-folder="basic">Treemap</div>
+		<div class="chart-item" data-chart="sunburst" data-folder="basic">Sunburst</div>
                 <div class="chart-item" data-chart="waterfall" data-folder="basic">Waterfall</div>                
                 
                 <div class="folder-item" data-folder="special">
@@ -359,6 +360,15 @@
             <li><strong>Column C:</strong> Values/Sizes (e.g., Sales, Budget, File Size)</li>            
         </ul>
     </div>
+
+<div id="req-sunburst" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Parent (parent category, empty for root level)</li>
+        <li><strong>Column 2:</strong> Child (child category or item name)</li>
+        <li><strong>Column 3 (optional):</strong> Value (size of the segment, defaults to 1)</li>
+    </ul>
+</div>
 
     <div id="req-wordcloud" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
