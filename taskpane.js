@@ -238,35 +238,7 @@ else if (chartType === "horizon") {
       }
     },
     "layer": [
-      // Reference y-axis layer (invisible line but shows axis)
-      {
-        "mark": {
-          "type": "line",
-          "opacity": 0,
-          "strokeWidth": 0
-        },
-        "encoding": {
-          "y": {
-            "field": "y",
-            "type": "quantitative",
-            "scale": {"zero": false},
-            "axis": {
-              "title": headers[1],
-              "orient": "left",
-              "labelFontSize": 10,
-              "titleFontSize": 12,
-              "labelColor": "#605e5c",
-              "titleColor": "#323130",
-              "font": "Segoe UI",
-              "tickCount": 4,
-              "grid": false,
-              "domain": false,
-              "ticks": true
-            }
-          }
-        }
-      },
-      // Band 1 (lightest positive)
+      // Band 1 (lightest positive) - WITH Y-AXIS
       {
         "transform": [
           {"calculate": `max(0, min(datum.y - ${baseline}, ${bandHeight}))`, "as": "band1"}
@@ -283,7 +255,16 @@ else if (chartType === "horizon") {
             "field": "band1",
             "type": "quantitative",
             "scale": {"domain": [0, bandHeight]},
-            "axis": null
+            "axis": {
+              "title": headers[1],
+              "orient": "left",
+              "labelFontSize": 10,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI",
+              "tickCount": 3
+            }
           }
         }
       },
