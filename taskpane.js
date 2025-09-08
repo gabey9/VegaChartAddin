@@ -365,10 +365,15 @@ else if (chartType === "horizon") {
         }
       }
     ],
-    "resolve": {
-      "scale": {
-        "y": "independent"
-      }
+    "config": {
+      "view": { "stroke": "transparent" },
+      "area": {"interpolate": "monotone"},
+      "axis": {
+        "grid": false,
+        "ticks": false,
+        "domain": false
+      },
+      "axisY": null
     }
   };
 }
