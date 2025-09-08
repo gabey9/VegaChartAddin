@@ -187,15 +187,21 @@ export async function run() {
       }
 
 else if (chartType === "gantt") {
+    function excelDateToJSDate(serial) {
+        return new Date(Math.round((serial - 25569) * 86400 * 1000));
+    }
+
     const ganttData = rows.map(row => {
         const id = row[0];
         if (!id) return null;
 
+        // Start/end date handling
         const start = typeof row[3] === "number" ? excelDateToJSDate(row[3]) : new Date(row[3]);
         const end = typeof row[4] === "number" ? excelDateToJSDate(row[4]) : new Date(row[4]);
 
         if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) return null;
 
+        // Progress handling
         let progress = 0;
         if (row[5]) {
             if (typeof row[5] === "string" && row[5].includes("%")) {
@@ -218,7 +224,7 @@ else if (chartType === "gantt") {
         };
     }).filter(Boolean);
 
-    // Compute hierarchy
+    // Compute hierarchy + progressEnd
     const taskMap = new Map(ganttData.map(t => [t.id, t]));
     ganttData.forEach(task => {
         let level = 0;
@@ -229,12 +235,12 @@ else if (chartType === "gantt") {
         }
         task.level = level;
 
-        // progressEnd pre-computation
+        // Precompute progressEnd
         const duration = task.endDate - task.startDate;
         task.progressEnd = new Date(task.startDate.getTime() + duration * task.progress);
     });
 
-    // Sorting
+    // Sort tasks
     ganttData.sort((a, b) => a.level - b.level || a.startDate - b.startDate);
 
     spec = {
@@ -244,11 +250,71 @@ else if (chartType === "gantt") {
         height: Math.max(300, ganttData.length * 30),
         data: { values: ganttData },
         layer: [
-            // background bars ...
-            // progress bars (x2 uses progressEnd) ...
-            // labels ...
-            // today line with ISO string
-        ]
+            // Background bars (full duration)
+            {
+                mark: { type: "bar", opacity: 0.3, height: 20 },
+                encoding: {
+                    y: {
+                        field: "name",
+                        type: "nominal",
+                        axis: { title: null, labelFontSize: 11 },
+                        sort: null
+                    },
+                    x: { field: "startDate", type: "temporal", axis: { title: "Timeline", format: "%b %d", labelAngle: -45 } },
+                    x2: { field: "endDate", type: "temporal" },
+                    color: {
+                        field: "level",
+                        type: "ordinal",
+                        scale: { scheme: "category10" },
+                        legend: { title: "Level" }
+                    },
+                    tooltip: [
+                        { field: "name", type: "nominal", title: "Task" },
+                        { field: "startDate", type: "temporal", title: "Start", format: "%Y-%m-%d" },
+                        { field: "endDate", type: "temporal", title: "End", format: "%Y-%m-%d" },
+                        { field: "progress", type: "quantitative", title: "Progress", format: ".0%" }
+                    ]
+                }
+            },
+            // Progress bars
+            {
+                mark: { type: "bar", opacity: 0.8, height: 20 },
+                encoding: {
+                    y: { field: "name", type: "nominal", sort: null },
+                    x: { field: "startDate", type: "temporal" },
+                    x2: { field: "progressEnd", type: "temporal" },
+                    color: {
+                        field: "level",
+                        type: "ordinal",
+                        scale: { scheme: "category10" }
+                    }
+                }
+            },
+            // Task labels
+            {
+                mark: { type: "text", align: "left", baseline: "middle", dx: 5, fontSize: 10 },
+                encoding: {
+                    y: { field: "name", type: "nominal", sort: null },
+                    x: { field: "endDate", type: "temporal" },
+                    text: { field: "progress", type: "quantitative", format: ".0%" },
+                    color: { value: "#666" }
+                }
+            },
+            // Today line
+            {
+                mark: { type: "rule", strokeDash: [4, 4], opacity: 0.5 },
+                data: { values: [{ date: new Date().toISOString() }] },
+                encoding: {
+                    x: { field: "date", type: "temporal" },
+                    color: { value: "red" },
+                    size: { value: 1 }
+                }
+            }
+        ],
+        config: {
+            view: { stroke: null },
+            axis: { grid: true, gridColor: "#f0f0f0" }
+        }
     };
 }
 
