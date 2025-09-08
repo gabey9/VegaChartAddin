@@ -107,85 +107,84 @@ export async function run() {
         };
       }
 
-    else if (chartType === "line") {
-    const transformedData = [];
-    const valueColumns = headers.slice(1);
-
-    data.forEach(row => {
-        valueColumns.forEach(colName => {
-        if (row[colName] !== null && row[colName] !== undefined && row[colName] !== "") {
-            transformedData.push({
-            [headers[0]]: row[headers[0]], // x-axis value (first column)
-            series: colName,               // series name (column header)
-            value: parseFloat(row[colName]) || 0  // y-axis value
-            });
-        }
+else if (chartType === "line") {
+  const transformedData = [];
+  const valueColumns = headers.slice(1);
+  data.forEach(row => {
+    valueColumns.forEach(colName => {
+      if (row[colName] !== null && row[colName] !== undefined && row[colName] !== "") {
+        transformedData.push({
+          [headers[0]]: row[headers[0]], // x-axis value (first column)
+          series: colName,               // series name (column header)
+          value: parseFloat(row[colName]) || 0  // y-axis value
         });
+      }
     });
+  });
 
-    spec = {
-        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Multi-series line chart from Excel selection",
-        background: "white",
-        config: { view: { stroke: "transparent" }},
-        data: { values: transformedData },
-        mark: { 
-        type: "line", 
-        point: true,
-        tooltip: true,
-        strokeWidth: 2
-        },
-        encoding: {
-        x: { 
-            field: headers[0], 
-            type: "ordinal",
-            axis: {
-            title: headers[0],
-            labelFontSize: 12,
-            titleFontSize: 14,
-            labelAngle: 0
-            }
-        },
-        y: { 
-            field: "value", 
-            type: "quantitative",
-            axis: {
-            title: "Value",
-            labelFontSize: 12,
-            titleFontSize: 14
-            }
-        },
-        color: { 
-            field: "series", 
-            type: "nominal",
-            scale: {
-            scheme: "category10"
-            },
-            legend: {
-            title: "Series",
-            titleFontSize: 12,
-            labelFontSize: 11
-            }
-        }
-        },
-        config: {
-        font: "Segoe UI",
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Multi-series line chart from Excel selection",
+    background: "white",
+    config: { view: { stroke: "transparent" }},
+    data: { values: transformedData },
+    mark: { 
+      type: "line", 
+      point: false,
+      tooltip: true,
+      strokeWidth: 2
+    },
+    encoding: {
+      x: { 
+        field: headers[0], 
+        type: "ordinal",
         axis: {
-            labelColor: "#605e5c",
-            titleColor: "#323130",
-            gridColor: "#f3f2f1"
+          title: headers[0],
+          labelFontSize: 12,
+          titleFontSize: 14,
+          labelAngle: 0
+        }
+      },
+      y: { 
+        field: "value", 
+        type: "quantitative",
+        axis: {
+          title: "Value",
+          labelFontSize: 12,
+          titleFontSize: 14
+        }
+      },
+      color: { 
+        field: "series", 
+        type: "nominal",
+        scale: {
+          scheme: "category10"
         },
         legend: {
-            titleColor: "#323130",
-            labelColor: "#605e5c"
-        },
-        point: {
-            size: 60,
-            filled: true
+          title: "Series",
+          titleFontSize: 12,
+          labelFontSize: 11
         }
-        }
-    };
+      }
+    },
+    config: {
+      font: "Segoe UI",
+      axis: {
+        labelColor: "#605e5c",
+        titleColor: "#323130",
+        gridColor: "#f3f2f1"
+      },
+      legend: {
+        titleColor: "#323130",
+        labelColor: "#605e5c"
+      },
+      point: {
+        size: 60,
+        filled: true
+      }
     }
+  };
+}
 
       else if (chartType === "waterfall") {
         // Process waterfall data inline - set last entry's amount to 0
