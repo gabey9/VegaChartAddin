@@ -188,40 +188,51 @@ else if (chartType === "line") {
 
 else if (chartType === "tree") {
   // Tree diagram implementation
-  // Expected columns: ID, Parent, Name, Value (optional)
+  // Expected columns: Parent, Child, Value (optional)
   
-  let treeData;
+  // Transform parent-child data to hierarchical structure
+  const nodes = new Map();
   
-  if (headers.length >= 3) {
-    // Full hierarchical data with ID, Parent, Name, and optional Value
-    treeData = data.map((d, i) => ({
-      id: d[headers[0]] || `node_${i}`,
-      parent: d[headers[1]] || "",
-      name: d[headers[2]] || `Node ${i}`,
-      value: headers.length >= 4 ? (parseFloat(d[headers[3]]) || 1) : 1
-    }));
-  } else {
-    // Simple parent-child data
-    treeData = data.map((d, i) => ({
-      id: d[headers[1]] || `node_${i}`,
-      parent: d[headers[0]] || "",
-      name: d[headers[1]] || `Node ${i}`,
-      value: 1
-    }));
-  }
-  
-  // Add root node if it doesn't exist
-  const parentIds = new Set(treeData.map(d => d.parent).filter(p => p !== ""));
-  const nodeIds = new Set(treeData.map(d => d.id));
-  
-  parentIds.forEach(parentId => {
-    if (!nodeIds.has(parentId)) {
-      treeData.push({
-        id: parentId,
+  // Collect all unique nodes from data
+  data.forEach((row, i) => {
+    const parent = row[headers[0]] || "";
+    const child = row[headers[1]] || `node_${i}`;
+    const value = headers.length >= 3 ? (parseFloat(row[headers[2]]) || 1) : 1;
+    
+    // Add parent node if it doesn't exist and is not empty
+    if (parent && !nodes.has(parent)) {
+      nodes.set(parent, {
+        id: parent,
         parent: "",
-        name: parentId,
+        name: parent,
         value: 1
       });
+    }
+    
+    // Add child node
+    if (!nodes.has(child)) {
+      nodes.set(child, {
+        id: child,
+        parent: parent,
+        name: child,
+        value: value
+      });
+    } else {
+      // Update parent and value if child already exists
+      const existingNode = nodes.get(child);
+      existingNode.parent = parent;
+      existingNode.value = value;
+    }
+  });
+  
+  // Convert Map to array
+  const treeData = Array.from(nodes.values());
+  
+  // Find root nodes (nodes with no parent or parent not in dataset)
+  const allIds = new Set(treeData.map(d => d.id));
+  treeData.forEach(node => {
+    if (node.parent && !allIds.has(node.parent)) {
+      node.parent = ""; // Make it a root node if parent doesn't exist
     }
   });
 
