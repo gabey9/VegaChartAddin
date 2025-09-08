@@ -238,33 +238,6 @@ else if (chartType === "horizon") {
       }
     },
     "layer": [
-      // Reference layer for y-axis (uses original y values)
-      {
-        "mark": {
-          "type": "rule",
-          "opacity": 0,
-          "strokeWidth": 0
-        },
-        "encoding": {
-          "y": {
-            "field": "y",
-            "type": "quantitative",
-            "scale": {"domain": [${minY}, ${maxY}], "zero": false},
-            "axis": {
-              "title": headers[1],
-              "orient": "left",
-              "labelFontSize": 10,
-              "titleFontSize": 12,
-              "labelColor": "#605e5c",
-              "titleColor": "#323130",
-              "font": "Segoe UI",
-              "tickCount": 4,
-              "grid": false,
-              "domain": false
-            }
-          }
-        }
-      },
       // Band 1 (lightest positive)
       {
         "transform": [
@@ -281,8 +254,7 @@ else if (chartType === "horizon") {
           "y": {
             "field": "band1",
             "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]},
-            "axis": null
+            "scale": {"domain": [0, bandHeight]}
           }
         }
       },
@@ -302,8 +274,7 @@ else if (chartType === "horizon") {
           "y": {
             "field": "band2",
             "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]},
-            "axis": null
+            "scale": {"domain": [0, bandHeight]}
           }
         }
       },
@@ -323,8 +294,7 @@ else if (chartType === "horizon") {
           "y": {
             "field": "band3",
             "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]},
-            "axis": null
+            "scale": {"domain": [0, bandHeight]}
           }
         }
       },
@@ -344,8 +314,7 @@ else if (chartType === "horizon") {
           "y": {
             "field": "nband1",
             "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]},
-            "axis": null
+            "scale": {"domain": [0, bandHeight]}
           }
         }
       },
@@ -365,8 +334,7 @@ else if (chartType === "horizon") {
           "y": {
             "field": "nband2",
             "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]},
-            "axis": null
+            "scale": {"domain": [0, bandHeight]}
           }
         }
       },
@@ -392,15 +360,10 @@ else if (chartType === "horizon") {
         }
       }
     ],
-    "config": {
-      "view": { "stroke": "transparent" },
-      "area": {"interpolate": "monotone"},
-      "axis": {
-        "grid": false,
-        "ticks": false,
-        "domain": false
-      },
-      "axisRight": null
+    "resolve": {
+      "scale": {
+        "y": "independent"
+      }
     }
   };
 }
