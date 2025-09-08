@@ -354,7 +354,8 @@ else if (chartType === "horizon") {
           "y": {
             "field": "nband3",
             "type": "quantitative",
-            "scale": {"domain": [0, bandHeight]}
+            "scale": {"domain": [0, bandHeight]},
+            "axis": null
           }
         }
       }
