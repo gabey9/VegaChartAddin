@@ -194,18 +194,22 @@ else if (chartType === "horizon") {
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Horizon Graph from Excel selection",
+    description: "Dynamic Horizon Graph from Excel selection",
     width: 400,
     height: 80,
     data: { values: data },
+    transform: [
+      {
+        aggregate: [{ op: "max", field: "y", as: "ymax" }],
+        as: "ymax"
+      }
+    ],
     encoding: {
-      x: {
-        field: "x", type: "quantitative",
-        scale: { zero: false, nice: false }
-      },
+      x: { field: "x", type: "quantitative", scale: { zero: false, nice: false } },
       y: {
-        field: "y", type: "quantitative",
-        scale: { domain: { data: "values", field: "y" } }, // dynamic max
+        field: "y",
+        type: "quantitative",
+        scale: { domain: [0, { expr: "datum.ymax" }] }, // dynamic max
         axis: { title: null }
       }
     },
@@ -215,17 +219,14 @@ else if (chartType === "horizon") {
       },
       {
         transform: [
-          {
-            // shift values down by half the max so they "wrap" as horizon layers
-            calculate: "datum.y - 0.5 * max(datum.y)"
-          }
+          { calculate: "datum.y - datum.ymax/2", as: "ny" }
         ],
         mark: { type: "area", clip: true, orient: "vertical" },
         encoding: {
           y: {
-            field: "y",
+            field: "ny",
             type: "quantitative",
-            scale: { domain: { data: "values", field: "y" } }
+            scale: { domain: [0, { expr: "datum.ymax/2" }] }
           },
           opacity: { value: 0.3 }
         }
