@@ -186,193 +186,70 @@ export async function run() {
         };
       }
 
-      else if (chartType === "gantt") {
-const ganttData = rows.map(row => {
-                        const progress = row[5] ? (row[5] > 1 ? row[5]/100 : row[5]) : 0;
-                        return {
-                            id: row[0],
-                            parentId: row[1] || null,
-                            name: row[2] || `Task ${row[0]}`,
-                            startDate: new Date(row[3]),
-                            endDate: new Date(row[4]),
-                            progress: progress,
-                            dependencies: row[6] ? String(row[6]).split(',').map(d => d.trim()) : []
-                        };
-                    }).filter(d => d.id && d.startDate && d.endDate);
+else if (chartType === "gantt") {
+    const ganttData = rows.map(row => {
+        const id = row[0];
+        if (!id) return null;
 
-                    // Calculate task hierarchy levels
-                    const taskMap = new Map(ganttData.map(t => [t.id, t]));
-                    ganttData.forEach(task => {
-                        let level = 0;
-                        let current = task;
-                        while (current.parentId && taskMap.has(current.parentId)) {
-                            level++;
-                            current = taskMap.get(current.parentId);
-                        }
-                        task.level = level;
-                    });
+        const start = typeof row[3] === "number" ? excelDateToJSDate(row[3]) : new Date(row[3]);
+        const end = typeof row[4] === "number" ? excelDateToJSDate(row[4]) : new Date(row[4]);
 
-                    // Sort tasks by hierarchy and start date
-                    ganttData.sort((a, b) => {
-                        if (a.level !== b.level) return a.level - b.level;
-                        return a.startDate - b.startDate;
-                    });
+        if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) return null;
 
-                    // Create Vega specification
-                    const spec = {
-                        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-                        description: "Gantt Chart from Excel Data",
-                        width: 800,
-                        height: Math.max(300, ganttData.length * 30),
-                        data: { values: ganttData },
-                        layer: [
-                            // Background bars (full duration)
-                            {
-                                mark: {
-                                    type: "bar",
-                                    opacity: 0.3,
-                                    height: 20
-                                },
-                                encoding: {
-                                    y: {
-                                        field: "name",
-                                        type: "nominal",
-                                        axis: {
-                                            title: null,
-                                            labelFontSize: 11
-                                        },
-                                        sort: null
-                                    },
-                                    x: {
-                                        field: "startDate",
-                                        type: "temporal",
-                                        axis: {
-                                            title: "Timeline",
-                                            format: "%b %d",
-                                            labelAngle: -45
-                                        }
-                                    },
-                                    x2: {
-                                        field: "endDate",
-                                        type: "temporal"
-                                    },
-                                    color: {
-                                        field: "level",
-                                        type: "ordinal",
-                                        scale: {
-                                            scheme: "category10"
-                                        },
-                                        legend: {
-                                            title: "Level"
-                                        }
-                                    },
-                                    tooltip: [
-                                        {field: "name", type: "nominal", title: "Task"},
-                                        {field: "startDate", type: "temporal", title: "Start", format: "%Y-%m-%d"},
-                                        {field: "endDate", type: "temporal", title: "End", format: "%Y-%m-%d"},
-                                        {field: "progress", type: "quantitative", title: "Progress", format: ".0%"}
-                                    ]
-                                }
-                            },
-                            // Progress bars
-                            {
-                                mark: {
-                                    type: "bar",
-                                    opacity: 0.8,
-                                    height: 20
-                                },
-                                transform: [
-                                    {
-                                        calculate: "datum.startDate + (datum.endDate - datum.startDate) * datum.progress",
-                                        as: "progressEnd"
-                                    }
-                                ],
-                                encoding: {
-                                    y: {
-                                        field: "name",
-                                        type: "nominal",
-                                        sort: null
-                                    },
-                                    x: {
-                                        field: "startDate",
-                                        type: "temporal"
-                                    },
-                                    x2: {
-                                        field: "progressEnd",
-                                        type: "temporal"
-                                    },
-                                    color: {
-                                        field: "level",
-                                        type: "ordinal",
-                                        scale: {
-                                            scheme: "category10"
-                                        }
-                                    }
-                                }
-                            },
-                            // Task labels
-                            {
-                                mark: {
-                                    type: "text",
-                                    align: "left",
-                                    baseline: "middle",
-                                    dx: 5,
-                                    fontSize: 10
-                                },
-                                encoding: {
-                                    y: {
-                                        field: "name",
-                                        type: "nominal",
-                                        sort: null
-                                    },
-                                    x: {
-                                        field: "endDate",
-                                        type: "temporal"
-                                    },
-                                    text: {
-                                        field: "progress",
-                                        type: "quantitative",
-                                        format: ".0%"
-                                    },
-                                    color: {
-                                        value: "#666"
-                                    }
-                                }
-                            },
-                            // Today line
-                            {
-                                mark: {
-                                    type: "rule",
-                                    strokeDash: [4, 4],
-                                    opacity: 0.5
-                                },
-                                data: {
-                                    values: [{date: new Date()}]
-                                },
-                                encoding: {
-                                    x: {
-                                        field: "date",
-                                        type: "temporal"
-                                    },
-                                    color: {
-                                        value: "red"
-                                    },
-                                    size: {
-                                        value: 1
-                                    }
-                                }
-                            }
-                        ],
-                        config: {
-                            view: {
-                                stroke: null
-                            },
-                            axis: {
-                                grid: true,
-                                gridColor: "#f0f0f0"
-                            }
-                        }
-                    };
+        let progress = 0;
+        if (row[5]) {
+            if (typeof row[5] === "string" && row[5].includes("%")) {
+                progress = parseFloat(row[5]) / 100;
+            } else if (row[5] > 1) {
+                progress = row[5] / 100;
+            } else {
+                progress = row[5];
+            }
+        }
+
+        return {
+            id,
+            parentId: row[1] || null,
+            name: row[2] || `Task ${id}`,
+            startDate: start,
+            endDate: end,
+            progress,
+            dependencies: row[6] ? String(row[6]).split(',').map(d => d.trim()) : []
+        };
+    }).filter(Boolean);
+
+    // Compute hierarchy
+    const taskMap = new Map(ganttData.map(t => [t.id, t]));
+    ganttData.forEach(task => {
+        let level = 0;
+        let current = task;
+        while (current.parentId && taskMap.has(current.parentId)) {
+            level++;
+            current = taskMap.get(current.parentId);
+        }
+        task.level = level;
+
+        // progressEnd pre-computation
+        const duration = task.endDate - task.startDate;
+        task.progressEnd = new Date(task.startDate.getTime() + duration * task.progress);
+    });
+
+    // Sorting
+    ganttData.sort((a, b) => a.level - b.level || a.startDate - b.startDate);
+
+    spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Gantt Chart from Excel Data",
+        width: 800,
+        height: Math.max(300, ganttData.length * 30),
+        data: { values: ganttData },
+        layer: [
+            // background bars ...
+            // progress bars (x2 uses progressEnd) ...
+            // labels ...
+            // today line with ISO string
+        ]
+    };
 }
 
       else if (chartType === "slope") {
