@@ -203,6 +203,7 @@
                 </div>
                 <div class="chart-item" data-chart="radial" data-folder="special">Radial</div>
                 <div class="chart-item" data-chart="arc" data-folder="special">Arc</div>
+		<div class="chart-item" data-chart="tree" data-folder="special">Tree</div>
                 <div class="chart-item" data-chart="wordcloud" data-folder="special">Wordcloud</div>
                 <div class="chart-item" data-chart="strip" data-folder="special">Strip</div>
                 <div class="chart-item" data-chart="heatmap" data-folder="special">Heatmap</div>
@@ -236,6 +237,7 @@
         <option value="heatmap">Heatmap</option>
         <option value="radial">Radial</option>
         <option value="arc">Arc</option>
+        <option value="tree">Tree</option>
         <option value="wordcloud">Wordcloud</option>
         <option value="strip">Strip</option>
         <option value="treemap">Treemap</option>
@@ -330,6 +332,16 @@
             <li><strong>Column 4:</strong> Group/Category (optional, for coloring nodes)</li>
         </ul>
     </div>
+
+<div id="req-tree" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Node ID (unique identifier for each node)</li>
+        <li><strong>Column 2:</strong> Parent ID (the parent of this node, empty for root)</li>
+        <li><strong>Column 3:</strong> Node Name (display name for the node)</li>
+        <li><strong>Column 4 (optional):</strong> Value (affects node size)</li>
+    </ul>
+</div>
 
     <div id="req-strip" class="data-requirements hidden">
         <h4>Data Requirements:</h4>

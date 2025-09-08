@@ -186,6 +186,178 @@ else if (chartType === "line") {
   };
 }
 
+else if (chartType === "tree") {
+  // Tree diagram implementation
+  // Expected columns: ID, Parent, Name, Value (optional)
+  
+  let treeData;
+  
+  if (headers.length >= 3) {
+    // Full hierarchical data with ID, Parent, Name, and optional Value
+    treeData = data.map((d, i) => ({
+      id: d[headers[0]] || `node_${i}`,
+      parent: d[headers[1]] || "",
+      name: d[headers[2]] || `Node ${i}`,
+      value: headers.length >= 4 ? (parseFloat(d[headers[3]]) || 1) : 1
+    }));
+  } else {
+    // Simple parent-child data
+    treeData = data.map((d, i) => ({
+      id: d[headers[1]] || `node_${i}`,
+      parent: d[headers[0]] || "",
+      name: d[headers[1]] || `Node ${i}`,
+      value: 1
+    }));
+  }
+  
+  // Add root node if it doesn't exist
+  const parentIds = new Set(treeData.map(d => d.parent).filter(p => p !== ""));
+  const nodeIds = new Set(treeData.map(d => d.id));
+  
+  parentIds.forEach(parentId => {
+    if (!nodeIds.has(parentId)) {
+      treeData.push({
+        id: parentId,
+        parent: "",
+        name: parentId,
+        value: 1
+      });
+    }
+  });
+
+  // Calculate dynamic dimensions based on data size
+  const nodeCount = treeData.length;
+  const dynamicWidth = Math.max(600, Math.min(1200, nodeCount * 40));
+  const dynamicHeight = Math.max(400, Math.min(1600, nodeCount * 30));
+
+  spec = {
+    "$schema": "https://vega.github.io/schema/vega/v6.json",
+    "description": "Tree diagram from Excel selection",
+    "width": dynamicWidth,
+    "height": dynamicHeight,
+    "padding": 20,
+    "background": "white",
+    "config": { "view": { "stroke": "transparent" }},
+
+    "signals": [
+      {
+        "name": "layout", 
+        "value": "tidy"
+      },
+      {
+        "name": "links", 
+        "value": "diagonal"
+      }
+    ],
+
+    "data": [
+      {
+        "name": "tree",
+        "values": treeData,
+        "transform": [
+          {
+            "type": "stratify",
+            "key": "id",
+            "parentKey": "parent"
+          },
+          {
+            "type": "tree",
+            "method": {"signal": "layout"},
+            "size": [{"signal": "height - 40"}, {"signal": "width - 100"}],
+            "as": ["y", "x", "depth", "children"]
+          }
+        ]
+      },
+      {
+        "name": "links",
+        "source": "tree",
+        "transform": [
+          { "type": "treelinks" },
+          {
+            "type": "linkpath",
+            "orient": "horizontal",
+            "shape": {"signal": "links"}
+          }
+        ]
+      }
+    ],
+
+    "scales": [
+      {
+        "name": "color",
+        "type": "ordinal",
+        "range": ["#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"],
+        "domain": {"data": "tree", "field": "depth"}
+      },
+      {
+        "name": "size",
+        "type": "linear",
+        "range": [100, 400],
+        "domain": {"data": "tree", "field": "value"}
+      }
+    ],
+
+    "marks": [
+      {
+        "type": "path",
+        "from": {"data": "links"},
+        "encode": {
+          "update": {
+            "path": {"field": "path"},
+            "stroke": {"value": "#8a8886"},
+            "strokeWidth": {"value": 2},
+            "strokeOpacity": {"value": 0.6}
+          }
+        }
+      },
+      {
+        "type": "symbol",
+        "from": {"data": "tree"},
+        "encode": {
+          "enter": {
+            "stroke": {"value": "#ffffff"},
+            "strokeWidth": {"value": 2}
+          },
+          "update": {
+            "x": {"field": "x"},
+            "y": {"field": "y"},
+            "size": {"scale": "size", "field": "value"},
+            "fill": {"scale": "color", "field": "depth"},
+            "fillOpacity": {"value": 0.8},
+            "tooltip": {
+              "signal": "{'Name': datum.name, 'ID': datum.id, 'Parent': datum.parent, 'Depth': datum.depth, 'Value': datum.value}"
+            }
+          },
+          "hover": {
+            "fillOpacity": {"value": 1.0},
+            "strokeWidth": {"value": 3}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "tree"},
+        "encode": {
+          "enter": {
+            "fontSize": {"value": 11},
+            "baseline": {"value": "middle"},
+            "font": {"value": "Segoe UI"},
+            "fontWeight": {"value": "bold"}
+          },
+          "update": {
+            "x": {"field": "x"},
+            "y": {"field": "y"},
+            "text": {"field": "name"},
+            "dx": {"signal": "datum.children ? -12 : 12"},
+            "align": {"signal": "datum.children ? 'right' : 'left'"},
+            "fill": {"value": "#323130"}
+          }
+        }
+      }
+    ]
+  };
+}
+
       else if (chartType === "waterfall") {
         // Process waterfall data inline - set last entry's amount to 0
         const processedData = [...data];
