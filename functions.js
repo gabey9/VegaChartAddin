@@ -1,170 +1,130 @@
 ﻿/**
- * Creates a multi-series line chart from Excel data range
+ * Self-contained minimal line chart function for Excel
+ * Creates a line chart from Excel data range
+ * 
  * @customfunction
- * @param {any[][]} data The data range including headers
+ * @param {any[][]} data The data range including headers [["X", "Y"], [1, 10], [2, 20], ...]
  * @returns {string} Status message
  */
 function LINE(data) {
   return new Promise((resolve) => {
     try {
-      // Validate input - same as taskpane.js
+      // Validate input
       if (!data || data.length < 2) {
-        resolve("Need at least header row + one data row");
+        resolve("❌ Need at least header + 1 data row");
         return;
       }
 
-      // Process data exactly like taskpane.js
+      // Process data
       const headers = data[0];
       const rows = data.slice(1);
+      
+      if (headers.length < 2) {
+        resolve("❌ Need at least 2 columns (X, Y)");
+        return;
+      }
 
-      // Convert rows -> objects (same as taskpane.js)
-      const processedData = rows.map(row => {
-        let obj = {};
-        headers.forEach((h, i) => {
-          obj[h] = row[i];
-        });
-        return obj;
-      });
+      // Convert to chart data
+      const chartData = rows.map(row => ({
+        x: row[0],
+        y: parseFloat(row[1]) || 0
+      }));
 
-      // Transform data for multi-series line chart (exact copy from taskpane.js)
-      const transformedData = [];
-      const valueColumns = headers.slice(1);
-      processedData.forEach(row => {
-        valueColumns.forEach(colName => {
-          if (row[colName] !== null && row[colName] !== undefined && row[colName] !== "") {
-            transformedData.push({
-              [headers[0]]: row[headers[0]], // x-axis value (first column)
-              series: colName,               // series name (column header)
-              value: parseFloat(row[colName]) || 0  // y-axis value
-            });
-          }
-        });
-      });
-
-      // Use EXACT specification from taskpane.js line chart
+      // Create chart specification
       const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Multi-series line chart from Excel selection",
+        width: 400,
+        height: 200,
         background: "white",
-        config: { view: { stroke: "transparent" }},
-        data: { values: transformedData },
-        mark: { 
-          type: "line", 
-          point: false,
+        data: { values: chartData },
+        mark: {
+          type: "line",
+          point: true,
           tooltip: true,
-          strokeWidth: 2
+          strokeWidth: 2,
+          color: "#0078d4"
         },
         encoding: {
-          x: { 
-            field: headers[0], 
+          x: {
+            field: "x",
             type: "ordinal",
             axis: {
               title: headers[0],
-              labelFontSize: 12,
-              titleFontSize: 14,
               labelAngle: 0
             }
           },
-          y: { 
-            field: "value", 
+          y: {
+            field: "y",
             type: "quantitative",
             axis: {
-              title: "Value",
-              labelFontSize: 12,
-              titleFontSize: 14
-            }
-          },
-          color: { 
-            field: "series", 
-            type: "nominal",
-            scale: {
-              scheme: "category10"
-            },
-            legend: {
-              title: "Series",
-              titleFontSize: 12,
-              labelFontSize: 11
+              title: headers[1]
             }
           }
         },
         config: {
-          font: "Segoe UI",
-          axis: {
-            labelColor: "#605e5c",
-            titleColor: "#323130",
-            gridColor: "#f3f2f1"
-          },
-          legend: {
-            titleColor: "#323130",
-            labelColor: "#605e5c"
-          },
-          point: {
-            size: 60,
-            filled: true
-          }
+          font: "Segoe UI"
         }
       };
 
       // Generate unique ID
       const chartId = `line_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
       
-      // Create chart using the same method as taskpane.js
-      createLineChartFromTaskpaneSpec(spec, chartId)
+      // Create and render chart
+      createLineChart(spec, chartId)
         .then(() => {
-          resolve(``);
+          resolve(`✅ Line chart created (${rows.length} points)`);
         })
         .catch((error) => {
-          resolve(`Error: ${error.message}`);
+          resolve(`❌ Error: ${error.message}`);
         });
 
     } catch (error) {
-      resolve(`Error: ${error.message}`);
+      resolve(`❌ Error: ${error.message}`);
     }
   });
 }
 
 /**
- * Creates and inserts the line chart using the same method as taskpane.js
+ * Creates and inserts the line chart into Excel
  */
-async function createLineChartFromTaskpaneSpec(spec, chartId) {
+async function createLineChart(spec, chartId) {
   return new Promise(async (resolve, reject) => {
     try {
-      // Render hidden chart (same as taskpane.js)
-      const hiddenDiv = document.createElement("div");
-      hiddenDiv.style.display = "none";
-      hiddenDiv.id = chartId;
-      document.body.appendChild(hiddenDiv);
+      // Create hidden div for rendering
+      const div = document.createElement("div");
+      div.style.display = "none";
+      div.id = chartId;
+      document.body.appendChild(div);
 
-      // Load Vega-Lite if not available
+      // Load Vega-Lite if not already loaded
       if (typeof vegaEmbed === 'undefined') {
-        await loadVegaLibraries();
+        await loadVegaLite();
       }
 
-      const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+      // Render chart
+      const result = await vegaEmbed(div, spec, { actions: false });
       const view = result.view;
 
-      // Export chart -> PNG (same as taskpane.js)
-      const pngUrl = await view.toImageURL("png");
+      // Export to PNG
+      const pngUrl = await view.toImageURL("png", 2); // 2x scale for better quality
       const response = await fetch(pngUrl);
       const blob = await response.blob();
 
+      // Convert to base64
       const reader = new FileReader();
       reader.onloadend = async () => {
         try {
           const base64data = reader.result.split(",")[1];
-
-          // Insert into Excel (same approach as taskpane.js)
-          await insertChartIntoExcel(base64data, chartId);
           
-          // Clean up hidden div
-          document.body.removeChild(hiddenDiv);
+          // Insert into Excel
+          await insertChartToExcel(base64data, chartId);
+          
+          // Cleanup
+          document.body.removeChild(div);
           resolve();
           
         } catch (error) {
-          // Clean up on error
-          if (document.body.contains(hiddenDiv)) {
-            document.body.removeChild(hiddenDiv);
-          }
+          document.body.removeChild(div);
           reject(error);
         }
       };
@@ -178,27 +138,33 @@ async function createLineChartFromTaskpaneSpec(spec, chartId) {
 }
 
 /**
- * Inserts chart into Excel using the same approach as taskpane.js
+ * Inserts the chart image into Excel
  */
-async function insertChartIntoExcel(base64data, chartId) {
+async function insertChartToExcel(base64data, chartId) {
   return Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
+    
+    // Get current selection or use A1
+    let range;
+    try {
+      range = context.workbook.getSelectedRange();
+      range.load("left, top, width, height");
+      await context.sync();
+    } catch {
+      // Fallback to A1 if no selection
+      range = sheet.getRange("A1");
+      range.load("left, top, width, height");
+      await context.sync();
+    }
 
-    // Get current selection (same as taskpane.js approach)
-    const range = context.workbook.getSelectedRange();
-    range.load("values, left, top");
-    await context.sync();
-
-    // Remove existing line charts to prevent duplicates
+    // Remove any existing line charts in the area
     await removeExistingLineCharts(context, sheet);
 
-    // Insert picture above/next to selection (same as taskpane.js)
+    // Insert the new chart
     const image = sheet.shapes.addImage(base64data);
-    image.left = range.left;
+    image.left = range.left + range.width + 20; // 20px offset
     image.top = range.top;
-    image.lockAspectRatio = true; // keep proportions (same as taskpane.js)
-    
-    // Add unique name for tracking
+    image.lockAspectRatio = true;
     image.name = `LineChart_${chartId}`;
 
     await context.sync();
@@ -206,7 +172,7 @@ async function insertChartIntoExcel(base64data, chartId) {
 }
 
 /**
- * Remove existing line charts (prevents duplicates)
+ * Removes existing line charts to prevent duplicates
  */
 async function removeExistingLineCharts(context, sheet) {
   try {
@@ -225,41 +191,42 @@ async function removeExistingLineCharts(context, sheet) {
       }
     }
   } catch (error) {
-    console.warn("Could not remove existing line charts:", error);
+    console.warn("Could not remove existing charts:", error);
   }
 }
 
 /**
- * Load Vega libraries (same CDN versions as taskpane.html)
+ * Loads Vega-Lite library if not already present
  */
-function loadVegaLibraries() {
+function loadVegaLite() {
   return new Promise((resolve, reject) => {
     if (typeof vegaEmbed !== 'undefined') {
       resolve();
       return;
     }
 
-    // Load libraries in sequence (same as taskpane.html)
-    const scripts = [
-      'https://cdn.jsdelivr.net/npm/vega@6',
-      'https://cdn.jsdelivr.net/npm/vega-lite@6', 
-      'https://cdn.jsdelivr.net/npm/vega-embed@6'
-    ];
-
-    let loadedCount = 0;
-    
-    scripts.forEach((src, index) => {
-      const script = document.createElement('script');
-      script.src = src;
-      script.onload = () => {
-        loadedCount++;
-        if (loadedCount === scripts.length) {
-          resolve();
-        }
+    // Load Vega
+    const vegaScript = document.createElement('script');
+    vegaScript.src = 'https://cdn.jsdelivr.net/npm/vega@5';
+    vegaScript.onload = () => {
+      
+      // Load Vega-Lite
+      const vegaLiteScript = document.createElement('script');
+      vegaLiteScript.src = 'https://cdn.jsdelivr.net/npm/vega-lite@5';
+      vegaLiteScript.onload = () => {
+        
+        // Load Vega-Embed
+        const vegaEmbedScript = document.createElement('script');
+        vegaEmbedScript.src = 'https://cdn.jsdelivr.net/npm/vega-embed@6';
+        vegaEmbedScript.onload = () => resolve();
+        vegaEmbedScript.onerror = () => reject(new Error('Failed to load Vega-Embed'));
+        document.head.appendChild(vegaEmbedScript);
       };
-      script.onerror = () => reject(new Error(`Failed to load ${src}`));
-      document.head.appendChild(script);
-    });
+      vegaLiteScript.onerror = () => reject(new Error('Failed to load Vega-Lite'));
+      document.head.appendChild(vegaLiteScript);
+    };
+    vegaScript.onerror = () => reject(new Error('Failed to load Vega'));
+    document.head.appendChild(vegaScript);
   });
 }
 
@@ -268,7 +235,7 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("LINE", LINE);
 }
 
-// For testing in other contexts
+// Export for use in other contexts
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { LINE };
+  module.exports = { LINE, createLineChart };
 }
