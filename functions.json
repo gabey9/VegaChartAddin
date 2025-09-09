@@ -1,0 +1,27 @@
+{
+  "functions": [
+    {
+      "description": "Creates a multi-series line chart using the same specification as the taskpane. Data format: Column 1 = X-axis values (dates/categories), Columns 2-n = Value series for multiple lines",
+      "id": "LINE",
+      "name": "LINE",
+      "parameters": [
+        {
+          "description": "Data range with headers. Column 1: X-axis values (often dates/time or categories), Columns 2-n: Value series for multiple lines",
+          "name": "data",
+          "type": "any[][]",
+          "dimensionality": "matrix"
+        }
+      ],
+      "result": {
+        "type": "string",
+        "description": "Status message indicating chart creation success or error details"
+      },
+      "options": {
+        "volatile": false,
+        "stream": false,
+        "cancelable": true
+      }
+    }
+  ],
+  "customFunctionNamespace": "CHART"
+}
