@@ -2138,67 +2138,67 @@ export async function run() {
         };
       }
 
-      else if (chartType === "strip") {
-        // Strip plot implementation
-        spec = {
-          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-          description: "Strip plot showing distribution using tick marks",
-          background: "white",
-          config: { 
-            view: { stroke: "transparent" },
-            axis: {
-              labelFontSize: 11,
-              titleFontSize: 12,
-              labelColor: "#605E5C",
-              titleColor: "#323130"
-            }
-          },
-          data: { values: data },
-          mark: {
-            type: "tick",
-            thickness: 2,
-            size: 15,
-            color: "#0078d4",
-            opacity: 0.8,
-            tooltip: true
-          },
-          encoding: {
-            x: { 
-              field: headers[1], 
-              type: "quantitative",
-              axis: {
-                title: headers[1],
-                grid: true,
-                gridColor: "#f3f2f1",
-                gridOpacity: 0.5
-              }
-            },
-            y: { 
-              field: headers[0], 
-              type: "ordinal",
-              axis: {
-                title: headers[0],
-                labelAngle: 0
-              }
-            },
-            // Add color encoding if 3rd column exists
-            ...(headers.length > 2 && {
-              color: {
-                field: headers[2],
-                type: "nominal",
-                scale: { scheme: "category10" },
-                legend: {
-                  title: headers[2],
-                  orient: "right",
-                  titleFontSize: 11,
-                  labelFontSize: 10
-                }
-              }
-            }),
-            tooltip: headers.map(h => ({ field: h, type: "nominal" }))
+else if (chartType === "strip") {
+    // Strip plot implementation
+    spec = {
+      $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+      description: "Strip plot showing distribution using tick marks",
+      background: "white",
+      config: { 
+        view: { stroke: "transparent" },
+        axis: {
+          labelFontSize: 11,
+          titleFontSize: 12,
+          labelColor: "#605E5C",
+          titleColor: "#323130"
+        }
+      },
+      data: { values: data },
+      mark: {
+        type: "tick",
+        thickness: 2,
+        size: 15,
+        color: "#0078d4",
+        opacity: 0.8,
+        tooltip: true
+      },
+      encoding: {
+        y: { 
+          field: headers[0], // Now categories are in column 1
+          type: "ordinal",
+          axis: {
+            title: headers[0],
+            labelAngle: 0
           }
-        };
+        },
+        x: { 
+          field: headers[1], // Now quantitative values are in column 2
+          type: "quantitative",
+          axis: {
+            title: headers[1],
+            grid: true,
+            gridColor: "#f3f2f1",
+            gridOpacity: 0.5
+          }
+        },
+        // Add color encoding if 3rd column exists
+        ...(headers.length > 2 && {
+          color: {
+            field: headers[2],
+            type: "nominal",
+            scale: { scheme: "category10" },
+            legend: {
+              title: headers[2],
+              orient: "right",
+              titleFontSize: 11,
+              labelFontSize: 10
+            }
+          }
+        }),
+        tooltip: headers.map(h => ({ field: h, type: "nominal" }))
       }
+    };
+  }
 
       else if (chartType === "treemap") {
         let treeData;
