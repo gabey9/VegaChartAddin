@@ -64,6 +64,70 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "SCATTER custom function using the exact same specification as taskpane.js\nCreates a scatter plot from Excel data range",
+            "id": "SCATTER",
+            "name": "SCATTER",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "RADIAL custom function using the exact same specification as taskpane.js\nCreates a radial chart from Excel data range",
+            "id": "RADIAL",
+            "name": "RADIAL",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "BOX custom function using the exact same specification as taskpane.js\nCreates a box plot from Excel data range",
+            "id": "BOX",
+            "name": "BOX",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "RADAR custom function using the exact same specification as taskpane.js\nCreates a radar chart from Excel data range",
+            "id": "RADAR",
+            "name": "RADAR",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }
