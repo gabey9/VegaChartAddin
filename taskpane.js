@@ -2165,7 +2165,7 @@ export async function run() {
           encoding: {
             x: { 
               field: headers[1], 
-              type: "ordinal",
+              type: "quantitative",
               axis: {
                 title: headers[1],
                 grid: true,
@@ -2175,7 +2175,7 @@ export async function run() {
             },
             y: { 
               field: headers[0], 
-              type: "quantitative",
+              type: "ordinal",
               axis: {
                 title: headers[0],
                 labelAngle: 0
