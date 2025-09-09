@@ -2,7 +2,7 @@
     "allowCustomDataForDataTypeAny": true,
     "functions": [
         {
-            "description": "Creates a multi-series line chart from Excel data range",
+            "description": "LINE custom function using the exact same specification as taskpane.js\nCreates a multi-series line chart from Excel data range",
             "id": "LINE",
             "name": "LINE",
             "parameters": [
@@ -18,7 +18,7 @@
             }
         },
         {
-            "description": "Creates a bar chart from Excel data range",
+            "description": "BAR custom function using the exact same specification as taskpane.js\nCreates a bar chart from Excel data range",
             "id": "BAR",
             "name": "BAR",
             "parameters": [
@@ -34,7 +34,7 @@
             }
         },
         {
-            "description": "Creates a pie chart from Excel data range",
+            "description": "PIE custom function using the exact same specification as taskpane.js\nCreates a pie chart from Excel data range",
             "id": "PIE",
             "name": "PIE",
             "parameters": [
@@ -50,7 +50,7 @@
             }
         },
         {
-            "description": "Creates an area chart from Excel data range",
+            "description": "AREA custom function using the exact same specification as taskpane.js\nCreates an area chart from Excel data range",
             "id": "AREA",
             "name": "AREA",
             "parameters": [
