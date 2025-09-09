@@ -2164,20 +2164,20 @@ export async function run() {
           },
           encoding: {
             x: { 
-              field: headers[0], 
-              type: "quantitative",
+              field: headers[1], 
+              type: "ordinal",
               axis: {
-                title: headers[0],
+                title: headers[1],
                 grid: true,
                 gridColor: "#f3f2f1",
                 gridOpacity: 0.5
               }
             },
             y: { 
-              field: headers[1], 
-              type: "ordinal",
+              field: headers[0], 
+              type: "quantitative",
               axis: {
-                title: headers[1],
+                title: headers[0],
                 labelAngle: 0
               }
             },
