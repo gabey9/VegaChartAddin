@@ -1222,7 +1222,7 @@ export async function run() {
 
         // Calculate dynamic dimensions
         const numDataPoints = data.length;
-        const dynamicWidth = Math.max(400, Math.min(1200, numDataPoints * 70));
+        const dynamicWidth = Math.max(400, Math.min(1600, numDataPoints * 70));
         const maxAmount = Math.max(...data.map(d => Math.abs(d[headers[1]])));
         const dynamicHeight = Math.max(300, Math.min(600, maxAmount / 100 + 200));
 
@@ -1290,7 +1290,7 @@ export async function run() {
                 field: headers[0],
                 type: "ordinal",
                 sort: null,
-                axis: { labelAngle: 0, title: null },
+                axis: { labelAngle: -45, title: null },
                 scale: { paddingInner: 0.1, paddingOuter: 0.05 }
             }
             },
