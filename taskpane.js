@@ -1242,6 +1242,7 @@ else if (chartType === "waterfall") {
         "as": "lead"
       },
       {
+        // If total → reset, else → running sum step
         "calculate": `datum.${headers[2]} == 'total' ? 0 : datum.sum - datum.${headers[1]}`,
         "as": "previous_sum"
       },
@@ -1258,10 +1259,30 @@ else if (chartType === "waterfall") {
         "as": "text_amount"
       },
       { "calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center" },
-      // Group index for stacked handling
+
+      // Add group index for stacked handling
       {
         "window": [{ "op": "rank", "as": "group_index" }],
+        "frame": [null, null],
         "groupby": [headers[0]]
+      },
+
+      // Precompute color shades
+      {
+        "calculate": `
+          datum.${headers[2]} == 'total'
+            ? '#00B0F0'
+            : datum.amount >= 0
+              ? (datum.group_index == 1 ? '#70AD47'
+                 : (datum.group_index == 2 ? '#8BC97A'
+                 : (datum.group_index == 3 ? '#A7DA9D'
+                 : '#C3EBC0')))
+              : (datum.group_index == 1 ? '#E15759'
+                 : (datum.group_index == 2 ? '#EC7A7C'
+                 : (datum.group_index == 3 ? '#F29C9D'
+                 : '#F8BEBF')))
+        `,
+        "as": "bar_color"
       }
     ],
     encoding: {
@@ -1279,18 +1300,7 @@ else if (chartType === "waterfall") {
         encoding: {
           y: { field: "previous_sum", type: "quantitative", title: null },
           y2: { field: "sum" },
-          color: {
-            condition: [
-              { test: `datum.${headers[2]} == 'total'`, value: "#00B0F0" }
-            ],
-            expr: `
-              datum.${headers[2]} == 'total'
-                ? '#00B0F0'
-                : datum.amount >= 0
-                  ? (datum.group_index == 1 ? '#70AD47' : lighten('#70AD47', datum.group_index * 0.2))
-                  : (datum.group_index == 1 ? '#E15759' : lighten('#E15759', datum.group_index * 0.2))
-            `
-          }
+          color: { field: "bar_color", type: "nominal", scale: null }
         }
       },
       {
