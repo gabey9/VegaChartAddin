@@ -1291,7 +1291,7 @@ export async function run() {
                 type: "ordinal",
                 sort: null,
                 axis: { labelAngle: -45, title: null },
-                scale: { paddingInner: 0.1, paddingOuter: 0.05 }
+                scale: { paddingInner: 0.05, paddingOuter: 0.025 }
             }
             },
             layer: [
@@ -1301,20 +1301,6 @@ export async function run() {
                 y: { field: "previous_sum", type: "quantitative", title: null },
                 y2: { field: "sum" },
                 color: { field: "bar_color", type: "nominal", scale: null }
-                }
-            },
-            {
-                mark: {
-                type: "rule",
-                color: "#8F8F8F",
-                opacity: 1,
-                strokeWidth: 2,
-                xOffset: -15,
-                x2Offset: 15
-                },
-                encoding: {
-                x2: { field: "lead" },
-                y: { field: "sum", type: "quantitative" }
                 }
             },
             {
