@@ -1222,7 +1222,7 @@ export async function run() {
 
         // Calculate dynamic dimensions
         const numDataPoints = data.length;
-        const dynamicWidth = Math.max(400, Math.min(1600, numDataPoints * 70));
+        const dynamicWidth = Math.max(400, Math.min(1600, numDataPoints * 50));
         const maxAmount = Math.max(...data.map(d => Math.abs(d[headers[1]])));
         const dynamicHeight = Math.max(300, Math.min(600, maxAmount / 100 + 200));
 
@@ -1296,7 +1296,7 @@ export async function run() {
             },
             layer: [
             {
-                mark: { type: "bar", size: 60, stroke: "white", strokeWidth: 1 },
+                mark: { type: "bar", size: 60},
                 encoding: {
                 y: { field: "previous_sum", type: "quantitative", title: null },
                 y2: { field: "sum" },
