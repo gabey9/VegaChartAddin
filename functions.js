@@ -1,4 +1,221 @@
-﻿/**
+﻿// Enhanced global chart position tracking
+const chartPositions = new Map();
+
+/**
+ * Generates a consistent chart key based on data range and chart type
+ */
+function generateChartKey(range, chartType, headers) {
+  // Create a key based on range address and chart type
+  const rangeKey = `${range.address}_${chartType}`;
+  return rangeKey;
+}
+
+/**
+ * Store chart position information
+ */
+function storeChartPosition(chartKey, position) {
+  chartPositions.set(chartKey, {
+    left: position.left,
+    top: position.top,
+    width: position.width || null,
+    height: position.height || null,
+    timestamp: Date.now()
+  });
+}
+
+/**
+ * Retrieve stored chart position
+ */
+function getStoredChartPosition(chartKey) {
+  return chartPositions.get(chartKey) || null;
+}
+
+/**
+ * Enhanced chart creation function with position memory
+ */
+async function createChart(spec, chartType, headers, rows) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const chartId = `${chartType}_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+      
+      // Render hidden chart
+      const hiddenDiv = document.createElement("div");
+      hiddenDiv.style.display = "none";
+      hiddenDiv.id = chartId;
+      document.body.appendChild(hiddenDiv);
+
+      // Load Vega-Lite if not available
+      if (typeof vegaEmbed === 'undefined') {
+        await loadVegaLibraries();
+      }
+
+      const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+      const view = result.view;
+
+      // Export chart -> PNG
+      const pngUrl = await view.toImageURL("png");
+      const response = await fetch(pngUrl);
+      const blob = await response.blob();
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64data = reader.result.split(",")[1];
+
+          // Insert into Excel with position memory
+          await insertChartIntoExcelWithPosition(base64data, chartType, chartId, headers);
+          
+          // Clean up hidden div
+          document.body.removeChild(hiddenDiv);
+          resolve();
+          
+        } catch (error) {
+          // Clean up on error
+          if (document.body.contains(hiddenDiv)) {
+            document.body.removeChild(hiddenDiv);
+          }
+          reject(error);
+        }
+      };
+      
+      reader.readAsDataURL(blob);
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * Enhanced chart insertion with position memory
+ */
+async function insertChartIntoExcelWithPosition(base64data, chartType, chartId, headers) {
+  return Excel.run(async (context) => {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
+    const range = context.workbook.getSelectedRange();
+    
+    // Load range properties
+    range.load("values, left, top, address, width, height");
+    await context.sync();
+
+    // Generate chart key for this data range and chart type
+    const chartKey = generateChartKey(range, chartType, headers);
+    
+    // Check if we have existing chart position for this data range
+    let existingPosition = null;
+    let existingChart = null;
+    
+    try {
+      // Look for existing chart with the same data signature
+      const shapes = sheet.shapes;
+      shapes.load("items");
+      await context.sync();
+
+      const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_`;
+      const chartSignature = `${chartKey}_`;
+
+      for (let i = 0; i < shapes.items.length; i++) {
+        const shape = shapes.items[i];
+        shape.load("name, left, top, width, height");
+        await context.sync();
+        
+        // Check if this chart matches our data range signature
+        if (shape.name && shape.name.includes(chartSignature)) {
+          existingPosition = {
+            left: shape.left,
+            top: shape.top,
+            width: shape.width,
+            height: shape.height
+          };
+          existingChart = shape;
+          break;
+        }
+      }
+    } catch (error) {
+      console.warn("Could not check for existing charts:", error);
+    }
+
+    // Remove existing chart if found
+    if (existingChart) {
+      try {
+        existingChart.delete();
+        await context.sync();
+      } catch (error) {
+        console.warn("Could not delete existing chart:", error);
+      }
+    }
+
+    // Determine position for new chart
+    let chartPosition = existingPosition || getStoredChartPosition(chartKey);
+    
+    if (!chartPosition) {
+      // No existing position, use default positioning
+      chartPosition = {
+        left: range.left,
+        top: range.top
+      };
+    }
+
+    // Insert new chart
+    const image = sheet.shapes.addImage(base64data);
+    image.left = chartPosition.left;
+    image.top = chartPosition.top;
+    image.lockAspectRatio = true;
+    
+    // Create unique name that includes the chart key for future identification
+    image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartKey}_${chartId}`;
+
+    await context.sync();
+
+    // Load the actual chart dimensions after insertion
+    image.load("left, top, width, height");
+    await context.sync();
+
+    // Store the position for future updates
+    storeChartPosition(chartKey, {
+      left: image.left,
+      top: image.top,
+      width: image.width,
+      height: image.height
+    });
+  });
+}
+
+/**
+ * Load Vega libraries (same CDN versions as taskpane.html)
+ */
+function loadVegaLibraries() {
+  return new Promise((resolve, reject) => {
+    if (typeof vegaEmbed !== 'undefined') {
+      resolve();
+      return;
+    }
+
+    // Load libraries in sequence (same as taskpane.html)
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/vega@6',
+      'https://cdn.jsdelivr.net/npm/vega-lite@6', 
+      'https://cdn.jsdelivr.net/npm/vega-embed@6'
+    ];
+
+    let loadedCount = 0;
+    
+    scripts.forEach((src, index) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        loadedCount++;
+        if (loadedCount === scripts.length) {
+          resolve();
+        }
+      };
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.head.appendChild(script);
+    });
+  });
+}
+
+/**
  * LINE custom function using the exact same specification as taskpane.js
  * Creates a multi-series line chart from Excel data range
  * 
@@ -848,223 +1065,6 @@ function RADAR(data) {
     } catch (error) {
       resolve(`Error: ${error.message}`);
     }
-  });
-}
-
-// Enhanced global chart position tracking
-const chartPositions = new Map();
-
-/**
- * Generates a consistent chart key based on data range and chart type
- */
-function generateChartKey(range, chartType, headers) {
-  // Create a key based on range address and chart type
-  const rangeKey = `${range.address}_${chartType}`;
-  return rangeKey;
-}
-
-/**
- * Store chart position information
- */
-function storeChartPosition(chartKey, position) {
-  chartPositions.set(chartKey, {
-    left: position.left,
-    top: position.top,
-    width: position.width || null,
-    height: position.height || null,
-    timestamp: Date.now()
-  });
-}
-
-/**
- * Retrieve stored chart position
- */
-function getStoredChartPosition(chartKey) {
-  return chartPositions.get(chartKey) || null;
-}
-
-/**
- * Enhanced chart creation function with position memory
- */
-async function createChart(spec, chartType, headers, rows) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const chartId = `${chartType}_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
-      
-      // Render hidden chart
-      const hiddenDiv = document.createElement("div");
-      hiddenDiv.style.display = "none";
-      hiddenDiv.id = chartId;
-      document.body.appendChild(hiddenDiv);
-
-      // Load Vega-Lite if not available
-      if (typeof vegaEmbed === 'undefined') {
-        await loadVegaLibraries();
-      }
-
-      const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
-      const view = result.view;
-
-      // Export chart -> PNG
-      const pngUrl = await view.toImageURL("png");
-      const response = await fetch(pngUrl);
-      const blob = await response.blob();
-
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        try {
-          const base64data = reader.result.split(",")[1];
-
-          // Insert into Excel with position memory
-          await insertChartIntoExcelWithPosition(base64data, chartType, chartId, headers);
-          
-          // Clean up hidden div
-          document.body.removeChild(hiddenDiv);
-          resolve();
-          
-        } catch (error) {
-          // Clean up on error
-          if (document.body.contains(hiddenDiv)) {
-            document.body.removeChild(hiddenDiv);
-          }
-          reject(error);
-        }
-      };
-      
-      reader.readAsDataURL(blob);
-
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
-/**
- * Enhanced chart insertion with position memory
- */
-async function insertChartIntoExcelWithPosition(base64data, chartType, chartId, headers) {
-  return Excel.run(async (context) => {
-    const sheet = context.workbook.worksheets.getActiveWorksheet();
-    const range = context.workbook.getSelectedRange();
-    
-    // Load range properties
-    range.load("values, left, top, address, width, height");
-    await context.sync();
-
-    // Generate chart key for this data range and chart type
-    const chartKey = generateChartKey(range, chartType, headers);
-    
-    // Check if we have existing chart position for this data range
-    let existingPosition = null;
-    let existingChart = null;
-    
-    try {
-      // Look for existing chart with the same data signature
-      const shapes = sheet.shapes;
-      shapes.load("items");
-      await context.sync();
-
-      const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_`;
-      const chartSignature = `${chartKey}_`;
-
-      for (let i = 0; i < shapes.items.length; i++) {
-        const shape = shapes.items[i];
-        shape.load("name, left, top, width, height");
-        await context.sync();
-        
-        // Check if this chart matches our data range signature
-        if (shape.name && shape.name.includes(chartSignature)) {
-          existingPosition = {
-            left: shape.left,
-            top: shape.top,
-            width: shape.width,
-            height: shape.height
-          };
-          existingChart = shape;
-          break;
-        }
-      }
-    } catch (error) {
-      console.warn("Could not check for existing charts:", error);
-    }
-
-    // Remove existing chart if found
-    if (existingChart) {
-      try {
-        existingChart.delete();
-        await context.sync();
-      } catch (error) {
-        console.warn("Could not delete existing chart:", error);
-      }
-    }
-
-    // Determine position for new chart
-    let chartPosition = existingPosition || getStoredChartPosition(chartKey);
-    
-    if (!chartPosition) {
-      // No existing position, use default positioning
-      chartPosition = {
-        left: range.left,
-        top: range.top
-      };
-    }
-
-    // Insert new chart
-    const image = sheet.shapes.addImage(base64data);
-    image.left = chartPosition.left;
-    image.top = chartPosition.top;
-    image.lockAspectRatio = true;
-    
-    // Create unique name that includes the chart key for future identification
-    image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartKey}_${chartId}`;
-
-    await context.sync();
-
-    // Load the actual chart dimensions after insertion
-    image.load("left, top, width, height");
-    await context.sync();
-
-    // Store the position for future updates
-    storeChartPosition(chartKey, {
-      left: image.left,
-      top: image.top,
-      width: image.width,
-      height: image.height
-    });
-  });
-}
-
-/**
- * Load Vega libraries (same CDN versions as taskpane.html)
- */
-function loadVegaLibraries() {
-  return new Promise((resolve, reject) => {
-    if (typeof vegaEmbed !== 'undefined') {
-      resolve();
-      return;
-    }
-
-    // Load libraries in sequence (same as taskpane.html)
-    const scripts = [
-      'https://cdn.jsdelivr.net/npm/vega@6',
-      'https://cdn.jsdelivr.net/npm/vega-lite@6', 
-      'https://cdn.jsdelivr.net/npm/vega-embed@6'
-    ];
-
-    let loadedCount = 0;
-    
-    scripts.forEach((src, index) => {
-      const script = document.createElement('script');
-      script.src = src;
-      script.onload = () => {
-        loadedCount++;
-        if (loadedCount === scripts.length) {
-          resolve();
-        }
-      };
-      script.onerror = () => reject(new Error(`Failed to load ${src}`));
-      document.head.appendChild(script);
-    });
   });
 }
 
