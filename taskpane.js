@@ -1282,15 +1282,18 @@ else if (chartType === "waterfall") {
           y: { field: "previous_sum", type: "quantitative", title: null },
           y2: { field: "sum" },
           color: {
-            condition: [
-              { test: `datum.${headers[2]} == 'total'`, value: "#00B0F0" },
-              {
-                test: "datum.sum < datum.previous_sum",
-                expr: "datum.group_index == 1 ? '#E15759' : lighten('#E15759', datum.group_index * 0.2)"
-              }
-            ],
-            expr: "datum.group_index == 1 ? '#70AD47' : lighten('#70AD47', datum.group_index * 0.2)"
-          }
+  condition: [
+    // totals = blue
+    { test: `datum.${headers[2]} == 'total'`, value: "#00B0F0" }
+  ],
+  expr: `
+    datum.${headers[2]} == 'total'
+      ? '#00B0F0'
+      : datum.amount >= 0
+        ? (datum.group_index == 1 ? '#70AD47' : lighten('#70AD47', datum.group_index * 0.2))
+        : (datum.group_index == 1 ? '#E15759' : lighten('#E15759', datum.group_index * 0.2))
+  `
+}
         }
       },
       {
