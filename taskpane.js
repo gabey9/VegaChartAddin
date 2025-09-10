@@ -1291,12 +1291,12 @@ export async function run() {
                 type: "ordinal",
                 sort: null,
                 axis: { labelAngle: -45, title: null },
-                scale: { paddingInner: 0.01, paddingOuter: 0.01 }
+                scale: { paddingInner: 0.05, paddingOuter: 0.025 }
             }
             },
             layer: [
             {
-                mark: { type: "bar", size: 60 },
+                mark: { type: "bar", size: 60, stroke: "white", strokeWidth: 1 },
                 encoding: {
                 y: { field: "previous_sum", type: "quantitative", title: null },
                 y2: { field: "sum" },
