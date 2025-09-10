@@ -1290,7 +1290,7 @@ export async function run() {
                 field: headers[0],
                 type: "ordinal",
                 sort: null,
-                axis: { labelAngle: -45, title: null },
+                axis: { labelAngle: -30, title: null },
                 scale: { paddingInner: 0.1, paddingOuter: 0.05 }
             }
             },
