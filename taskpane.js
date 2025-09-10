@@ -1210,130 +1210,130 @@ export async function run() {
         };
       }
 
-else if (chartType === "waterfall") {
-  // Process waterfall data inline - set last entry's amount to 0
-  const processedData = [...data];
-  if (processedData.length > 0) {
-    processedData[processedData.length - 1] = {
-      ...processedData[processedData.length - 1],
-      [headers[1]]: 0
-    };
-  }
-
-  // Calculate dynamic dimensions
-  const numDataPoints = data.length;
-  const dynamicWidth = Math.max(400, Math.min(1200, numDataPoints * 70));
-  const maxAmount = Math.max(...data.map(d => Math.abs(d[headers[1]])));
-  const dynamicHeight = Math.max(300, Math.min(600, maxAmount / 100 + 200));
-
-  spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Waterfall chart with multiple subtotals",
-    background: "white",
-    data: { values: processedData },
-    config: { view: { stroke: "transparent" }},
-    width: dynamicWidth,
-    height: dynamicHeight,
-    transform: [
-      { "window": [{ "op": "sum", "field": headers[1], "as": "sum" }] },
-      { "window": [{ "op": "lead", "field": headers[0], "as": "lead" }] },
-      {
-        "calculate": `datum.lead === null ? datum.${headers[0]} : datum.lead`,
-        "as": "lead"
-      },
-      {
-        // If total → reset, else → running sum step
-        "calculate": `datum.${headers[2]} == 'total' ? 0 : datum.sum - datum.${headers[1]}`,
-        "as": "previous_sum"
-      },
-      {
-        "calculate": `datum.${headers[2]} == 'total' ? datum.sum : datum.${headers[1]}`,
-        "as": "amount"
-      },
-      {
-        "calculate": `datum.${headers[2]} == 'total' ? datum.${headers[1]} / 2 : (datum.sum + datum.previous_sum) / 2`,
-        "as": "center"
-      },
-      {
-        "calculate": `datum.${headers[2]} == 'total' ? datum.sum : (datum.${headers[1]} > 0 ? '+' : '') + datum.${headers[1]}`,
-        "as": "text_amount"
-      },
-      { "calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center" },
-
-      // Add group index for stacked handling
-      {
-        "window": [{ "op": "rank", "as": "group_index" }],
-        "frame": [null, null],
-        "groupby": [headers[0]]
-      },
-
-      // Precompute color shades
-      {
-        "calculate": `
-          datum.${headers[2]} == 'total'
-            ? '#00B0F0'
-            : datum.amount >= 0
-              ? (datum.group_index == 1 ? '#70AD47'
-                 : (datum.group_index == 2 ? '#8BC97A'
-                 : (datum.group_index == 3 ? '#A7DA9D'
-                 : '#C3EBC0')))
-              : (datum.group_index == 1 ? '#E15759'
-                 : (datum.group_index == 2 ? '#EC7A7C'
-                 : (datum.group_index == 3 ? '#F29C9D'
-                 : '#F8BEBF')))
-        `,
-        "as": "bar_color"
-      }
-    ],
-    encoding: {
-      x: {
-        field: headers[0],
-        type: "ordinal",
-        sort: null,
-        axis: { labelAngle: 0, title: null },
-        scale: { paddingInner: 0.1, paddingOuter: 0.05 }
-      }
-    },
-    layer: [
-      {
-        mark: { type: "bar", size: 60 },
-        encoding: {
-          y: { field: "previous_sum", type: "quantitative", title: null },
-          y2: { field: "sum" },
-          color: { field: "bar_color", type: "nominal", scale: null }
+      else if (chartType === "waterfall") {
+        // Process waterfall data inline - set last entry's amount to 0
+        const processedData = [...data];
+        if (processedData.length > 0) {
+            processedData[processedData.length - 1] = {
+            ...processedData[processedData.length - 1],
+            [headers[1]]: 0
+            };
         }
-      },
-      {
-        mark: {
-          type: "rule",
-          color: "#8F8F8F",
-          opacity: 1,
-          strokeWidth: 2,
-          xOffset: -30,
-          x2Offset: 30
-        },
-        encoding: {
-          x2: { field: "lead" },
-          y: { field: "sum", type: "quantitative" }
-        }
-      },
-      {
-        mark: { type: "text", fontWeight: "bold", baseline: "middle" },
-        encoding: {
-          y: { field: "center", type: "quantitative" },
-          text: { field: "text_amount", type: "nominal" },
-          color: {
-            condition: [
-              { test: `datum.${headers[2]} == 'total'`, value: "#725a30" }
+
+        // Calculate dynamic dimensions
+        const numDataPoints = data.length;
+        const dynamicWidth = Math.max(400, Math.min(1200, numDataPoints * 70));
+        const maxAmount = Math.max(...data.map(d => Math.abs(d[headers[1]])));
+        const dynamicHeight = Math.max(300, Math.min(600, maxAmount / 100 + 200));
+
+        spec = {
+            $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+            description: "Waterfall chart with multiple subtotals",
+            background: "white",
+            data: { values: processedData },
+            config: { view: { stroke: "transparent" }},
+            width: dynamicWidth,
+            height: dynamicHeight,
+            transform: [
+            { "window": [{ "op": "sum", "field": headers[1], "as": "sum" }] },
+            { "window": [{ "op": "lead", "field": headers[0], "as": "lead" }] },
+            {
+                "calculate": `datum.lead === null ? datum.${headers[0]} : datum.lead`,
+                "as": "lead"
+            },
+            {
+                // If total → reset, else → running sum step
+                "calculate": `datum.${headers[2]} == 'total' ? 0 : datum.sum - datum.${headers[1]}`,
+                "as": "previous_sum"
+            },
+            {
+                "calculate": `datum.${headers[2]} == 'total' ? datum.sum : datum.${headers[1]}`,
+                "as": "amount"
+            },
+            {
+                "calculate": `datum.${headers[2]} == 'total' ? datum.${headers[1]} / 2 : (datum.sum + datum.previous_sum) / 2`,
+                "as": "center"
+            },
+            {
+                "calculate": `datum.${headers[2]} == 'total' ? datum.sum : (datum.${headers[1]} > 0 ? '+' : '') + datum.${headers[1]}`,
+                "as": "text_amount"
+            },
+            { "calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center" },
+
+            // Add group index for stacked handling
+            {
+                "window": [{ "op": "rank", "as": "group_index" }],
+                "frame": [null, null],
+                "groupby": [headers[0]]
+            },
+
+            // Precompute color shades
+            {
+                "calculate": `
+                datum.${headers[2]} == 'total'
+                    ? '#00B0F0'
+                    : datum.amount >= 0
+                    ? (datum.group_index == 1 ? '#70AD47'
+                        : (datum.group_index == 2 ? '#8BC97A'
+                        : (datum.group_index == 3 ? '#A7DA9D'
+                        : '#C3EBC0')))
+                    : (datum.group_index == 1 ? '#E15759'
+                        : (datum.group_index == 2 ? '#EC7A7C'
+                        : (datum.group_index == 3 ? '#F29C9D'
+                        : '#F8BEBF')))
+                `,
+                "as": "bar_color"
+            }
             ],
-            value: "white"
-          }
-        }
+            encoding: {
+            x: {
+                field: headers[0],
+                type: "ordinal",
+                sort: null,
+                axis: { labelAngle: 60, title: null },
+                scale: { paddingInner: 0.1, paddingOuter: 0.05 }
+            }
+            },
+            layer: [
+            {
+                mark: { type: "bar", size: 60 },
+                encoding: {
+                y: { field: "previous_sum", type: "quantitative", title: null },
+                y2: { field: "sum" },
+                color: { field: "bar_color", type: "nominal", scale: null }
+                }
+            },
+            {
+                mark: {
+                type: "rule",
+                color: "#8F8F8F",
+                opacity: 1,
+                strokeWidth: 2,
+                xOffset: -30,
+                x2Offset: 30
+                },
+                encoding: {
+                x2: { field: "lead" },
+                y: { field: "sum", type: "quantitative" }
+                }
+            },
+            {
+                mark: { type: "text", fontWeight: "bold", baseline: "middle" },
+                encoding: {
+                y: { field: "center", type: "quantitative" },
+                text: { field: "text_amount", type: "nominal" },
+                color: {
+                    condition: [
+                    { test: `datum.${headers[2]} == 'total'`, value: "#725a30" }
+                    ],
+                    value: "white"
+                }
+                }
+            }
+            ],
+            config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
+        };
       }
-    ],
-    config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
-  };
-}
 
       else if (chartType === "pie") {
         spec = {
