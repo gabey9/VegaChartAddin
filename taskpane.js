@@ -1291,7 +1291,7 @@ export async function run() {
                 type: "ordinal",
                 sort: null,
                 axis: { labelAngle: -45, title: null },
-                scale: { paddingInner: 0.05, paddingOuter: 0.025 }
+                scale: { paddingInner: 0.01, paddingOuter: 0.01 }
             }
             },
             layer: [
