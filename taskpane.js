@@ -1309,8 +1309,8 @@ export async function run() {
                 color: "#8F8F8F",
                 opacity: 1,
                 strokeWidth: 2,
-                xOffset: -30,
-                x2Offset: 30
+                xOffset: -15,
+                x2Offset: 15
                 },
                 encoding: {
                 x2: { field: "lead" },
