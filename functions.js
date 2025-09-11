@@ -1514,8 +1514,17 @@ function ARC(data) {
         return;
       }
 
-      // Transform Excel data for arc chart (same as taskpane.js)
-      const edges = rows.map((row, index) => ({
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // EXACT data processing from taskpane.js - Transform Excel data for arc chart
+      const edges = processedData.map((row, index) => ({
         source: row[headers[0]],
         target: row[headers[1]],
         value: headers.length >= 3 && row[headers[2]] ? row[headers[2]] : 1,
