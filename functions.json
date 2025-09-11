@@ -402,7 +402,7 @@
             }
         },
         {
-            "description": "VIOLIN custom function using the exact same specification as taskpane.js\nCreates a violin chart from Excel data range",
+            "description": "VIOLIN custom function using the exact specification provided\nCreates a violin chart from Excel data range",
             "id": "VIOLIN",
             "name": "VIOLIN",
             "parameters": [
