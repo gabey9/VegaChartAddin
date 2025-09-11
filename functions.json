@@ -208,6 +208,70 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "HEATMAP custom function using the exact same specification as taskpane.js\nCreates a heatmap from Excel data range",
+            "id": "HEATMAP",
+            "name": "HEATMAP",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "TREE custom function using the exact same specification as taskpane.js\nCreates a tree from Excel data range",
+            "id": "TREE",
+            "name": "TREE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "WORDCLOUD custom function using the exact same specification as taskpane.js\nCreates a wordcloud from Excel data range",
+            "id": "WORDCLOUD",
+            "name": "WORDCLOUD",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "STRIP custom function using the exact same specification as taskpane.js\nCreates a strip from Excel data range",
+            "id": "STRIP",
+            "name": "STRIP",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }
