@@ -352,6 +352,70 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "BUMP custom function using the exact same specification as taskpane.js\nCreates a bump chart from Excel data range",
+            "id": "BUMP",
+            "name": "BUMP",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "WAFFLE custom function using the exact same specification as taskpane.js\nCreates a waffle chart from Excel data range",
+            "id": "WAFFLE",
+            "name": "WAFFLE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "LOLLIPOP custom function using the exact same specification as taskpane.js\nCreates a lollipop chart from Excel data range",
+            "id": "LOLLIPOP",
+            "name": "LOLLIPOP",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "VIOLIN custom function using the exact same specification as taskpane.js\nCreates a violin chart from Excel data range",
+            "id": "VIOLIN",
+            "name": "VIOLIN",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }
