@@ -416,6 +416,70 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "GANTT custom function using the exact same specification as taskpane.js\nCreates a gantt chart from Excel data range",
+            "id": "GANTT",
+            "name": "GANTT",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "SANKEY custom function using the exact same specification as taskpane.js\nCreates a sankey chart from Excel data range",
+            "id": "SANKEY",
+            "name": "SANKEY",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "RIDGELINE custom function using the exact same specification as taskpane.js\nCreates a ridgeline chart from Excel data range",
+            "id": "RIDGELINE",
+            "name": "RIDGELINE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "DEVIATION custom function using the exact same specification as taskpane.js\nCreates a deviation chart from Excel data range",
+            "id": "DEVIATION",
+            "name": "DEVIATION",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }

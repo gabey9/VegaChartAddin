@@ -4091,6 +4091,689 @@ function VIOLIN(data) {
 }
 
 /**
+ * GANTT custom function using the exact same specification as taskpane.js
+ * Creates a Gantt chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function GANTT(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 6) {
+        resolve("Error: Gantt chart requires 6 columns (Parent ID, Task ID, Task Name, Start Date, End Date, Progress)");
+        return;
+      }
+
+      // Helper function to convert Excel dates (same as taskpane.js)
+      function excelDateToJSDate(serial) {
+        return new Date(Math.round((serial - 25569) * 86400 * 1000));
+      }
+
+      const ganttData = rows.map(row => {
+        const parentId = row[0] || null;   // col 1 = parent id
+        const id = row[1];                 // col 2 = task id
+        const name = row[2] || `Task ${id}`;
+        if (!id) return null;
+
+        const start = typeof row[3] === "number" ? excelDateToJSDate(row[3]) : new Date(row[3]);
+        const end = typeof row[4] === "number" ? excelDateToJSDate(row[4]) : new Date(row[4]);
+        if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) return null;
+
+        let progress = 0;
+        if (row[5]) {
+          if (typeof row[5] === "string" && row[5].includes("%")) {
+            progress = parseFloat(row[5]) / 100;
+          } else if (row[5] > 1) {
+            progress = row[5] / 100;
+          } else {
+            progress = row[5];
+          }
+        }
+
+        const dependencies = row[6] ? String(row[6]).split(",").map(d => d.trim()) : [];
+
+        return { id, parentId, name, startDate: start, endDate: end, progress, dependencies };
+      }).filter(Boolean);
+
+      // Precompute progressEnd
+      ganttData.forEach(task => {
+        const duration = task.endDate - task.startDate;
+        task.progressEnd = new Date(task.startDate.getTime() + duration * task.progress);
+      });
+
+      // Build parent->children map
+      const childrenMap = new Map();
+      ganttData.forEach(task => {
+        if (!childrenMap.has(task.parentId)) {
+          childrenMap.set(task.parentId, []);
+        }
+        childrenMap.get(task.parentId).push(task);
+      });
+
+      // Sort children by startDate
+      for (let [pid, childList] of childrenMap.entries()) {
+        childList.sort((a, b) => a.startDate - b.startDate);
+      }
+
+      // Recursive hierarchy ordering
+      function buildHierarchy(parentId = null, level = 0) {
+        const ordered = [];
+        const tasks = childrenMap.get(parentId) || [];
+        for (const task of tasks) {
+          task.level = level;
+          ordered.push(task);
+          ordered.push(...buildHierarchy(task.id, level + 1));
+        }
+        return ordered;
+      }
+
+      const orderedTasks = buildHierarchy(null);
+
+      // Use EXACT specification from taskpane.js gantt chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Gantt Chart from Excel Data",
+        width: 800,
+        height: Math.max(300, orderedTasks.length * 30),
+        data: { values: orderedTasks },
+        layer: [
+          {
+            mark: { type: "bar", opacity: 0.3, height: 20 },
+            encoding: {
+              y: { field: "name", type: "nominal", axis: { title: null, labelFontSize: 11 }, sort: null },
+              x: { field: "startDate", type: "temporal", axis: { title: "Timeline", format: "%b %d", labelAngle: -45 } },
+              x2: { field: "endDate", type: "temporal" },
+              color: { field: "level", type: "ordinal", scale: { scheme: "category10" }, legend: { title: "Level" } },
+              tooltip: [
+                { field: "name", type: "nominal", title: "Task" },
+                { field: "startDate", type: "temporal", title: "Start", format: "%Y-%m-%d" },
+                { field: "endDate", type: "temporal", title: "End", format: "%Y-%m-%d" },
+                { field: "progress", type: "quantitative", title: "Progress", format: ".0%" }
+              ]
+            }
+          },
+          {
+            mark: { type: "bar", opacity: 0.8, height: 20 },
+            encoding: {
+              y: { field: "name", type: "nominal", sort: null },
+              x: { field: "startDate", type: "temporal" },
+              x2: { field: "progressEnd", type: "temporal" },
+              color: { field: "level", type: "ordinal", scale: { scheme: "category10" } }
+            }
+          },
+          {
+            mark: { type: "text", align: "left", baseline: "middle", dx: 5, fontSize: 10 },
+            encoding: {
+              y: { field: "name", type: "nominal", sort: null },
+              x: { field: "endDate", type: "temporal" },
+              text: { field: "progress", type: "quantitative", format: ".0%" },
+              color: { value: "#666" }
+            }
+          },
+          {
+            mark: { type: "rule", strokeDash: [4, 4], opacity: 0.5 },
+            data: { values: [{ date: new Date().toISOString() }] },
+            encoding: {
+              x: { field: "date", type: "temporal" },
+              color: { value: "red" },
+              size: { value: 1 }
+            }
+          }
+        ],
+        config: { view: { stroke: null }, axis: { grid: true, gridColor: "#f0f0f0" } }
+      };
+
+      createChart(spec, "gantt", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SANKEY custom function using the exact same specification as taskpane.js
+ * Creates a Sankey diagram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SANKEY(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Sankey chart requires 3 columns (Source, Target, Value)");
+        return;
+      }
+
+      // Process data (same as taskpane.js)
+      const processedData = rows
+        .filter(r => r[0] && r[1] && !isNaN(+r[2]))
+        .map(r => ({
+          key: { stk1: r[0], stk2: r[1] },
+          doc_count: +r[2]
+        }));
+
+      if (processedData.length === 0) {
+        resolve("Error: No valid data found for Sankey chart");
+        return;
+      }
+
+      // Use EXACT specification from taskpane.js sankey chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.2.json",
+        height: 300,
+        width: 600,
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        view: { stroke: null },
+        padding: { top: 60, bottom: 80, left: 60, right: 60 },
+        data: [
+          {
+            name: "rawData",
+            values: processedData,
+            transform: [
+              { type: "formula", expr: "datum.key.stk1", as: "stk1" },
+              { type: "formula", expr: "datum.key.stk2", as: "stk2" },
+              { type: "formula", expr: "datum.doc_count", as: "size" }
+            ]
+          },
+          {
+            name: "nodes",
+            source: "rawData",
+            transform: [
+              {
+                type: "filter",
+                expr:
+                  "!groupSelector || groupSelector.stk1 == datum.stk1 || groupSelector.stk2 == datum.stk2"
+              },
+              { type: "formula", expr: "datum.stk1+datum.stk2", as: "key" },
+              { type: "fold", fields: ["stk1", "stk2"], as: ["stack", "grpId"] },
+              {
+                type: "formula",
+                expr:
+                  "datum.stack == 'stk1' ? datum.stk1+' '+datum.stk2 : datum.stk2+' '+datum.stk1",
+                as: "sortField"
+              },
+              {
+                type: "stack",
+                offset: "normalize",
+                groupby: ["stack"],
+                sort: { field: "sortField", order: "descending" },
+                field: "size"
+              },
+              { type: "formula", expr: "(datum.y0+datum.y1)/2", as: "yc" }
+            ]
+          },
+          {
+            name: "groups",
+            source: "nodes",
+            transform: [
+              {
+                type: "aggregate",
+                groupby: ["stack", "grpId"],
+                fields: ["size"],
+                ops: ["sum"],
+                as: ["total"]
+              },
+              {
+                type: "stack",
+                groupby: ["stack"],
+                sort: { field: "grpId", order: "descending" },
+                field: "total"
+              },
+              { type: "formula", expr: "scale('y', datum.y0)", as: "scaledY0" },
+              { type: "formula", expr: "scale('y', datum.y1)", as: "scaledY1" },
+              { type: "formula", expr: "datum.stack == 'stk1'", as: "rightLabel" },
+              { type: "formula", expr: "datum.total/domain('y')[1]", as: "percentage" }
+            ]
+          },
+          {
+            name: "destinationNodes",
+            source: "nodes",
+            transform: [{ type: "filter", expr: "datum.stack == 'stk2'" }]
+          },
+          {
+            name: "edges",
+            source: "nodes",
+            transform: [
+              { type: "filter", expr: "datum.stack == 'stk1'" },
+              {
+                type: "lookup",
+                from: "destinationNodes",
+                key: "key",
+                fields: ["key"],
+                as: ["target"]
+              },
+              {
+                type: "linkpath",
+                orient: "horizontal",
+                shape: "diagonal",
+                sourceY: { expr: "scale('y', datum.yc)" },
+                sourceX: { expr: "scale('x', 'stk1') + bandwidth('x')" },
+                targetY: { expr: "scale('y', datum.target.yc)" },
+                targetX: { expr: "scale('x', 'stk2')" }
+              },
+              { type: "formula", expr: "range('y')[0]-scale('y', datum.size)", as: "strokeWidth" },
+              { type: "formula", expr: "datum.size/domain('y')[1]", as: "percentage" }
+            ]
+          }
+        ],
+        scales: [
+          {
+            name: "x",
+            type: "band",
+            range: "width",
+            domain: ["stk1", "stk2"],
+            paddingOuter: 0.05,
+            paddingInner: 0.95
+          },
+          {
+            name: "y",
+            type: "linear",
+            range: "height",
+            domain: { data: "nodes", field: "y1" }
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            range: "category",
+            domain: {
+              fields: [
+                { data: "rawData", field: "stk1" },
+                { data: "rawData", field: "stk2" }
+              ]
+            }
+          },
+          {
+            name: "stackNames",
+            type: "ordinal",
+            range: ["Source", "Destination"],
+            domain: ["stk1", "stk2"]
+          }
+        ],
+        axes: [
+          {
+            orient: "bottom",
+            scale: "x",
+            encode: {
+              labels: { update: { text: { scale: "stackNames", field: "value" } } }
+            }
+          },
+          { orient: "left", scale: "y" }
+        ],
+        marks: [
+          {
+            type: "path",
+            name: "edgeMark",
+            from: { data: "edges" },
+            clip: true,
+            encode: {
+              update: {
+                stroke: { scale: "color", field: "stk1" },
+                strokeWidth: { field: "strokeWidth" },
+                path: { field: "path" },
+                strokeOpacity: {
+                  signal:
+                    "!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 0.9 : 0.3"
+                },
+                zindex: {
+                  signal:
+                    "!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 1 : 0"
+                },
+                tooltip: {
+                  signal:
+                    "datum.stk1 + ' → ' + datum.stk2 + '    ' + format(datum.size, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+                }
+              },
+              hover: { strokeOpacity: { value: 1 } }
+            }
+          },
+          {
+            type: "rect",
+            name: "groupMark",
+            from: { data: "groups" },
+            encode: {
+              enter: {
+                fill: { scale: "color", field: "grpId" },
+                width: { scale: "x", band: 1 }
+              },
+              update: {
+                x: { scale: "x", field: "stack" },
+                y: { field: "scaledY0" },
+                y2: { field: "scaledY1" },
+                fillOpacity: { value: 0.6 },
+                tooltip: {
+                  signal:
+                    "datum.grpId + '   ' + format(datum.total, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+                }
+              },
+              hover: { fillOpacity: { value: 1 } }
+            }
+          },
+          {
+            type: "text",
+            from: { data: "groups" },
+            interactive: false,
+            encode: {
+              update: {
+                x: {
+                  signal:
+                    "scale('x', datum.stack) + (datum.rightLabel ? bandwidth('x') + 8 : -8)"
+                },
+                yc: { signal: "(datum.scaledY0 + datum.scaledY1)/2" },
+                align: { signal: "datum.rightLabel ? 'left' : 'right'" },
+                baseline: { value: "middle" },
+                fontWeight: { value: "bold" },
+                text: {
+                  signal: "abs(datum.scaledY0-datum.scaledY1) > 13 ? datum.grpId : ''"
+                }
+              }
+            }
+          }
+        ],
+        signals: [
+          {
+            name: "groupHover",
+            value: {},
+            on: [
+              {
+                events: "@groupMark:mouseover",
+                update:
+                  "{stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"
+              },
+              { events: "mouseout", update: "{}" }
+            ]
+          },
+          {
+            name: "groupSelector",
+            value: false,
+            on: [
+              {
+                events: "@groupMark:click!",
+                update:
+                  "{stack:datum.stack, stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"
+              },
+              {
+                events: [
+                  { type: "click", markname: "groupReset" },
+                  { type: "dblclick" }
+                ],
+                update: "false"
+              }
+            ]
+          }
+        ]
+      };
+
+      createChart(spec, "sankey", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RIDGELINE custom function using the exact same specification as taskpane.js
+ * Creates a ridgeline (joyplot) chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RIDGELINE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Ridgeline chart requires 3 columns (Time/X-axis, Categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js ridgeline chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ridgeline (Joyplot) chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: {
+          type: "area",
+          fillOpacity: 0.7,
+          strokeOpacity: 1,
+          strokeWidth: 1,
+          interpolate: "monotone"
+        },
+        width: 400,
+        height: 20,
+        encoding: {
+          x: {
+            field: headers[0],       // date/time column
+            type: "ordinal",
+            title: headers[0]
+          },
+          y: {
+            aggregate: "sum",
+            field: headers[2],       // value column
+            type: "quantitative",
+            scale: { range: [20, -40] },
+            axis: {
+              title: null,
+              values: [0],
+              domain: false,
+              labels: false,
+              ticks: false
+            }
+          },
+          row: {
+            field: headers[1],       // category column
+            type: "nominal",
+            title: headers[1],
+            header: {
+              title: null,
+              labelAngle: 0,
+              labelOrient: "left",
+              labelAlign: "left",
+              labelPadding: 0
+            },
+            sort: { field: headers[0], op: "max", order: "ascending" }
+          },
+          fill: {
+            field: headers[1],
+            type: "nominal",
+            legend: null,
+            scale: { scheme: "plasma" }
+          }
+        },
+        resolve: { scale: { y: "independent" } },
+        config: {
+          view: { stroke: "transparent" },
+          facet: { spacing: 20 },
+          header: {
+            labelFontSize: 12,
+            labelFontWeight: 500,
+            labelAngle: 0,
+            labelAnchor: "end",
+            labelOrient: "top",
+            labelPadding: -19
+          },
+          axis: {
+            domain: false,
+            grid: false,
+            ticks: false,
+            tickCount: 5,
+            labelFontSize: 12,
+            titleFontSize: 12,
+            titleFontWeight: 400,
+            titleColor: "#605E5C"
+          }
+        }
+      };
+
+      createChart(spec, "ridgeline", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * DEVIATION custom function using the exact same specification as taskpane.js
+ * Creates a deviation chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function DEVIATION(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Deviation chart requires 3 columns (Date/Period, Actual Values, Target/Baseline Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js deviation chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Deviation chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        layer: [
+          {
+            mark: { type: "line", tooltip: true, color: "grey" },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[1], type: "quantitative" }
+            }
+          },
+          {
+            mark: { type: "circle", size: 80, color: "grey", tooltip: true },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[1], type: "quantitative" }
+            }
+          },
+          {
+            mark: { type: "rule", strokeWidth: 2, tooltip: true },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[1], type: "quantitative" },
+              y2: { field: headers[2] },
+              color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+              }
+            }
+          },
+          {
+            mark: { type: "circle", size: 60, tooltip: true },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[2], type: "quantitative" },
+              color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+              }
+            }
+          }
+        ],
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal", 
+            axis: { 
+              title: null,
+              labelAngle: 0
+            } 
+          },
+          y: { type: "quantitative", axis: { title: "" } }
+        },
+        config: {
+          view: { stroke: "transparent" },
+          line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12
+          }
+        }
+      };
+
+      createChart(spec, "deviation", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
  * Generic chart creation function (same approach as taskpane.js)
  */
 async function createChart(spec, chartType, headers, rows) {
@@ -4282,4 +4965,8 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("WAFFLE", WAFFLE);
   CustomFunctions.associate("LOLLIPOP", LOLLIPOP);
   CustomFunctions.associate("VIOLIN", VIOLIN);
+  CustomFunctions.associate("GANTT", GANTT);
+  CustomFunctions.associate("SANKEY", SANKEY);
+  CustomFunctions.associate("RIDGELINE", RIDGELINE);
+  CustomFunctions.associate("DEVIATION", DEVIATION);
 }
