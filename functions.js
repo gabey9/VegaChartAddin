@@ -4460,8 +4460,8 @@ function GANTT(data) {
 }
 
 /**
- * SANKEY custom function - simplified Vega-Lite version for better compatibility
- * Creates a Sankey-style flow diagram from Excel data range
+ * SANKEY custom function using the exact same specification as taskpane.js
+ * Creates a Sankey diagram from Excel data range
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
@@ -4479,17 +4479,16 @@ function SANKEY(data) {
       const rows = data.slice(1);
 
       if (headers.length < 3) {
-        resolve("Error: Sankey chart requires 3 columns (Source, Target, Value)");
+        resolve("Error: Sankey chart requires 3 columns (Source Category, Destination Category, Values)");
         return;
       }
 
-      // Convert rows -> objects and validate data
+      // Filter and transform data (same as taskpane.js)
       const processedData = rows
-        .filter(r => r[0] && r[1] && !isNaN(+r[2]) && +r[2] > 0)
+        .filter(r => r[0] && r[1] && !isNaN(+r[2]))
         .map(r => ({
-          source: r[0],
-          target: r[1], 
-          value: +r[2]
+          key: { stk1: r[0], stk2: r[1] },
+          doc_count: +r[2]
         }));
 
       if (processedData.length === 0) {
@@ -4497,184 +4496,250 @@ function SANKEY(data) {
         return;
       }
 
-      // Create a simplified alluvial/flow chart using Vega-Lite
-      // This is more reliable than the complex Vega Sankey specification
+      // Use EXACT specification from taskpane.js sankey chart
       const spec = {
-        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Flow diagram from Excel selection",
+        $schema: "https://vega.github.io/schema/vega/v5.2.json",
+        height: 300,
+        width: 600,
         background: "white",
         config: { view: { stroke: "transparent" }},
-        width: 600,
-        height: 400,
-        data: { values: processedData },
-        transform: [
+        view: { stroke: null },
+        padding: { top: 60, bottom: 80, left: 60, right: 60 },
+        data: [
           {
-            aggregate: [{ op: "sum", field: "value", as: "total_value" }],
-            groupby: ["source", "target"]
+            name: "rawData",
+            values: processedData,
+            transform: [
+              { type: "formula", expr: "datum.key.stk1", as: "stk1" },
+              { type: "formula", expr: "datum.key.stk2", as: "stk2" },
+              { type: "formula", expr: "datum.doc_count", as: "size" }
+            ]
           },
           {
-            window: [{ op: "sum", field: "total_value", as: "cumulative" }],
-            sort: [{ field: "total_value", order: "descending" }],
-            groupby: ["source"],
-            frame: [null, 0]
+            name: "nodes",
+            source: "rawData",
+            transform: [
+              {
+                type: "filter",
+                expr:
+                  "!groupSelector || groupSelector.stk1 == datum.stk1 || groupSelector.stk2 == datum.stk2"
+              },
+              { type: "formula", expr: "datum.stk1+datum.stk2", as: "key" },
+              { type: "fold", fields: ["stk1", "stk2"], as: ["stack", "grpId"] },
+              {
+                type: "formula",
+                expr:
+                  "datum.stack == 'stk1' ? datum.stk1+' '+datum.stk2 : datum.stk2+' '+datum.stk1",
+                as: "sortField"
+              },
+              {
+                type: "stack",
+                groupby: ["stack"],
+                sort: { field: "sortField", order: "descending" },
+                field: "size"
+              },
+              { type: "formula", expr: "(datum.y0+datum.y1)/2", as: "yc" }
+            ]
           },
           {
-            calculate: "datum.cumulative - datum.total_value",
-            as: "y_start"
+            name: "groups",
+            source: "nodes",
+            transform: [
+              {
+                type: "aggregate",
+                groupby: ["stack", "grpId"],
+                fields: ["size"],
+                ops: ["sum"],
+                as: ["total"]
+              },
+              {
+                type: "stack",
+                groupby: ["stack"],
+                sort: { field: "grpId", order: "descending" },
+                field: "total"
+              },
+              { type: "formula", expr: "scale('y', datum.y0)", as: "scaledY0" },
+              { type: "formula", expr: "scale('y', datum.y1)", as: "scaledY1" },
+              { type: "formula", expr: "datum.stack == 'stk1'", as: "rightLabel" },
+              { type: "formula", expr: "datum.total/domain('y')[1]", as: "percentage" }
+            ]
           },
           {
-            calculate: "datum.cumulative",
-            as: "y_end"
+            name: "destinationNodes",
+            source: "nodes",
+            transform: [{ type: "filter", expr: "datum.stack == 'stk2'" }]
+          },
+          {
+            name: "edges",
+            source: "nodes",
+            transform: [
+              { type: "filter", expr: "datum.stack == 'stk1'" },
+              {
+                type: "lookup",
+                from: "destinationNodes",
+                key: "key",
+                fields: ["key"],
+                as: ["target"]
+              },
+              {
+                type: "linkpath",
+                orient: "horizontal",
+                shape: "diagonal",
+                sourceY: { expr: "scale('y', datum.yc)" },
+                sourceX: { expr: "scale('x', 'stk1') + bandwidth('x')" },
+                targetY: { expr: "scale('y', datum.target.yc)" },
+                targetX: { expr: "scale('x', 'stk2')" }
+              },
+              { type: "formula", expr: "range('y')[0]-scale('y', datum.size)", as: "strokeWidth" },
+              { type: "formula", expr: "datum.size/domain('y')[1]", as: "percentage" }
+            ]
           }
         ],
-        layer: [
+        scales: [
           {
-            mark: {
-              type: "rect",
-              tooltip: true,
-              stroke: "white",
-              strokeWidth: 1
-            },
-            encoding: {
-              x: { value: 50 },
-              x2: { value: 250 },
-              y: { 
-                field: "y_start", 
-                type: "quantitative",
-                scale: { domain: [0, { expr: "data('data_0')[0] ? data('data_0')[0].cumulative : 100" }] }
-              },
-              y2: { field: "y_end", type: "quantitative" },
-              color: {
-                field: "source",
-                type: "nominal",
-                scale: { scheme: "category20" },
-                legend: { title: "Source" }
-              },
-              tooltip: [
-                { field: "source", type: "nominal", title: "Source" },
-                { field: "target", type: "nominal", title: "Target" }, 
-                { field: "total_value", type: "quantitative", title: "Value" }
+            name: "x",
+            type: "band",
+            range: "width",
+            domain: ["stk1", "stk2"],
+            paddingOuter: 0.05,
+            paddingInner: 0.95
+          },
+          {
+            name: "y",
+            type: "linear",
+            range: "height",
+            domain: { data: "nodes", field: "y1" }
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            range: "category",
+            domain: {
+              fields: [
+                { data: "rawData", field: "stk1" },
+                { data: "rawData", field: "stk2" }
               ]
             }
           },
           {
-            transform: [
-              {
-                window: [{ op: "sum", field: "total_value", as: "target_cumulative" }],
-                sort: [{ field: "total_value", order: "descending" }],
-                groupby: ["target"],
-                frame: [null, 0]
+            name: "stackNames",
+            type: "ordinal",
+            range: ["Source", "Destination"],
+            domain: ["stk1", "stk2"]
+          }
+        ],
+        axes: [
+          {
+            orient: "bottom",
+            scale: "x",
+            encode: {
+              labels: { update: { text: { scale: "stackNames", field: "value" } } }
+            }
+          },
+          { orient: "left", scale: "y" }
+        ],
+        marks: [
+          {
+            type: "path",
+            name: "edgeMark",
+            from: { data: "edges" },
+            clip: true,
+            encode: {
+              update: {
+                stroke: { scale: "color", field: "stk1" }, // links colored by source
+                strokeWidth: { field: "strokeWidth" },
+                path: { field: "path" },
+                strokeOpacity: {
+                  signal:
+                    "!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 0.9 : 0.3"
+                },
+                zindex: {
+                  signal:
+                    "!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 1 : 0"
+                },
+                tooltip: {
+                  signal:
+                    "datum.stk1 + ' → ' + datum.stk2 + '    ' + format(datum.size, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+                }
               },
-              {
-                calculate: "datum.target_cumulative - datum.total_value",
-                as: "target_y_start"
-              }
-            ],
-            mark: {
-              type: "rect", 
-              tooltip: true,
-              stroke: "white",
-              strokeWidth: 1
-            },
-            encoding: {
-              x: { value: 350 },
-              x2: { value: 550 },
-              y: { 
-                field: "target_y_start", 
-                type: "quantitative"
-              },
-              y2: { 
-                field: "target_cumulative", 
-                type: "quantitative"
-              },
-              color: {
-                field: "target",
-                type: "nominal", 
-                scale: { scheme: "set2" },
-                legend: { title: "Target" }
-              }
+              hover: { strokeOpacity: { value: 1 } }
             }
           },
           {
-            mark: {
-              type: "text",
-              align: "center",
-              baseline: "middle",
-              fontSize: 11,
-              fontWeight: "bold"
-            },
-            encoding: {
-              x: { value: 150 },
-              y: { 
-                field: "y_start",
-                type: "quantitative"
+            type: "rect",
+            name: "groupMark",
+            from: { data: "groups" },
+            encode: {
+              enter: {
+                fill: { scale: "color", field: "grpId" }, // both source & destination use union colors
+                width: { scale: "x", band: 1 }
               },
-              y2: { field: "y_end", type: "quantitative" },
-              text: { 
-                condition: {
-                  test: "datum.y_end - datum.y_start > 20",
-                  field: "source"
+              update: {
+                x: { scale: "x", field: "stack" },
+                y: { field: "scaledY0" },
+                y2: { field: "scaledY1" },
+                fillOpacity: { value: 0.6 },
+                tooltip: {
+                  signal:
+                    "datum.grpId + '   ' + format(datum.total, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
                 }
               },
-              color: { value: "white" }
+              hover: { fillOpacity: { value: 1 } }
             }
           },
           {
-            transform: [
-              {
-                window: [{ op: "sum", field: "total_value", as: "target_cumulative" }],
-                sort: [{ field: "total_value", order: "descending" }],
-                groupby: ["target"], 
-                frame: [null, 0]
-              },
-              {
-                calculate: "datum.target_cumulative - datum.total_value",
-                as: "target_y_start"
-              }
-            ],
-            mark: {
-              type: "text",
-              align: "center", 
-              baseline: "middle",
-              fontSize: 11,
-              fontWeight: "bold"
-            },
-            encoding: {
-              x: { value: 450 },
-              y: { 
-                field: "target_y_start",
-                type: "quantitative"
-              },
-              y2: { 
-                field: "target_cumulative",
-                type: "quantitative"
-              },
-              text: {
-                condition: {
-                  test: "datum.target_cumulative - datum.target_y_start > 20",
-                  field: "target"
+            type: "text",
+            from: { data: "groups" },
+            interactive: false,
+            encode: {
+              update: {
+                x: {
+                  signal:
+                    "scale('x', datum.stack) + (datum.rightLabel ? bandwidth('x') + 8 : -8)"
+                },
+                yc: { signal: "(datum.scaledY0 + datum.scaledY1)/2" },
+                align: { signal: "datum.rightLabel ? 'left' : 'right'" },
+                baseline: { value: "middle" },
+                fontWeight: { value: "bold" },
+                text: {
+                  signal: "abs(datum.scaledY0-datum.scaledY1) > 13 ? datum.grpId : ''"
                 }
-              },
-              color: { value: "white" }
+              }
             }
           }
         ],
-        config: {
-          font: "Segoe UI",
-          axis: {
-            domain: false,
-            ticks: false,
-            labels: false,
-            grid: false
+        signals: [
+          {
+            name: "groupHover",
+            value: {},
+            on: [
+              {
+                events: "@groupMark:mouseover",
+                update:
+                  "{stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"
+              },
+              { events: "mouseout", update: "{}" }
+            ]
           },
-          legend: {
-            titleFont: "Segoe UI",
-            titleFontWeight: "bold", 
-            titleColor: "#323130",
-            labelFont: "Segoe UI",
-            labelColor: "#605e5c"
+          {
+            name: "groupSelector",
+            value: false,
+            on: [
+              {
+                events: "@groupMark:click!",
+                update:
+                  "{stack:datum.stack, stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"
+              },
+              {
+                events: [
+                  { type: "click", markname: "groupReset" },
+                  { type: "dblclick" }
+                ],
+                update: "false"
+              }
+            ]
           }
-        }
+        ]
       };
 
       createChart(spec, "sankey", headers, rows)
