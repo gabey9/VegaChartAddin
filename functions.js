@@ -1,3 +1,1893 @@
-/*! For license information please see functions.js.LICENSE.txt */
-!function(){function e(){var a,n,r="function"==typeof Symbol?Symbol:{},o=r.iterator||"@@iterator",i=r.toStringTag||"@@toStringTag";function c(e,r,o,i){var c=r&&r.prototype instanceof s?r:s,u=Object.create(c.prototype);return t(u,"_invoke",function(e,t,r){var o,i,c,s=0,u=r||[],d=!1,f={p:0,n:0,v:a,a:m,f:m.bind(a,4),d:function(e,t){return o=e,i=0,c=a,f.n=t,l}};function m(e,t){for(i=e,c=t,n=0;!d&&s&&!r&&n<u.length;n++){var r,o=u[n],m=f.p,p=o[2];e>3?(r=p===t)&&(c=o[(i=o[4])?5:(i=3,3)],o[4]=o[5]=a):o[0]<=m&&((r=e<2&&m<o[1])?(i=0,f.v=t,f.n=o[1]):m<p&&(r=e<3||o[0]>t||t>p)&&(o[4]=e,o[5]=t,f.n=p,i=0))}if(r||e>1)return l;throw d=!0,t}return function(r,u,p){if(s>1)throw TypeError("Generator is already running");for(d&&1===u&&m(u,p),i=u,c=p;(n=i<2?a:c)||!d;){o||(i?i<3?(i>1&&(f.n=-1),m(i,c)):f.n=c:f.v=c);try{if(s=2,o){if(i||(r="next"),n=o[r]){if(!(n=n.call(o,c)))throw TypeError("iterator result is not an object");if(!n.done)return n;c=n.value,i<2&&(i=0)}else 1===i&&(n=o.return)&&n.call(o),i<2&&(c=TypeError("The iterator does not provide a '"+r+"' method"),i=1);o=a}else if((n=(d=f.n<0)?c:e.call(t,f))!==l)break}catch(e){o=a,i=1,c=e}finally{s=1}}return{value:n,done:d}}}(e,o,i),!0),u}var l={};function s(){}function u(){}function d(){}n=Object.getPrototypeOf;var f=[][o]?n(n([][o]())):(t(n={},o,function(){return this}),n),m=d.prototype=s.prototype=Object.create(f);function p(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,d):(e.__proto__=d,t(e,i,"GeneratorFunction")),e.prototype=Object.create(m),e}return u.prototype=d,t(m,"constructor",d),t(d,"constructor",u),u.displayName="GeneratorFunction",t(d,i,"GeneratorFunction"),t(m),t(m,i,"Generator"),t(m,o,function(){return this}),t(m,"toString",function(){return"[object Generator]"}),(e=function(){return{w:c,m:p}})()}function t(e,a,n,r){var o=Object.defineProperty;try{o({},"",{})}catch(e){o=0}t=function(e,a,n,r){function i(a,n){t(e,a,function(e){return this._invoke(a,n,e)})}a?o?o(e,a,{value:n,enumerable:!r,configurable:!r,writable:!r}):e[a]=n:(i("next",0),i("throw",1),i("return",2))},t(e,a,n,r)}function a(e){return a="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},a(e)}function n(e,t,a,n,r,o,i){try{var c=e[o](i),l=c.value}catch(e){return void a(e)}c.done?t(l):Promise.resolve(l).then(n,r)}function r(e){return function(){var t=this,a=arguments;return new Promise(function(r,o){var i=e.apply(t,a);function c(e){n(i,r,o,c,l,"next",e)}function l(e){n(i,r,o,c,l,"throw",e)}c(void 0)})}}function o(e){return function(e){if(Array.isArray(e))return i(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||function(e,t){if(e){if("string"==typeof e)return i(e,t);var a={}.toString.call(e).slice(8,-1);return"Object"===a&&e.constructor&&(a=e.constructor.name),"Map"===a||"Set"===a?Array.from(e):"Arguments"===a||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(a)?i(e,t):void 0}}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function i(e,t){(null==t||t>e.length)&&(t=e.length);for(var a=0,n=Array(t);a<t;a++)n[a]=e[a];return n}function c(e,t){var a=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),a.push.apply(a,n)}return a}function l(e){for(var t=1;t<arguments.length;t++){var a=null!=arguments[t]?arguments[t]:{};t%2?c(Object(a),!0).forEach(function(t){s(e,t,a[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(a)):c(Object(a)).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(a,t))})}return e}function s(e,t,n){return(t=function(e){var t=function(e){if("object"!=a(e)||!e)return e;var t=e[Symbol.toPrimitive];if(void 0!==t){var n=t.call(e,"string");if("object"!=a(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return String(e)}(e);return"symbol"==a(t)?t:t+""}(t))in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function u(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1),r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=[],i=a.slice(1);r.forEach(function(e){i.forEach(function(t){null!==e[t]&&void 0!==e[t]&&""!==e[t]&&o.push(s(s(s({},a[0],e[a[0]]),"series",t),"value",parseFloat(e[t])||0))})}),k(s({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Multi-series line chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:o},mark:{type:"line",point:!1,tooltip:!0,strokeWidth:2},encoding:{x:{field:a[0],type:"ordinal",axis:{title:a[0],labelFontSize:12,titleFontSize:14,labelAngle:0}},y:{field:"value",type:"quantitative",axis:{title:"Value",labelFontSize:12,titleFontSize:14}},color:{field:"series",type:"nominal",scale:{scheme:"category10"},legend:{title:"Series",titleFontSize:12,labelFontSize:11}}}},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"},point:{size:60,filled:!0}}),"line",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function d(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);k(s({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Bar chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"bar",tooltip:!0},encoding:l({x:{field:a[0],type:"nominal",axis:{title:a[0],labelFontSize:12,titleFontSize:14}},y:{field:a[1],type:"quantitative",axis:{title:a[1],labelFontSize:12,titleFontSize:14}}},a.length>=3&&{color:{field:a[2],type:"nominal",legend:{title:a[2],titleFontSize:12,labelFontSize:11}}})},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"bar",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function f(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Pie chart requires 2 columns (Category, Value)");if(n.some(function(e){return isNaN(e[1])||e[1]<=0}))return void t("Error: Pie chart values must be positive numbers");k({$schema:"https://vega.github.io/schema/vega-lite/v6.json",background:"white",config:{view:{stroke:"transparent"}},description:"Pie chart from Excel selection",data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"arc",outerRadius:120},encoding:{theta:{field:a[1],type:"quantitative"},color:{field:a[0],type:"nominal"}}},"pie",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function m(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);k(s({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Area chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"area",tooltip:!0,opacity:.7},encoding:l({x:{field:a[0],type:"ordinal",axis:{title:a[0],labelFontSize:12,titleFontSize:14}},y:{field:a[1],type:"quantitative",axis:{title:a[1],labelFontSize:12,titleFontSize:14}}},a.length>=3&&{color:{field:a[2],type:"nominal",legend:{title:a[2],titleFontSize:12,labelFontSize:11}}})},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"area",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function p(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Scatter plot requires at least 2 columns (X, Y values)");k(s({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Colored scatter plot from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"point",size:100,tooltip:!0},encoding:l(l({x:{field:a[0],type:"quantitative",scale:{zero:!1},axis:{title:a[0],labelFontSize:12,titleFontSize:14}},y:{field:a[1],type:"quantitative",scale:{zero:!1},axis:{title:a[1],labelFontSize:12,titleFontSize:14}}},a.length>=3&&{color:{field:a[2],type:"nominal",legend:{title:a[2],titleFontSize:12,labelFontSize:11}}}),a.length>=4&&{shape:{field:a[3],type:"nominal",legend:{title:a[3],titleFontSize:12,labelFontSize:11}}})},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"scatter",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function g(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Radial chart requires 2 columns (Category, Value)");k({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Radial chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},layer:[{mark:{type:"arc",innerRadius:20,stroke:"#fff"}},{mark:{type:"text",radiusOffset:10},encoding:{text:{field:a[1],type:"quantitative"}}}],encoding:{theta:{field:a[1],type:"quantitative",stack:!0},radius:{field:a[1],scale:{type:"sqrt",zero:!0,rangeMin:20}},color:{field:a[0],type:"nominal",legend:null}}},"radial",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function h(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Box plot requires 2 columns (Category, Values)");var r=n.filter(function(e){return e[0]&&!isNaN(+e[1])}).map(function(e){return{category:e[0],value:+e[1]}});if(0===r.length)return void t("Error: No valid numeric data found for box plot");k({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Box plot from Excel selection",data:{values:r},mark:{type:"boxplot",extent:"min-max"},encoding:{x:{field:"category",type:"nominal"},y:{field:"value",type:"quantitative",scale:{zero:!1}},color:{field:"category",type:"nominal",legend:null}}},"box",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function v(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Radar chart requires at least 3 columns (Series, Dimension1, Dimension2, ...)");var r=[],i=a.slice(1);n.forEach(function(e,t){var n=e[a[0]]||"Series ".concat(t+1);i.forEach(function(o){var i=parseFloat(e[a.indexOf(o)])||0;r.push({series:n,dimension:o,value:i,category:t})})});var c=o(new Set(r.map(function(e){return e.dimension})));k({$schema:"https://vega.github.io/schema/vega/v6.json",description:"Radar chart from Excel selection",width:400,height:400,padding:60,autosize:{type:"none",contains:"padding"},background:"white",config:{view:{stroke:"transparent"}},signals:[{name:"radius",update:"width / 2"}],data:[{name:"table",values:r},{name:"dimensions",values:c.map(function(e){return{dimension:e}})}],scales:[{name:"angular",type:"point",range:{signal:"[-PI, PI]"},padding:.5,domain:c},{name:"radial",type:"linear",range:{signal:"[0, radius]"},zero:!0,nice:!0,domain:{data:"table",field:"value"},domainMin:0},{name:"color",type:"ordinal",domain:{data:"table",field:"category"},range:["#0078d4","#00bcf2","#40e0d0","#00cc6a","#10893e","#107c10","#bad80a","#ffb900","#ff8c00","#d13438"]}],encode:{enter:{x:{signal:"radius"},y:{signal:"radius"}}},marks:[{type:"group",name:"categories",zindex:1,from:{facet:{data:"table",name:"facet",groupby:["category","series"]}},marks:[{type:"line",name:"category-line",from:{data:"facet"},encode:{enter:{interpolate:{value:"linear-closed"},x:{signal:"scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},y:{signal:"scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},stroke:{scale:"color",field:"category"},strokeWidth:{value:2},fill:{scale:"color",field:"category"},fillOpacity:{value:.1},strokeOpacity:{value:.8}}}},{type:"symbol",name:"category-points",from:{data:"facet"},encode:{enter:{x:{signal:"scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},y:{signal:"scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},size:{value:50},fill:{scale:"color",field:"category"},stroke:{value:"white"},strokeWidth:{value:1}}}}]},{type:"rule",name:"radial-grid",from:{data:"dimensions"},zindex:0,encode:{enter:{x:{value:0},y:{value:0},x2:{signal:"radius * cos(scale('angular', datum.dimension))"},y2:{signal:"radius * sin(scale('angular', datum.dimension))"},stroke:{value:"#e1e4e8"},strokeWidth:{value:1}}}},{type:"text",name:"dimension-label",from:{data:"dimensions"},zindex:1,encode:{enter:{x:{signal:"(radius + 20) * cos(scale('angular', datum.dimension))"},y:{signal:"(radius + 20) * sin(scale('angular', datum.dimension))"},text:{field:"dimension"},align:[{test:"abs(scale('angular', datum.dimension)) > PI / 2",value:"right"},{value:"left"}],baseline:[{test:"scale('angular', datum.dimension) > 0",value:"top"},{test:"scale('angular', datum.dimension) == 0",value:"middle"},{value:"bottom"}],fill:{value:"#323130"},fontWeight:{value:"bold"},font:{value:"Segoe UI"},fontSize:{value:12}}}},{type:"line",name:"outer-line",from:{data:"radial-grid"},encode:{enter:{interpolate:{value:"linear-closed"},x:{field:"x2"},y:{field:"y2"},stroke:{value:"#8a8886"},strokeWidth:{value:2},strokeOpacity:{value:.6}}}}]},"radar",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function y(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Waterfall chart requires 3 columns (Category, Amount, Type)");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),i=o(r);i.length>0&&(i[i.length-1]=l(l({},i[i.length-1]),{},s({},a[1],0)));var c=r.length,u=Math.max(400,Math.min(1600,50*c)),d=Math.max.apply(Math,o(r.map(function(e){return Math.abs(e[a[1]])})));k(s({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Waterfall chart with multiple subtotals",background:"white",data:{values:i},config:{view:{stroke:"transparent"}},width:u,height:Math.max(300,Math.min(600,d/100+200)),transform:[{window:[{op:"sum",field:a[1],as:"sum"}]},{window:[{op:"lead",field:a[0],as:"lead"}]},{calculate:"datum.lead === null ? datum.".concat(a[0]," : datum.lead"),as:"lead"},{calculate:"datum.".concat(a[2]," == 'total' ? 0 : datum.sum - datum.").concat(a[1]),as:"previous_sum"},{calculate:"datum.".concat(a[2]," == 'total' ? datum.sum : datum.").concat(a[1]),as:"amount"},{calculate:"datum.".concat(a[2]," == 'total' ? datum.").concat(a[1]," / 2 : (datum.sum + datum.previous_sum) / 2"),as:"center"},{calculate:"datum.".concat(a[2]," == 'total' ? datum.sum : (datum.").concat(a[1]," > 0 ? '+' : '') + datum.").concat(a[1]),as:"text_amount"},{calculate:"(datum.sum + datum.previous_sum) / 2",as:"center"},{window:[{op:"rank",as:"group_index"}],frame:[null,null],groupby:[a[0]]},{calculate:"\n            datum.".concat(a[2]," == 'total'\n                ? '#00B0F0'\n                : datum.amount >= 0\n                ? (datum.group_index == 1 ? '#70AD47'\n                    : (datum.group_index == 2 ? '#8BC97A'\n                    : (datum.group_index == 3 ? '#A7DA9D'\n                    : '#C3EBC0')))\n                : (datum.group_index == 1 ? '#E15759'\n                    : (datum.group_index == 2 ? '#EC7A7C'\n                    : (datum.group_index == 3 ? '#F29C9D'\n                    : '#F8BEBF')))\n            "),as:"bar_color"}],encoding:{x:{field:a[0],type:"ordinal",sort:null,axis:{labelAngle:-45,title:null},scale:{paddingInner:.05,paddingOuter:.025}}},layer:[{mark:{type:"bar",size:60},encoding:{y:{field:"previous_sum",type:"quantitative",title:null},y2:{field:"sum"},color:{field:"bar_color",type:"nominal",scale:null}}},{mark:{type:"text",fontWeight:"bold",baseline:"middle"},encoding:{y:{field:"center",type:"quantitative"},text:{field:"text_amount",type:"nominal"},color:{condition:[{test:"datum.".concat(a[2]," == 'total'"),value:"#725a30"}],value:"white"}}}]},"config",{text:{fontWeight:"bold",color:"#D9D9D9"}}),"waterfall",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function b(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Sunburst chart requires at least 2 columns (Parent, Child, Value optional)");var r=new Map;n.forEach(function(e,t){var n=e[a[0]]||"",o=e[a[1]]||"node_".concat(t),i=a.length>=3&&parseFloat(e[a[2]])||1;if(n&&!r.has(n)&&r.set(n,{id:n,parent:"",name:n,size:0}),r.has(o)){var c=r.get(o);c.parent=n,c.size=i}else r.set(o,{id:o,parent:n,name:o,size:i})});var o=Array.from(r.values()),i=new Set(o.map(function(e){return e.id}));o.forEach(function(e){e.parent&&!i.has(e.parent)&&(e.parent="")});var c=o.length,l=Math.max(400,Math.min(600,15*c+300));k({$schema:"https://vega.github.io/schema/vega/v6.json",description:"Sunburst chart from Excel selection",width:l,height:l,padding:10,autosize:"none",background:"white",config:{view:{stroke:"transparent"}},signals:[{name:"centerX",update:"width / 2"},{name:"centerY",update:"height / 2"},{name:"outerRadius",update:"min(width, height) / 2 - 10"}],data:[{name:"tree",values:o,transform:[{type:"stratify",key:"id",parentKey:"parent"},{type:"partition",field:"size",sort:{field:"size",order:"descending"},size:[{signal:"2 * PI"},{signal:"outerRadius"}],as:["a0","r0","a1","r1","depth","children"]}]}],scales:[{name:"color",type:"ordinal",domain:{data:"tree",field:"depth"},range:["#0078d4","#00bcf2","#40e0d0","#00cc6a","#10893e","#107c10","#bad80a","#ffb900","#ff8c00","#d13438","#8764b8","#e3008c","#00b7c3","#038387","#486991"]},{name:"opacity",type:"linear",domain:{data:"tree",field:"depth"},range:[.8,.4]}],marks:[{type:"arc",from:{data:"tree"},encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY"},stroke:{value:"white"},strokeWidth:{value:1}},update:{startAngle:{field:"a0"},endAngle:{field:"a1"},innerRadius:{field:"r0"},outerRadius:{field:"r1"},fill:{scale:"color",field:"depth"},fillOpacity:{scale:"opacity",field:"depth"}}}},{type:"text",from:{data:"tree"},encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY"},radius:{signal:"(datum.r0 + datum.r1) / 2"},theta:{signal:"(datum.a0 + datum.a1) / 2"},fill:{value:"#323130"},font:{value:"Segoe UI"},fontSize:{value:10},fontWeight:{value:"bold"},align:{value:"center"},baseline:{value:"middle"}},update:{text:{signal:"(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"},opacity:{signal:"(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"}}}}]},"sunburst",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function w(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a,n=e[0],r=e.slice(1);if(n.length<3)return void t("Error: Treemap chart requires 3 columns (Parent, Category, Value)");n.length>=3?(a=r.map(function(e,t){return{id:"".concat(e[n[1]],"_").concat(t),name:e[n[1]],parent:e[n[0]]||"root",size:parseFloat(e[n[2]])||0}}),o(new Set(a.map(function(e){return e.parent}))).forEach(function(e){"root"===e||a.find(function(t){return t.id===e})||a.push({id:e,name:e,parent:"root",size:0})}),a.push({id:"root",name:"Root",parent:"",size:0})):a=[{id:"root",name:"Root",parent:"",size:0}].concat(o(r.map(function(e,t){return{id:"item_".concat(t),name:e[n[1]],parent:"root",size:parseFloat(e[n[2]])||0}}))),k({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Treemap visualization from Excel data",background:"white",width:600,height:400,padding:5,autosize:"fit",data:[{name:"tree",values:a,transform:[{type:"stratify",key:"id",parentKey:"parent"},{type:"treemap",field:"size",sort:{field:"value"},round:!0,method:"squarify",ratio:1.6,size:[{signal:"width"},{signal:"height"}]}]},{name:"nodes",source:"tree",transform:[{type:"filter",expr:"datum.children"}]},{name:"leaves",source:"tree",transform:[{type:"filter",expr:"!datum.children"}]}],scales:[{name:"color",type:"ordinal",domain:{data:"nodes",field:"name"},range:["#0078d4","#00bcf2","#40e0d0","#00cc6a","#10893e","#107c10","#bad80a","#ffb900","#ff8c00","#d13438"]},{name:"fontSize",type:"ordinal",domain:[0,1,2,3],range:[20,16,12,10]},{name:"opacity",type:"ordinal",domain:[0,1,2,3],range:[.3,.6,.8,1]}],marks:[{type:"rect",from:{data:"nodes"},interactive:!1,encode:{enter:{fill:{scale:"color",field:"name"},fillOpacity:{scale:"opacity",field:"depth"}},update:{x:{field:"x0"},y:{field:"y0"},x2:{field:"x1"},y2:{field:"y1"},stroke:{value:"#ffffff"},strokeWidth:{value:1}}}},{type:"rect",from:{data:"leaves"},encode:{enter:{stroke:{value:"#ffffff"},strokeWidth:{value:2}},update:{x:{field:"x0"},y:{field:"y0"},x2:{field:"x1"},y2:{field:"y1"},fill:{value:"transparent"},tooltip:{signal:"{'Category': datum.name, 'Value': datum.size, 'Parent': datum.parent}"}},hover:{fill:{value:"#323130"},fillOpacity:{value:.1}}}},{type:"text",from:{data:"leaves"},interactive:!1,encode:{enter:{font:{value:"Segoe UI, Arial, sans-serif"},align:{value:"center"},baseline:{value:"middle"},fill:{value:"#323130"},fontWeight:{value:"bold"},text:{field:"name"},fontSize:{scale:"fontSize",field:"depth"}},update:{x:{signal:"0.5 * (datum.x0 + datum.x1)"},y:{signal:"0.5 * (datum.y0 + datum.y1)"},opacity:{signal:"(datum.x1 - datum.x0) > 50 && (datum.y1 - datum.y0) > 20 ? 1 : 0"}}}}]},"treemap",n,r).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function x(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<1)return void t("Error: Histogram requires at least 1 column of numeric values");var r=n.filter(function(e){return!isNaN(+e[0])}).map(function(e){return{value:+e[0]}});if(0===r.length)return void t("Error: No valid numeric data found for histogram");k({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Histogram from Excel selection",data:{values:r},mark:"bar",encoding:{x:{field:"value",bin:{maxbins:20},type:"quantitative",axis:{title:"Value"}},y:{aggregate:"count",type:"quantitative",axis:{title:"Count"}}}},"histogram",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function E(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Arc chart requires at least 2 columns (Source, Target, Weight optional)");var r=n.map(function(e,t){return{source:e[a[0]],target:e[a[1]],value:a.length>=3&&e[a[2]]?e[a[2]]:1,group:a.length>=4&&e[a[3]]?e[a[3]]:"default"}}),o=new Map;r.forEach(function(e){o.has(e.source)||o.set(e.source,{name:e.source,group:e.group,index:o.size}),o.has(e.target)||o.set(e.target,{name:e.target,group:e.group,index:o.size})});var i=Array.from(o.values()),c=r.map(function(e){return{source:o.get(e.source).index,target:o.get(e.target).index,value:e.value}});k(s({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Arc diagram from Excel selection",width:Math.max(600,40*i.length),height:300,padding:{top:20,bottom:80,left:20,right:20},background:"white",config:{view:{stroke:"transparent"}},data:[{name:"edges",values:c},{name:"sourceDegree",source:"edges",transform:[{type:"aggregate",groupby:["source"],as:["count"]}]},{name:"targetDegree",source:"edges",transform:[{type:"aggregate",groupby:["target"],as:["count"]}]},{name:"nodes",values:i,transform:[{type:"window",ops:["rank"],as:["order"]},{type:"lookup",from:"sourceDegree",key:"source",fields:["index"],as:["sourceDegree"],default:{count:0}},{type:"lookup",from:"targetDegree",key:"target",fields:["index"],as:["targetDegree"],default:{count:0}},{type:"formula",as:"degree",expr:"(datum.sourceDegree.count || 0) + (datum.targetDegree.count || 0)"}]}],scales:[{name:"position",type:"band",domain:{data:"nodes",field:"order",sort:!0},range:"width"},{name:"color",type:"ordinal",range:{scheme:"category20"},domain:{data:"nodes",field:"group"}}],marks:[{type:"symbol",name:"layout",interactive:!1,from:{data:"nodes"},encode:{enter:{opacity:{value:0}},update:{x:{scale:"position",field:"order"},y:{value:0},size:{field:"degree",mult:8,offset:50},fill:{scale:"color",field:"group"}}}},{type:"path",from:{data:"edges"},encode:{update:{stroke:{value:"#0078d4"},strokeOpacity:{value:.4},strokeWidth:{field:"value",mult:2,offset:1}}},transform:[{type:"lookup",from:"layout",key:"datum.index",fields:["datum.source","datum.target"],as:["sourceNode","targetNode"]},{type:"linkpath",sourceX:{expr:"min(datum.sourceNode.x, datum.targetNode.x)"},targetX:{expr:"max(datum.sourceNode.x, datum.targetNode.x)"},sourceY:{expr:"0"},targetY:{expr:"0"},shape:"arc"}]},{type:"symbol",from:{data:"layout"},encode:{update:{x:{field:"x"},y:{field:"y"},fill:{field:"fill"},size:{field:"size"},stroke:{value:"white"},strokeWidth:{value:1},tooltip:{signal:"{'Node': datum.datum.name, 'Group': datum.datum.group, 'Connections': datum.datum.degree}"}}}},{type:"text",from:{data:"nodes"},encode:{update:{x:{scale:"position",field:"order"},y:{value:25},fontSize:{value:10},align:{value:"center"},baseline:{value:"top"},angle:{value:-45},text:{field:"name"},fill:{value:"#323130"},font:{value:"Segoe UI"}}}}]},"config",{view:{stroke:"transparent"},font:"Segoe UI",text:{font:"Segoe UI",fontSize:10,fill:"#605e5c"}}),"arc",a,n).then(function(){return t("")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function k(e,t,a,n){return S.apply(this,arguments)}function S(){return S=r(e().m(function t(a,n,o,i){return e().w(function(t){for(;;)if(0===t.n)return t.a(2,new Promise(function(){var t=r(e().m(function t(o,i){var c,l,s,u,d,f,m,p,g;return e().w(function(t){for(;;)switch(t.p=t.n){case 0:if(t.p=0,c="".concat(n,"_").concat(Date.now(),"_").concat(Math.random().toString(36).substr(2,6)),(l=document.createElement("div")).style.display="none",l.id=c,document.body.appendChild(l),"undefined"!=typeof vegaEmbed){t.n=1;break}return t.n=1,P();case 1:return t.n=2,vegaEmbed(l,a,{actions:!1});case 2:return s=t.v,u=s.view,t.n=3,u.toImageURL("png");case 3:return d=t.v,t.n=4,fetch(d);case 4:return f=t.v,t.n=5,f.blob();case 5:m=t.v,(p=new FileReader).onloadend=r(e().m(function t(){var a,r;return e().w(function(e){for(;;)switch(e.p=e.n){case 0:return e.p=0,a=p.result.split(",")[1],e.n=1,C(a,n,c);case 1:document.body.removeChild(l),o(),e.n=3;break;case 2:e.p=2,r=e.v,document.body.contains(l)&&document.body.removeChild(l),i(r);case 3:return e.a(2)}},t,null,[[0,2]])})),p.readAsDataURL(m),t.n=7;break;case 6:t.p=6,g=t.v,i(g);case 7:return t.a(2)}},t,null,[[0,6]])}));return function(e,a){return t.apply(this,arguments)}}()))},t)})),S.apply(this,arguments)}function C(e,t,a){return F.apply(this,arguments)}function F(){return F=r(e().m(function t(a,n,o){return e().w(function(t){for(;;)if(0===t.n)return t.a(2,Excel.run(function(){var t=r(e().m(function t(r){var i,c,l,s,u,d,f;return e().w(function(e){for(;;)switch(e.n){case 0:return i=r.workbook.worksheets.getActiveWorksheet(),e.n=1,z(r,i,n);case 1:if(!(c=e.v)){e.n=2;break}l=c.left,s=c.top,u=c.width,e.n=4;break;case 2:return(d=r.workbook.getSelectedRange()).load("left, top, width, height"),e.n=3,r.sync();case 3:l=d.left,s=d.top,u=Math.max(400,8*d.width);case 4:return(f=i.shapes.addImage(a)).left=l,f.top=s,f.lockAspectRatio=!0,f.width=u,f.name="".concat(n.charAt(0).toUpperCase()+n.slice(1),"Chart_").concat(o),e.n=5,r.sync();case 5:return e.a(2)}},t)}));return function(e){return t.apply(this,arguments)}}()))},t)})),F.apply(this,arguments)}function z(e,t,a){return A.apply(this,arguments)}function A(){return(A=r(e().m(function t(a,n,r){var o,i,c,l,s,u;return e().w(function(e){for(;;)switch(e.n){case 0:return(o=n.shapes).load("items"),e.n=1,a.sync();case 1:for(i="".concat(r.charAt(0).toUpperCase()+r.slice(1),"Chart_"),c=null,l=o.items.length-1;l>=0;l--)o.items[l].load(["name","left","top","width","height"]);return e.n=2,a.sync();case 2:s=o.items.length-1;case 3:if(!(s>=0)){e.n=5;break}if(!(u=o.items[s]).name||!u.name.startsWith(i)){e.n=4;break}return c={left:u.left,top:u.top,width:u.width,height:u.height},u.delete(),e.n=4,a.sync();case 4:s--,e.n=3;break;case 5:return e.a(2,c)}},t)}))).apply(this,arguments)}function P(){return new Promise(function(e,t){if("undefined"==typeof vegaEmbed){var a=["https://cdn.jsdelivr.net/npm/vega@6","https://cdn.jsdelivr.net/npm/vega-lite@6","https://cdn.jsdelivr.net/npm/vega-embed@6"],n=0;a.forEach(function(r,o){var i=document.createElement("script");i.src=r,i.onload=function(){++n===a.length&&e()},i.onerror=function(){return t(new Error("Failed to load ".concat(r)))},document.head.appendChild(i)})}else e()})}"undefined"!=typeof CustomFunctions&&(CustomFunctions.associate("LINE",u),CustomFunctions.associate("BAR",d),CustomFunctions.associate("PIE",f),CustomFunctions.associate("AREA",m),CustomFunctions.associate("SCATTER",p),CustomFunctions.associate("RADIAL",g),CustomFunctions.associate("BOX",h),CustomFunctions.associate("RADAR",v),CustomFunctions.associate("WATERFALL",y),CustomFunctions.associate("SUNBURST",b),CustomFunctions.associate("TREEMAP",w),CustomFunctions.associate("HISTOGRAM",x),CustomFunctions.associate("ARC",E)),CustomFunctions.associate("LINE",u),CustomFunctions.associate("BAR",d),CustomFunctions.associate("PIE",f),CustomFunctions.associate("AREA",m),CustomFunctions.associate("SCATTER",p),CustomFunctions.associate("RADIAL",g),CustomFunctions.associate("BOX",h),CustomFunctions.associate("RADAR",v),CustomFunctions.associate("WATERFALL",y),CustomFunctions.associate("SUNBURST",b),CustomFunctions.associate("TREEMAP",w),CustomFunctions.associate("HISTOGRAM",x),CustomFunctions.associate("ARC",E)}();
-//# sourceMappingURL=functions.js.map
+﻿/**
+ * LINE custom function using the exact same specification as taskpane.js
+ * Creates a multi-series line chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function LINE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Transform data for multi-series line chart (exact copy from taskpane.js)
+      const transformedData = [];
+      const valueColumns = headers.slice(1);
+      processedData.forEach(row => {
+        valueColumns.forEach(colName => {
+          if (row[colName] !== null && row[colName] !== undefined && row[colName] !== "") {
+            transformedData.push({
+              [headers[0]]: row[headers[0]], // x-axis value (first column)
+              series: colName,               // series name (column header)
+              value: parseFloat(row[colName]) || 0  // y-axis value
+            });
+          }
+        });
+      });
+
+      // Use EXACT specification from taskpane.js line chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Multi-series line chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: transformedData },
+        mark: { 
+          type: "line", 
+          point: false,
+          tooltip: true,
+          strokeWidth: 2
+        },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14,
+              labelAngle: 0
+            }
+          },
+          y: { 
+            field: "value", 
+            type: "quantitative",
+            axis: {
+              title: "Value",
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          color: { 
+            field: "series", 
+            type: "nominal",
+            scale: {
+              scheme: "category10"
+            },
+            legend: {
+              title: "Series",
+              titleFontSize: 12,
+              labelFontSize: 11
+            }
+          }
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          },
+          point: {
+            size: 60,
+            filled: true
+          }
+        }
+      };
+
+      createChart(spec, "line", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BAR custom function using the exact same specification as taskpane.js
+ * Creates a bar chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BAR(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js bar chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bar chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { 
+          type: "bar", 
+          tooltip: true
+        },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "nominal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          // Add color encoding for grouped bars if 3rd column exists
+          ...(headers.length >= 3 && {
+            color: { 
+              field: headers[2], 
+              type: "nominal",
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "bar", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * PIE custom function using the exact same specification as taskpane.js
+ * Creates a pie chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function PIE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Pie chart requires 2 columns (Category, Value)");
+        return;
+      }
+
+      // Validate that all values are positive numbers
+      const hasInvalidValues = rows.some(row => isNaN(row[1]) || row[1] <= 0);
+      if (hasInvalidValues) {
+        resolve("Error: Pie chart values must be positive numbers");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js pie chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        description: "Pie chart from Excel selection",
+        data: { values: processedData },
+        mark: { type: "arc", outerRadius: 120 },
+        encoding: {
+          theta: { field: headers[1], type: "quantitative" },
+          color: { field: headers[0], type: "nominal" }
+        }
+      };
+
+      createChart(spec, "pie", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * AREA custom function using the exact same specification as taskpane.js
+ * Creates an area chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function AREA(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js area chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Area chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { 
+          type: "area", 
+          tooltip: true,
+          opacity: 0.7
+        },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          // Add color encoding for multiple areas if 3rd column exists
+          ...(headers.length >= 3 && {
+            color: { 
+              field: headers[2], 
+              type: "nominal",
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "area", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SCATTER custom function using the exact same specification as taskpane.js
+ * Creates a scatter plot from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SCATTER(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Scatter plot requires at least 2 columns (X, Y values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js point chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Colored scatter plot from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { type: "point", size: 100, tooltip: true },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          // Add color encoding if 3rd column exists
+          ...(headers.length >= 3 && {
+            color: { 
+              field: headers[2], 
+              type: "nominal",
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          }),
+          // Add shape encoding if 4th column exists
+          ...(headers.length >= 4 && {
+            shape: { 
+              field: headers[3], 
+              type: "nominal",
+              legend: {
+                title: headers[3],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "scatter", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RADIAL custom function using the exact same specification as taskpane.js
+ * Creates a radial chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RADIAL(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Radial chart requires 2 columns (Category, Value)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js radial chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Radial chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        layer: [{
+          mark: { type: "arc", innerRadius: 20, stroke: "#fff" }
+        }, {
+          mark: { type: "text", radiusOffset: 10 },
+          encoding: {
+            text: { field: headers[1], type: "quantitative" }
+          }
+        }],
+        encoding: {
+          theta: { field: headers[1], type: "quantitative", stack: true },
+          radius: { 
+            field: headers[1], 
+            scale: { type: "sqrt", zero: true, rangeMin: 20 }
+          },
+          color: { field: headers[0], type: "nominal", legend: null }
+        }
+      };
+
+      createChart(spec, "radial", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BOX custom function using the exact same specification as taskpane.js
+ * Creates a box plot from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BOX(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Box plot requires 2 columns (Category, Values)");
+        return;
+      }
+
+      // Expect headers: Category | Value (same as taskpane.js)
+      const processedData = rows
+        .filter(r => r[0] && !isNaN(+r[1]))
+        .map(r => ({
+          category: r[0],
+          value: +r[1]
+        }));
+
+      if (processedData.length === 0) {
+        resolve("Error: No valid numeric data found for box plot");
+        return;
+      }
+
+      // Use EXACT specification from taskpane.js box chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Box plot from Excel selection",
+        data: { values: processedData },
+        mark: {
+          type: "boxplot",
+          extent: "min-max"   // show whiskers from min to max
+        },
+        encoding: {
+          x: { field: "category", type: "nominal" },
+          y: {
+            field: "value",
+            type: "quantitative",
+            scale: { zero: false }
+          },
+          color: {
+            field: "category",
+            type: "nominal",
+            legend: null
+          }
+        }
+      };
+
+      createChart(spec, "box", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RADAR custom function using the exact same specification as taskpane.js
+ * Creates a radar chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RADAR(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Radar chart requires at least 3 columns (Series, Dimension1, Dimension2, ...)");
+        return;
+      }
+
+      const radarData = [];
+      const dimensions = headers.slice(1); // All columns except first are dimensions
+      
+      rows.forEach((row, seriesIndex) => {
+        const seriesName = row[headers[0]] || `Series ${seriesIndex + 1}`;
+        
+        dimensions.forEach(dimension => {
+          const value = parseFloat(row[headers.indexOf(dimension)]) || 0;
+          radarData.push({
+            series: seriesName,
+            dimension: dimension,
+            value: value,
+            category: seriesIndex
+          });
+        });
+      });
+
+      // Get unique dimensions for grid
+      const uniqueDimensions = [...new Set(radarData.map(d => d.dimension))];
+
+      // Use EXACT specification from taskpane.js radar chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v6.json",
+        description: "Radar chart from Excel selection",
+        width: 400,
+        height: 400,
+        padding: 60,
+        autosize: {"type": "none", "contains": "padding"},
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+
+        signals: [
+          {"name": "radius", "update": "width / 2"}
+        ],
+
+        data: [
+          {
+            name: "table",
+            values: radarData
+          },
+          {
+            name: "dimensions",
+            values: uniqueDimensions.map(d => ({dimension: d}))
+          }
+        ],
+
+        scales: [
+          {
+            name: "angular",
+            type: "point",
+            range: {"signal": "[-PI, PI]"},
+            padding: 0.5,
+            domain: uniqueDimensions
+          },
+          {
+            name: "radial",
+            type: "linear",
+            range: {"signal": "[0, radius]"},
+            zero: true,
+            nice: true,
+            domain: {"data": "table", "field": "value"},
+            domainMin: 0
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            domain: {"data": "table", "field": "category"},
+            range: [
+              "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e",
+              "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"
+            ]
+          }
+        ],
+
+        encode: {
+          enter: {
+            x: {"signal": "radius"},
+            y: {"signal": "radius"}
+          }
+        },
+
+        marks: [
+          {
+            type: "group",
+            name: "categories",
+            zindex: 1,
+            from: {
+              facet: {"data": "table", "name": "facet", "groupby": ["category", "series"]}
+            },
+            marks: [
+              {
+                type: "line",
+                name: "category-line",
+                from: {"data": "facet"},
+                encode: {
+                  enter: {
+                    interpolate: {"value": "linear-closed"},
+                    x: {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                    y: {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                    stroke: {"scale": "color", "field": "category"},
+                    strokeWidth: {"value": 2},
+                    fill: {"scale": "color", "field": "category"},
+                    fillOpacity: {"value": 0.1},
+                    strokeOpacity: {"value": 0.8}
+                  }
+                }
+              },
+              {
+                type: "symbol",
+                name: "category-points",
+                from: {"data": "facet"},
+                encode: {
+                  enter: {
+                    x: {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                    y: {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                    size: {"value": 50},
+                    fill: {"scale": "color", "field": "category"},
+                    stroke: {"value": "white"},
+                    strokeWidth: {"value": 1}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            type: "rule",
+            name: "radial-grid",
+            from: {"data": "dimensions"},
+            zindex: 0,
+            encode: {
+              enter: {
+                x: {"value": 0},
+                y: {"value": 0},
+                x2: {"signal": "radius * cos(scale('angular', datum.dimension))"},
+                y2: {"signal": "radius * sin(scale('angular', datum.dimension))"},
+                stroke: {"value": "#e1e4e8"},
+                strokeWidth: {"value": 1}
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "dimension-label",
+            from: {"data": "dimensions"},
+            zindex: 1,
+            encode: {
+              enter: {
+                x: {"signal": "(radius + 20) * cos(scale('angular', datum.dimension))"},
+                y: {"signal": "(radius + 20) * sin(scale('angular', datum.dimension))"},
+                text: {"field": "dimension"},
+                align: [
+                  {
+                    test: "abs(scale('angular', datum.dimension)) > PI / 2",
+                    value: "right"
+                  },
+                  {
+                    value: "left"
+                  }
+                ],
+                baseline: [
+                  {
+                    test: "scale('angular', datum.dimension) > 0", 
+                    value: "top"
+                  },
+                  {
+                    test: "scale('angular', datum.dimension) == 0", 
+                    value: "middle"
+                  },
+                  {
+                    value: "bottom"
+                  }
+                ],
+                fill: {"value": "#323130"},
+                fontWeight: {"value": "bold"},
+                font: {"value": "Segoe UI"},
+                fontSize: {"value": 12}
+              }
+            }
+          },
+          {
+            type: "line",
+            name: "outer-line",
+            from: {"data": "radial-grid"},
+            encode: {
+              enter: {
+                interpolate: {"value": "linear-closed"},
+                x: {"field": "x2"},
+                y: {"field": "y2"},
+                stroke: {"value": "#8a8886"},
+                strokeWidth: {"value": 2},
+                strokeOpacity: {"value": 0.6}
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "radar", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * WATERFALL custom function using the exact same specification as taskpane.js
+ * Creates a waterfall chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function WATERFALL(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Waterfall chart requires 3 columns (Category, Amount, Type)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedDataRaw = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Process waterfall data inline - set last entry's amount to 0 (same as taskpane.js)
+      const processedData = [...processedDataRaw];
+      if (processedData.length > 0) {
+        processedData[processedData.length - 1] = {
+          ...processedData[processedData.length - 1],
+          [headers[1]]: 0
+        };
+      }
+
+      // Calculate dynamic dimensions
+      const numDataPoints = processedDataRaw.length;
+      const dynamicWidth = Math.max(400, Math.min(1600, numDataPoints * 50));
+      const maxAmount = Math.max(...processedDataRaw.map(d => Math.abs(d[headers[1]])));
+      const dynamicHeight = Math.max(300, Math.min(600, maxAmount / 100 + 200));
+
+      // Use EXACT specification from taskpane.js waterfall chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Waterfall chart with multiple subtotals",
+        background: "white",
+        data: { values: processedData },
+        config: { view: { stroke: "transparent" }},
+        width: dynamicWidth,
+        height: dynamicHeight,
+        transform: [
+          { "window": [{ "op": "sum", "field": headers[1], "as": "sum" }] },
+          { "window": [{ "op": "lead", "field": headers[0], "as": "lead" }] },
+          {
+            "calculate": `datum.lead === null ? datum.${headers[0]} : datum.lead`,
+            "as": "lead"
+          },
+          {
+            // If total → reset, else → running sum step
+            "calculate": `datum.${headers[2]} == 'total' ? 0 : datum.sum - datum.${headers[1]}`,
+            "as": "previous_sum"
+          },
+          {
+            "calculate": `datum.${headers[2]} == 'total' ? datum.sum : datum.${headers[1]}`,
+            "as": "amount"
+          },
+          {
+            "calculate": `datum.${headers[2]} == 'total' ? datum.${headers[1]} / 2 : (datum.sum + datum.previous_sum) / 2`,
+            "as": "center"
+          },
+          {
+            "calculate": `datum.${headers[2]} == 'total' ? datum.sum : (datum.${headers[1]} > 0 ? '+' : '') + datum.${headers[1]}`,
+            "as": "text_amount"
+          },
+          { "calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center" },
+
+          // Add group index for stacked handling
+          {
+            "window": [{ "op": "rank", "as": "group_index" }],
+            "frame": [null, null],
+            "groupby": [headers[0]]
+          },
+
+          // Precompute color shades
+          {
+            "calculate": `
+            datum.${headers[2]} == 'total'
+                ? '#00B0F0'
+                : datum.amount >= 0
+                ? (datum.group_index == 1 ? '#70AD47'
+                    : (datum.group_index == 2 ? '#8BC97A'
+                    : (datum.group_index == 3 ? '#A7DA9D'
+                    : '#C3EBC0')))
+                : (datum.group_index == 1 ? '#E15759'
+                    : (datum.group_index == 2 ? '#EC7A7C'
+                    : (datum.group_index == 3 ? '#F29C9D'
+                    : '#F8BEBF')))
+            `,
+            "as": "bar_color"
+          }
+        ],
+        encoding: {
+          x: {
+            field: headers[0],
+            type: "ordinal",
+            sort: null,
+            axis: { labelAngle: -45, title: null },
+            scale: { paddingInner: 0.05, paddingOuter: 0.025 }
+          }
+        },
+        layer: [
+          {
+            mark: { type: "bar", size: 60},
+            encoding: {
+              y: { field: "previous_sum", type: "quantitative", title: null },
+              y2: { field: "sum" },
+              color: { field: "bar_color", type: "nominal", scale: null }
+            }
+          },
+          {
+            mark: { type: "text", fontWeight: "bold", baseline: "middle" },
+            encoding: {
+              y: { field: "center", type: "quantitative" },
+              text: { field: "text_amount", type: "nominal" },
+              color: {
+                condition: [
+                  { test: `datum.${headers[2]} == 'total'`, value: "#725a30" }
+                ],
+                value: "white"
+              }
+            }
+          }
+        ],
+        config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
+      };
+
+      createChart(spec, "waterfall", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SUNBURST custom function using the exact same specification as taskpane.js
+ * Creates a sunburst chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SUNBURST(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Sunburst chart requires at least 2 columns (Parent, Child, Value optional)");
+        return;
+      }
+
+      const nodes = new Map();
+      rows.forEach((row, i) => {
+        const parent = row[headers[0]] || "";
+        const child = row[headers[1]] || `node_${i}`;
+        const value = headers.length >= 3 ? (parseFloat(row[headers[2]]) || 1) : 1;
+        
+        // Add parent node if it doesn't exist and is not empty
+        if (parent && !nodes.has(parent)) {
+          nodes.set(parent, {
+            id: parent,
+            parent: "",
+            name: parent,
+            size: 0 // Will be calculated later
+          });
+        }
+        
+        // Add child node
+        if (!nodes.has(child)) {
+          nodes.set(child, {
+            id: child,
+            parent: parent,
+            name: child,
+            size: value
+          });
+        } else {
+          // Update parent and value if child already exists
+          const existingNode = nodes.get(child);
+          existingNode.parent = parent;
+          existingNode.size = value;
+        }
+      });
+      
+      // Convert Map to array
+      const hierarchicalData = Array.from(nodes.values());
+      
+      // Find root nodes (nodes with no parent or parent not in dataset)
+      const allIds = new Set(hierarchicalData.map(d => d.id));
+      hierarchicalData.forEach(node => {
+        if (node.parent && !allIds.has(node.parent)) {
+          node.parent = ""; // Make it a root node if parent doesn't exist
+        }
+      });
+
+      // Calculate chart size based on data complexity
+      const nodeCount = hierarchicalData.length;
+      const chartSize = Math.max(400, Math.min(600, nodeCount * 15 + 300));
+
+      // Use EXACT specification from taskpane.js sunburst chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v6.json",
+        "description": "Sunburst chart from Excel selection",
+        "width": chartSize,
+        "height": chartSize,
+        "padding": 10,
+        "autosize": "none",
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+
+        "signals": [
+          {
+            "name": "centerX",
+            "update": "width / 2"
+          },
+          {
+            "name": "centerY", 
+            "update": "height / 2"
+          },
+          {
+            "name": "outerRadius",
+            "update": "min(width, height) / 2 - 10"
+          }
+        ],
+
+        "data": [
+          {
+            "name": "tree",
+            "values": hierarchicalData,
+            "transform": [
+              {
+                "type": "stratify",
+                "key": "id",
+                "parentKey": "parent"
+              },
+              {
+                "type": "partition",
+                "field": "size",
+                "sort": {"field": "size", "order": "descending"},
+                "size": [{"signal": "2 * PI"}, {"signal": "outerRadius"}],
+                "as": ["a0", "r0", "a1", "r1", "depth", "children"]
+              }
+            ]
+          }
+        ],
+
+        "scales": [
+          {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {"data": "tree", "field": "depth"},
+            "range": [
+              "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", 
+              "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438",
+              "#8764b8", "#e3008c", "#00b7c3", "#038387", "#486991"
+            ]
+          },
+          {
+            "name": "opacity",
+            "type": "linear",
+            "domain": {"data": "tree", "field": "depth"},
+            "range": [0.8, 0.4]
+          }
+        ],
+
+        "marks": [
+          {
+            "type": "arc",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "stroke": {"value": "white"},
+                "strokeWidth": {"value": 1}
+              },
+              "update": {
+                "startAngle": {"field": "a0"},
+                "endAngle": {"field": "a1"},
+                "innerRadius": {"field": "r0"},
+                "outerRadius": {"field": "r1"},
+                "fill": {"scale": "color", "field": "depth"},
+                "fillOpacity": {"scale": "opacity", "field": "depth"}
+              }
+            }
+          },
+          {
+            "type": "text",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "radius": {"signal": "(datum.r0 + datum.r1) / 2"},
+                "theta": {"signal": "(datum.a0 + datum.a1) / 2"},
+                "fill": {"value": "#323130"},
+                "font": {"value": "Segoe UI"},
+                "fontSize": {"value": 10},
+                "fontWeight": {"value": "bold"},
+                "align": {"value": "center"},
+                "baseline": {"value": "middle"}
+              },
+              "update": {
+                "text": {
+                  "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"
+                },
+                "opacity": {
+                  "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"
+                }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "sunburst", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * TREEMAP custom function using the exact same specification as taskpane.js
+ * Creates a treemap chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function TREEMAP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Treemap chart requires 3 columns (Parent, Category, Value)");
+        return;
+      }
+
+      let treeData;
+      
+      if (headers.length >= 3) {
+        // Hierarchical data with parent column
+        treeData = rows.map((d, i) => ({
+          id: `${d[headers[1]]}_${i}`,
+          name: d[headers[1]],
+          parent: d[headers[0]] || "root",
+          size: parseFloat(d[headers[2]]) || 0
+        }));
+        
+        // Add root and parent nodes
+        const parents = [...new Set(treeData.map(d => d.parent))];
+        parents.forEach(parent => {
+          if (parent !== "root" && !treeData.find(d => d.id === parent)) {
+            treeData.push({
+              id: parent,
+              name: parent,
+              parent: "root",
+              size: 0
+            });
+          }
+        });
+        
+        // Add root node
+        treeData.push({
+          id: "root",
+          name: "Root",
+          parent: "",
+          size: 0
+        });
+      } else {
+        // Simple flat data - create single level hierarchy
+        treeData = [
+          {
+            id: "root",
+            name: "Root", 
+            parent: "",
+            size: 0
+          },
+          ...rows.map((d, i) => ({
+            id: `item_${i}`,
+            name: d[headers[1]],
+            parent: "root",
+            size: parseFloat(d[headers[2]]) || 0
+          }))
+        ];
+      }
+
+      // Use EXACT specification from taskpane.js treemap chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Treemap visualization from Excel data",
+        background: "white",
+        width: 600,
+        height: 400,
+        padding: 5,
+        autosize: "fit",
+        
+        data: [
+          {
+            name: "tree",
+            values: treeData,
+            transform: [
+              {
+                type: "stratify",
+                key: "id",
+                parentKey: "parent"
+              },
+              {
+                type: "treemap",
+                field: "size",
+                sort: { field: "value" },
+                round: true,
+                method: "squarify",
+                ratio: 1.6,
+                size: [{ signal: "width" }, { signal: "height" }]
+              }
+            ]
+          },
+          {
+            name: "nodes",
+            source: "tree",
+            transform: [
+              { type: "filter", expr: "datum.children" }
+            ]
+          },
+          {
+            name: "leaves", 
+            source: "tree",
+            transform: [
+              { type: "filter", expr: "!datum.children" }
+            ]
+          }
+        ],
+        
+        scales: [
+          {
+            name: "color",
+            type: "ordinal",
+            domain: { data: "nodes", field: "name" },
+            range: [
+              "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e",
+              "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"
+            ]
+          },
+          {
+            name: "fontSize",
+            type: "ordinal", 
+            domain: [0, 1, 2, 3],
+            range: [20, 16, 12, 10]
+          },
+          {
+            name: "opacity",
+            type: "ordinal",
+            domain: [0, 1, 2, 3], 
+            range: [0.3, 0.6, 0.8, 1.0]
+          }
+        ],
+        
+        marks: [
+          {
+            type: "rect",
+            from: { data: "nodes" },
+            interactive: false,
+            encode: {
+              enter: {
+                fill: { scale: "color", field: "name" },
+                fillOpacity: { scale: "opacity", field: "depth" }
+              },
+              update: {
+                x: { field: "x0" },
+                y: { field: "y0" },
+                x2: { field: "x1" },
+                y2: { field: "y1" },
+                stroke: { value: "#ffffff" },
+                strokeWidth: { value: 1 }
+              }
+            }
+          },
+          {
+            type: "rect",
+            from: { data: "leaves" },
+            encode: {
+              enter: {
+                stroke: { value: "#ffffff" },
+                strokeWidth: { value: 2 }
+              },
+              update: {
+                x: { field: "x0" },
+                y: { field: "y0" },
+                x2: { field: "x1" },
+                y2: { field: "y1" },
+                fill: { value: "transparent" },
+                tooltip: {
+                  signal: `{'Category': datum.name, 'Value': datum.size, 'Parent': datum.parent}`
+                }
+              },
+              hover: {
+                fill: { value: "#323130" },
+                fillOpacity: { value: 0.1 }
+              }
+            }
+          },
+          {
+            type: "text",
+            from: { data: "leaves" },
+            interactive: false,
+            encode: {
+              enter: {
+                font: { value: "Segoe UI, Arial, sans-serif" },
+                align: { value: "center" },
+                baseline: { value: "middle" },
+                fill: { value: "#323130" },
+                fontWeight: { value: "bold" },
+                text: { field: "name" },
+                fontSize: { scale: "fontSize", field: "depth" }
+              },
+              update: {
+                x: { signal: "0.5 * (datum.x0 + datum.x1)" },
+                y: { signal: "0.5 * (datum.y0 + datum.y1)" },
+                opacity: {
+                  signal: "(datum.x1 - datum.x0) > 50 && (datum.y1 - datum.y0) > 20 ? 1 : 0"
+                }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "treemap", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * HISTOGRAM custom function using the exact same specification as taskpane.js
+ * Creates a histogram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function HISTOGRAM(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 1) {
+        resolve("Error: Histogram requires at least 1 column of numeric values");
+        return;
+      }
+
+      // Expect a single numeric column (same as taskpane.js)
+      const processedData = rows
+        .filter(r => !isNaN(+r[0]))
+        .map(r => ({ value: +r[0] }));
+
+      if (processedData.length === 0) {
+        resolve("Error: No valid numeric data found for histogram");
+        return;
+      }
+
+      // Use EXACT specification from taskpane.js histogram chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        "description": "Histogram from Excel selection",
+        "data": { "values": processedData },
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "value",
+            "bin": { "maxbins": 20 },   // adjust bin count here
+            "type": "quantitative",
+            "axis": { "title": "Value" }
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative",
+            "axis": { "title": "Count" }
+          }
+        }
+      };
+
+      createChart(spec, "histogram", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * ARC custom function using the exact same specification as taskpane.js
+ * Creates an arc diagram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function ARC(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Arc chart requires at least 2 columns (Source, Target, Weight optional)");
+        return;
+      }
+
+      // Transform Excel data for arc chart (same as taskpane.js)
+      const edges = rows.map((row, index) => ({
+        source: row[headers[0]],
+        target: row[headers[1]],
+        value: headers.length >= 3 && row[headers[2]] ? row[headers[2]] : 1,
+        group: headers.length >= 4 && row[headers[3]] ? row[headers[3]] : "default"
+      }));
+
+      // Get unique nodes from edges
+      const nodeMap = new Map();
+      edges.forEach(edge => {
+        if (!nodeMap.has(edge.source)) {
+          nodeMap.set(edge.source, { 
+            name: edge.source, 
+            group: edge.group,
+            index: nodeMap.size
+          });
+        }
+        if (!nodeMap.has(edge.target)) {
+          nodeMap.set(edge.target, { 
+            name: edge.target, 
+            group: edge.group,
+            index: nodeMap.size
+          });
+        }
+      });
+
+      const nodes = Array.from(nodeMap.values());
+
+      // Transform edges to use node indices
+      const edgesWithIndices = edges.map(edge => ({
+        source: nodeMap.get(edge.source).index,
+        target: nodeMap.get(edge.target).index,
+        value: edge.value
+      }));
+
+      // Use EXACT specification from taskpane.js arc chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Arc diagram from Excel selection",
+        width: Math.max(600, nodes.length * 40),
+        height: 300,
+        padding: { top: 20, bottom: 80, left: 20, right: 20 },
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: [
+          {
+            name: "edges",
+            values: edgesWithIndices
+          },
+          {
+            name: "sourceDegree",
+            source: "edges",
+            transform: [
+              { type: "aggregate", groupby: ["source"], as: ["count"] }
+            ]
+          },
+          {
+            name: "targetDegree", 
+            source: "edges",
+            transform: [
+              { type: "aggregate", groupby: ["target"], as: ["count"] }
+            ]
+          },
+          {
+            name: "nodes",
+            values: nodes,
+            transform: [
+              { type: "window", ops: ["rank"], as: ["order"] },
+              {
+                type: "lookup", from: "sourceDegree", key: "source",
+                fields: ["index"], as: ["sourceDegree"],
+                default: { count: 0 }
+              },
+              {
+                type: "lookup", from: "targetDegree", key: "target", 
+                fields: ["index"], as: ["targetDegree"],
+                default: { count: 0 }
+              },
+              {
+                type: "formula", as: "degree",
+                expr: "(datum.sourceDegree.count || 0) + (datum.targetDegree.count || 0)"
+              }
+            ]
+          }
+        ],
+
+        scales: [
+          {
+            name: "position",
+            type: "band",
+            domain: { data: "nodes", field: "order", sort: true },
+            range: "width"
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            range: { scheme: "category20" },
+            domain: { data: "nodes", field: "group" }
+          }
+        ],
+
+        marks: [
+          {
+            type: "symbol",
+            name: "layout",
+            interactive: false,
+            from: { data: "nodes" },
+            encode: {
+              enter: { opacity: { value: 0 } },
+              update: {
+                x: { scale: "position", field: "order" },
+                y: { value: 0 },
+                size: { field: "degree", mult: 8, offset: 50 },
+                fill: { scale: "color", field: "group" }
+              }
+            }
+          },
+          {
+            type: "path",
+            from: { data: "edges" },
+            encode: {
+              update: {
+                stroke: { value: "#0078d4" },
+                strokeOpacity: { value: 0.4 },
+                strokeWidth: { field: "value", mult: 2, offset: 1 }
+              }
+            },
+            transform: [
+              {
+                type: "lookup", from: "layout", key: "datum.index",
+                fields: ["datum.source", "datum.target"],
+                as: ["sourceNode", "targetNode"]
+              },
+              {
+                type: "linkpath",
+                sourceX: { expr: "min(datum.sourceNode.x, datum.targetNode.x)" },
+                targetX: { expr: "max(datum.sourceNode.x, datum.targetNode.x)" },
+                sourceY: { expr: "0" },
+                targetY: { expr: "0" },
+                shape: "arc"
+              }
+            ]
+          },
+          {
+            type: "symbol",
+            from: { data: "layout" },
+            encode: {
+              update: {
+                x: { field: "x" },
+                y: { field: "y" },
+                fill: { field: "fill" },
+                size: { field: "size" },
+                stroke: { value: "white" },
+                strokeWidth: { value: 1 },
+                tooltip: { 
+                  signal: "{'Node': datum.datum.name, 'Group': datum.datum.group, 'Connections': datum.datum.degree}" 
+                }
+              }
+            }
+          },
+          {
+            type: "text",
+            from: { data: "nodes" },
+            encode: {
+              update: {
+                x: { scale: "position", field: "order" },
+                y: { value: 25 },
+                fontSize: { value: 10 },
+                align: { value: "center" },
+                baseline: { value: "top" },
+                angle: { value: -45 },
+                text: { field: "name" },
+                fill: { value: "#323130" },
+                font: { value: "Segoe UI" }
+              }
+            }
+          }
+        ],
+        
+        config: {
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 10, fill: "#605e5c" }
+        }
+      };
+
+      createChart(spec, "arc", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * Generic chart creation function (same approach as taskpane.js)
+ */
+async function createChart(spec, chartType, headers, rows) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const chartId = `${chartType}_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+      
+      // Render hidden chart (same as taskpane.js)
+      const hiddenDiv = document.createElement("div");
+      hiddenDiv.style.display = "none";
+      hiddenDiv.id = chartId;
+      document.body.appendChild(hiddenDiv);
+
+      // Load Vega-Lite if not available
+      if (typeof vegaEmbed === 'undefined') {
+        await loadVegaLibraries();
+      }
+
+      const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+      const view = result.view;
+
+      // Export chart -> PNG (same as taskpane.js)
+      const pngUrl = await view.toImageURL("png");
+      const response = await fetch(pngUrl);
+      const blob = await response.blob();
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64data = reader.result.split(",")[1];
+
+          // Insert into Excel (same approach as taskpane.js)
+          await insertChartIntoExcel(base64data, chartType, chartId);
+          
+          // Clean up hidden div
+          document.body.removeChild(hiddenDiv);
+          resolve();
+          
+        } catch (error) {
+          // Clean up on error
+          if (document.body.contains(hiddenDiv)) {
+            document.body.removeChild(hiddenDiv);
+          }
+          reject(error);
+        }
+      };
+      
+      reader.readAsDataURL(blob);
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * Inserts chart into Excel using the same approach as taskpane.js
+ */
+async function insertChartIntoExcel(base64data, chartType, chartId) {
+  return Excel.run(async (context) => {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
+
+    // Remove old chart and get its position
+    const oldPosition = await removeExistingCharts(context, sheet, chartType);
+
+    let left, top, targetWidth;
+
+    if (oldPosition) {
+      // Use old chart position and size
+      left = oldPosition.left;
+      top = oldPosition.top;
+      targetWidth = oldPosition.width;
+    } else {
+      // Fall back to current selection
+      const range = context.workbook.getSelectedRange();
+      range.load("left, top, width, height");
+      await context.sync();
+      left = range.left;
+      top = range.top;
+      targetWidth = Math.max(400, range.width * 8); // Default chart width
+    }
+
+    // Insert the new image
+    const image = sheet.shapes.addImage(base64data);
+    image.left = left;
+    image.top = top;
+    image.lockAspectRatio = true; // Set this BEFORE setting dimensions
+    image.width = targetWidth; // Only set width, let Excel calculate height
+    image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
+
+    await context.sync();
+  });
+}
+
+/**
+ * Remove existing charts of the same type (prevents duplicates)
+ */
+async function removeExistingCharts(context, sheet, chartType) {
+  const shapes = sheet.shapes;
+  shapes.load("items");
+  await context.sync();
+
+  const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_`;
+  let oldPosition = null;
+
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
+    shape.load(["name", "left", "top", "width", "height"]);
+  }
+  await context.sync();
+
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
+    if (shape.name && shape.name.startsWith(chartPrefix)) {
+      // Save position before deleting
+      oldPosition = {
+        left: shape.left,
+        top: shape.top,
+        width: shape.width,
+        height: shape.height,
+      };
+      shape.delete();
+      await context.sync();
+    }
+  }
+
+  return oldPosition;
+}
+
+/**
+ * Load Vega libraries (same CDN versions as taskpane.html)
+ */
+function loadVegaLibraries() {
+  return new Promise((resolve, reject) => {
+    if (typeof vegaEmbed !== 'undefined') {
+      resolve();
+      return;
+    }
+
+    // Load libraries in sequence (same as taskpane.html)
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/vega@6',
+      'https://cdn.jsdelivr.net/npm/vega-lite@6', 
+      'https://cdn.jsdelivr.net/npm/vega-embed@6'
+    ];
+
+    let loadedCount = 0;
+    
+    scripts.forEach((src, index) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        loadedCount++;
+        if (loadedCount === scripts.length) {
+          resolve();
+        }
+      };
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.head.appendChild(script);
+    });
+  });
+}
+
+// Register all custom functions
+if (typeof CustomFunctions !== 'undefined') {
+  CustomFunctions.associate("LINE", LINE);
+  CustomFunctions.associate("BAR", BAR);
+  CustomFunctions.associate("PIE", PIE);
+  CustomFunctions.associate("AREA", AREA);
+  CustomFunctions.associate("SCATTER", SCATTER);
+  CustomFunctions.associate("RADIAL", RADIAL);
+  CustomFunctions.associate("BOX", BOX);
+  CustomFunctions.associate("RADAR", RADAR);
+  CustomFunctions.associate("WATERFALL", WATERFALL);
+  CustomFunctions.associate("SUNBURST", SUNBURST);
+  CustomFunctions.associate("TREEMAP", TREEMAP);
+  CustomFunctions.associate("HISTOGRAM", HISTOGRAM);
+  CustomFunctions.associate("ARC", ARC);
+}
