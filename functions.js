@@ -1454,38 +1454,83 @@ function HISTOGRAM(data) {
       const headers = data[0];
       const rows = data.slice(1);
 
-      if (headers.length < 1) {
-        resolve("Error: Histogram requires at least 1 column of numeric values");
-        return;
-      }
-
-      // Expect a single numeric column (same as taskpane.js)
-      const processedData = rows
+      // Expect a single numeric column
+      const numericData = rows
         .filter(r => !isNaN(+r[0]))
         .map(r => ({ value: +r[0] }));
 
-      if (processedData.length === 0) {
+      if (numericData.length === 0) {
         resolve("Error: No valid numeric data found for histogram");
         return;
       }
 
-      // Use EXACT specification from taskpane.js histogram chart
+      // Calculate data range for better binning control
+      const values = numericData.map(d => d.value);
+      const minVal = Math.min(...values);
+      const maxVal = Math.max(...values);
+      const range = maxVal - minVal;
+      
+      // Calculate nice bin boundaries
+      const binCount = 20;
+      const binWidth = range / binCount;
+      const niceMin = Math.floor(minVal / binWidth) * binWidth;
+      const niceMax = Math.ceil(maxVal / binWidth) * binWidth;
+
+      // Use EXACT specification from taskpane.js histogram
       const spec = {
         "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
         "description": "Histogram from Excel selection",
-        "data": { "values": processedData },
-        "mark": "bar",
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+        "data": { "values": numericData },
+        "mark": {
+          "type": "bar",
+          "tooltip": true,
+          "stroke": "white",
+          "strokeWidth": 1
+        },
         "encoding": {
           "x": {
             "field": "value",
-            "bin": { "maxbins": 20 },   // adjust bin count here
+            "bin": { 
+              "extent": [niceMin, niceMax],
+              "step": binWidth,
+              "nice": false  // Prevent Vega from adjusting our nice boundaries
+            },
             "type": "quantitative",
-            "axis": { "title": "Value" }
+            "axis": { 
+              "title": "Value",
+              "labelFontSize": 12,
+              "titleFontSize": 14,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130"
+            },
+            "scale": {
+              "domain": [niceMin, niceMax]
+            }
           },
           "y": {
             "aggregate": "count",
             "type": "quantitative",
-            "axis": { "title": "Count" }
+            "axis": { 
+              "title": "Count",
+              "labelFontSize": 12,
+              "titleFontSize": 14,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "gridColor": "#f3f2f1"
+            }
+          },
+          "color": {
+            "value": "#0078d4"
+          }
+        },
+        "config": {
+          "font": "Segoe UI",
+          "axis": {
+            "labelColor": "#605e5c",
+            "titleColor": "#323130",
+            "gridColor": "#f3f2f1"
           }
         }
       };
