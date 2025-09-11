@@ -450,6 +450,22 @@
             }
         },
         {
+            "description": "RIBBON custom function using the exact same specification as taskpane.js\nCreates a ribbon chart from Excel data range",
+            "id": "RIBBON",
+            "name": "RIBBON",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "RIDGELINE custom function using the exact same specification as taskpane.js\nCreates a ridgeline chart from Excel data range",
             "id": "RIDGELINE",
             "name": "RIDGELINE",

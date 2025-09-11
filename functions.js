@@ -1225,11 +1225,21 @@ function TREEMAP(data) {
         return;
       }
 
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Build treemap data structure (same as taskpane.js)
       let treeData;
       
       if (headers.length >= 3) {
         // Hierarchical data with parent column
-        treeData = rows.map((d, i) => ({
+        treeData = processedData.map((d, i) => ({
           id: `${d[headers[1]]}_${i}`,
           name: d[headers[1]],
           parent: d[headers[0]] || "root",
@@ -1265,7 +1275,7 @@ function TREEMAP(data) {
             parent: "",
             size: 0
           },
-          ...rows.map((d, i) => ({
+          ...processedData.map((d, i) => ({
             id: `item_${i}`,
             name: d[headers[1]],
             parent: "root",
@@ -2520,45 +2530,251 @@ function BULLET(data) {
       const rows = data.slice(1);
 
       if (headers.length < 7) {
-        resolve("Error: Bullet chart requires 7 columns (Title, Poor Max, Satisfactory Max, Good Max, Actual, Forecast, Target)");
+        resolve("Error: Bullet chart requires 7 columns (Title, Poor max, Satisfactory max, Good max, Actual, Forecast, Target)");
         return;
       }
 
-      // Convert rows -> objects (same as taskpane.js)
-      const processedData = rows.map(row => {
-        let obj = {};
-        headers.forEach((h, i) => {
-          obj[h] = row[i];
-        });
-        return obj;
-      });
+      // Convert to bullet chart data format (same as taskpane.js)
+      const processedData = rows.map(r => ({
+        title: r[0],
+        ranges: [+r[1], +r[2], +r[3]],
+        measures: [+r[4], +r[5]],
+        markers: [+r[6]]
+      }));
 
       // Use EXACT specification from taskpane.js bullet chart
       const spec = {
-        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Bullet chart from Excel selection",
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
         background: "white",
         config: { view: { stroke: "transparent" }},
-        data: { values: processedData },
-        mark: { type: "bullet" },
-        encoding: {
-          title: { field: headers[0], type: "nominal" },
-          ranges: { 
-            field: [headers[1], headers[2], headers[3]],
-            type: "quantitative"
-          },
-          measures: { 
-            field: [headers[4], headers[5]], 
-            type: "quantitative"
-          },
-          markers: { 
-            field: headers[6], 
-            type: "quantitative"
+        "data": { "values": processedData },
+        "facet": {
+          "row": {
+            "field": "title", "type": "ordinal",
+            "header": { "labelAngle": 0, "title": "", "labelAlign": "left" }
           }
-        }
+        },
+        "spacing": 10,
+        "spec": {
+          "encoding": {
+            "x": {
+              "type": "quantitative",
+              "scale": { "nice": false },
+              "title": null
+            }
+          },
+          "layer": [
+            { "mark": { "type": "bar", "color": "#eee" }, "encoding": { "x": { "field": "ranges[2]" } } },
+            { "mark": { "type": "bar", "color": "#ddd" }, "encoding": { "x": { "field": "ranges[1]" } } },
+            { "mark": { "type": "bar", "color": "#ccc" }, "encoding": { "x": { "field": "ranges[0]" } } },
+            { "mark": { "type": "bar", "color": "lightsteelblue", "size": 10 }, "encoding": { "x": { "field": "measures[1]" } } },
+            { "mark": { "type": "bar", "color": "steelblue", "size": 10 }, "encoding": { "x": { "field": "measures[0]" } } },
+            { "mark": { "type": "tick", "color": "black" }, "encoding": { "x": { "field": "markers[0]" } } }
+          ]
+        },
+        "resolve": { "scale": { "x": "independent" } },
+        "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
       };
 
       createChart(spec, "bullet", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SUNBURST custom function using the exact same specification as taskpane.js
+ * Creates a sunburst chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SUNBURST(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Sunburst chart requires at least 2 columns (Parent, Child, optional Value)");
+        return;
+      }
+
+      // Build hierarchical data (same as taskpane.js)
+      const nodes = new Map();
+      rows.forEach((row, i) => {
+        const parent = row[0] || "";
+        const child = row[1] || `node_${i}`;
+        const value = headers.length >= 3 ? (parseFloat(row[2]) || 1) : 1;
+        
+        // Add parent node if it doesn't exist and is not empty
+        if (parent && !nodes.has(parent)) {
+          nodes.set(parent, {
+            id: parent,
+            parent: "",
+            name: parent,
+            size: 0 // Will be calculated later
+          });
+        }
+        
+        // Add child node
+        if (!nodes.has(child)) {
+          nodes.set(child, {
+            id: child,
+            parent: parent,
+            name: child,
+            size: value
+          });
+        } else {
+          // Update parent and value if child already exists
+          const existingNode = nodes.get(child);
+          existingNode.parent = parent;
+          existingNode.size = value;
+        }
+      });
+      
+      // Convert Map to array
+      const hierarchicalData = Array.from(nodes.values());
+      
+      // Find root nodes (nodes with no parent or parent not in dataset)
+      const allIds = new Set(hierarchicalData.map(d => d.id));
+      hierarchicalData.forEach(node => {
+        if (node.parent && !allIds.has(node.parent)) {
+          node.parent = ""; // Make it a root node if parent doesn't exist
+        }
+      });
+
+      // Calculate chart size based on data complexity
+      const nodeCount = hierarchicalData.length;
+      const chartSize = Math.max(400, Math.min(600, nodeCount * 15 + 300));
+
+      // Use EXACT specification from taskpane.js sunburst chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v6.json",
+        "description": "Sunburst chart from Excel selection",
+        "width": chartSize,
+        "height": chartSize,
+        "padding": 10,
+        "autosize": "none",
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+
+        "signals": [
+          {
+            "name": "centerX",
+            "update": "width / 2"
+          },
+          {
+            "name": "centerY", 
+            "update": "height / 2"
+          },
+          {
+            "name": "outerRadius",
+            "update": "min(width, height) / 2 - 10"
+          }
+        ],
+
+        "data": [
+          {
+            "name": "tree",
+            "values": hierarchicalData,
+            "transform": [
+              {
+                "type": "stratify",
+                "key": "id",
+                "parentKey": "parent"
+              },
+              {
+                "type": "partition",
+                "field": "size",
+                "sort": {"field": "size", "order": "descending"},
+                "size": [{"signal": "2 * PI"}, {"signal": "outerRadius"}],
+                "as": ["a0", "r0", "a1", "r1", "depth", "children"]
+              }
+            ]
+          }
+        ],
+
+        "scales": [
+          {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {"data": "tree", "field": "depth"},
+            "range": [
+              "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", 
+              "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438",
+              "#8764b8", "#e3008c", "#00b7c3", "#038387", "#486991"
+            ]
+          },
+          {
+            "name": "opacity",
+            "type": "linear",
+            "domain": {"data": "tree", "field": "depth"},
+            "range": [0.8, 0.4]
+          }
+        ],
+
+        "marks": [
+          {
+            "type": "arc",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "stroke": {"value": "white"},
+                "strokeWidth": {"value": 1}
+              },
+              "update": {
+                "startAngle": {"field": "a0"},
+                "endAngle": {"field": "a1"},
+                "innerRadius": {"field": "r0"},
+                "outerRadius": {"field": "r1"},
+                "fill": {"scale": "color", "field": "depth"},
+                "fillOpacity": {"scale": "opacity", "field": "depth"}
+              }
+            }
+          },
+          {
+            "type": "text",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "radius": {"signal": "(datum.r0 + datum.r1) / 2"},
+                "theta": {"signal": "(datum.a0 + datum.a1) / 2"},
+                "fill": {"value": "#323130"},
+                "font": {"value": "Segoe UI"},
+                "fontSize": {"value": 10},
+                "fontWeight": {"value": "bold"},
+                "align": {"value": "center"},
+                "baseline": {"value": "middle"}
+              },
+              "update": {
+                "text": {
+                  "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"
+                },
+                "opacity": {
+                  "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"
+                }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "sunburst", headers, rows)
         .then(() => resolve(""))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -4764,6 +4980,144 @@ async function createChart(spec, chartType, headers, rows) {
 }
 
 /**
+ * RIBBON custom function using the exact same specification as taskpane.js
+ * Creates a ribbon chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RIBBON(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Ribbon chart requires 3 columns (Time periods, Categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Calculate dynamic dimensions based on data
+      const uniquePeriods = [...new Set(processedData.map(d => d[headers[0]]))];
+      const dynamicWidth = Math.max(600, uniquePeriods.length * 100);
+      const dynamicHeight = 400;
+
+      // Use EXACT specification from taskpane.js ribbon chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ribbon chart from Excel selection",
+        background: "white",
+        width: dynamicWidth,
+        height: dynamicHeight,
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        layer: [
+          {
+            mark: { 
+              type: "area", 
+              interpolate: "monotone", 
+              tooltip: true,
+              opacity: 0.8
+            },
+            encoding: {
+              x: {
+                field: headers[0],
+                type: "ordinal",
+                scale: {
+                  type: "point",
+                  padding: 0.3
+                },
+                axis: {
+                  title: headers[0],
+                  labelAngle: -45,
+                  labelFontSize: 12,
+                  titleFontSize: 14,
+                  labelPadding: 10,
+                  titlePadding: 20
+                }
+              },
+              y: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative",
+                axis: {
+                  title: headers[2],
+                  labelFontSize: 12,
+                  titleFontSize: 14,
+                  grid: true,
+                  gridOpacity: 0.3
+                },
+                stack: "center"
+              },
+              color: {
+                field: headers[1],
+                type: "nominal",
+                legend: {
+                  title: headers[1],
+                  titleFontSize: 12,
+                  labelFontSize: 11,
+                  orient: "right"
+                }
+              },
+              order: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative"
+              }
+            }
+          }
+        ],
+        config: {
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          axis: {
+            ticks: false,
+            grid: true,
+            gridColor: "#f0f0f0",
+            gridOpacity: 0.5,
+            gridWidth: 1,
+            domain: false,
+            labelColor: "#605e5c",
+            titleColor: "#323130"
+          },
+          legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#323130",
+            labelFont: "Segoe UI",
+            labelColor: "#605e5c",
+            symbolType: "circle",
+            symbolSize: 75
+          }
+        }
+      };
+
+      createChart(spec, "ribbon", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
  * Inserts chart into Excel using the same approach as taskpane.js
  */
 async function insertChartIntoExcel(base64data, chartType, chartId) {
@@ -4901,6 +5255,7 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("VIOLIN", VIOLIN);
   CustomFunctions.associate("GANTT", GANTT);
   CustomFunctions.associate("SANKEY", SANKEY);
+  CustomFunctions.associate("RIBBON", RIBBON);
   CustomFunctions.associate("RIDGELINE", RIDGELINE);
   CustomFunctions.associate("DEVIATION", DEVIATION);
 }
