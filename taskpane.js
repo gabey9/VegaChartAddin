@@ -3125,61 +3125,100 @@ export async function run() {
       }
 
       else if (chartType === "ribbon") {
-      spec = {
-        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Ribbon chart from Excel selection",
-        background: "white",
-        config: { view: { stroke: "transparent" }},
-        data: { values: data },
-        layer: [
-        {
-            mark: { type: "area", interpolate: "monotone", tooltip: true },
-            encoding: {
-            x: {
-                field: headers[0],
-                type: "ordinal" // temporal change to "ordinal" if your first col is not a date
-            },
-            y: {
-                aggregate: "sum",
-                field: headers[2],
-                type: "quantitative",
-                axis: null,
-                stack: "center"
-            },
-            color: {
-                field: headers[1],
-                type: "nominal"
-            },
-            order: {
-                aggregate: "sum",
-                field: headers[2],
-                type: "quantitative"
-            }
-            }
-        }
-        ],
-        config: {
-        view: { stroke: "transparent" },
-        axis: {
-            ticks: false,
-            grid: true,
-            gridColor: "white",
-            gridWidth: 3,
-            domain: false,
-            labelColor: "#666666"
+  // Calculate dynamic dimensions based on data
+  const uniquePeriods = [...new Set(data.map(d => d[headers[0]]))];
+  const dynamicWidth = Math.max(600, uniquePeriods.length * 100); // More space per period
+  const dynamicHeight = 400; // Adequate height for ribbon flow
+
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Ribbon chart from Excel selection",
+    background: "white",
+    width: dynamicWidth,
+    height: dynamicHeight,
+    config: { view: { stroke: "transparent" }},
+    data: { values: data },
+    layer: [
+      {
+        mark: { 
+          type: "area", 
+          interpolate: "monotone", 
+          tooltip: true,
+          opacity: 0.8
         },
-        legend: {
-            titleFont: "Segoe UI",
-            titleFontWeight: "bold",
-            titleColor: "#666666",
-            labelFont: "Segoe UI",
-            labelColor: "#666666",
-            symbolType: "circle",
-            symbolSize: 75
+        encoding: {
+          x: {
+            field: headers[0],
+            type: "ordinal", // temporal change to "ordinal" if your first col is not a date
+            scale: {
+              type: "point",
+              padding: 0.3 // Add padding between periods for more spread
+            },
+            axis: {
+              title: headers[0],
+              labelAngle: -45, // Angle labels to prevent overlap
+              labelFontSize: 12,
+              titleFontSize: 14,
+              labelPadding: 10,
+              titlePadding: 20
+            }
+          },
+          y: {
+            aggregate: "sum",
+            field: headers[2],
+            type: "quantitative",
+            axis: {
+              title: headers[2],
+              labelFontSize: 12,
+              titleFontSize: 14,
+              grid: true,
+              gridOpacity: 0.3
+            },
+            stack: "center"
+          },
+          color: {
+            field: headers[1],
+            type: "nominal",
+            legend: {
+              title: headers[1],
+              titleFontSize: 12,
+              labelFontSize: 11,
+              orient: "right"
+            }
+          },
+          order: {
+            aggregate: "sum",
+            field: headers[2],
+            type: "quantitative"
+          }
         }
-        }
-      };
       }
+    ],
+    config: {
+      view: { stroke: "transparent" },
+      font: "Segoe UI",
+      axis: {
+        ticks: false,
+        grid: true,
+        gridColor: "#f0f0f0",
+        gridOpacity: 0.5,
+        gridWidth: 1,
+        domain: false,
+        labelColor: "#605e5c",
+        titleColor: "#323130"
+      },
+      legend: {
+        titleFont: "Segoe UI",
+        titleFontWeight: "bold",
+        titleColor: "#323130",
+        labelFont: "Segoe UI",
+        labelColor: "#605e5c",
+        symbolType: "circle",
+        symbolSize: 75
+      }
+    }
+  };
+}
 
       else if (chartType === "ridgeline") {
       spec = {
