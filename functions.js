@@ -1884,6 +1884,622 @@ function loadVegaLibraries() {
   });
 }
 
+/**
+ * TREE custom function using the exact same specification as taskpane.js
+ * Creates a tree diagram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function TREE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Tree chart requires at least 2 columns (Parent, Child, Value optional)");
+        return;
+      }
+
+      // Process data same as taskpane.js
+      const nodes = new Map();
+
+      rows.forEach((row, i) => {
+        const parent = row[0] || "";
+        const child = row[1] || `node_${i}`;
+        const value = headers.length >= 3 ? (parseFloat(row[2]) || 1) : 1;
+        
+        // Add parent node if it doesn't exist and is not empty
+        if (parent && !nodes.has(parent)) {
+          nodes.set(parent, {
+            id: parent,
+            parent: "",
+            name: parent,
+            value: 1
+          });
+        }
+        
+        // Add child node
+        if (!nodes.has(child)) {
+          nodes.set(child, {
+            id: child,
+            parent: parent,
+            name: child,
+            value: value
+          });
+        } else {
+          // Update parent and value if child already exists
+          const existingNode = nodes.get(child);
+          existingNode.parent = parent;
+          existingNode.value = value;
+        }
+      });
+      
+      // Convert Map to array
+      const treeData = Array.from(nodes.values());
+      
+      // Find root nodes (nodes with no parent or parent not in dataset)
+      const allIds = new Set(treeData.map(d => d.id));
+      treeData.forEach(node => {
+        if (node.parent && !allIds.has(node.parent)) {
+          node.parent = ""; // Make it a root node if parent doesn't exist
+        }
+      });
+
+      // Calculate dynamic dimensions based on data size
+      const nodeCount = treeData.length;
+      const dynamicWidth = Math.max(600, Math.min(1200, nodeCount * 40));
+      const dynamicHeight = Math.max(400, Math.min(1600, nodeCount * 30));
+
+      // Use EXACT specification from taskpane.js tree chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v6.json",
+        "description": "Tree diagram from Excel selection",
+        "width": dynamicWidth,
+        "height": dynamicHeight,
+        "padding": 20,
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+
+        "signals": [
+          {
+            "name": "layout", 
+            "value": "tidy"
+          },
+          {
+            "name": "links", 
+            "value": "diagonal"
+          }
+        ],
+
+        "data": [
+          {
+            "name": "tree",
+            "values": treeData,
+            "transform": [
+              {
+                "type": "stratify",
+                "key": "id",
+                "parentKey": "parent"
+              },
+              {
+                "type": "tree",
+                "method": {"signal": "layout"},
+                "size": [{"signal": "height - 40"}, {"signal": "width - 100"}],
+                "as": ["y", "x", "depth", "children"]
+              }
+            ]
+          },
+          {
+            "name": "links",
+            "source": "tree",
+            "transform": [
+              { "type": "treelinks" },
+              {
+                "type": "linkpath",
+                "orient": "horizontal",
+                "shape": {"signal": "links"}
+              }
+            ]
+          }
+        ],
+
+        "scales": [
+          {
+            "name": "color",
+            "type": "ordinal",
+            "range": ["#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"],
+            "domain": {"data": "tree", "field": "depth"}
+          },
+          {
+            "name": "size",
+            "type": "linear",
+            "range": [100, 400],
+            "domain": {"data": "tree", "field": "value"}
+          }
+        ],
+
+        "marks": [
+          {
+            "type": "path",
+            "from": {"data": "links"},
+            "encode": {
+              "update": {
+                "path": {"field": "path"},
+                "stroke": {"value": "#8a8886"},
+                "strokeWidth": {"value": 2},
+                "strokeOpacity": {"value": 0.6}
+              }
+            }
+          },
+          {
+            "type": "symbol",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "stroke": {"value": "#ffffff"},
+                "strokeWidth": {"value": 2}
+              },
+              "update": {
+                "x": {"field": "x"},
+                "y": {"field": "y"},
+                "size": {"scale": "size", "field": "value"},
+                "fill": {"scale": "color", "field": "depth"},
+                "fillOpacity": {"value": 0.8},
+                "tooltip": {
+                  "signal": "{'Name': datum.name, 'ID': datum.id, 'Parent': datum.parent, 'Depth': datum.depth, 'Value': datum.value}"
+                }
+              },
+              "hover": {
+                "fillOpacity": {"value": 1.0},
+                "strokeWidth": {"value": 3}
+              }
+            }
+          },
+          {
+            "type": "text",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "fontSize": {"value": 11},
+                "baseline": {"value": "middle"},
+                "font": {"value": "Segoe UI"},
+                "fontWeight": {"value": "bold"}
+              },
+              "update": {
+                "x": {"field": "x"},
+                "y": {"field": "y"},
+                "text": {"field": "name"},
+                "dx": {"signal": "datum.children ? -12 : 12"},
+                "align": {"signal": "datum.children ? 'right' : 'left'"},
+                "fill": {"value": "#323130"}
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "tree", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * WORDCLOUD custom function using the exact same specification as taskpane.js
+ * Creates a word cloud from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function WORDCLOUD(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 1) {
+        resolve("Error: Wordcloud requires at least 1 column (Text data)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js wordcloud chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Word cloud from Excel selection",
+        width: 800,
+        height: 400,
+        padding: 0,
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: [
+          {
+            name: "table",
+            values: processedData,
+            transform: [
+              {
+                type: "countpattern",
+                field: headers[0], // Use first column as text source
+                case: "upper",
+                pattern: "[\\w']{3,}",
+                stopwords: "(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall)"
+              },
+              {
+                type: "formula", 
+                as: "angle",
+                expr: "[-45, 0, 45][~~(random() * 3)]"
+              },
+              {
+                type: "formula", 
+                as: "weight",
+                expr: "if(datum.count > 10, 600, 300)"
+              }
+            ]
+          }
+        ],
+        
+        scales: [
+          {
+            name: "color",
+            type: "ordinal",
+            domain: { data: "table", field: "text" },
+            range: ["#d5a928", "#652c90", "#939597", "#2563eb", "#dc2626", "#059669"]
+          }
+        ],
+        
+        marks: [
+          {
+            type: "text",
+            from: { data: "table" },
+            encode: {
+              enter: {
+                text: { field: "text" },
+                align: { value: "center" },
+                baseline: { value: "alphabetic" },
+                fill: { scale: "color", field: "text" }
+              },
+              update: {
+                fillOpacity: { value: 1 }
+              },
+              hover: {
+                fillOpacity: { value: 0.5 }
+              }
+            },
+            transform: [
+              {
+                type: "wordcloud",
+                size: [800, 400],
+                text: { field: "text" },
+                rotate: { field: "datum.angle" },
+                font: "Helvetica Neue, Arial",
+                fontSize: { field: "datum.count" },
+                fontWeight: { field: "datum.weight" },
+                fontSizeRange: [12, 56],
+                padding: 2
+              }
+            ]
+          }
+        ]
+      };
+
+      createChart(spec, "wordcloud", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * STRIP custom function using the exact same specification as taskpane.js
+ * Creates a strip plot from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function STRIP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Strip plot requires at least 2 columns (Categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js strip chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Strip plot showing distribution using tick marks",
+        background: "white",
+        config: { 
+          view: { stroke: "transparent" },
+          axis: {
+            labelFontSize: 11,
+            titleFontSize: 12,
+            labelColor: "#605E5C",
+            titleColor: "#323130"
+          }
+        },
+        data: { values: processedData },
+        mark: {
+          type: "tick",
+          thickness: 2,
+          size: 15,
+          color: "#0078d4",
+          opacity: 0.8,
+          tooltip: true
+        },
+        encoding: {
+          y: { 
+            field: headers[0],
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelAngle: 0
+            }
+          },
+          x: { 
+            field: headers[1],
+            type: "quantitative",
+            axis: {
+              title: headers[1],
+              grid: true,
+              gridColor: "#f3f2f1",
+              gridOpacity: 0.5
+            }
+          },
+          // Add color encoding if 3rd column exists
+          ...(headers.length > 2 && {
+            color: {
+              field: headers[2],
+              type: "nominal",
+              scale: { scheme: "category10" },
+              legend: {
+                title: headers[2],
+                orient: "right",
+                titleFontSize: 11,
+                labelFontSize: 10
+              }
+            }
+          }),
+          tooltip: headers.map(h => ({ field: h, type: "nominal" }))
+        }
+      };
+
+      createChart(spec, "strip", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * HEATMAP custom function using the exact same specification as taskpane.js
+ * Creates a heatmap from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function HEATMAP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Heatmap requires 3 columns (Y-categories, X-categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js heatmap chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Heatmap with marginal bars from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        spacing: 15,
+        bounds: "flush",
+        vconcat: [
+          {
+            height: 60,
+            mark: {
+              type: "bar",
+              stroke: null,
+              cornerRadiusEnd: 2,
+              tooltip: true,
+              color: "lightgrey"
+            },
+            encoding: {
+              x: {
+                field: headers[1],
+                type: "ordinal",
+                axis: null
+              },
+              y: {
+                field: headers[2],
+                aggregate: "mean",
+                type: "quantitative",
+                axis: null
+              }
+            }
+          },
+          {
+            spacing: 15,
+            bounds: "flush",
+            hconcat: [
+              {
+                mark: {
+                  type: "rect",
+                  stroke: "white",
+                  tooltip: true
+                },
+                encoding: {
+                  y: {
+                    field: headers[0],
+                    type: "ordinal",
+                    title: headers[0],
+                    axis: {
+                      domain: false,
+                      ticks: false,
+                      labels: true,
+                      labelAngle: 0,
+                      labelPadding: 5
+                    }
+                  },
+                  x: {
+                    field: headers[1],
+                    type: "ordinal",
+                    title: headers[1],
+                    axis: {
+                      domain: false,
+                      ticks: false,
+                      labels: true,
+                      labelAngle: 0
+                    }
+                  },
+                  color: {
+                    aggregate: "mean",
+                    field: headers[2],
+                    type: "quantitative",
+                    title: headers[2],
+                    scale: {
+                      scheme: "blues"
+                    },
+                    legend: {
+                      direction: "vertical",
+                      gradientLength: 120
+                    }
+                  }
+                }
+              },
+              {
+                mark: {
+                  type: "bar",
+                  stroke: null,
+                  cornerRadiusEnd: 2,
+                  tooltip: true,
+                  color: "lightgrey"
+                },
+                width: 60,
+                encoding: {
+                  y: {
+                    field: headers[0],
+                    type: "ordinal",
+                    axis: null
+                  },
+                  x: {
+                    field: headers[2],
+                    type: "quantitative",
+                    aggregate: "mean",
+                    axis: null
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        config: {
+          autosize: {
+            type: "fit",
+            contains: "padding"
+          },
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12,
+            titleFontSize: 14,
+            titleColor: "#323130"
+          },
+          legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#605E5C",
+            labelFont: "Segoe UI",
+            labelFontSize: 12,
+            labelColor: "#605E5C"
+          }
+        }
+      };
+
+      createChart(spec, "heatmap", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
 // Register all custom functions
 if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("LINE", LINE);
@@ -1899,4 +2515,8 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("TREEMAP", TREEMAP);
   CustomFunctions.associate("HISTOGRAM", HISTOGRAM);
   CustomFunctions.associate("ARC", ARC);
+  CustomFunctions.associate("TREE", TREE);
+  CustomFunctions.associate("WORDCLOUD", WORDCLOUD);
+  CustomFunctions.associate("STRIP", STRIP);
+  CustomFunctions.associate("HEATMAP", HEATMAP);
 }
