@@ -508,207 +508,79 @@ export async function run() {
         };
       }
 
-else if (chartType === "bullet") {
-  // Expect headers like: Title | Subtitle | Range1 | Range2 | Range3 | Measure1 | Measure2 | Marker
-  const data = rows.map(r => ({
-    title: r[0],
-    ranges: [+r[1], +r[2], +r[3]],
-    measures: [+r[4], +r[5]],
-    markers: [+r[6]]
-  }));
+      else if (chartType === "bullet") {
+      const data = rows.map(r => ({
+        title: r[0],
+        ranges: [+r[1], +r[2], +r[3]],
+        measures: [+r[4], +r[5]],
+        markers: [+r[6]]
+      }));
 
-  spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-    "data": { "values": data },
-    "facet": {
-      "row": {
-        "field": "title", "type": "ordinal",
-        "header": { "labelAngle": 0, "title": "", "labelAlign": "left" }
-      }
-    },
-    "spacing": 10,
-    "spec": {
-      "encoding": {
-        "x": {
-          "type": "quantitative",
-          "scale": { "nice": false },
-          "title": null
+      spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        "data": { "values": data },
+        "facet": {
+        "row": {
+            "field": "title", "type": "ordinal",
+            "header": { "labelAngle": 0, "title": "", "labelAlign": "left" }
         }
-      },
-      "layer": [
-        { "mark": { "type": "bar", "color": "#eee" }, "encoding": { "x": { "field": "ranges[2]" } } },
-        { "mark": { "type": "bar", "color": "#ddd" }, "encoding": { "x": { "field": "ranges[1]" } } },
-        { "mark": { "type": "bar", "color": "#ccc" }, "encoding": { "x": { "field": "ranges[0]" } } },
-        { "mark": { "type": "bar", "color": "lightsteelblue", "size": 10 }, "encoding": { "x": { "field": "measures[1]" } } },
-        { "mark": { "type": "bar", "color": "steelblue", "size": 10 }, "encoding": { "x": { "field": "measures[0]" } } },
-        { "mark": { "type": "tick", "color": "black" }, "encoding": { "x": { "field": "markers[0]" } } }
-      ]
-    },
-    "resolve": { "scale": { "x": "independent" } },
-    "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
-  };
-}
+        },
+        "spacing": 10,
+        "spec": {
+        "encoding": {
+            "x": {
+            "type": "quantitative",
+            "scale": { "nice": false },
+            "title": null
+            }
+        },
+        "layer": [
+            { "mark": { "type": "bar", "color": "#eee" }, "encoding": { "x": { "field": "ranges[2]" } } },
+            { "mark": { "type": "bar", "color": "#ddd" }, "encoding": { "x": { "field": "ranges[1]" } } },
+            { "mark": { "type": "bar", "color": "#ccc" }, "encoding": { "x": { "field": "ranges[0]" } } },
+            { "mark": { "type": "bar", "color": "lightsteelblue", "size": 10 }, "encoding": { "x": { "field": "measures[1]" } } },
+            { "mark": { "type": "bar", "color": "steelblue", "size": 10 }, "encoding": { "x": { "field": "measures[0]" } } },
+            { "mark": { "type": "tick", "color": "black" }, "encoding": { "x": { "field": "markers[0]" } } }
+        ]
+        },
+        "resolve": { "scale": { "x": "independent" } },
+        "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
+      };
+      }
 
-      else if (chartType === "horizon") {
-        const horizonData = data.map((row, index) => ({
-            x: row[headers[0]] || index + 1,
-            y: parseFloat(row[headers[1]]) || 0
+      else if (chartType === "box") {
+      // Expect headers: Category | Value
+      const data = rows
+        .filter(r => r[0] && !isNaN(+r[1]))
+        .map(r => ({
+          category: r[0],
+          value: +r[1]
         }));
 
-        // Calculate data range and bands
-        const yValues = horizonData.map(d => d.y);
-        const maxY = Math.max(...yValues);
-        const minY = Math.min(...yValues);
-        const range = maxY - minY;
-        
-        // Define number of bands (typically 2-4 for horizon graphs)
-        const numBands = 3;
-        const bandHeight = range / (numBands * 2); // Divide by 2 for positive and negative
-        const baseline = minY + range / 2; // Use middle as baseline
-        
-        // Calculate dynamic dimensions
-        const dataPoints = horizonData.length;
-        const dynamicWidth = Math.max(300, Math.min(800, dataPoints * 15));
-
-        spec = {
-            "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-            "description": "Horizon Graph from Excel selection (IDL methodology)",
-            "width": dynamicWidth,
-            "height": 60,
-            "background": "white",
-            "config": { 
-            "view": { "stroke": "transparent" },
-            "area": {"interpolate": "monotone"}
-            },
-            "data": { "values": horizonData },
-            "encoding": {
-            "x": {
-                "field": "x",
-                "type": headers[0].toLowerCase().includes('date') ? "temporal" : "quantitative",
-                "scale": {"zero": false, "nice": false},
-                "axis": {
-                "title": headers[0],
-                "labelFontSize": 10,
-                "titleFontSize": 12,
-                "labelColor": "#605e5c",
-                "titleColor": "#323130",
-                "font": "Segoe UI"
-                }
-            },
-            "y": {
-                "type": "quantitative",
-                "scale": {"domain": [0, bandHeight]},
-                "axis": {
-                "title": headers[1],
-                "orient": "left",
-                "labelFontSize": 10,
-                "titleFontSize": 12,
-                "labelColor": "#605e5c",
-                "titleColor": "#323130",
-                "font": "Segoe UI",
-                "tickCount": 3
-                }
-            }
-            },
-            "layer": [
-            // Band 1 (lightest positive)
-            {
-                "transform": [
-                {"calculate": `max(0, min(datum.y - ${baseline}, ${bandHeight}))`, "as": "band1"}
-                ],
-                "mark": {
-                "type": "area",
-                "clip": true,
-                "opacity": 0.3,
-                "color": "#4a90e2",
-                "interpolate": "monotone"
-                },
-                "encoding": {
-                "y": {"field": "band1"}
-                }
-            },
-            // Band 2 (medium positive)
-            {
-                "transform": [
-                {"calculate": `max(0, min(datum.y - ${baseline} - ${bandHeight}, ${bandHeight}))`, "as": "band2"}
-                ],
-                "mark": {
-                "type": "area",
-                "clip": true,
-                "opacity": 0.6,
-                "color": "#2e7bd6",
-                "interpolate": "monotone"
-                },
-                "encoding": {
-                "y": {"field": "band2"}
-                }
-            },
-            // Band 3 (darkest positive)
-            {
-                "transform": [
-                {"calculate": `max(0, datum.y - ${baseline} - ${bandHeight * 2})`, "as": "band3"}
-                ],
-                "mark": {
-                "type": "area",
-                "clip": true,
-                "opacity": 0.9,
-                "color": "#1a5bb8",
-                "interpolate": "monotone"
-                },
-                "encoding": {
-                "y": {"field": "band3"}
-                }
-            },
-            // Band -1 (lightest negative, mirrored)
-            {
-                "transform": [
-                {"calculate": `max(0, min(${baseline} - datum.y, ${bandHeight}))`, "as": "nband1"}
-                ],
-                "mark": {
-                "type": "area",
-                "clip": true,
-                "opacity": 0.3,
-                "color": "#e74c3c",
-                "interpolate": "monotone"
-                },
-                "encoding": {
-                "y": {"field": "nband1"}
-                }
-            },
-            // Band -2 (medium negative, mirrored)
-            {
-                "transform": [
-                {"calculate": `max(0, min(${baseline} - datum.y - ${bandHeight}, ${bandHeight}))`, "as": "nband2"}
-                ],
-                "mark": {
-                "type": "area",
-                "clip": true,
-                "opacity": 0.6,
-                "color": "#c0392b",
-                "interpolate": "monotone"
-                },
-                "encoding": {
-                "y": {"field": "nband2"}
-                }
-            },
-            // Band -3 (darkest negative, mirrored)
-            {
-                "transform": [
-                {"calculate": `max(0, ${baseline} - datum.y - ${bandHeight * 2})`, "as": "nband3"}
-                ],
-                "mark": {
-                "type": "area",
-                "clip": true,
-                "opacity": 0.9,
-                "color": "#a93226",
-                "interpolate": "monotone"
-                },
-                "encoding": {
-                "y": {"field": "nband3"}
-                }
-            }
-            ]
-        };
+      spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        "description": "Box plot from Excel selection",
+        "data": { "values": data },
+        "mark": {
+          "type": "boxplot",
+          "extent": "min-max"   // show whiskers from min to max
+        },
+        "encoding": {
+          "x": { "field": "category", "type": "nominal" },
+          "y": {
+            "field": "value",
+            "type": "quantitative",
+            "scale": { "zero": false }
+          },
+          "color": {
+            "field": "category",
+            "type": "nominal",
+            "legend": null
+          }
+        }
+      };
       }
 
       else if (chartType === "tree") {
