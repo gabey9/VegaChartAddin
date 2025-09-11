@@ -3277,7 +3277,821 @@ function MEKKO(data) {
 }
 
 /**
- * Generic chart creation function
+ * MARIMEKKO custom function using the exact same specification as taskpane.js
+ * Creates a marimekko chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function MARIMEKKO(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Marimekko chart requires at least 3 columns: Category, Subcategory, Value");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js marimekko chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v5.json",
+        "description": "Marimekko Chart from Excel selection",
+        "width": 600,
+        "height": 400,
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+        "padding": { "top": 30, "bottom": 60, "left": 60, "right": 60 },
+        "data": [
+          {
+            "name": "table",
+            "values": processedData,
+            "transform": [
+              {
+                "type": "formula",
+                "as": "Category",
+                "expr": `datum['${headers[0]}']`
+              },
+              {
+                "type": "formula", 
+                "as": "Subcategory",
+                "expr": `datum['${headers[1]}']`
+              },
+              {
+                "type": "formula",
+                "as": "Value", 
+                "expr": `datum['${headers[2]}']`
+              }
+            ]
+          },
+          {
+            "name": "categories",
+            "source": "table",
+            "transform": [
+              {
+                "type": "aggregate",
+                "fields": ["Value"],
+                "ops": ["sum"],
+                "as": ["categoryTotal"],
+                "groupby": ["Category"]
+              },
+              {
+                "type": "stack",
+                "offset": "normalize",
+                "sort": { "field": "categoryTotal", "order": "descending" },
+                "field": "categoryTotal",
+                "as": ["x0", "x1"]
+              },
+              {
+                "type": "formula",
+                "as": "Percent",
+                "expr": "datum.x1 - datum.x0"
+              }
+            ]
+          },
+          {
+            "name": "finalTable",
+            "source": "table",
+            "transform": [
+              {
+                "type": "stack",
+                "offset": "normalize",
+                "groupby": ["Category"],
+                "sort": { "field": "Value", "order": "descending" },
+                "field": "Value",
+                "as": ["y0", "y1"]
+              },
+              {
+                "type": "lookup",
+                "from": "categories",
+                "key": "Category",
+                "values": ["x0", "x1"],
+                "fields": ["Category"]
+              },
+              {
+                "type": "formula",
+                "as": "Percent",
+                "expr": "datum.y1 - datum.y0"
+              }
+            ]
+          }
+        ],
+        "scales": [
+          {
+            "name": "x",
+            "type": "linear",
+            "range": "width",
+            "domain": { "data": "finalTable", "field": "x1" }
+          },
+          {
+            "name": "y",
+            "type": "linear",
+            "range": "height",
+            "nice": false,
+            "zero": true,
+            "domain": { "data": "finalTable", "field": "y1" }
+          },
+          {
+            "name": "color",
+            "type": "ordinal",
+            "range": { "scheme": "category20" },
+            "domain": {
+              "data": "categories",
+              "field": "Category",
+              "sort": { "field": "x0", "order": "ascending", "op": "sum" }
+            }
+          }
+        ],
+        "axes": [
+          {
+            "orient": "left",
+            "scale": "y",
+            "format": "%",
+            "tickCount": 5,
+            "labelColor": "#333333",
+            "labelFontSize": 11,
+            "domain": false
+          },
+          {
+            "orient": "bottom",
+            "scale": "x",
+            "format": "%",
+            "tickCount": 5,
+            "labelColor": "#333333", 
+            "labelFontSize": 11,
+            "domain": false
+          }
+        ],
+        "marks": [
+          {
+            "type": "rect",
+            "name": "bars",
+            "from": { "data": "finalTable" },
+            "encode": {
+              "update": {
+                "x": { "scale": "x", "field": "x0" },
+                "x2": { "scale": "x", "field": "x1" },
+                "y": { "scale": "y", "field": "y0" },
+                "y2": { "scale": "y", "field": "y1" },
+                "fill": { "scale": "color", "field": "Category" },
+                "stroke": { "value": "white" },
+                "strokeWidth": { "value": 1 },
+                "opacity": { "value": 0.8 },
+                "tooltip": { 
+                  "signal": "{'Category': datum.Category, 'Subcategory': datum.Subcategory, 'Value': datum.Value, 'Percentage': format(datum.Percent, '.1%')}" 
+                }
+              },
+              "hover": {
+                "opacity": { "value": 1.0 }
+              }
+            }
+          },
+          {
+            "type": "text",
+            "name": "valueLabels",
+            "from": { "data": "finalTable" },
+            "encode": {
+              "update": {
+                "x": { "scale": "x", "signal": "(datum.x1 - datum.x0)/2 + datum.x0" },
+                "y": { "scale": "y", "signal": "(datum.y1 - datum.y0)/2 + datum.y0" },
+                "text": { 
+                  "signal": "datum.Percent > 0.027 ? [datum.Subcategory, format(datum.Value, ',.0f') + ' (' + format(datum.Percent, '.0%') + ')'] : []" 
+                },
+                "align": { "value": "center" },
+                "baseline": { "value": "middle" },
+                "fill": { "value": "white" },
+                "fontSize": { "value": 10 },
+                "fontWeight": { "value": "normal" },
+                "font": { "value": "Segoe UI" },
+                "lineHeight": { "value": 12 },
+                "opacity": { "signal": "datum.Percent > 0.027 ? 1 : 0" }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "marimekko", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BUMP custom function using the exact same specification as taskpane.js
+ * Creates a bump chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BUMP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Bump chart requires 3 columns: Time periods, Categories, Rank values");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Calculate width based on number of unique x-values
+      const uniqueX = [...new Set(processedData.map(d => d[headers[0]]))];
+      const dynamicWidth = Math.max(400, uniqueX.length * 80);
+
+      // Use EXACT specification from taskpane.js bump chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bump chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        width: dynamicWidth,
+        height: 200,   // give it some room
+        encoding: {
+          x: {
+            field: headers[0],
+            type: "nominal",
+            axis: { title: "" },
+            scale: { type: "point", padding: 1 }   // padding 1 for more spread
+          },
+          y: {
+            field: headers[2],      
+            type: "ordinal",
+            axis: false
+          }
+        },
+        layer: [
+          {
+            mark: { type: "line", interpolate: "monotone" },
+            encoding: {
+              color: {
+                field: headers[1],   
+                type: "nominal",
+                legend: false
+              }
+            }
+          },
+          {
+            mark: { type: "circle", size: 400, tooltip: true },
+            encoding: {
+              color: {
+                field: headers[1],
+                type: "nominal",
+                legend: false
+              }
+            }
+          },
+          {
+            mark: { type: "text", color: "white" },
+            encoding: {
+              text: { field: headers[2] }
+            }
+          },
+          {
+            // Left-side labels
+            transform: [
+              { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "descending" }] },
+              { filter: "datum.rank === 1" }
+            ],
+            mark: {
+              type: "text",
+              align: "left",
+              baseline: "middle",
+              dx: 15,
+              fontWeight: "bold",
+              fontSize: 12
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" },
+              color: { field: headers[1], type: "nominal", legend: false }
+            }
+          },
+          {
+            // Right-side labels
+            transform: [
+              { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "ascending" }] },
+              { filter: "datum.rank === 1" }
+            ],
+            mark: {
+              type: "text",
+              align: "right",
+              baseline: "middle",
+              dx: -15,
+              fontWeight: "bold",
+              fontSize: 12
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" },
+              color: { field: headers[1], type: "nominal", legend: false }
+            }
+          }
+        ],
+        config: {
+          view: { stroke: "transparent" },
+          line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#666666",
+            labelFontSize: 12
+          }
+        }
+      };
+
+      createChart(spec, "bump", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * WAFFLE custom function using the exact same specification as taskpane.js
+ * Creates a waffle chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function WAFFLE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Waffle chart requires 2 columns: Category names, Values");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js waffle chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Waffle chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        transform: [
+          {
+            joinaggregate: [{"op": "sum", "field": headers[1], "as": "TotalValue"}]
+          },
+          {
+            calculate: `round(datum.${headers[1]}/datum.TotalValue * 100)`,
+            as: "PercentOfTotal"
+          },
+          {
+            aggregate: [{"op": "min", "field": "PercentOfTotal", "as": "Percent"}],
+            groupby: [headers[0]]
+          },
+          {"calculate": "sequence(1,101)", "as": "Sequence"},
+          {"flatten": ["Sequence"]},
+          {
+            calculate: `if(datum.Sequence <= datum.Percent, datum.${headers[0]},'_blank')`,
+            as: "Plot"
+          },
+          {"calculate": "ceil (datum.Sequence / 10)", "as": "row"},
+          {"calculate": "datum.Sequence - datum.row * 10", "as": "col"}
+        ],
+        facet: {"column": {"field": headers[0], "header": {"labelOrient": "bottom"}}},
+        spec: {
+          layer: [
+            {
+              mark: {
+                type: "circle",
+                filled: true,
+                tooltip: true,
+                stroke: "#9e9b9b",
+                strokeWidth: 0.7
+              },
+              encoding: {
+                x: {"field": "col", "type": "ordinal", "axis": null},
+                y: {"field": "row", "type": "ordinal", "axis": null, "sort": "-y"},
+                color: {
+                  condition: {"test": "datum.Plot == '_blank'", "value": "#e6e3e3"},
+                  scale: {"scheme": "set1"},
+                  field: "Plot",
+                  type: "nominal",
+                  legend: null
+                },
+                size: {"value": 241},
+                tooltip: [{"field": headers[0], "type": "nominal"}]
+              }
+            },
+            {
+              mark: {"type": "text", "fontSize": 30, "fontWeight": "bold"},
+              encoding: {
+                y: {"value": 30},
+                text: {
+                  condition: {
+                    test: "datum.Sequence == 1",
+                    value: {"expr": "datum.Percent + '%'"}
+                  }
+                },
+                color: {"scale": {"scheme": "set1"}, "field": "Plot"}
+              }
+            }
+          ]
+        },
+        config: {
+          view: {"stroke": "transparent"},
+          font: "Segoe UI",
+          text: {"font": "Segoe UI", "fontSize": 12, "fill": "#605E5C"},
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12
+          },
+          header: {
+            titleFont: "Segoe UI",
+            titleFontSize: 16,
+            titleColor: "#757575",
+            labelFont: "Segoe UI",
+            labelFontSize: 13,
+            labelColor: "#605E5C"
+          },
+          legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#605E5C",
+            labelFont: "Segoe UI",
+            labelFontSize: 13,
+            labelColor: "#605E5C",
+            symbolType: "circle",
+            symbolSize: 75
+          }
+        }
+      };
+
+      createChart(spec, "waffle", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * LOLLIPOP custom function using the exact same specification as taskpane.js
+ * Creates a lollipop chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function LOLLIPOP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Lollipop chart requires 2 columns: Category names, Values");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js lollipop chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Lollipop chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        encoding: {
+          y: {
+            field: headers[0],
+            type: "nominal",
+            sort: "-x",
+            axis: {
+              domain: false,
+              title: null,
+              ticks: false,
+              labelFont: "Segoe UI",
+              labelFontSize: 14,
+              labelPadding: 10,
+              labelColor: "#605e5c"
+            }
+          },
+          x: {
+            field: headers[1],
+            type: "quantitative",
+            axis: {
+              domain: false,
+              ticks: false,
+              grid: true,
+              gridColor: "#e0e0e0",
+              labelFont: "Segoe UI",
+              labelFontSize: 12,
+              labelColor: "#605e5c",
+              title: headers[1],
+              titleFont: "Segoe UI",
+              titleFontSize: 14,
+              titleColor: "#323130"
+            }
+          },
+          color: { value: "#0078d4" }
+        },
+        layer: [
+          {
+            mark: {
+              type: "rule",
+              tooltip: true,
+              strokeWidth: 3,
+              opacity: 0.7
+            }
+          },
+          {
+            mark: {
+              type: "circle",
+              tooltip: true,
+              size: 300,
+              opacity: 0.9
+            },
+            encoding: {
+              size: {
+                field: headers[1],
+                type: "quantitative",
+                scale: {
+                  range: [200, 800]
+                },
+                legend: null
+              }
+            }
+          }
+        ],
+        config: {
+          autosize: {
+            type: "fit",
+            contains: "padding"
+          },
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" }
+        }
+      };
+
+      createChart(spec, "lollipop", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * VIOLIN custom function using the exact same specification as taskpane.js
+ * Creates a violin chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function VIOLIN(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Violin chart requires 2 columns: Categories/Groups, Continuous values");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js violin chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Violin chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        spacing: 0,
+        facet: {
+          column: {
+            field: headers[0],
+            header: {
+              orient: "bottom",
+              title: null,
+              labelFontSize: 14
+            }
+          }
+        },
+        spec: {
+          width: 180,
+          height: 400,
+          encoding: {
+            y: {
+              field: headers[1],
+              type: "quantitative",
+              title: headers[1],
+              axis: {
+                tickCount: 10,
+                titleFontSize: 16,
+                labelFontSize: 12
+              }
+            },
+            x: {
+              type: "quantitative",
+              axis: {
+                labels: false,
+                title: null,
+                grid: false,
+                ticks: false
+              }
+            },
+            color: {
+              field: headers[0],
+              type: "nominal",
+              legend: null,
+              scale: {
+                scheme: "category10"
+              }
+            }
+          },
+          layer: [
+            {
+              name: "KDE_PLOT",
+              transform: [
+                {
+                  density: headers[1],
+                  groupby: [headers[0]],
+                  as: ["_kde_value", "_kde_density"]
+                },
+                {
+                  calculate: "datum['_kde_density'] * -1",
+                  as: "_negative_kde_density"
+                }
+              ],
+              layer: [
+                {
+                  name: "KDE_POSITIVE",
+                  mark: {
+                    type: "area",
+                    orient: "vertical",
+                    opacity: 0.6
+                  },
+                  encoding: {
+                    y: { field: "_kde_value" },
+                    x: { field: "_kde_density" }
+                  }
+                },
+                {
+                  name: "KDE_NEGATIVE",
+                  mark: {
+                    type: "area",
+                    orient: "vertical",
+                    opacity: 0.6
+                  },
+                  encoding: {
+                    y: { field: "_kde_value" },
+                    x: { field: "_negative_kde_density" }
+                  }
+                }
+              ],
+              encoding: {
+                x2: { datum: 0 }
+              }
+            },
+            {
+              name: "BOX_PLOT",
+              mark: {
+                type: "boxplot",
+                extent: "min-max",
+                median: {
+                  color: "black",
+                  strokeWidth: 2
+                },
+                size: 20
+              },
+              encoding: {
+                y: { field: headers[1] },
+                fill: { value: "#969696" },
+                stroke: { value: "black" }
+              }
+            }
+          ]
+        },
+        config: {
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+          axis: {
+            ticks: false,
+            grid: true,
+            gridColor: "#e0e0e0",
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12
+          },
+          header: {
+            titleFont: "Segoe UI",
+            titleFontSize: 16,
+            titleColor: "#757575",
+            labelFont: "Segoe UI",
+            labelFontSize: 13,
+            labelColor: "#605E5C"
+          }
+        }
+      };
+
+      createChart(spec, "violin", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * Generic chart creation function (same approach as taskpane.js)
  */
 async function createChart(spec, chartType, headers, rows) {
   return new Promise(async (resolve, reject) => {
@@ -3333,7 +4147,7 @@ async function createChart(spec, chartType, headers, rows) {
 }
 
 /**
- * Inserts chart into Excel
+ * Inserts chart into Excel using the same approach as taskpane.js
  */
 async function insertChartIntoExcel(base64data, chartType, chartId) {
   return Excel.run(async (context) => {
@@ -3372,7 +4186,7 @@ async function insertChartIntoExcel(base64data, chartType, chartId) {
 }
 
 /**
- * Remove existing charts of the same type
+ * Remove existing charts of the same type (prevents duplicates)
  */
 async function removeExistingCharts(context, sheet, chartType) {
   const shapes = sheet.shapes;
@@ -3463,4 +4277,9 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("HORIZON", HORIZON);
   CustomFunctions.associate("SLOPE", SLOPE);
   CustomFunctions.associate("MEKKO", MEKKO);
+  CustomFunctions.associate("MARIMEKKO", MARIMEKKO);
+  CustomFunctions.associate("BUMP", BUMP);
+  CustomFunctions.associate("WAFFLE", WAFFLE);
+  CustomFunctions.associate("LOLLIPOP", LOLLIPOP);
+  CustomFunctions.associate("VIOLIN", VIOLIN);
 }

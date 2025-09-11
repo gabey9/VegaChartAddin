@@ -336,6 +336,22 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "MARIMEKKO custom function using the exact same specification as taskpane.js\nCreates a marimekko from Excel data range",
+            "id": "MARIMEKKO",
+            "name": "MARIMEKKO",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }
