@@ -210,6 +210,54 @@
             }
         },
         {
+            "description": "TREE custom function using the exact same specification as taskpane.js\nCreates a tree diagram from Excel data range",
+            "id": "TREE",
+            "name": "TREE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "WORDCLOUD custom function using the exact same specification as taskpane.js\nCreates a word cloud from Excel data range",
+            "id": "WORDCLOUD",
+            "name": "WORDCLOUD",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "STRIP custom function using the exact same specification as taskpane.js\nCreates a strip plot from Excel data range",
+            "id": "STRIP",
+            "name": "STRIP",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "HEATMAP custom function using the exact same specification as taskpane.js\nCreates a heatmap from Excel data range",
             "id": "HEATMAP",
             "name": "HEATMAP",
@@ -226,55 +274,7 @@
             }
         },
         {
-            "description": "TREE custom function using the exact same specification as taskpane.js\nCreates a tree from Excel data range",
-            "id": "TREE",
-            "name": "TREE",
-            "parameters": [
-                {
-                    "description": "The data range including headers",
-                    "dimensionality": "matrix",
-                    "name": "data",
-                    "type": "any"
-                }
-            ],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
-            "description": "WORDCLOUD custom function using the exact same specification as taskpane.js\nCreates a wordcloud from Excel data range",
-            "id": "WORDCLOUD",
-            "name": "WORDCLOUD",
-            "parameters": [
-                {
-                    "description": "The data range including headers",
-                    "dimensionality": "matrix",
-                    "name": "data",
-                    "type": "any"
-                }
-            ],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
-            "description": "STRIP custom function using the exact same specification as taskpane.js\nCreates a strip from Excel data range",
-            "id": "STRIP",
-            "name": "STRIP",
-            "parameters": [
-                {
-                    "description": "The data range including headers",
-                    "dimensionality": "matrix",
-                    "name": "data",
-                    "type": "any"
-                }
-            ],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
-            "description": "BULLET custom function using the exact same specification as taskpane.js\nCreates a bullet from Excel data range",
+            "description": "BULLET custom function using the exact same specification as taskpane.js\nCreates a bullet chart from Excel data range",
             "id": "BULLET",
             "name": "BULLET",
             "parameters": [
@@ -290,7 +290,7 @@
             }
         },
         {
-            "description": "HORIZON custom function using the exact same specification as taskpane.js\nCreates a horizon from Excel data range",
+            "description": "HORIZON custom function using the exact same specification as taskpane.js\nCreates a horizon chart from Excel data range",
             "id": "HORIZON",
             "name": "HORIZON",
             "parameters": [
@@ -306,7 +306,7 @@
             }
         },
         {
-            "description": "SLOPE custom function using the exact same specification as taskpane.js\nCreates a slope from Excel data range",
+            "description": "SLOPE custom function using the exact same specification as taskpane.js\nCreates a slope chart from Excel data range",
             "id": "SLOPE",
             "name": "SLOPE",
             "parameters": [
@@ -322,7 +322,7 @@
             }
         },
         {
-            "description": "MEKKO custom function using the exact same specification as taskpane.js\nCreates a mekko from Excel data range",
+            "description": "MEKKO custom function using the exact same specification as taskpane.js\nCreates a Mekko chart from Excel data range",
             "id": "MEKKO",
             "name": "MEKKO",
             "parameters": [
@@ -338,7 +338,7 @@
             }
         },
         {
-            "description": "MARIMEKKO custom function using the exact same specification as taskpane.js\nCreates a marimekko from Excel data range",
+            "description": "MARIMEKKO custom function using the exact same specification as taskpane.js\nCreates a marimekko chart from Excel data range",
             "id": "MARIMEKKO",
             "name": "MARIMEKKO",
             "parameters": [
@@ -418,7 +418,7 @@
             }
         },
         {
-            "description": "GANTT custom function using the exact same specification as taskpane.js\nCreates a gantt chart from Excel data range",
+            "description": "GANTT custom function using the exact same specification as taskpane.js\nCreates a Gantt chart from Excel data range",
             "id": "GANTT",
             "name": "GANTT",
             "parameters": [
@@ -434,7 +434,7 @@
             }
         },
         {
-            "description": "SANKEY custom function using the exact same specification as taskpane.js\nCreates a sankey chart from Excel data range",
+            "description": "SANKEY custom function using the exact same specification as taskpane.js\nCreates a Sankey diagram from Excel data range",
             "id": "SANKEY",
             "name": "SANKEY",
             "parameters": [
@@ -450,23 +450,7 @@
             }
         },
         {
-            "description": "RIBBON custom function using the exact same specification as taskpane.js\nCreates a ribbon chart from Excel data range",
-            "id": "RIBBON",
-            "name": "RIBBON",
-            "parameters": [
-                {
-                    "description": "The data range including headers",
-                    "dimensionality": "matrix",
-                    "name": "data",
-                    "type": "any"
-                }
-            ],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
-            "description": "RIDGELINE custom function using the exact same specification as taskpane.js\nCreates a ridgeline chart from Excel data range",
+            "description": "RIDGELINE custom function using the exact same specification as taskpane.js\nCreates a ridgeline (joyplot) chart from Excel data range",
             "id": "RIDGELINE",
             "name": "RIDGELINE",
             "parameters": [
@@ -485,6 +469,22 @@
             "description": "DEVIATION custom function using the exact same specification as taskpane.js\nCreates a deviation chart from Excel data range",
             "id": "DEVIATION",
             "name": "DEVIATION",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "RIBBON custom function using the exact same specification as taskpane.js\nCreates a ribbon chart from Excel data range",
+            "id": "RIBBON",
+            "name": "RIBBON",
             "parameters": [
                 {
                     "description": "The data range including headers",
