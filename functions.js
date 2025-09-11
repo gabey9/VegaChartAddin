@@ -2500,6 +2500,782 @@ function HEATMAP(data) {
   });
 }
 
+/**
+ * BULLET custom function using the exact same specification as taskpane.js
+ * Creates a bullet chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BULLET(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 7) {
+        resolve("Error: Bullet chart requires 7 columns (Title, Poor Max, Satisfactory Max, Good Max, Actual, Forecast, Target)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js bullet chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bullet chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { type: "bullet" },
+        encoding: {
+          title: { field: headers[0], type: "nominal" },
+          ranges: { 
+            field: [headers[1], headers[2], headers[3]],
+            type: "quantitative"
+          },
+          measures: { 
+            field: [headers[4], headers[5]], 
+            type: "quantitative"
+          },
+          markers: { 
+            field: headers[6], 
+            type: "quantitative"
+          }
+        }
+      };
+
+      createChart(spec, "bullet", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * HORIZON custom function using the exact same specification as taskpane.js
+ * Creates a horizon chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function HORIZON(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Horizon chart requires 2 columns (X values, Y values)");
+        return;
+      }
+
+      // Convert rows -> objects and transform data (same as taskpane.js)
+      const horizonData = rows.map((row, index) => ({
+        x: row[0] || index + 1,
+        y: parseFloat(row[1]) || 0
+      }));
+
+      // Calculate data range and bands (same as taskpane.js)
+      const yValues = horizonData.map(d => d.y);
+      const maxY = Math.max(...yValues);
+      const minY = Math.min(...yValues);
+      const range = maxY - minY;
+      
+      // Define number of bands (typically 2-4 for horizon graphs)
+      const numBands = 3;
+      const bandHeight = range / (numBands * 2); // Divide by 2 for positive and negative
+      const baseline = minY + range / 2; // Use middle as baseline
+      
+      // Calculate dynamic dimensions
+      const dataPoints = horizonData.length;
+      const dynamicWidth = Math.max(300, Math.min(800, dataPoints * 15));
+
+      // Use EXACT specification from taskpane.js horizon chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        "description": "Horizon Graph from Excel selection (IDL methodology)",
+        "width": dynamicWidth,
+        "height": 60,
+        "background": "white",
+        "config": { 
+          "view": { "stroke": "transparent" },
+          "area": {"interpolate": "monotone"}
+        },
+        "data": { "values": horizonData },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "type": headers[0].toLowerCase().includes('date') ? "temporal" : "quantitative",
+            "scale": {"zero": false, "nice": false},
+            "axis": {
+              "title": headers[0],
+              "labelFontSize": 10,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI"
+            }
+          },
+          "y": {
+            "type": "quantitative",
+            "scale": {"domain": [0, bandHeight]},
+            "axis": {
+              "title": headers[1],
+              "orient": "left",
+              "labelFontSize": 10,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI",
+              "tickCount": 3
+            }
+          }
+        },
+        "layer": [
+          // Band 1 (lightest positive)
+          {
+            "transform": [
+              {"calculate": `max(0, min(datum.y - ${baseline}, ${bandHeight}))`, "as": "band1"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.3,
+              "color": "#4a90e2",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "band1"}
+            }
+          },
+          // Band 2 (medium positive)
+          {
+            "transform": [
+              {"calculate": `max(0, min(datum.y - ${baseline} - ${bandHeight}, ${bandHeight}))`, "as": "band2"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.6,
+              "color": "#2e7bd6",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "band2"}
+            }
+          },
+          // Band 3 (darkest positive)
+          {
+            "transform": [
+              {"calculate": `max(0, datum.y - ${baseline} - ${bandHeight * 2})`, "as": "band3"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.9,
+              "color": "#1a5bb8",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "band3"}
+            }
+          },
+          // Band -1 (lightest negative, mirrored)
+          {
+            "transform": [
+              {"calculate": `max(0, min(${baseline} - datum.y, ${bandHeight}))`, "as": "nband1"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.3,
+              "color": "#e74c3c",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "nband1"}
+            }
+          },
+          // Band -2 (medium negative, mirrored)
+          {
+            "transform": [
+              {"calculate": `max(0, min(${baseline} - datum.y - ${bandHeight}, ${bandHeight}))`, "as": "nband2"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.6,
+              "color": "#c0392b",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "nband2"}
+            }
+          },
+          // Band -3 (darkest negative, mirrored)
+          {
+            "transform": [
+              {"calculate": `max(0, ${baseline} - datum.y - ${bandHeight * 2})`, "as": "nband3"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.9,
+              "color": "#a93226",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "nband3"}
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "horizon", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SLOPE custom function using the exact same specification as taskpane.js
+ * Creates a slope chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SLOPE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Slope chart requires 3 columns (Time Period, Category, Value)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      const timePeriods = [...new Set(processedData.map(d => d[headers[0]]))];
+      const categories = [...new Set(processedData.map(d => d[headers[1]]))];
+      
+      // Filter data for first and last periods only (same as taskpane.js)
+      const firstPeriod = timePeriods[0];
+      const lastPeriod = timePeriods[timePeriods.length - 1];
+      
+      const slopeData = processedData.filter(d => 
+        d[headers[0]] === firstPeriod || d[headers[0]] === lastPeriod
+      );
+
+      // Check if values are percentages (between -1 and 1)
+      const allValues = slopeData.map(d => d[headers[2]]);
+      const isPercentage = allValues.every(v => v >= -1 && v <= 1);
+      const formatString = isPercentage ? ".1%" : ",.0f";
+
+      // Calculate dynamic dimensions based on number of categories
+      const dynamicHeight = Math.max(300, Math.min(600, categories.length * 40));
+      const dynamicWidth = 500;
+
+      // Use EXACT specification from taskpane.js slope chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Slope chart from Excel selection",
+        background: "white",
+        config: { 
+          view: { stroke: "transparent" },
+          autosize: { type: "fit", contains: "padding" }
+        },
+        width: dynamicWidth,
+        height: dynamicHeight,
+        data: { values: slopeData },
+        encoding: {
+          x: {
+            field: headers[0],
+            type: "ordinal",
+            axis: {
+              title: null,
+              labelFontSize: 14,
+              labelFontWeight: "bold",
+              labelPadding: 10,
+              domain: false,
+              ticks: false,
+              labelColor: "#323130"
+            },
+            scale: { padding: 0.1 }
+          },
+          y: {
+            field: headers[2],
+            type: "quantitative",
+            axis: null,
+            scale: { zero: false }
+          },
+          color: {
+            field: headers[1],
+            type: "nominal",
+            legend: null,
+            scale: { scheme: "category10" }
+          }
+        },
+        layer: [
+          // Background grid lines
+          {
+            mark: {
+              type: "rule",
+              strokeDash: [2, 2],
+              opacity: 0.3
+            },
+            data: { values: [{}] },
+            encoding: {
+              x: { datum: firstPeriod },
+              x2: { datum: lastPeriod },
+              y: { value: 0 },
+              color: { value: "#e0e0e0" }
+            }
+          },
+          // Slope lines
+          {
+            mark: {
+              type: "line",
+              strokeWidth: 2,
+              opacity: 0.7,
+              tooltip: true
+            },
+            encoding: {
+              detail: { field: headers[1], type: "nominal" },
+              tooltip: [
+                { field: headers[1], type: "nominal", title: "Category" },
+                { field: headers[0], type: "nominal", title: "Period" },
+                { field: headers[2], type: "quantitative", title: "Value", format: formatString }
+              ]
+            }
+          },
+          // Points at the ends
+          {
+            mark: {
+              type: "circle",
+              size: 100,
+              opacity: 1,
+              tooltip: true
+            }
+          },
+          // Left side value labels
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${firstPeriod}'` }
+            ],
+            mark: {
+              type: "text",
+              align: "right",
+              baseline: "middle",
+              dx: -8,
+              fontSize: 11,
+              fontWeight: "normal"
+            },
+            encoding: {
+              text: { 
+                field: headers[2], 
+                type: "quantitative",
+                format: formatString
+              }
+            }
+          },
+          // Left side category labels (for top values)
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${firstPeriod}'` },
+              {
+                window: [{ op: "rank", as: "rank" }],
+                sort: [{ field: headers[2], order: "descending" }]
+              },
+              { filter: "datum.rank <= 3" }
+            ],
+            mark: {
+              type: "text",
+              align: "right",
+              baseline: "bottom",
+              dx: -8,
+              dy: -12,
+              fontSize: 10,
+              fontWeight: "bold",
+              fontStyle: "italic"
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" }
+            }
+          },
+          // Right side value labels
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+            ],
+            mark: {
+              type: "text",
+              align: "left",
+              baseline: "middle",
+              dx: 8,
+              fontSize: 11,
+              fontWeight: "normal"
+            },
+            encoding: {
+              text: { 
+                field: headers[2], 
+                type: "quantitative",
+                format: formatString
+              }
+            }
+          },
+          // Right side category labels
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+            ],
+            mark: {
+              type: "text",
+              align: "left",
+              baseline: "middle",
+              dx: 35,
+              fontSize: 10,
+              fontWeight: "bold"
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" }
+            }
+          }
+        ],
+        config: {
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { 
+            font: "Segoe UI", 
+            fontSize: 11, 
+            fill: "#605E5C" 
+          },
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          }
+        }
+      };
+
+      createChart(spec, "slope", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * MEKKO custom function using the exact same specification as taskpane.js
+ * Creates a Mekko chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function MEKKO(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Mekko chart requires 3 columns (Category, Subcategory, Value)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js mekko chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Marimekko chart from Excel selection",
+        width: 800,
+        height: 500,
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        view: { stroke: null },
+        padding: { top: 60, bottom: 80, left: 60, right: 60 },
+        data: [
+          {
+            name: "table",
+            values: processedData
+          },
+          {
+            name: "categories",
+            source: "table",
+            transform: [
+              {
+                type: "aggregate",
+                fields: [headers[2]],
+                ops: ["sum"],
+                as: ["categoryTotal"],
+                groupby: [headers[0]]
+              },
+              {
+                type: "stack",
+                offset: "normalize",
+                sort: { field: "categoryTotal", order: "descending" },
+                field: "categoryTotal",
+                as: ["x0", "x1"]
+              },
+              {
+                type: "formula",
+                as: "Percent",
+                expr: "datum.x1-datum.x0"
+              },
+              {
+                type: "formula",
+                as: "Label",
+                expr: `datum.${headers[0]} + ' (' + format(datum.Percent,'.1%') + ')'`
+              }
+            ]
+          },
+          {
+            name: "finalTable",
+            source: "table",
+            transform: [
+              {
+                type: "stack",
+                offset: "normalize",
+                groupby: [headers[0]],
+                sort: { field: headers[2], order: "descending" },
+                field: headers[2],
+                as: ["y0", "y1"]
+              },
+              {
+                type: "stack",
+                groupby: [headers[0]],
+                sort: { field: headers[2], order: "descending" },
+                field: headers[2],
+                as: ["z0", "z1"]
+              },
+              {
+                type: "lookup",
+                from: "categories",
+                key: headers[0],
+                values: ["x0", "x1"],
+                fields: [headers[0]]
+              },
+              {
+                type: "formula",
+                as: "Percent",
+                expr: "datum.y1-datum.y0"
+              },
+              {
+                type: "formula",
+                as: "Label",
+                expr: `[datum.${headers[1]}, format(datum.${headers[2]}, '.0f') + ' (' + format(datum.Percent, '.1%') + ')']`
+              },
+              {
+                type: "window",
+                sort: { field: "y0", order: "ascending" },
+                ops: ["row_number"],
+                fields: [null],
+                as: ["rank"],
+                groupby: [headers[0]]
+              }
+            ]
+          }
+        ],
+        scales: [
+          {
+            name: "x",
+            type: "linear",
+            range: "width",
+            domain: { data: "finalTable", field: "x1" }
+          },
+          {
+            name: "y",
+            type: "linear",
+            range: "height",
+            nice: false,
+            zero: true,
+            domain: { data: "finalTable", field: "z1" }
+          },
+          {
+            name: "opacity",
+            type: "linear",
+            range: [1, 0.6],
+            domain: { data: "finalTable", field: "rank" }
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            range: { scheme: "category20" },
+            domain: {
+              data: "categories",
+              field: headers[0],
+              sort: { field: "x0", order: "ascending", op: "sum" }
+            }
+          }
+        ],
+        axes: [
+          {
+            orient: "left",
+            scale: "y",
+            zindex: 1,
+            format: "",
+            tickCount: 5,
+            tickSize: 15,
+            labelColor: { value: "#333740" },
+            labelFontWeight: { value: "normal" },
+            labelFontSize: { value: 12 },
+            labelFont: { value: "Segoe UI" },
+            offset: 5,
+            domain: false,
+            encode: {
+              labels: {
+                update: {
+                  text: { signal: `format(datum.value, '.0f')` }
+                }
+              }
+            }
+          }
+        ],
+        marks: [
+          {
+            type: "rect",
+            name: "bars",
+            from: { data: "finalTable" },
+            encode: {
+              update: {
+                x: { scale: "x", field: "x0" },
+                x2: { scale: "x", field: "x1" },
+                y: { scale: "y", field: "z0" },
+                y2: { scale: "y", field: "z1" },
+                fill: { scale: "color", field: headers[0] },
+                stroke: { value: "white" },
+                strokeWidth: { value: 1 },
+                fillOpacity: { scale: "opacity", field: "rank" },
+                tooltip: { signal: "datum" }
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "labels",
+            interactive: false,
+            from: { data: "bars" },
+            encode: {
+              update: {
+                x: { signal: "(datum.x2 - datum.x)*0.5 + datum.x" },
+                align: { value: "center" },
+                text: { field: "datum.Label" },
+                y: { signal: "(datum.y2 - datum.y)*0.5 + datum.y" },
+                fill: { value: "white" },
+                font: { value: "Segoe UI" },
+                lineHeight: { value: 12 },
+                fontSize: { value: 10 },
+                opacity: { signal: "(datum.x2 - datum.x) > 0.05 && (datum.y2 - datum.y) > 20 ? 1 : 0" }
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "categoryLabels",
+            from: { data: "categories" },
+            encode: {
+              update: {
+                x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                y: { signal: "-15" },
+                text: { field: headers[0] },
+                align: { value: "center" },
+                baseline: { value: "bottom" },
+                fill: { value: "#333740" },
+                fontWeight: { value: "bold" },
+                fontSize: { value: 12 },
+                font: { value: "Segoe UI" }
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "categoryPercentages",
+            from: { data: "categories" },
+            encode: {
+              update: {
+                x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                y: { signal: "height + 30" },
+                text: { field: "Label" },
+                align: { value: "center" },
+                baseline: { value: "top" },
+                fill: { value: "#666666" },
+                fontWeight: { value: "normal" },
+                fontSize: { value: 10 },
+                font: { value: "Segoe UI" }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "mekko", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
 // Register all custom functions
 if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("LINE", LINE);
@@ -2519,4 +3295,8 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("WORDCLOUD", WORDCLOUD);
   CustomFunctions.associate("STRIP", STRIP);
   CustomFunctions.associate("HEATMAP", HEATMAP);
+  CustomFunctions.associate("BULLET", BULLET);
+  CustomFunctions.associate("HORIZON", HORIZON);
+  CustomFunctions.associate("SLOPE", SLOPE);
+  CustomFunctions.associate("MEKKO", MEKKO);
 }

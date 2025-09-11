@@ -272,6 +272,70 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "BULLET custom function using the exact same specification as taskpane.js\nCreates a bullet from Excel data range",
+            "id": "BULLET",
+            "name": "BULLET",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "HORIZON custom function using the exact same specification as taskpane.js\nCreates a horizon from Excel data range",
+            "id": "HORIZON",
+            "name": "HORIZON",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "SLOPE custom function using the exact same specification as taskpane.js\nCreates a slope from Excel data range",
+            "id": "SLOPE",
+            "name": "SLOPE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "MEKKO custom function using the exact same specification as taskpane.js\nCreates a mekko from Excel data range",
+            "id": "MEKKO",
+            "name": "MEKKO",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }
