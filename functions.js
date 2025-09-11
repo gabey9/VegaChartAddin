@@ -3276,6 +3276,170 @@ function MEKKO(data) {
   });
 }
 
+/**
+ * Generic chart creation function
+ */
+async function createChart(spec, chartType, headers, rows) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const chartId = `${chartType}_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+      
+      // Render hidden chart (same as taskpane.js)
+      const hiddenDiv = document.createElement("div");
+      hiddenDiv.style.display = "none";
+      hiddenDiv.id = chartId;
+      document.body.appendChild(hiddenDiv);
+
+      // Load Vega-Lite if not available
+      if (typeof vegaEmbed === 'undefined') {
+        await loadVegaLibraries();
+      }
+
+      const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+      const view = result.view;
+
+      // Export chart -> PNG (same as taskpane.js)
+      const pngUrl = await view.toImageURL("png");
+      const response = await fetch(pngUrl);
+      const blob = await response.blob();
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64data = reader.result.split(",")[1];
+
+          // Insert into Excel (same approach as taskpane.js)
+          await insertChartIntoExcel(base64data, chartType, chartId);
+          
+          // Clean up hidden div
+          document.body.removeChild(hiddenDiv);
+          resolve();
+          
+        } catch (error) {
+          // Clean up on error
+          if (document.body.contains(hiddenDiv)) {
+            document.body.removeChild(hiddenDiv);
+          }
+          reject(error);
+        }
+      };
+      
+      reader.readAsDataURL(blob);
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * Inserts chart into Excel
+ */
+async function insertChartIntoExcel(base64data, chartType, chartId) {
+  return Excel.run(async (context) => {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
+
+    // Remove old chart and get its position
+    const oldPosition = await removeExistingCharts(context, sheet, chartType);
+
+    let left, top, targetWidth;
+
+    if (oldPosition) {
+      // Use old chart position and size
+      left = oldPosition.left;
+      top = oldPosition.top;
+      targetWidth = oldPosition.width;
+    } else {
+      // Fall back to current selection
+      const range = context.workbook.getSelectedRange();
+      range.load("left, top, width, height");
+      await context.sync();
+      left = range.left;
+      top = range.top;
+      targetWidth = Math.max(400, range.width * 8); // Default chart width
+    }
+
+    // Insert the new image
+    const image = sheet.shapes.addImage(base64data);
+    image.left = left;
+    image.top = top;
+    image.lockAspectRatio = true; // Set this BEFORE setting dimensions
+    image.width = targetWidth; // Only set width, let Excel calculate height
+    image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
+
+    await context.sync();
+  });
+}
+
+/**
+ * Remove existing charts of the same type
+ */
+async function removeExistingCharts(context, sheet, chartType) {
+  const shapes = sheet.shapes;
+  shapes.load("items");
+  await context.sync();
+
+  const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_`;
+  let oldPosition = null;
+
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
+    shape.load(["name", "left", "top", "width", "height"]);
+  }
+  await context.sync();
+
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
+    if (shape.name && shape.name.startsWith(chartPrefix)) {
+      // Save position before deleting
+      oldPosition = {
+        left: shape.left,
+        top: shape.top,
+        width: shape.width,
+        height: shape.height,
+      };
+      shape.delete();
+      await context.sync();
+    }
+  }
+
+  return oldPosition;
+}
+
+/**
+ * Load Vega libraries (same CDN versions as taskpane.html)
+ */
+function loadVegaLibraries() {
+  return new Promise((resolve, reject) => {
+    if (typeof vegaEmbed !== 'undefined') {
+      resolve();
+      return;
+    }
+
+    // Load libraries in sequence (same as taskpane.html)
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/vega@6',
+      'https://cdn.jsdelivr.net/npm/vega-lite@6', 
+      'https://cdn.jsdelivr.net/npm/vega-embed@6'
+    ];
+
+    let loadedCount = 0;
+    
+    scripts.forEach((src, index) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        loadedCount++;
+        if (loadedCount === scripts.length) {
+          resolve();
+        }
+      };
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.head.appendChild(script);
+    });
+  });
+}
+
 // Register all custom functions
 if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("LINE", LINE);
