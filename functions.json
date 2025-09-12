@@ -194,7 +194,7 @@
             }
         },
         {
-            "description": "MAP custom function using the exact same specification approach as other functions\nCreates a map/choropleth chart from Excel data range",
+            "description": "MAP custom function using the exact same specification as taskpane.js\nCreates a world map chart from Excel data range",
             "id": "MAP",
             "name": "MAP",
             "parameters": [
