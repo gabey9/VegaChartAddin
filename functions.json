@@ -210,7 +210,7 @@
             }
         },
         {
-            "description": "CANDLESTICK custom function V3 with dynamic width, no gaps, proper spacing\nCreates a candlestick chart from Excel data range",
+            "description": "CANDLESTICK custom function\nCreates a candlestick chart from Excel data range",
             "id": "CANDLESTICK",
             "name": "CANDLESTICK",
             "parameters": [
