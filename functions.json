@@ -82,7 +82,7 @@
             }
         },
         {
-            "description": "BUBBLE custom function using the exact same specification as taskpane.js\nCreates a bubble plot from Excel data range",
+            "description": "BUBBLE custom function using the exact same specification as taskpane.js\nCreates a bubble chart from Excel data range",
             "id": "BUBBLE",
             "name": "BUBBLE",
             "parameters": [
@@ -485,6 +485,22 @@
             "description": "RIDGELINE custom function using the exact same specification as taskpane.js\nCreates a ridgeline (joyplot) chart from Excel data range",
             "id": "RIDGELINE",
             "name": "RIDGELINE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "VARIANCE custom function - Complete rewrite with all fixes\nCreates a variance chart from Excel data range",
+            "id": "VARIANCE",
+            "name": "VARIANCE",
             "parameters": [
                 {
                     "description": "The data range including headers",
