@@ -522,12 +522,11 @@ function BUBBLE(data) {
         config: { view: { stroke: "transparent" }},
         data: { values: processedData },
         mark: { 
-          type: "circle", 
-          size: 200,
+          type: "point", 
+          size: 300,
           tooltip: true,
-          opacity: 0.7,
-          stroke: "white",
-          strokeWidth: 1
+          opacity: 0.8,
+          filled: true
         },
         encoding: {
           x: { 
@@ -537,10 +536,7 @@ function BUBBLE(data) {
             axis: {
               title: headers[0],
               labelFontSize: 12,
-              titleFontSize: 14,
-              labelColor: "#605e5c",
-              titleColor: "#323130",
-              gridColor: "#f3f2f1"
+              titleFontSize: 14
             }
           },
           y: { 
@@ -550,26 +546,19 @@ function BUBBLE(data) {
             axis: {
               title: headers[1],
               labelFontSize: 12,
-              titleFontSize: 14,
-              labelColor: "#605e5c",
-              titleColor: "#323130",
-              gridColor: "#f3f2f1"
+              titleFontSize: 14
             }
           },
           size: {
             field: headers[2],
             type: "quantitative",
             scale: {
-              type: "sqrt",
-              range: [100, 2000],
-              zero: true
+              range: [100, 1000]
             },
             legend: {
               title: headers[2],
               titleFontSize: 12,
-              labelFontSize: 11,
-              titleColor: "#323130",
-              labelColor: "#605e5c"
+              labelFontSize: 11
             }
           },
           // Add color encoding if 4th column exists
@@ -577,15 +566,10 @@ function BUBBLE(data) {
             color: { 
               field: headers[3], 
               type: "nominal",
-              scale: {
-                scheme: "category10"
-              },
               legend: {
                 title: headers[3],
                 titleFontSize: 12,
-                labelFontSize: 11,
-                titleColor: "#323130",
-                labelColor: "#605e5c"
+                labelFontSize: 11
               }
             }
           })
