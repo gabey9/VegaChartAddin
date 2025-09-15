@@ -3240,7 +3240,7 @@ else if (chartType === "variance") {
             "field": headers[0],
             "type": "nominal",
             "sort": null,
-            "axis": {"domain": false, "offset": 0, "ticks": false, "title": ""}
+            "axis": {"domain": false, "offset": 0, "ticks": false, "title": "", "labelPadding": 20}
           },
           "x": {
             "type": "quantitative",
