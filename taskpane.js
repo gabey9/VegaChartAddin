@@ -3301,7 +3301,11 @@ else if (chartType === "variance") {
               "type": "text",
               "align": "right",
               "dx": -5,
-              "color": "white"
+              "color": "white",
+              "stroke": "black",
+              "strokeWidth": 2,
+              "fontSize": 11,
+              "fontWeight": "bold"
             },
             "encoding": {
               "x": {"field": headers[1]},
