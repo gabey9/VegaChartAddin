@@ -3197,8 +3197,8 @@ export async function run() {
       }
 
 else if (chartType === "variance") {
-  if (headers.length < 4) {
-    console.warn("Variance chart requires 4 columns: Business Unit, Actual, Forecast, Index");
+  if (headers.length < 3) {
+    console.warn("Variance chart requires 3 columns: Business Unit, First Metric, Second Metric");
     return;
   }
 
@@ -3208,17 +3208,17 @@ else if (chartType === "variance") {
     "transform": [
       {
         "aggregate": [
-          {"op": "sum", "field": headers[1], "as": "Actual"},
-          {"op": "sum", "field": headers[2], "as": "Forecast"}
+          {"op": "sum", "field": headers[1], "as": headers[1]},
+          {"op": "sum", "field": headers[2], "as": headers[2]}
         ],
         "groupby": [headers[0]]
       },
       {
-        "calculate": "datum['Actual'] - datum['Forecast']",
+        "calculate": `datum['${headers[1]}'] - datum['${headers[2]}']`,
         "as": "Variance Absolute"
       },
       {
-        "calculate": "datum['Actual']/datum['Forecast']-1",
+        "calculate": `datum['${headers[1]}']/datum['${headers[2]}']-1`,
         "as": "Variance Percent"
       }
     ],
@@ -3231,7 +3231,7 @@ else if (chartType === "variance") {
           "color": {
             "type": "nominal",
             "scale": {
-              "domain": ["Actual", "Forecast"],
+              "domain": [headers[1], headers[2]],
               "range": ["#404040", "silver"]
             },
             "legend": {"title": null, "orient": "top"}
@@ -3239,7 +3239,7 @@ else if (chartType === "variance") {
           "y": {
             "field": headers[0],
             "type": "nominal",
-            "sort": {"field": headers[3], "op": "sum", "order": "ascending"},
+            "sort": null,
             "axis": {"domain": false, "offset": 0, "ticks": false, "title": ""}
           },
           "x": {
@@ -3249,11 +3249,7 @@ else if (chartType === "variance") {
               "labels": false,
               "title": null,
               "ticks": false,
-              "gridWidth": 1,
-              "gridColor": {
-                "condition": {"test": "datum.value === 0", "value": "#605E5C"},
-                "value": "#transparent"
-              }
+              "grid": false
             }
           }
         },
@@ -3267,8 +3263,8 @@ else if (chartType === "variance") {
               "height": {"band": 0.5}
             },
             "encoding": {
-              "x": {"field": "Forecast"},
-              "color": {"datum": "Forecast"},
+              "x": {"field": headers[2]},
+              "color": {"datum": headers[2]},
               "opacity": {
                 "condition": {
                   "test": {"field": "__selected__", "equal": "off"},
@@ -3286,8 +3282,8 @@ else if (chartType === "variance") {
               "height": {"band": 0.5}
             },
             "encoding": {
-              "x": {"field": "Actual"},
-              "color": {"datum": "Actual"},
+              "x": {"field": headers[1]},
+              "color": {"datum": headers[1]},
               "opacity": {
                 "condition": {
                   "test": {"field": "__selected__", "equal": "off"},
@@ -3329,10 +3325,11 @@ else if (chartType === "variance") {
               "labels": false,
               "title": null,
               "ticks": false,
+              "grid": true,
               "gridWidth": 1,
               "gridColor": {
                 "condition": {"test": "datum.value === 0", "value": "#605E5C"},
-                "value": "#transparent"
+                "value": "transparent"
               }
             }
           }
@@ -3388,7 +3385,7 @@ else if (chartType === "variance") {
           "y": {
             "field": headers[0],
             "type": "nominal",
-            "sort": {"field": headers[3], "op": "sum", "order": "ascending"},
+            "sort": null,
             "axis": null
           },
           "x": {

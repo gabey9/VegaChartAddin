@@ -4855,6 +4855,332 @@ function RIDGELINE(data) {
 }
 
 /**
+ * VARIANCE custom function using the exact same specification as taskpane.js
+ * Creates a variance chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function VARIANCE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Variance chart requires 3 columns (Business Unit, First Metric, Second Metric)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use specification with dynamic headers and correct grid settings
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "data": { "values": processedData },
+        "transform": [
+          {
+            "aggregate": [
+              {"op": "sum", "field": headers[1], "as": headers[1]},
+              {"op": "sum", "field": headers[2], "as": headers[2]}
+            ],
+            "groupby": [headers[0]]
+          },
+          {
+            "calculate": `datum['${headers[1]}'] - datum['${headers[2]}']`,
+            "as": "Variance Absolute"
+          },
+          {
+            "calculate": `datum['${headers[1]}']/datum['${headers[2]}']-1`,
+            "as": "Variance Percent"
+          }
+        ],
+        "hconcat": [
+          {
+            "width": 350,
+            "height": {"step": 50},
+            "view": {"stroke": "transparent"},
+            "encoding": {
+              "color": {
+                "type": "nominal",
+                "scale": {
+                  "domain": [headers[1], headers[2]],
+                  "range": ["#404040", "silver"]
+                },
+                "legend": {"title": null, "orient": "top"}
+              },
+              "y": {
+                "field": headers[0],
+                "type": "nominal",
+                "sort": null,
+                "axis": {"domain": false, "offset": 0, "ticks": false, "title": ""}
+              },
+              "x": {
+                "type": "quantitative",
+                "axis": {
+                  "domain": false,
+                  "labels": false,
+                  "title": null,
+                  "ticks": false,
+                  "grid": false
+                }
+              }
+            },
+            "layer": [
+              {
+                "mark": {
+                  "type": "bar",
+                  "tooltip": true,
+                  "cornerRadius": 3,
+                  "yOffset": 12,
+                  "height": {"band": 0.5}
+                },
+                "encoding": {
+                  "x": {"field": headers[2]},
+                  "color": {"datum": headers[2]},
+                  "opacity": {
+                    "condition": {
+                      "test": {"field": "__selected__", "equal": "off"},
+                      "value": 0.3
+                    }
+                  }
+                }
+              },
+              {
+                "mark": {
+                  "type": "bar",
+                  "tooltip": true,
+                  "cornerRadius": 3,
+                  "yOffset": 0,
+                  "height": {"band": 0.5}
+                },
+                "encoding": {
+                  "x": {"field": headers[1]},
+                  "color": {"datum": headers[1]},
+                  "opacity": {
+                    "condition": {
+                      "test": {"field": "__selected__", "equal": "off"},
+                      "value": 0.3
+                    }
+                  }
+                }
+              },
+              {
+                "mark": {
+                  "type": "text",
+                  "align": "right",
+                  "dx": -5,
+                  "color": "white"
+                },
+                "encoding": {
+                  "x": {"field": headers[1]},
+                  "text": {"field": headers[1], "type": "quantitative", "format": ","}
+                }
+              }
+            ]
+          },
+          {
+            "width": 150,
+            "height": {"step": 50},
+            "view": {"stroke": "transparent"},
+            "encoding": {
+              "y": {
+                "field": headers[0],
+                "type": "nominal",
+                "sort": null,
+                "axis": null
+              },
+              "x": {
+                "field": "Variance Absolute",
+                "type": "quantitative",
+                "axis": {
+                  "domain": false,
+                  "labels": false,
+                  "title": null,
+                  "ticks": false,
+                  "grid": true,
+                  "gridWidth": 1,
+                  "gridColor": {
+                    "condition": {"test": "datum.value === 0", "value": "#605E5C"},
+                    "value": "transparent"
+                  }
+                }
+              }
+            },
+            "layer": [
+              {
+                "mark": {
+                  "type": "bar",
+                  "tooltip": true,
+                  "cornerRadius": 3,
+                  "yOffset": 0,
+                  "height": {"band": 0.5}
+                },
+                "encoding": {
+                  "fill": {
+                    "condition": {
+                      "test": "datum['Variance Absolute'] < 0",
+                      "value": "#b92929"
+                    },
+                    "value": "#329351"
+                  },
+                  "opacity": {
+                    "condition": {
+                      "test": {"field": "__selected__", "equal": "off"},
+                      "value": 0.3
+                    }
+                  }
+                }
+              },
+              {
+                "mark": {
+                  "type": "text",
+                  "align": {
+                    "expr": "datum['Variance Absolute'] < 0 ? 'right' : 'left'"
+                  },
+                  "dx": {"expr": "datum['Variance Absolute'] < 0 ? -5 : 5"}
+                },
+                "encoding": {
+                  "text": {
+                    "field": "Variance Absolute",
+                    "type": "quantitative",
+                    "format": "+,"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "width": 150,
+            "height": {"step": 50},
+            "view": {"stroke": "transparent"},
+            "encoding": {
+              "y": {
+                "field": headers[0],
+                "type": "nominal",
+                "sort": null,
+                "axis": null
+              },
+              "x": {
+                "field": "Variance Percent",
+                "type": "quantitative",
+                "axis": {
+                  "domain": false,
+                  "labels": false,
+                  "title": null,
+                  "ticks": false,
+                  "grid": true,
+                  "gridColor": {
+                    "condition": {"test": "datum.value === 0", "value": "#605E5C"},
+                    "value": "transparent"
+                  }
+                }
+              }
+            },
+            "layer": [
+              {
+                "mark": {"type": "rule", "tooltip": true},
+                "encoding": {
+                  "strokeWidth": {"value": 2},
+                  "stroke": {
+                    "condition": {
+                      "test": "datum['Variance Absolute'] < 0",
+                      "value": "#b92929"
+                    },
+                    "value": "#329351"
+                  },
+                  "opacity": {
+                    "condition": {
+                      "test": {"field": "__selected__", "equal": "off"},
+                      "value": 0.3
+                    }
+                  }
+                }
+              },
+              {
+                "mark": {"type": "circle", "tooltip": true},
+                "encoding": {
+                  "size": {"value": 100},
+                  "color": {
+                    "condition": {
+                      "test": "datum['Variance Absolute'] < 0",
+                      "value": "#b92929"
+                    },
+                    "value": "#329351"
+                  },
+                  "opacity": {
+                    "condition": {
+                      "test": {"field": "__selected__", "equal": "off"},
+                      "value": 0.3
+                    },
+                    "value": 1
+                  }
+                }
+              },
+              {
+                "mark": {
+                  "type": "text",
+                  "align": {
+                    "expr": "datum['Variance Absolute'] < 0 ? 'right' : 'left'"
+                  },
+                  "dx": {"expr": "datum['Variance Absolute'] < 0 ? -10 : 10"}
+                },
+                "encoding": {
+                  "text": {
+                    "field": "Variance Percent",
+                    "type": "quantitative",
+                    "format": "+.1%"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "config": {
+          "view": {"stroke": "transparent"},
+          "padding": {"left": 5, "top": 20, "right": 5, "bottom": 5},
+          "font": "Segoe UI",
+          "axis": {
+            "labelFontSize": 12,
+            "labelPadding": 10,
+            "offset": 5,
+            "labelFont": "Segoe UI",
+            "labelColor": "#252423"
+          },
+          "text": {"fontSize": 12, "font": "Segoe UI", "color": "#605E5C"},
+          "concat": {"spacing": 50},
+          "legend": {
+            "labelFontSize": 12,
+            "labelFont": "Segoe UI",
+            "labelColor": "#605E5C"
+          }
+        }
+      };
+
+      createChart(spec, "variance", headers, rows)
+        .then(() => resolve(""))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
  * DEVIATION custom function using the exact same specification as taskpane.js
  * Creates a deviation chart from Excel data range
  * 
@@ -5305,4 +5631,5 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("RIBBON", RIBBON);
   CustomFunctions.associate("RIDGELINE", RIDGELINE);
   CustomFunctions.associate("DEVIATION", DEVIATION);
+  CustomFunctions.associate("VARIANCE", VARIANCE);
 }
