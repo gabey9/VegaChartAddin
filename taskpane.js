@@ -3461,9 +3461,8 @@ else if (chartType === "variance") {
             },
             "encoding": {
               "text": {
-                "field": "Variance Percent",
-                "type": "quantitative",
-                "format": "+.1%"
+                "field": "PercentDisplay",
+                "type": "nominal"
               }
             }
           }
