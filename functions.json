@@ -82,6 +82,22 @@
             }
         },
         {
+            "description": "BUBBLE custom function using the exact same specification as taskpane.js\nCreates a bubble plot from Excel data range",
+            "id": "BUBBLE",
+            "name": "BUBBLE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "RADIAL custom function using the exact same specification as taskpane.js\nCreates a radial chart from Excel data range",
             "id": "RADIAL",
             "name": "RADIAL",
