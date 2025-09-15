@@ -3303,8 +3303,11 @@ else if (chartType === "variance") {
               "color": "white",
               "fontSize": 11
             },
+            "transform": [
+              {"calculate": `datum['${headers[1]}'] / 2`, "as": "centerPosition"}
+            ],
             "encoding": {
-              "x": {"field": headers[1], "scale": {"type": "linear"}, "axis": null},
+              "x": {"field": "centerPosition", "type": "quantitative"},
               "text": {"field": headers[1], "type": "quantitative", "format": ","}
             }
           }
