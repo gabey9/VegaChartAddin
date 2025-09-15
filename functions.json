@@ -210,9 +210,25 @@
             }
         },
         {
-            "description": "CANDLESTICK custom function\nCreates a candlestick chart from Excel data range",
+            "description": "CANDLESTICK custom function using the exact same specification as taskpane.js\nCreates a candlestick chart from Excel data range",
             "id": "CANDLESTICK",
             "name": "CANDLESTICK",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "ARC custom function using the exact same specification as taskpane.js\nCreates an arc diagram from Excel data range",
+            "id": "ARC",
+            "name": "ARC",
             "parameters": [
                 {
                     "description": "The data range including headers",
