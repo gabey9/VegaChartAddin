@@ -3299,14 +3299,26 @@ else if (chartType === "variance") {
           {
             "mark": {
               "type": "text",
-              "align": "left",
               "color": "black",
-              "fontSize": 11,
-              "dx": 5
+              "fontSize": 11
             },
             "encoding": {
               "x": {"field": headers[1], "type": "quantitative"},
-              "text": {"field": headers[1], "type": "quantitative", "format": ","}
+              "text": {"field": headers[1], "type": "quantitative", "format": ","},
+              "align": {
+                "condition": {
+                  "test": `datum['${headers[1]}'] < 0`,
+                  "value": "right"
+                },
+                "value": "left"
+              },
+              "dx": {
+                "condition": {
+                  "test": `datum['${headers[1]}'] < 0`,
+                  "value": -5
+                },
+                "value": 5
+              }
             }
           }
         ]
