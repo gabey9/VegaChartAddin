@@ -3298,30 +3298,13 @@ else if (chartType === "variance") {
           },
           {
             "mark": {
-              "type": "rect",
-              "align": "right",
-              "dx": -5,
-              "dy": -7,
-              "fill": "rgba(245, 245, 245, 0.9)",
-              "cornerRadius": 2,
-              "height": 14
-            },
-            "encoding": {
-              "x": {"field": headers[1]},
-              "size": {"value": 200}
-            }
-          },
-          {
-            "mark": {
               "type": "text",
-              "align": "right",
-              "dx": -5,
-              "color": "black",
-              "fontSize": 11,
-              "fontWeight": "bold"
+              "align": "center",
+              "color": "white",
+              "fontSize": 11
             },
             "encoding": {
-              "x": {"field": headers[1]},
+              "x": {"field": headers[1], "scale": {"type": "linear"}, "axis": null},
               "text": {"field": headers[1], "type": "quantitative", "format": ","}
             }
           }
