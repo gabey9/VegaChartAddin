@@ -498,7 +498,7 @@
             }
         },
         {
-            "description": "VARIANCE custom function - Complete rewrite with all fixes\nCreates a variance chart from Excel data range",
+            "description": "VARIANCE custom function using the exact same specification as taskpane.js\nCreates a variance chart from Excel data range",
             "id": "VARIANCE",
             "name": "VARIANCE",
             "parameters": [
