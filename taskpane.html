@@ -225,7 +225,8 @@
                 <div class="chart-item" data-chart="sankey" data-folder="special">Sankey</div>
                 <div class="chart-item" data-chart="ribbon" data-folder="special">Ribbon</div>
                 <div class="chart-item" data-chart="ridgeline" data-folder="special">Ridgeline</div>
-                <div class="chart-item" data-chart="deviation" data-folder="special">Deviation</div>                
+                <div class="chart-item" data-chart="deviation" data-folder="special">Deviation</div>  
+		<div class="chart-item" data-chart="variance" data-folder="special">Variance</div>              
             </div>
         </div>
     </div>
@@ -268,6 +269,7 @@
         <option value="ribbon">Ribbon</option>
         <option value="ridgeline">Ridgeline</option>
         <option value="deviation">Deviation</option>
+	<option value="variance">Variance</option>
         <option value="waterfall">Waterfall</option>
     </select>
     
@@ -557,7 +559,17 @@
             <li><strong>Column 3:</strong> Values (creates distribution shape)</li>
         </ul>
     </div>
-    
+ 
+<div id="req-variance" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Business Unit/Category names (e.g., "Channel Partners", "Enterprise")</li>
+        <li><strong>Column 2:</strong> Actual values (numbers)</li>
+        <li><strong>Column 3:</strong> Budget/Forecast values (numbers)</li>
+        <li><strong>Column 4:</strong> Index for sorting (numbers, 1, 2, 3...)</li>
+    </ul>
+</div>
+   
     <div id="req-deviation" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
         <ul>
