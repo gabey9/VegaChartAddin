@@ -107,7 +107,7 @@ export async function run() {
         };
       }
 
-else if (chartType === "bubble") {
+      else if (chartType === "bubble") {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v6.json",
           description: "Bubble chart from Excel selection",
@@ -156,18 +156,6 @@ else if (chartType === "bubble") {
                 type: "nominal",
                 legend: {
                   title: headers[3],
-                  titleFontSize: 12,
-                  labelFontSize: 11
-                }
-              }
-            }),
-            // Add shape encoding if 5th column exists
-            ...(headers.length >= 5 && {
-              shape: { 
-                field: headers[4], 
-                type: "nominal",
-                legend: {
-                  title: headers[4],
                   titleFontSize: 12,
                   labelFontSize: 11
                 }

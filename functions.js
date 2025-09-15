@@ -521,13 +521,7 @@ function BUBBLE(data) {
         background: "white",
         config: { view: { stroke: "transparent" }},
         data: { values: processedData },
-        mark: { 
-          type: "point", 
-          size: 300,
-          tooltip: true,
-          opacity: 0.8,
-          filled: true
-        },
+        mark: { type: "circle", tooltip: true, opacity: 0.7 },
         encoding: {
           x: { 
             field: headers[0], 
@@ -553,6 +547,7 @@ function BUBBLE(data) {
             field: headers[2],
             type: "quantitative",
             scale: {
+              type: "linear",
               range: [100, 1000]
             },
             legend: {
