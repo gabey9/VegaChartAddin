@@ -3240,7 +3240,7 @@ else if (chartType === "variance") {
             "field": headers[0],
             "type": "nominal",
             "sort": null,
-            "axis": {"domain": false, "offset": 0, "ticks": false, "title": "", "labelPadding": 20}
+            "axis": {"domain": false, "offset": 0, "ticks": false, "title": "", "labelPadding": 35}
           },
           "x": {
             "type": "quantitative",
@@ -3287,14 +3287,26 @@ else if (chartType === "variance") {
           {
             "mark": {
               "type": "text",
-              "align": "left",
-              "dx": 5,
               "color": "black",
               "fontSize": 11
             },
             "encoding": {
               "x": {"field": headers[1], "type": "quantitative"},
-              "text": {"field": headers[1], "type": "quantitative", "format": ","}
+              "text": {"field": headers[1], "type": "quantitative", "format": ","},
+              "align": {
+                "condition": {
+                  "test": `datum['${headers[1]}'] < 0`,
+                  "value": "right"
+                },
+                "value": "left"
+              },
+              "dx": {
+                "condition": {
+                  "test": `datum['${headers[1]}'] < 0`,
+                  "value": -5
+                },
+                "value": 5
+              }
             }
           }
         ]
