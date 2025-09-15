@@ -3218,7 +3218,7 @@ else if (chartType === "variance") {
         "as": "Variance Absolute"
       },
       {
-        "calculate": `datum['${headers[1]}']/datum['${headers[2]}']-1`,
+        "calculate": `datum['${headers[2]}'] === 0 ? 0 : datum['${headers[1]}']/datum['${headers[2]}']-1`,
         "as": "Variance Percent"
       }
     ],
