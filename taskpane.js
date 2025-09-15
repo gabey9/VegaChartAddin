@@ -3315,9 +3315,9 @@ else if (chartType === "variance") {
               "dx": {
                 "condition": {
                   "test": `datum['${headers[1]}'] < 0`,
-                  "value": -5
+                  "value": -8
                 },
-                "value": 5
+                "value": 8
               }
             }
           }
