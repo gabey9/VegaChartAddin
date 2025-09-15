@@ -3268,13 +3268,7 @@ else if (chartType === "variance") {
             },
             "encoding": {
               "x": {"field": headers[2]},
-              "color": {"datum": headers[2]},
-              "opacity": {
-                "condition": {
-                  "test": {"field": "__selected__", "equal": "off"},
-                  "value": 0.3
-                }
-              }
+              "color": {"datum": headers[2]}
             }
           },
           {
@@ -3287,13 +3281,7 @@ else if (chartType === "variance") {
             },
             "encoding": {
               "x": {"field": headers[1]},
-              "color": {"datum": headers[1]},
-              "opacity": {
-                "condition": {
-                  "test": {"field": "__selected__", "equal": "off"},
-                  "value": 0.3
-                }
-              }
+              "color": {"datum": headers[1]}
             }
           },
           {
@@ -3302,7 +3290,7 @@ else if (chartType === "variance") {
               "align": {
                 "expr": `datum['${headers[1]}'] < 0 ? 'right' : 'left'`
               },
-              "dx": {"expr": `datum['${headers[1]}'] < 0 ? -5 : 5`},
+              "dx": {"expr": `datum['${headers[1]}'] < 0 ? -15 : 8`},
               "color": "black",
               "fontSize": 11
             },
@@ -3357,12 +3345,6 @@ else if (chartType === "variance") {
                   "value": "#b92929"
                 },
                 "value": "#329351"
-              },
-              "opacity": {
-                "condition": {
-                  "test": {"field": "__selected__", "equal": "off"},
-                  "value": 0.3
-                }
               }
             }
           },
@@ -3388,6 +3370,12 @@ else if (chartType === "variance") {
         "width": 150,
         "height": {"step": 50},
         "view": {"stroke": "transparent"},
+        "transform": [
+          {
+            "calculate": `datum['${headers[2]}'] === 0 ? 'n/m' : format(datum['Variance Percent'], '+.1%')`,
+            "as": "PercentDisplay"
+          }
+        ],
         "encoding": {
           "y": {
             "field": headers[0],
@@ -3422,12 +3410,6 @@ else if (chartType === "variance") {
                   "value": "#b92929"
                 },
                 "value": "#329351"
-              },
-              "opacity": {
-                "condition": {
-                  "test": {"field": "__selected__", "equal": "off"},
-                  "value": 0.3
-                }
               }
             }
           },
@@ -3441,13 +3423,6 @@ else if (chartType === "variance") {
                   "value": "#b92929"
                 },
                 "value": "#329351"
-              },
-              "opacity": {
-                "condition": {
-                  "test": {"field": "__selected__", "equal": "off"},
-                  "value": 0.3
-                },
-                "value": 1
               }
             }
           },
