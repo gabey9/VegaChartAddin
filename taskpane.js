@@ -3304,8 +3304,8 @@ else if (chartType === "variance") {
               "color": "white"
             },
             "encoding": {
-              "x": {"field": "Actual"},
-              "text": {"field": "Actual", "type": "quantitative", "format": ","}
+              "x": {"field": headers[1]},
+              "text": {"field": headers[1], "type": "quantitative", "format": ","}
             }
           }
         ]
@@ -3318,7 +3318,7 @@ else if (chartType === "variance") {
           "y": {
             "field": headers[0],
             "type": "nominal",
-            "sort": {"field": headers[3], "op": "sum", "order": "ascending"},
+            "sort": null,
             "axis": null
           },
           "x": {
@@ -3399,9 +3399,10 @@ else if (chartType === "variance") {
               "labels": false,
               "title": null,
               "ticks": false,
+              "grid": true,
               "gridColor": {
                 "condition": {"test": "datum.value === 0", "value": "#605E5C"},
-                "value": "#transparent"
+                "value": "transparent"
               }
             }
           }
