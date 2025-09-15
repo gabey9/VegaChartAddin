@@ -521,10 +521,13 @@ function BUBBLE(data) {
         background: "white",
         config: { view: { stroke: "transparent" }},
         data: { values: processedData },
-        mark: {
-          type: "point",
+        mark: { 
+          type: "circle", 
+          size: 200,
           tooltip: true,
-          opacity: 0.8
+          opacity: 0.7,
+          stroke: "white",
+          strokeWidth: 1
         },
         encoding: {
           x: { 
@@ -558,7 +561,8 @@ function BUBBLE(data) {
             type: "quantitative",
             scale: {
               type: "sqrt",
-              range: [50, 1000]
+              range: [100, 2000],
+              zero: true
             },
             legend: {
               title: headers[2],
@@ -573,6 +577,9 @@ function BUBBLE(data) {
             color: { 
               field: headers[3], 
               type: "nominal",
+              scale: {
+                scheme: "category10"
+              },
               legend: {
                 title: headers[3],
                 titleFontSize: 12,
