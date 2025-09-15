@@ -3290,7 +3290,7 @@ else if (chartType === "variance") {
               "align": {
                 "expr": `datum['${headers[1]}'] < 0 ? 'right' : 'left'`
               },
-              "dx": {"expr": `datum['${headers[1]}'] < 0 ? -15 : 8`},
+              "dx": {"expr": `datum['${headers[1]}'] < 0 ? -25 : 8`},
               "color": "black",
               "fontSize": 11
             },
