@@ -3287,10 +3287,8 @@ else if (chartType === "variance") {
           {
             "mark": {
               "type": "text",
-              "align": {
-                "expr": `datum['${headers[1]}'] < 0 ? 'right' : 'left'`
-              },
-              "dx": {"expr": `datum['${headers[1]}'] < 0 ? -25 : 8`},
+              "align": "left",
+              "dx": 5,
               "color": "black",
               "fontSize": 11
             },
