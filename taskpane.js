@@ -3249,7 +3249,11 @@ else if (chartType === "variance") {
               "labels": false,
               "title": null,
               "ticks": false,
-              "grid": false
+              "grid": true,
+              "gridColor": {
+                "condition": {"test": "datum.value === 0", "value": "#605E5C"},
+                "value": "transparent"
+              }
             }
           }
         },
