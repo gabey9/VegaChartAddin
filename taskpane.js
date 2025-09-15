@@ -3299,18 +3299,13 @@ else if (chartType === "variance") {
           {
             "mark": {
               "type": "text",
-              "align": "center",
+              "align": "left",
               "color": "black",
               "fontSize": 11,
-              "stroke": "rgba(255, 255, 255, 0.9)",
-              "strokeWidth": 6,
-              "strokeOpacity": 1
+              "dx": 5
             },
-            "transform": [
-              {"calculate": `datum['${headers[1]}'] / 2`, "as": "centerPosition"}
-            ],
             "encoding": {
-              "x": {"field": "centerPosition", "type": "quantitative"},
+              "x": {"field": headers[1], "type": "quantitative"},
               "text": {"field": headers[1], "type": "quantitative", "format": ","}
             }
           }
