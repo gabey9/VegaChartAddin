@@ -521,12 +521,10 @@ function BUBBLE(data) {
         background: "white",
         config: { view: { stroke: "transparent" }},
         data: { values: processedData },
-        mark: { 
-          type: "point", 
+        mark: {
+          type: "point",
           tooltip: true,
-          opacity: 0.7,
-          stroke: "white",
-          strokeWidth: 1
+          opacity: 0.8
         },
         encoding: {
           x: { 
