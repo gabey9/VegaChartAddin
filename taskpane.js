@@ -376,20 +376,28 @@ export async function run() {
       }
 
 else if (chartType === "dumbbell") {
-  // Expect headers: Category | Period/Year | Value
-  // Data should have pairs of values for each category (e.g., 2020 and 2023 values)
+  // Option 1: Two columns - Category | Start Value | End Value (side-by-side format)
+  // Option 2: Three columns - Category | Period | Value (long format)
   
-  if (headers.length < 3) {
-    console.warn("Dumbbell chart requires 3 columns: Category, Period/Year, Value");
+  if (headers.length < 2) {
+    console.warn("Dumbbell chart requires at least 2 columns");
     return;
   }
 
-  // Transform data for dumbbell chart
-  const dumbellData = data.map(row => ({
-    category: row[headers[0]],
-    period: row[headers[1]], 
-    value: parseFloat(row[headers[2]]) || 0
-  }));
+  let dumbellData;
+  
+  if (headers.length === 2) {
+    // Two-column format: Category | Value (assumes current selection has paired data)
+    console.warn("Two-column format not supported yet. Please use 3-column format: Category, Period, Value");
+    return;
+  } else {
+    // Three-column format: Category | Period | Value
+    dumbellData = data.map(row => ({
+      category: row[headers[0]],
+      period: row[headers[1]], 
+      value: parseFloat(row[headers[2]]) || 0
+    }));
+  }
 
   // Get unique periods and sort them
   const periods = [...new Set(dumbellData.map(d => d.period))].sort();
@@ -415,7 +423,7 @@ else if (chartType === "dumbbell") {
       x: { 
         field: "value", 
         type: "quantitative", 
-        title: headers[2],
+        title: headers[2] || "Value",
         axis: {
           labelFontSize: 12,
           titleFontSize: 14,
@@ -446,8 +454,7 @@ else if (chartType === "dumbbell") {
         mark: "line",
         encoding: {
           detail: { field: "category", type: "nominal" },
-          color: { value: "#8a8886" },
-          strokeWidth: { value: 2 }
+          color: { value: "#db646f" }
         }
       },
       {
@@ -464,7 +471,7 @@ else if (chartType === "dumbbell") {
               domain: periods,
               range: periods.length === 2 ? ["#e6959c", "#911a24"] : "category10"
             },
-            title: headers[1],
+            title: headers[1] || "Period",
             legend: {
               titleFontSize: 12,
               labelFontSize: 11,
@@ -472,12 +479,12 @@ else if (chartType === "dumbbell") {
               labelColor: "#605e5c"
             }
           },
-          size: { value: 120 },
-          opacity: { value: 0.9 },
+          size: { value: 100 },
+          opacity: { value: 1 },
           tooltip: [
             { field: "category", type: "nominal", title: "Category" },
             { field: "period", type: "nominal", title: "Period" },
-            { field: "value", type: "quantitative", title: "Value", format: ",.0f" }
+            { field: "value", type: "quantitative", title: "Value", format: ",.1f" }
           ]
         }
       }
