@@ -376,39 +376,37 @@ export async function run() {
       }
 
 else if (chartType === "dumbbell") {
-  // Option 1: Two columns - Category | Start Value | End Value (side-by-side format)
-  // Option 2: Three columns - Category | Period | Value (long format)
+  // Expect headers: Category | Value 1 | Value 2
   
-  if (headers.length < 2) {
-    console.warn("Dumbbell chart requires at least 2 columns");
+  if (headers.length < 3) {
+    console.warn("Dumbbell chart requires 3 columns: Category, Value 1, Value 2");
     return;
   }
 
-  let dumbellData;
+  // Transform wide data (Category | Value1 | Value2) to long format for Vega-Lite
+  const dumbellData = [];
   
-  if (headers.length === 2) {
-    // Two-column format: Category | Value (assumes current selection has paired data)
-    console.warn("Two-column format not supported yet. Please use 3-column format: Category, Period, Value");
-    return;
-  } else {
-    // Three-column format: Category | Period | Value
-    dumbellData = data.map(row => ({
-      category: row[headers[0]],
-      period: row[headers[1]], 
-      value: parseFloat(row[headers[2]]) || 0
-    }));
-  }
-
-  // Get unique periods and sort them
-  const periods = [...new Set(dumbellData.map(d => d.period))].sort();
-  
-  if (periods.length < 2) {
-    console.warn("Dumbbell chart requires at least 2 different periods");
-    return;
-  }
+  data.forEach(row => {
+    const category = row[headers[0]];
+    const value1 = parseFloat(row[headers[1]]) || 0;
+    const value2 = parseFloat(row[headers[2]]) || 0;
+    
+    // Add both data points for each category
+    dumbellData.push({
+      category: category,
+      period: headers[1], // First value label
+      value: value1
+    });
+    
+    dumbellData.push({
+      category: category,
+      period: headers[2], // Second value label  
+      value: value2
+    });
+  });
 
   // Calculate dynamic dimensions
-  const categories = [...new Set(dumbellData.map(d => d.category))];
+  const categories = [...new Set(data.map(d => d[headers[0]]))];
   const dynamicHeight = Math.max(300, Math.min(600, categories.length * 60));
 
   spec = {
@@ -423,7 +421,7 @@ else if (chartType === "dumbbell") {
       x: { 
         field: "value", 
         type: "quantitative", 
-        title: headers[2] || "Value",
+        title: "Value",
         axis: {
           labelFontSize: 12,
           titleFontSize: 14,
@@ -454,7 +452,7 @@ else if (chartType === "dumbbell") {
         mark: "line",
         encoding: {
           detail: { field: "category", type: "nominal" },
-          color: { value: "#db646f" }
+          color: { value: "#d1d5db" }
         }
       },
       {
@@ -468,10 +466,10 @@ else if (chartType === "dumbbell") {
             field: "period", 
             type: "ordinal",
             scale: {
-              domain: periods,
-              range: periods.length === 2 ? ["#e6959c", "#911a24"] : "category10"
+              domain: [headers[1], headers[2]],
+              range: ["#87ceeb", "#1e3a8a"]
             },
-            title: headers[1] || "Period",
+            title: "Measure",
             legend: {
               titleFontSize: 12,
               labelFontSize: 11,
@@ -483,7 +481,7 @@ else if (chartType === "dumbbell") {
           opacity: { value: 1 },
           tooltip: [
             { field: "category", type: "nominal", title: "Category" },
-            { field: "period", type: "nominal", title: "Period" },
+            { field: "period", type: "nominal", title: "Measure" },
             { field: "value", type: "quantitative", title: "Value", format: ",.1f" }
           ]
         }
