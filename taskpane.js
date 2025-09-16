@@ -421,12 +421,11 @@ else if (chartType === "dumbbell") {
       x: { 
         field: "value", 
         type: "quantitative", 
-        title: "Value",
+        title: null,
+        scale: { zero: false },
         axis: {
           labelFontSize: 12,
-          titleFontSize: 14,
           labelColor: "#605e5c",
-          titleColor: "#323130",
           grid: true,
           gridColor: "#f3f2f1"
         }
@@ -434,16 +433,15 @@ else if (chartType === "dumbbell") {
       y: { 
         field: "category", 
         type: "nominal", 
-        title: headers[0],
+        title: null,
+        scale: { paddingInner: 0.1, paddingOuter: 0.05 },
         axis: {
           offset: 5,
           ticks: false,
           minExtent: 70,
           domain: false,
           labelFontSize: 12,
-          titleFontSize: 14,
-          labelColor: "#605e5c",
-          titleColor: "#323130"
+          labelColor: "#605e5c"
         }
       }
     },
