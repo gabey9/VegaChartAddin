@@ -1613,23 +1613,17 @@ else if (chartType === "dumbbell") {
 
 else if (chartType === "gauge") {
   if (headers.length < 2) {
-    console.warn("Gauge chart requires at least 2 columns: Category/Title, Value, optional Target");
+    console.warn("Gauge chart requires 2 columns: Current Value, Max Value");
     return;
   }
 
-  // Process gauge data - expect one row with title and current value
+  // Process gauge data - expect one row with current value and max value
   const gaugeRow = data[0]; // Use first data row
-  const title = gaugeRow[headers[0]] || "Gauge";
-  const mainValue = parseFloat(gaugeRow[headers[1]]) || 0;
+  const mainValue = parseFloat(gaugeRow[headers[0]]) || 0;
+  const maxValue = parseFloat(gaugeRow[headers[1]]) || 100;
   
-  // Auto-calculate min/max based on data, or use sensible defaults
-  const maxValue = Math.max(mainValue, 100); // At least 100 or highest value
-  const minValue = Math.min(0, mainValue < 0 ? mainValue : 0); // At least 0 or lowest value if negative
-  
-  // Add some padding to the range
-  const range = maxValue - minValue;
-  const paddedMax = maxValue + (range * 0.1);
-  const paddedMin = minValue - (range * 0.1);
+  // Min value is always 0 for this type of gauge
+  const minValue = 0;
 
   spec = {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
@@ -1807,17 +1801,17 @@ else if (chartType === "gauge") {
       },
       {
         "type": "text",
-        "description": "displayed main value at the bottom center of the gauge",
+        "description": "displayed main value at the center of the gauge",
         "name": "gaugeValue",
         "encode": {
           "enter": {
             "x": {"signal": "centerX"},
-            "baseline": {"value": "top"},
+            "baseline": {"value": "middle"},
             "align": {"value": "center"}
           },
           "update": {
-            "text": {"signal": "format(mainValue, '.1f') + unit"},
-            "y": {"signal": "centerY + fontFactor * 20"},
+            "text": {"signal": "format(mainValue, '.1f') + ' / ' + format(maxValue, '.0f')"},
+            "y": {"signal": "centerY"},
             "fontSize": {"signal": "fontFactor * 24"},
             "fill": {"signal": "fillColor"},
             "font": {"value": "Segoe UI"},
@@ -1897,26 +1891,6 @@ else if (chartType === "gauge") {
             "fill": {"signal": "needleColor"},
             "stroke": {"value": "white"},
             "strokeWidth": {"value": 2}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "name": "title",
-        "encode": {
-          "enter": {
-            "fill": {"value": "#323130"},
-            "align": {"value": "center"},
-            "baseline": {"value": "bottom"}
-          },
-          "update": {
-            "x": {"signal": "centerX"},
-            "y": {"signal": "centerY - outerRadius - 20"},
-            "text": {"signal": "title"},
-            "fontSize": {"signal": "fontFactor * 18"},
-            "font": {"value": "Segoe UI"},
-            "fontWeight": {"value": "bold"},
-            "opacity": {"signal": "showTitle ? 1 : 0"}
           }
         }
       }
