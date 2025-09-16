@@ -1617,16 +1617,14 @@ else if (chartType === "gauge") {
     return;
   }
 
-  // Process gauge data - expect one row with title, current value, and optional target
+  // Process gauge data - expect one row with title and current value
   const gaugeRow = data[0]; // Use first data row
   const title = gaugeRow[headers[0]] || "Gauge";
   const mainValue = parseFloat(gaugeRow[headers[1]]) || 0;
-  const targetValue = headers.length >= 3 ? parseFloat(gaugeRow[headers[2]]) || null : null;
   
   // Auto-calculate min/max based on data, or use sensible defaults
-  const hasTarget = targetValue !== null;
-  const maxValue = Math.max(mainValue, targetValue || 0, 100); // At least 100 or highest value
-  const minValue = Math.min(0, Math.min(mainValue, targetValue || 0)); // At least 0 or lowest value
+  const maxValue = Math.max(mainValue, 100); // At least 100 or highest value
+  const minValue = Math.min(0, mainValue < 0 ? mainValue : 0); // At least 0 or lowest value if negative
   
   // Add some padding to the range
   const range = maxValue - minValue;
@@ -1648,17 +1646,17 @@ else if (chartType === "gauge") {
       {"name": "centerY", "update": "height/2 + outerRadius/3"},
       {"name": "outerRadius", "update": "min(width/2, height/2) * 0.8"},
       {"name": "innerRadius", "update": "outerRadius * 0.65"},
-      {"name": "ticksNumber", "value": 6},
+      {"name": "ticksNumber", "value": 0},
       {"name": "ticksColor", "value": "#605e5c"},
-      {"name": "showTicks", "value": true},
+      {"name": "showTicks", "value": false},
       {"name": "mainValue", "value": mainValue},
       {"name": "unit", "value": ""},
       {"name": "minValue", "value": paddedMin},
       {"name": "maxValue", "value": paddedMax},
-      {"name": "targetValue", "value": targetValue},
-      {"name": "showTarget", "value": hasTarget},
-      {"name": "hasTarget", "update": "isNumber(targetValue) === true"},
-      {"name": "targetRule", "update": "(showTarget && hasTarget) ? 1 : 0"},
+      {"name": "targetValue", "value": null},
+      {"name": "showTarget", "value": false},
+      {"name": "hasTarget", "value": false},
+      {"name": "targetRule", "value": 0},
       {"name": "usedValue", "update": "min(max(minValue, mainValue), maxValue)"},
       {"name": "fontFactor", "update": "min(width, height) / 400"},
       {"name": "backgroundColor", "value": "#e1e4e8"},
@@ -1667,7 +1665,7 @@ else if (chartType === "gauge") {
       {"name": "needleColor", "value": "#323130"},
       {"name": "lowIsGood", "value": false},
       {"name": "needleSize", "update": "innerRadius * 0.9"},
-      {"name": "targetStatus", "update": "hasTarget ? (mainValue === targetValue ? 0 : mainValue > targetValue ? (lowIsGood ? -1 : 1) : (lowIsGood ? 1 : -1)) : 0"},
+      {"name": "targetStatus", "value": 0},
       {"name": "alertStatus", "update": "((mainValue < minValue) || (maxValue < mainValue)) ? 1 : 0"},
       {"name": "alertColor", "value": "#d13438"}
     ],
