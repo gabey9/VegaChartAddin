@@ -405,9 +405,29 @@ else if (chartType === "dumbbell") {
     });
   });
 
-  // Calculate dynamic dimensions
+  // Calculate dynamic dimensions based on number of categories
   const categories = [...new Set(data.map(d => d[headers[0]]))];
-  const dynamicHeight = Math.max(300, Math.min(600, categories.length * 60));
+  const categoryCount = categories.length;
+  
+  // Auto-adjust height and padding based on category count
+  let dynamicHeight, paddingInner, paddingOuter;
+  
+  if (categoryCount <= 3) {
+    // Few categories: smaller height, minimal padding
+    dynamicHeight = Math.max(200, categoryCount * 80);
+    paddingInner = 0.3;
+    paddingOuter = 0.2;
+  } else if (categoryCount <= 6) {
+    // Medium categories: moderate height and padding
+    dynamicHeight = Math.max(300, categoryCount * 60);
+    paddingInner = 0.2;
+    paddingOuter = 0.1;
+  } else {
+    // Many categories: larger height, tight padding
+    dynamicHeight = Math.max(400, Math.min(600, categoryCount * 50));
+    paddingInner = 0.1;
+    paddingOuter = 0.05;
+  }
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
@@ -434,7 +454,7 @@ else if (chartType === "dumbbell") {
         field: "category", 
         type: "nominal", 
         title: null,
-        scale: { paddingInner: 0.1, paddingOuter: 0.05 },
+        scale: { paddingInner: paddingInner, paddingOuter: paddingOuter },
         axis: {
           offset: 5,
           ticks: false,
