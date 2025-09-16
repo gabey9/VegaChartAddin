@@ -1611,6 +1611,321 @@ else if (chartType === "dumbbell") {
         };
       }
 
+else if (chartType === "gauge") {
+  if (headers.length < 2) {
+    console.warn("Gauge chart requires at least 2 columns: Category/Title, Value, optional Target");
+    return;
+  }
+
+  // Process gauge data - expect one row with title, current value, and optional target
+  const gaugeRow = data[0]; // Use first data row
+  const title = gaugeRow[headers[0]] || "Gauge";
+  const mainValue = parseFloat(gaugeRow[headers[1]]) || 0;
+  const targetValue = headers.length >= 3 ? parseFloat(gaugeRow[headers[2]]) || null : null;
+  
+  // Auto-calculate min/max based on data, or use sensible defaults
+  const hasTarget = targetValue !== null;
+  const maxValue = Math.max(mainValue, targetValue || 0, 100); // At least 100 or highest value
+  const minValue = Math.min(0, Math.min(mainValue, targetValue || 0)); // At least 0 or lowest value
+  
+  // Add some padding to the range
+  const range = maxValue - minValue;
+  const paddedMax = maxValue + (range * 0.1);
+  const paddedMin = minValue - (range * 0.1);
+
+  spec = {
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "description": "Gauge chart from Excel selection",
+    "width": 400,
+    "height": 300,
+    "background": "white",
+    "config": { "view": { "stroke": "transparent" }},
+    
+    "signals": [
+      {"name": "title", "value": title},
+      {"name": "showTitle", "value": true},
+      {"name": "centerX", "update": "width/2"},
+      {"name": "centerY", "update": "height/2 + outerRadius/3"},
+      {"name": "outerRadius", "update": "min(width/2, height/2) * 0.8"},
+      {"name": "innerRadius", "update": "outerRadius * 0.65"},
+      {"name": "ticksNumber", "value": 6},
+      {"name": "ticksColor", "value": "#605e5c"},
+      {"name": "showTicks", "value": true},
+      {"name": "mainValue", "value": mainValue},
+      {"name": "unit", "value": ""},
+      {"name": "minValue", "value": paddedMin},
+      {"name": "maxValue", "value": paddedMax},
+      {"name": "targetValue", "value": targetValue},
+      {"name": "showTarget", "value": hasTarget},
+      {"name": "hasTarget", "update": "isNumber(targetValue) === true"},
+      {"name": "targetRule", "update": "(showTarget && hasTarget) ? 1 : 0"},
+      {"name": "usedValue", "update": "min(max(minValue, mainValue), maxValue)"},
+      {"name": "fontFactor", "update": "min(width, height) / 400"},
+      {"name": "backgroundColor", "value": "#e1e4e8"},
+      {"name": "fillColor", "value": "#0078d4"},
+      {"name": "showNeedle", "value": true},
+      {"name": "needleColor", "value": "#323130"},
+      {"name": "lowIsGood", "value": false},
+      {"name": "needleSize", "update": "innerRadius * 0.9"},
+      {"name": "targetStatus", "update": "hasTarget ? (mainValue === targetValue ? 0 : mainValue > targetValue ? (lowIsGood ? -1 : 1) : (lowIsGood ? 1 : -1)) : 0"},
+      {"name": "alertStatus", "update": "((mainValue < minValue) || (maxValue < mainValue)) ? 1 : 0"},
+      {"name": "alertColor", "value": "#d13438"}
+    ],
+    
+    "data": [
+      {
+        "name": "ticks",
+        "transform": [
+          {
+            "type": "sequence",
+            "as": "data",
+            "start": {"signal": "0"},
+            "stop": {"signal": "(maxValue - minValue) + 0.1"},
+            "step": {"signal": "(maxValue - minValue)/(ticksNumber-1)"}
+          },
+          {"type": "formula", "expr": "datum.data + minValue", "as": "data_2"},
+          {
+            "type": "formula",
+            "as": "radianRef",
+            "expr": "PI * (datum.data/(maxValue - minValue))"
+          },
+          {
+            "type": "formula",
+            "as": "x",
+            "expr": "centerX - ((outerRadius - (outerRadius - innerRadius) * 0.6) * cos(datum.radianRef))"
+          },
+          {
+            "type": "formula",
+            "as": "y",
+            "expr": "centerY - ((outerRadius - (outerRadius - innerRadius) * 0.7) * sin(datum.radianRef))"
+          }
+        ]
+      }
+    ],
+    
+    "scales": [
+      {
+        "name": "gaugeScale",
+        "type": "linear",
+        "domain": {"data": "ticks", "field": "data_2"},
+        "zero": false,
+        "range": {"signal": "[-PI/2, PI/2]"}
+      },
+      {
+        "name": "tickScale",
+        "type": "linear",
+        "domain": {"data": "ticks", "field": "data"},
+        "range": {"signal": "[PI/2, -PI/2]"}
+      },
+      {
+        "name": "targetStatusColorScale",
+        "domain": [-1, 0, 1],
+        "range": ["#d13438", "#ffb900", "#10893e"]
+      },
+      {
+        "name": "needleScale",
+        "type": "linear",
+        "domain": {"data": "ticks", "field": "data_2"},
+        "range": [-90, 90]
+      },
+      {
+        "name": "targetScale",
+        "type": "linear",
+        "domain": {"data": "ticks", "field": "data_2"},
+        "range": [0, 180]
+      }
+    ],
+    
+    "marks": [
+      {
+        "type": "arc",
+        "name": "gauge",
+        "encode": {
+          "enter": {
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY"},
+            "startAngle": {"signal": "-PI/2"},
+            "endAngle": {"signal": "PI/2"},
+            "outerRadius": {"signal": "outerRadius"},
+            "innerRadius": {"signal": "innerRadius"},
+            "fill": {"signal": "backgroundColor"},
+            "stroke": {"value": "white"},
+            "strokeWidth": {"value": 2}
+          }
+        }
+      },
+      {
+        "type": "arc",
+        "encode": {
+          "enter": {"startAngle": {"signal": "-PI/2"}},
+          "update": {
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY"},
+            "innerRadius": {"signal": "innerRadius"},
+            "outerRadius": {"signal": "outerRadius"},
+            "endAngle": {"scale": "gaugeScale", "signal": "usedValue"},
+            "fill": {"signal": "fillColor"},
+            "stroke": {"value": "white"},
+            "strokeWidth": {"value": 2}
+          }
+        }
+      },
+      {
+        "type": "arc",
+        "description": "ticks on the arc",
+        "from": {"data": "ticks"},
+        "encode": {
+          "enter": {
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY"},
+            "outerRadius": {"signal": "outerRadius + 5"},
+            "innerRadius": {"signal": "outerRadius - 5"},
+            "startAngle": {"scale": "tickScale", "field": "data"},
+            "endAngle": {"scale": "tickScale", "field": "data"},
+            "stroke": {"signal": "ticksColor"},
+            "strokeWidth": {"value": 2},
+            "opacity": {"signal": "showTicks ? 1 : 0"}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "ticks"},
+        "encode": {
+          "enter": {
+            "align": {"value": "center"},
+            "baseline": {"value": "middle"}
+          },
+          "update": {
+            "text": {"signal": "format(datum.data_2, '.0f')"},
+            "x": {"field": "x"},
+            "y": {"field": "y"},
+            "fontSize": {"signal": "fontFactor * 11"},
+            "fill": {"signal": "ticksColor"},
+            "font": {"value": "Segoe UI"},
+            "opacity": {"signal": "showTicks ? 1 : 0"}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "description": "displayed main value at the bottom center of the gauge",
+        "name": "gaugeValue",
+        "encode": {
+          "enter": {
+            "x": {"signal": "centerX"},
+            "baseline": {"value": "top"},
+            "align": {"value": "center"}
+          },
+          "update": {
+            "text": {"signal": "format(mainValue, '.1f') + unit"},
+            "y": {"signal": "centerY + fontFactor * 20"},
+            "fontSize": {"signal": "fontFactor * 24"},
+            "fill": {"signal": "fillColor"},
+            "font": {"value": "Segoe UI"},
+            "fontWeight": {"value": "bold"}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "name": "targetDiff",
+        "description": "target difference and percentage",
+        "encode": {
+          "enter": {"align": {"value": "center"}, "baseline": {"value": "top"}},
+          "update": {
+            "text": {
+              "signal": "hasTarget ? ('Target: ' + format(targetValue, '.1f') + ' (' + format(mainValue/targetValue, '.0%') + ')') : ''"
+            },
+            "fill": {"signal": "targetStatus", "scale": "targetStatusColorScale"},
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY + fontFactor * 45"},
+            "fontSize": {"signal": "fontFactor * 12"},
+            "font": {"value": "Segoe UI"},
+            "opacity": {"signal": "targetRule ? 1 : 0"}
+          }
+        }
+      },
+      {
+        "type": "symbol",
+        "name": "needle",
+        "encode": {
+          "enter": {"x": {"signal": "centerX"}, "y": {"signal": "centerY"}},
+          "update": {
+            "shape": {
+              "signal": "'M-1.5 -1.5 Q 0 0 1.5 -1.5 L 0 -' + toString(needleSize) + ' Z'"
+            },
+            "angle": {"signal": "usedValue", "scale": "needleScale"},
+            "size": {"signal": "4"},
+            "opacity": {"signal": "showNeedle ? 1 : 0"},
+            "stroke": {"signal": "needleColor"},
+            "strokeWidth": {"value": 1},
+            "fill": {"signal": "alertStatus ? alertColor : needleColor"}
+          }
+        }
+      },
+      {
+        "type": "symbol",
+        "from": {"data": "gauge"},
+        "encode": {
+          "enter": {
+            "shape": {"value": "triangle-right"},
+            "fill": {"signal": "targetRule ? '#ffb900' : 'transparent'"},
+            "stroke": {"signal": "targetRule ? '#323130' : 'transparent'"},
+            "strokeWidth": {"value": 1}
+          },
+          "update": {
+            "angle": {"scale": "targetScale", "signal": "targetValue"},
+            "x": {
+              "signal": "centerX - ((outerRadius + 15) * cos(((targetValue - minValue)/(maxValue - minValue)) * PI))"
+            },
+            "y": {
+              "signal": "centerY - ((outerRadius + 15) * sin(((targetValue - minValue)/(maxValue - minValue)) * PI))"
+            },
+            "size": {"signal": "pow(fontFactor * 8, 2)"},
+            "opacity": {"signal": "targetRule ? 1 : 0"}
+          }
+        }
+      },
+      {
+        "type": "symbol",
+        "description": "center circle",
+        "encode": {
+          "enter": {
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY"},
+            "shape": {"value": "circle"},
+            "size": {"signal": "pow(fontFactor * 8, 2)"},
+            "fill": {"signal": "needleColor"},
+            "stroke": {"value": "white"},
+            "strokeWidth": {"value": 2}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "name": "title",
+        "encode": {
+          "enter": {
+            "fill": {"value": "#323130"},
+            "align": {"value": "center"},
+            "baseline": {"value": "bottom"}
+          },
+          "update": {
+            "x": {"signal": "centerX"},
+            "y": {"signal": "centerY - outerRadius - 20"},
+            "text": {"signal": "title"},
+            "fontSize": {"signal": "fontFactor * 18"},
+            "font": {"value": "Segoe UI"},
+            "fontWeight": {"value": "bold"},
+            "opacity": {"signal": "showTitle ? 1 : 0"}
+          }
+        }
+      }
+    ]
+  };
+}
+
       else if (chartType === "pie") {
         spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",

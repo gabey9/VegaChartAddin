@@ -207,6 +207,7 @@
                     <span class="folder-arrow">►</span>
                 </div>
                 <div class="chart-item" data-chart="radial" data-folder="special">Radial</div>
+                <div class="chart-item" data-chart="gauge" data-folder="special">Gauge</div>
                 <div class="chart-item" data-chart="arc" data-folder="special">Arc</div>
 		<div class="chart-item" data-chart="tree" data-folder="special">Tree</div>
                 <div class="chart-item" data-chart="wordcloud" data-folder="special">Wordcloud</div>
@@ -250,6 +251,7 @@
         <option value="radar">Radar</option>
         <option value="heatmap">Heatmap</option>
         <option value="radial">Radial</option>
+	<option value="gauge">Gauge</option>
         <option value="arc">Arc</option>
         <option value="tree">Tree</option>
         <option value="wordcloud">Wordcloud</option>
@@ -363,6 +365,15 @@
             <li><strong>Column 2:</strong> Values for distribution analysis (numbers)</li>
         </ul>
     </div>
+
+<div id="req-gauge" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Chart title/label</li>
+        <li><strong>Column 2:</strong> Current value (numbers)</li>
+        <li><strong>Column 3 (optional):</strong> Target value (numbers)</li>
+    </ul>
+</div>
 
     <div id="req-pie" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
