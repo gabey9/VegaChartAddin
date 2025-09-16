@@ -1698,7 +1698,7 @@ else if (chartType === "gauge") {
         "encode": {
           "enter": {
             "x": {"signal": "centerX"},
-            "y": {"signal": "centerY + fontFactor * 30"},
+            "y": {"signal": "centerY + fontFactor * 10"},
             "baseline": {"value": "middle"},
             "align": {"value": "center"},
             "fontSize": {"signal": "fontFactor * 14"},
