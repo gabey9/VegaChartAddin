@@ -1621,9 +1621,7 @@ else if (chartType === "gauge") {
   const gaugeRow = data[0]; // Use first data row
   const mainValue = parseFloat(gaugeRow[headers[0]]) || 0;
   const maxValue = parseFloat(gaugeRow[headers[1]]) || 100;
-  
-  // Min value is always 0 for this type of gauge
-  const minValue = 0;
+  const minValue = 0; // Always start from 0
 
   spec = {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
@@ -1634,97 +1632,33 @@ else if (chartType === "gauge") {
     "config": { "view": { "stroke": "transparent" }},
     
     "signals": [
-      {"name": "title", "value": title},
-      {"name": "showTitle", "value": true},
-      {"name": "centerX", "update": "width/2"},
-      {"name": "centerY", "update": "height/2 + outerRadius/3"},
-      {"name": "outerRadius", "update": "min(width/2, height/2) * 0.8"},
-      {"name": "innerRadius", "update": "outerRadius * 0.65"},
-      {"name": "ticksNumber", "value": 0},
-      {"name": "ticksColor", "value": "#605e5c"},
-      {"name": "showTicks", "value": false},
+      {"name": "centerX", "update": "width / 2"},
+      {"name": "centerY", "update": "height / 2"},
+      {"name": "outerRadius", "update": "min(width, height) / 2 - 10"},
+      {"name": "innerRadius", "update": "outerRadius - outerRadius * 0.25"},
       {"name": "mainValue", "value": mainValue},
-      {"name": "unit", "value": ""},
-      {"name": "minValue", "value": paddedMin},
-      {"name": "maxValue", "value": paddedMax},
-      {"name": "targetValue", "value": null},
-      {"name": "showTarget", "value": false},
-      {"name": "hasTarget", "value": false},
-      {"name": "targetRule", "value": 0},
+      {"name": "minValue", "value": minValue},
+      {"name": "maxValue", "value": maxValue},
       {"name": "usedValue", "update": "min(max(minValue, mainValue), maxValue)"},
-      {"name": "fontFactor", "update": "min(width, height) / 400"},
+      {"name": "fontFactor", "update": "(min(width, height)/5)/25"},
       {"name": "backgroundColor", "value": "#e1e4e8"},
       {"name": "fillColor", "value": "#0078d4"},
-      {"name": "showNeedle", "value": true},
       {"name": "needleColor", "value": "#323130"},
-      {"name": "lowIsGood", "value": false},
-      {"name": "needleSize", "update": "innerRadius * 0.9"},
-      {"name": "targetStatus", "value": 0},
-      {"name": "alertStatus", "update": "((mainValue < minValue) || (maxValue < mainValue)) ? 1 : 0"},
-      {"name": "alertColor", "value": "#d13438"}
-    ],
-    
-    "data": [
-      {
-        "name": "ticks",
-        "transform": [
-          {
-            "type": "sequence",
-            "as": "data",
-            "start": {"signal": "0"},
-            "stop": {"signal": "(maxValue - minValue) + 0.1"},
-            "step": {"signal": "(maxValue - minValue)/(ticksNumber-1)"}
-          },
-          {"type": "formula", "expr": "datum.data + minValue", "as": "data_2"},
-          {
-            "type": "formula",
-            "as": "radianRef",
-            "expr": "PI * (datum.data/(maxValue - minValue))"
-          },
-          {
-            "type": "formula",
-            "as": "x",
-            "expr": "centerX - ((outerRadius - (outerRadius - innerRadius) * 0.6) * cos(datum.radianRef))"
-          },
-          {
-            "type": "formula",
-            "as": "y",
-            "expr": "centerY - ((outerRadius - (outerRadius - innerRadius) * 0.7) * sin(datum.radianRef))"
-          }
-        ]
-      }
+      {"name": "needleSize", "update": "innerRadius"}
     ],
     
     "scales": [
       {
         "name": "gaugeScale",
         "type": "linear",
-        "domain": {"data": "ticks", "field": "data_2"},
-        "zero": false,
-        "range": {"signal": "[-PI/2, PI/2]"}
-      },
-      {
-        "name": "tickScale",
-        "type": "linear",
-        "domain": {"data": "ticks", "field": "data"},
-        "range": {"signal": "[PI/2, -PI/2]"}
-      },
-      {
-        "name": "targetStatusColorScale",
-        "domain": [-1, 0, 1],
-        "range": ["#d13438", "#ffb900", "#10893e"]
+        "domain": [{"signal": "minValue"}, {"signal": "maxValue"}],
+        "range": [{"signal": "-PI/2"}, {"signal": "PI/2"}]
       },
       {
         "name": "needleScale",
         "type": "linear",
-        "domain": {"data": "ticks", "field": "data_2"},
+        "domain": [{"signal": "minValue"}, {"signal": "maxValue"}],
         "range": [-90, 90]
-      },
-      {
-        "name": "targetScale",
-        "type": "linear",
-        "domain": {"data": "ticks", "field": "data_2"},
-        "range": [0, 180]
       }
     ],
     
@@ -1740,101 +1674,40 @@ else if (chartType === "gauge") {
             "endAngle": {"signal": "PI/2"},
             "outerRadius": {"signal": "outerRadius"},
             "innerRadius": {"signal": "innerRadius"},
-            "fill": {"signal": "backgroundColor"},
-            "stroke": {"value": "white"},
-            "strokeWidth": {"value": 2}
+            "fill": {"signal": "backgroundColor"}
           }
         }
       },
       {
         "type": "arc",
         "encode": {
-          "enter": {"startAngle": {"value": -1.5708}},
+          "enter": {"startAngle": {"signal": "-PI/2"}},
           "update": {
             "x": {"signal": "centerX"},
             "y": {"signal": "centerY"},
             "innerRadius": {"signal": "innerRadius"},
             "outerRadius": {"signal": "outerRadius"},
-            "endAngle": {"scale": "gaugeScale", "signal": "mainValue"},
-            "fill": {"signal": "fillColor"},
-            "stroke": {"value": "white"},
-            "strokeWidth": {"value": 2}
+            "endAngle": {"scale": "gaugeScale", "signal": "usedValue"},
+            "fill": {"signal": "fillColor"}
           }
         }
       },
       {
-        "type": "arc",
-        "description": "ticks on the arc",
-        "from": {"data": "ticks"},
+        "type": "text",
+        "description": "displayed main value at the center",
         "encode": {
           "enter": {
             "x": {"signal": "centerX"},
             "y": {"signal": "centerY"},
-            "outerRadius": {"signal": "outerRadius + 5"},
-            "innerRadius": {"signal": "outerRadius - 5"},
-            "startAngle": {"scale": "tickScale", "field": "data"},
-            "endAngle": {"scale": "tickScale", "field": "data"},
-            "stroke": {"signal": "ticksColor"},
-            "strokeWidth": {"value": 2},
-            "opacity": {"signal": "showTicks ? 1 : 0"}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "from": {"data": "ticks"},
-        "encode": {
-          "enter": {
-            "align": {"value": "center"},
-            "baseline": {"value": "middle"}
-          },
-          "update": {
-            "text": {"signal": "format(datum.data_2, '.0f')"},
-            "x": {"field": "x"},
-            "y": {"field": "y"},
-            "fontSize": {"signal": "fontFactor * 11"},
-            "fill": {"signal": "ticksColor"},
-            "font": {"value": "Segoe UI"},
-            "opacity": {"signal": "showTicks ? 1 : 0"}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "description": "displayed main value at the center of the gauge",
-        "name": "gaugeValue",
-        "encode": {
-          "enter": {
-            "x": {"signal": "centerX"},
             "baseline": {"value": "middle"},
-            "align": {"value": "center"}
+            "align": {"value": "center"},
+            "fontSize": {"signal": "fontFactor * 14"},
+            "font": {"value": "Segoe UI"},
+            "fontWeight": {"value": "bold"}
           },
           "update": {
             "text": {"signal": "format(mainValue, '.1f') + ' / ' + format(maxValue, '.0f')"},
-            "y": {"signal": "centerY"},
-            "fontSize": {"signal": "fontFactor * 24"},
-            "fill": {"signal": "fillColor"},
-            "font": {"value": "Segoe UI"},
-            "fontWeight": {"value": "bold"}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "name": "targetDiff",
-        "description": "target difference and percentage",
-        "encode": {
-          "enter": {"align": {"value": "center"}, "baseline": {"value": "top"}},
-          "update": {
-            "text": {
-              "signal": "hasTarget ? ('Target: ' + format(targetValue, '.1f') + ' (' + format(mainValue/targetValue, '.0%') + ')') : ''"
-            },
-            "fill": {"signal": "targetStatus", "scale": "targetStatusColorScale"},
-            "x": {"signal": "centerX"},
-            "y": {"signal": "centerY + fontFactor * 45"},
-            "fontSize": {"signal": "fontFactor * 12"},
-            "font": {"value": "Segoe UI"},
-            "opacity": {"signal": "targetRule ? 1 : 0"}
+            "fill": {"signal": "fillColor"}
           }
         }
       },
@@ -1845,37 +1718,12 @@ else if (chartType === "gauge") {
           "enter": {"x": {"signal": "centerX"}, "y": {"signal": "centerY"}},
           "update": {
             "shape": {
-              "signal": "'M-1.5 -1.5 Q 0 0 1.5 -1.5 L 0 -' + toString(needleSize) + ' Z'"
+              "signal": "'M-2.5 -2.5 Q 0 0 2.5 -2.5 L 0 -' + toString(needleSize) + ' Z '"
             },
-            "angle": {"scale": "needleScale", "signal": "mainValue"},
+            "angle": {"signal": "usedValue", "scale": "needleScale"},
             "size": {"signal": "4"},
-            "opacity": {"signal": "showNeedle ? 1 : 0"},
             "stroke": {"signal": "needleColor"},
-            "strokeWidth": {"value": 1},
-            "fill": {"signal": "alertStatus ? alertColor : needleColor"}
-          }
-        }
-      },
-      {
-        "type": "symbol",
-        "from": {"data": "gauge"},
-        "encode": {
-          "enter": {
-            "shape": {"value": "triangle-right"},
-            "fill": {"signal": "targetRule ? '#ffb900' : 'transparent'"},
-            "stroke": {"signal": "targetRule ? '#323130' : 'transparent'"},
-            "strokeWidth": {"value": 1}
-          },
-          "update": {
-            "angle": {"scale": "targetScale", "signal": "targetValue"},
-            "x": {
-              "signal": "centerX - ((outerRadius + 15) * cos(((targetValue - minValue)/(maxValue - minValue)) * PI))"
-            },
-            "y": {
-              "signal": "centerY - ((outerRadius + 15) * sin(((targetValue - minValue)/(maxValue - minValue)) * PI))"
-            },
-            "size": {"signal": "pow(fontFactor * 8, 2)"},
-            "opacity": {"signal": "targetRule ? 1 : 0"}
+            "fill": {"signal": "needleColor"}
           }
         }
       },
