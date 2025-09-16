@@ -34,6 +34,22 @@
             }
         },
         {
+            "description": "GAUGE custom function \nCreates a gauge chart from Excel data range",
+            "id": "GAUGE",
+            "name": "GAUGE",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "PIE custom function using the exact same specification as taskpane.js\nCreates a pie chart from Excel data range",
             "id": "PIE",
             "name": "PIE",
@@ -354,7 +370,7 @@
             }
         },
         {
-            "description": "DUMBBELL custom function using the exact same specification as taskpane.js\nCreates a dumbbell chart from Excel data range",
+            "description": "DUMBBELL custom function for creating dumbbell charts\nCreates a dumbbell chart from Excel data range",
             "id": "DUMBBELL",
             "name": "DUMBBELL",
             "parameters": [
