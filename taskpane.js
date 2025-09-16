@@ -1706,7 +1706,7 @@ else if (chartType === "gauge") {
             "fontWeight": {"value": "bold"}
           },
           "update": {
-            "text": {"signal": "format(mainValue, '.1f') + ' / ' + format(maxValue, '.0f')"},
+            "text": {"signal": "mainValue < 1 ? format(mainValue, '.0%') : format(mainValue, ',.0f')"},
             "fill": {"signal": "fillColor"}
           }
         }
