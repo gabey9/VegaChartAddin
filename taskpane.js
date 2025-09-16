@@ -1749,13 +1749,13 @@ else if (chartType === "gauge") {
       {
         "type": "arc",
         "encode": {
-          "enter": {"startAngle": {"signal": "-PI/2"}},
+          "enter": {"startAngle": {"value": -1.5708}},
           "update": {
             "x": {"signal": "centerX"},
             "y": {"signal": "centerY"},
             "innerRadius": {"signal": "innerRadius"},
             "outerRadius": {"signal": "outerRadius"},
-            "endAngle": {"scale": "gaugeScale", "signal": "usedValue"},
+            "endAngle": {"scale": "gaugeScale", "signal": "mainValue"},
             "fill": {"signal": "fillColor"},
             "stroke": {"value": "white"},
             "strokeWidth": {"value": 2}
@@ -1847,7 +1847,7 @@ else if (chartType === "gauge") {
             "shape": {
               "signal": "'M-1.5 -1.5 Q 0 0 1.5 -1.5 L 0 -' + toString(needleSize) + ' Z'"
             },
-            "angle": {"signal": "usedValue", "scale": "needleScale"},
+            "angle": {"scale": "needleScale", "signal": "mainValue"},
             "size": {"signal": "4"},
             "opacity": {"signal": "showNeedle ? 1 : 0"},
             "stroke": {"signal": "needleColor"},
