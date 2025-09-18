@@ -1,5 +1,5 @@
 ﻿/**
- * LINE custom function using the exact same specification as taskpane.js
+ * LINE custom function
  * Creates a multi-series line chart from Excel data range
  * 
  * @customfunction
@@ -116,7 +116,7 @@ function LINE(data) {
 }
 
 /**
- * BAR custom function using the exact same specification as taskpane.js
+ * BAR custom function
  * Creates a bar chart from Excel data range
  * 
  * @customfunction
@@ -373,7 +373,7 @@ function GAUGE(data) {
 }
 
 /**
- * PIE custom function using the exact same specification as taskpane.js
+ * PIE custom function
  * Creates a pie chart from Excel data range
  * 
  * @customfunction
@@ -437,7 +437,7 @@ function PIE(data) {
 }
 
 /**
- * AREA custom function using the exact same specification as taskpane.js
+ * AREA custom function
  * Creates an area chart from Excel data range
  * 
  * @customfunction
@@ -533,7 +533,7 @@ function AREA(data) {
 }
 
 /**
- * SCATTER custom function using the exact same specification as taskpane.js
+ * SCATTER custom function
  * Creates a scatter plot from Excel data range
  * 
  * @customfunction
@@ -644,7 +644,7 @@ function SCATTER(data) {
 }
 
 /**
- * BUBBLE custom function using the exact same specification as taskpane.js
+ * BUBBLE custom function
  * Creates a bubble chart from Excel data range
  * 
  * @customfunction
@@ -756,7 +756,7 @@ function BUBBLE(data) {
 }
 
 /**
- * RADIAL custom function using the exact same specification as taskpane.js
+ * RADIAL custom function
  * Creates a radial chart from Excel data range
  * 
  * @customfunction
@@ -824,7 +824,7 @@ function RADIAL(data) {
 }
 
 /**
- * BOX custom function using the exact same specification as taskpane.js
+ * BOX custom function
  * Creates a box plot from Excel data range
  * 
  * @customfunction
@@ -895,7 +895,7 @@ function BOX(data) {
 }
 
 /**
- * RADAR custom function using the exact same specification as taskpane.js
+ * RADAR custom function
  * Creates a radar chart from Excel data range
  * 
  * @customfunction
@@ -1126,7 +1126,7 @@ function RADAR(data) {
 }
 
 /**
- * WATERFALL custom function using the exact same specification as taskpane.js
+ * WATERFALL custom function
  * Creates a waterfall chart from Excel data range
  * 
  * @customfunction
@@ -1279,7 +1279,7 @@ function WATERFALL(data) {
 }
 
 /**
- * SUNBURST custom function using the exact same specification as taskpane.js
+ * SUNBURST custom function
  * Creates a sunburst chart from Excel data range
  * 
  * @customfunction
@@ -1477,7 +1477,7 @@ function SUNBURST(data) {
 }
 
 /**
- * TREEMAP custom function using the exact same specification as taskpane.js
+ * TREEMAP custom function
  * Creates a treemap chart from Excel data range
  * 
  * @customfunction
@@ -1711,7 +1711,7 @@ function TREEMAP(data) {
 }
 
 /**
- * HISTOGRAM custom function using the exact same specification as taskpane.js
+ * HISTOGRAM custom function
  * Creates a histogram from Excel data range
  * 
  * @customfunction
@@ -1824,7 +1824,7 @@ function HISTOGRAM(data) {
 }
 
 /**
- * MAP custom function using the exact same specification as taskpane.js
+ * MAP custom function
  * Creates a world map chart from Excel data range
  * 
  * @customfunction
@@ -2117,7 +2117,7 @@ function MAP(data) {
 }
 
 /**
- * CANDLESTICK custom function using the exact same specification as taskpane.js
+ * CANDLESTICK custom function
  * Creates a candlestick chart from Excel data range
  * 
  * @customfunction
@@ -2285,7 +2285,7 @@ function CANDLESTICK(data) {
 }
 
 /**
- * ARC custom function using the exact same specification as taskpane.js
+ * ARC custom function
  * Creates an arc diagram from Excel data range
  * 
  * @customfunction
@@ -2515,7 +2515,7 @@ function ARC(data) {
 }
 
 /**
- * TREE custom function using the exact same specification as taskpane.js
+ * TREE custom function
  * Creates a tree diagram from Excel data range
  * 
  * @customfunction
@@ -2727,7 +2727,7 @@ function TREE(data) {
 }
 
 /**
- * WORDCLOUD custom function using the exact same specification as taskpane.js
+ * WORDCLOUD custom function
  * Creates a word cloud from Excel data range
  * 
  * @customfunction
@@ -2849,7 +2849,7 @@ function WORDCLOUD(data) {
 }
 
 /**
- * STRIP custom function using the exact same specification as taskpane.js
+ * STRIP custom function
  * Creates a strip plot from Excel data range
  * 
  * @customfunction
@@ -2952,7 +2952,7 @@ function STRIP(data) {
 }
 
 /**
- * HEATMAP custom function using the exact same specification as taskpane.js
+ * HEATMAP custom function
  * Creates a heatmap from Excel data range
  * 
  * @customfunction
@@ -3131,7 +3131,7 @@ function HEATMAP(data) {
 }
 
 /**
- * BULLET custom function using the exact same specification as taskpane.js
+ * BULLET custom function
  * Creates a bullet chart from Excel data range
  * 
  * @customfunction
@@ -3207,7 +3207,7 @@ function BULLET(data) {
 }
 
 /**
- * HORIZON custom function using the exact same specification as taskpane.js
+ * HORIZON custom function
  * Creates a horizon chart from Excel data range
  * 
  * @customfunction
@@ -3403,7 +3403,7 @@ function HORIZON(data) {
 }
 
 /**
- * DUMBBELL custom function for creating dumbbell charts
+ * DUMBBELL custom function
  * Creates a dumbbell chart from Excel data range
  * 
  * @customfunction
@@ -3584,7 +3584,7 @@ function DUMBBELL(data) {
 }
 
 /**
- * SLOPE custom function using the exact same specification as taskpane.js
+ * SLOPE custom function
  * Creates a slope chart from Excel data range
  * 
  * @customfunction
@@ -3829,7 +3829,7 @@ function SLOPE(data) {
 }
 
 /**
- * MEKKO custom function using the exact same specification as taskpane.js
+ * MEKKO custom function
  * Creates a Mekko chart from Excel data range
  * 
  * @customfunction
@@ -4096,7 +4096,7 @@ function MEKKO(data) {
 }
 
 /**
- * MARIMEKKO custom function using the exact same specification as taskpane.js
+ * MARIMEKKO custom function
  * Creates a marimekko chart from Excel data range
  * 
  * @customfunction
@@ -4317,7 +4317,7 @@ function MARIMEKKO(data) {
 }
 
 /**
- * BUMP custom function using the exact same specification as taskpane.js
+ * BUMP custom function
  * Creates a bump chart from Excel data range
  * 
  * @customfunction
@@ -4465,7 +4465,7 @@ function BUMP(data) {
 }
 
 /**
- * WAFFLE custom function using the exact same specification as taskpane.js
+ * WAFFLE custom function
  * Creates a waffle chart from Excel data range
  * 
  * @customfunction
@@ -4608,7 +4608,7 @@ function WAFFLE(data) {
 }
 
 /**
- * LOLLIPOP custom function using the exact same specification as taskpane.js
+ * LOLLIPOP custom function
  * Creates a lollipop chart from Excel data range
  * 
  * @customfunction
@@ -4731,7 +4731,7 @@ function LOLLIPOP(data) {
 }
 
 /**
- * VIOLIN custom function using the exact specification provided
+ * VIOLIN custom function
  * Creates a violin chart from Excel data range
  * 
  * @customfunction
@@ -4816,7 +4816,7 @@ function VIOLIN(data) {
 }
 
 /**
- * GANTT custom function using the exact same specification as taskpane.js
+ * GANTT custom function
  * Creates a Gantt chart from Excel data range
  * 
  * @customfunction
@@ -4969,7 +4969,7 @@ function GANTT(data) {
 }
 
 /**
- * SANKEY custom function using the exact same specification as taskpane.js
+ * SANKEY custom function
  * Creates a Sankey diagram from Excel data range
  * 
  * @customfunction
@@ -5262,7 +5262,7 @@ function SANKEY(data) {
 }
 
 /**
- * RIDGELINE custom function using the exact same specification as taskpane.js
+ * RIDGELINE custom function
  * Creates a ridgeline (joyplot) chart from Excel data range
  * 
  * @customfunction
@@ -5385,7 +5385,7 @@ function RIDGELINE(data) {
 }
 
 /**
- * VARIANCE custom function - Complete rewrite with all fixes
+ * VARIANCE custom function
  * Creates a variance chart from Excel data range
  * 
  * @customfunction
@@ -5691,7 +5691,7 @@ function VARIANCE(data) {
 }
 
 /**
- * DEVIATION custom function using the exact same specification as taskpane.js
+ * DEVIATION custom function
  * Creates a deviation chart from Excel data range
  * 
  * @customfunction
@@ -5804,7 +5804,7 @@ function DEVIATION(data) {
 }
 
 /**
- * RIBBON custom function using the exact same specification as taskpane.js
+ * RIBBON custom function
  * Creates a ribbon chart from Excel data range
  * 
  * @customfunction
@@ -5942,7 +5942,7 @@ function RIBBON(data) {
 }
 
 /**
- * Generic chart creation function (same approach as taskpane.js)
+ * Chart creation function
  */
 async function createChart(spec, chartType, headers, rows) {
   return new Promise(async (resolve, reject) => {
@@ -5974,7 +5974,7 @@ async function createChart(spec, chartType, headers, rows) {
           const base64data = reader.result.split(",")[1];
 
           // Insert into Excel (same approach as taskpane.js)
-          await insertChartIntoExcel(base64data, chartType, chartId);
+          await insertChart(base64data, chartType, chartId);
           
           // Clean up hidden div
           document.body.removeChild(hiddenDiv);
@@ -5998,9 +5998,9 @@ async function createChart(spec, chartType, headers, rows) {
 }
 
 /**
- * Inserts chart into Excel using the same approach as taskpane.js
+ * Insert chart
  */
-async function insertChartIntoExcel(base64data, chartType, chartId) {
+async function insertChart(base64data, chartType, chartId) {
   return Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 
@@ -6047,7 +6047,7 @@ async function insertChartIntoExcel(base64data, chartType, chartId) {
 }
 
 /**
- * Remove existing charts of the same type (prevents duplicates)
+ * Remove existing chart
  */
 async function removeExistingCharts(context, sheet, chartType) {
   const shapes = sheet.shapes;
@@ -6082,7 +6082,7 @@ async function removeExistingCharts(context, sheet, chartType) {
 }
 
 /**
- * Load Vega libraries (same CDN versions as taskpane.html)
+ * Load Vega libraries
  */
 function loadVegaLibraries() {
   return new Promise((resolve, reject) => {
@@ -6115,11 +6115,11 @@ function loadVegaLibraries() {
   });
 }
 
-// Register all custom functions
 if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("LINE", LINE);
   CustomFunctions.associate("BAR", BAR);
   CustomFunctions.associate("PIE", PIE);
+  CustomFunctions.associate("GAUGE", GAUGE);
   CustomFunctions.associate("AREA", AREA);
   CustomFunctions.associate("SCATTER", SCATTER);
   CustomFunctions.associate("BUBBLE", BUBBLE);
@@ -6139,6 +6139,7 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("HEATMAP", HEATMAP);
   CustomFunctions.associate("BULLET", BULLET);
   CustomFunctions.associate("HORIZON", HORIZON);
+  CustomFunctions.associate("DUMBBELL", DUMBBELL);
   CustomFunctions.associate("SLOPE", SLOPE);
   CustomFunctions.associate("MEKKO", MEKKO);
   CustomFunctions.associate("MARIMEKKO", MARIMEKKO);
