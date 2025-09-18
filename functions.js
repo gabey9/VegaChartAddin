@@ -106,7 +106,7 @@ function LINE(data) {
       };
 
       createChart(spec, "line", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -201,7 +201,7 @@ function BAR(data) {
       };
 
       createChart(spec, "bar", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Bar"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -363,7 +363,7 @@ function GAUGE(data) {
       };
 
       createChart(spec, "gauge", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Gauge"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -427,7 +427,7 @@ function PIE(data) {
       };
 
       createChart(spec, "pie", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Pie"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -523,7 +523,7 @@ function AREA(data) {
       };
 
       createChart(spec, "area", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Area"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -634,7 +634,7 @@ function SCATTER(data) {
       };
 
       createChart(spec, "scatter", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Scatter"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -746,7 +746,7 @@ function BUBBLE(data) {
       };
 
       createChart(spec, "bubble", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Bubble"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -814,7 +814,7 @@ function RADIAL(data) {
       };
 
       createChart(spec, "radial", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Radial"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -885,7 +885,7 @@ function BOX(data) {
       };
 
       createChart(spec, "box", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Box"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -1116,7 +1116,7 @@ function RADAR(data) {
       };
 
       createChart(spec, "radar", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Radar"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -1269,7 +1269,7 @@ function WATERFALL(data) {
       };
 
       createChart(spec, "waterfall", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Waterfall"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -1467,7 +1467,7 @@ function SUNBURST(data) {
       };
 
       createChart(spec, "sunburst", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Sunburst"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -1701,7 +1701,7 @@ function TREEMAP(data) {
       };
 
       createChart(spec, "treemap", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Treemap"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -1814,7 +1814,7 @@ function HISTOGRAM(data) {
       };
 
       createChart(spec, "histogram", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Histogram"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -2107,7 +2107,7 @@ function MAP(data) {
       };
 
       createChart(spec, "map", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Map"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -2275,7 +2275,7 @@ function CANDLESTICK(data) {
       };
 
       createChart(spec, "candlestick", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Candlestick"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -2505,7 +2505,7 @@ function ARC(data) {
       };
 
       createChart(spec, "arc", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Arc"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -2717,7 +2717,7 @@ function TREE(data) {
       };
 
       createChart(spec, "tree", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Tree"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -2839,7 +2839,7 @@ function WORDCLOUD(data) {
       };
 
       createChart(spec, "wordcloud", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Wordcloud"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -2942,7 +2942,7 @@ function STRIP(data) {
       };
 
       createChart(spec, "strip", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Strip"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -3121,7 +3121,7 @@ function HEATMAP(data) {
       };
 
       createChart(spec, "heatmap", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Heatmap"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -3197,7 +3197,7 @@ function BULLET(data) {
       };
 
       createChart(spec, "bullet", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Bullet"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -3393,7 +3393,7 @@ function HORIZON(data) {
       };
 
       createChart(spec, "horizon", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Horizon"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -3574,7 +3574,7 @@ function DUMBBELL(data) {
       };
 
       createChart(spec, "dumbbell", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Dumbbell"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -3819,7 +3819,7 @@ function SLOPE(data) {
       };
 
       createChart(spec, "slope", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Slope"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -4086,7 +4086,7 @@ function MEKKO(data) {
       };
 
       createChart(spec, "mekko", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Mekko"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -4307,7 +4307,7 @@ function MARIMEKKO(data) {
       };
 
       createChart(spec, "marimekko", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Marimekko"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -4455,7 +4455,7 @@ function BUMP(data) {
       };
 
       createChart(spec, "bump", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Bump"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -4598,7 +4598,7 @@ function WAFFLE(data) {
       };
 
       createChart(spec, "waffle", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Waffle"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -4721,7 +4721,7 @@ function LOLLIPOP(data) {
       };
 
       createChart(spec, "lollipop", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Lollipop"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -4806,7 +4806,7 @@ function VIOLIN(data) {
       };
 
       createChart(spec, "violin", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Violin"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -4959,7 +4959,7 @@ function GANTT(data) {
       };
 
       createChart(spec, "gantt", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Gantt"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -5252,7 +5252,7 @@ function SANKEY(data) {
       };
 
       createChart(spec, "sankey", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Sankey"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -5375,7 +5375,7 @@ function RIDGELINE(data) {
       };
 
       createChart(spec, "ridgeline", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Ridgeline"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -5681,7 +5681,7 @@ function VARIANCE(data) {
       };
 
       createChart(spec, "variance", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Variance"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -5794,7 +5794,7 @@ function DEVIATION(data) {
       };
 
       createChart(spec, "deviation", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Deviation"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -5932,7 +5932,7 @@ function RIBBON(data) {
       };
 
       createChart(spec, "ribbon", headers, rows)
-        .then(() => resolve(""))
+        .then(() => resolve("Ribbon"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
