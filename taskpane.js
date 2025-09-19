@@ -280,67 +280,77 @@ else if (chartType === "ring") {
         "width": Math.max(400, numRings * 40),
         "height": Math.max(400, numRings * 40),
         "layer": [
-          // Background rings (full circles)
-          ...data.map((d, index) => ({
-            "description": `RING ${index + 1} BACKGROUND`,
-            "mark": {
-              "type": "arc",
-              "radius": ringPositions[index].outer,
-              "radius2": ringPositions[index].inner,
-              "theta": 0,
-              "theta2": 6.283185307179586, // 2π
-              "opacity": 0.25
-            },
-            "encoding": {
-              "color": {"value": generateRingColor(index, numRings)}
-            }
-          })),
-          // Progress rings
-          ...data.map((d, index) => ({
-            "description": `RING ${index + 1} PROGRESS`,
-            "mark": {
-              "type": "arc",
-              "radius": ringPositions[index].outer,
-              "radius2": ringPositions[index].inner,
-              "theta": 0,
-              "theta2": {"expr": `datum['Ring${index + 1}_Theta2']`},
-              "cornerRadius": Math.min(8, ringWidth / 2),
-              "tooltip": true
-            },
-            "encoding": {
-              "color": {"value": generateRingColor(index, numRings)},
-              "tooltip": [
-                {"value": d[headers[0]], "title": "Category"},
-                {"value": d[headers[1]] + "%", "title": "Progress"}
-              ]
-            }
-          })),
-          // White percentage labels at the beginning (12 o'clock) of dark sections only
-          ...data.map((d, index) => ({
-            "description": `RING ${index + 1} LABEL`,
-            "mark": {
-              "type": "text",
-              "align": "center",
-              "baseline": "middle",
-              "dx": 0,
-              "dy": -ringPositions[index].middle, // At the top (12 o'clock position)
-              "fontSize": Math.max(10, Math.min(14, 180 / numRings)),
-              "font": "Segoe UI",
-              "fontWeight": "bold",
-              "color": "white" // White text on dark sections
-            },
-            "encoding": {
-              "text": {"value": d[headers[1]] + "%"},
-              "opacity": {
-                "condition": {
-                  "test": `datum['Ring${index + 1}_Theta2'] > 0`, // Only show if there's progress
-                  "value": 1
-                },
-                "value": 0
-              }
-            }
-          }))
-        ]
+  // Background rings (full circles)
+  ...data.map((d, index) => ({
+    "description": `RING ${index + 1} BACKGROUND`,
+    "mark": {
+      "type": "arc",
+      "x": {"signal": "width/2"},
+      "y": {"signal": "height/2"},
+      "radius": ringPositions[index].outer,
+      "radius2": ringPositions[index].inner,
+      "theta": 0,
+      "theta2": 2 * Math.PI,
+      "opacity": 0.25
+    },
+    "encoding": {
+      "color": {"value": generateRingColor(index, numRings)}
+    }
+  })),
+
+  // Progress rings
+  ...data.map((d, index) => ({
+    "description": `RING ${index + 1} PROGRESS`,
+    "mark": {
+      "type": "arc",
+      "x": {"signal": "width/2"},
+      "y": {"signal": "height/2"},
+      "radius": ringPositions[index].outer,
+      "radius2": ringPositions[index].inner,
+      "theta": 0,
+      "theta2": {"expr": `datum['Ring${index + 1}_Theta2']`},
+      "cornerRadius": Math.min(8, ringWidth / 2),
+      "tooltip": true
+    },
+    "encoding": {
+      "color": {"value": generateRingColor(index, numRings)},
+      "tooltip": [
+        {"value": d[headers[0]], "title": "Category"},
+        {"value": d[headers[1]] + "%", "title": "Progress"}
+      ]
+    }
+  })),
+
+  // Percentage labels at end of dark arc
+  ...data.map((d, index) => ({
+    "description": `RING ${index + 1} LABEL`,
+    "mark": {
+      "type": "text",
+      "align": "center",
+      "baseline": "middle",
+      "fontSize": Math.max(10, Math.min(14, 180 / numRings)),
+      "font": "Segoe UI",
+      "fontWeight": "bold",
+      "fill": "white"
+    },
+    "encoding": {
+      "text": {"value": d[headers[1]] + "%"},
+      "x": {
+        "signal": `width/2 + (${ringPositions[index].middle} * cos(datum['Ring${index + 1}_Theta2'] - PI/2))`
+      },
+      "y": {
+        "signal": `height/2 + (${ringPositions[index].middle} * sin(datum['Ring${index + 1}_Theta2'] - PI/2))`
+      },
+      "opacity": {
+        "condition": {
+          "test": `datum['Ring${index + 1}_Theta2'] > 0`,
+          "value": 1
+        },
+        "value": 0
+      }
+    }
+  }))
+]
       }
     ],
     "view": {"stroke": null}
