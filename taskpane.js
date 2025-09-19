@@ -189,9 +189,9 @@ else if (chartType === "ring") {
   }
 
   // Dynamic ring parameters based on number of rings
-  const ringWidth = Math.max(15, Math.min(25, 120 / numRings)); // Adaptive ring width
-  const ringGap = Math.max(3, Math.min(8, 40 / numRings)); // Adaptive gap
-  const maxRadius = 150 + (numRings * 5); // Expand chart for more rings
+  const ringWidth = Math.max(15, Math.min(25, 120 / numRings));
+  const ringGap = Math.max(3, Math.min(8, 40 / numRings));
+  const maxRadius = 150 + (numRings * 5);
   
   // Calculate ring positions dynamically
   const ringPositions = [];
@@ -212,465 +212,89 @@ else if (chartType === "ring") {
     currentOuter = inner - ringGap;
   }
 
-  // Prepare data with dynamic ring assignments
-  const processedData = data.map((d, index) => {
-    const obj = {
-      category: d[headers[0]],
-      value: d[headers[1]],
-      percent_label: d[headers[1]] + '%',
-      theta2: 2 * Math.PI * d[headers[1]] / 100,
-      ring_index: index,
-      ring_outer: ringPositions[index].outer,
-      ring_inner: ringPositions[index].inner,
-      ring_middle: ringPositions[index].middle
-    };
-    return obj;
-  });
-
-  // Generate dynamic colors
+  // Generate dynamic colors for rings
   const generateRingColor = (index, total) => {
     const baseHue = 210; // Blue base
-    const saturation = 70 + (index * 10); // Vary saturation
-    const lightness = 25 + (index * (50 / total)); // Vary lightness
+    const saturation = 70 + (index * 10);
+    const lightness = 25 + (index * (50 / total));
     return `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
   };
-
-  // Create legend data
-  const legendData = data.map((d, index) => ({
-    category: d[headers[0]],
-    color: generateRingColor(index, numRings),
-    x_position: -150 + (index * 120),
-    label_x_position: -140 + (index * 120)
-  }));
 
   spec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "description": `Dynamic ring chart with ${numRings} concentric rings`,
     "background": "white",
-    "width": Math.max(400, numRings * 80),
+    "width": Math.max(400, numRings * 60),
     "height": Math.max(400, numRings * 60),
     "config": {
-      "autosize": {"type": "fit", "contains": "padding"},
       "view": {"stroke": null}
     },
     "title": {
       "text": `Ring Chart - ${numRings} Performance Metrics`,
       "anchor": "start",
-      "align": "left", 
-      "font": "Segoe UI",
       "fontSize": 16,
       "fontWeight": "bold",
-      "offset": 10
+      "font": "Segoe UI"
     },
-    "data": {"values": []},
-    "vconcat": [
-      {
-        "description": "LEGEND",
-        "data": {"values": legendData},
-        "layer": legendData.map((item, index) => [
-          {
-            "description": `CATEGORY ${index + 1} COLOUR`,
-            "mark": {
-              "type": "circle",
-              "size": 200,
-              "x": item.x_position,
-              "y": 0,
-              "color": item.color
-            }
-          },
-          {
-            "description": `CATEGORY ${index + 1} LABEL`, 
-            "mark": {
-              "type": "text",
-              "x": item.label_x_position,
-              "y": 0,
-              "align": "left",
-              "baseline": "middle",
-              "fontSize": 12,
-              "font": "Segoe UI"
-            },
-            "encoding": {
-              "text": {"value": item.category}
-            }
-          }
-        ]).flat()
-      },
-      {
-        "description": "RINGS",
-        "data": {"values": processedData},
-        "layer": [
-          // Background rings
-          ...processedData.map((d, index) => ({
-            "description": `RING ${index + 1} BACKGROUND`,
-            "mark": {
-              "type": "arc",
-              "radius": d.ring_outer,
-              "radius2": d.ring_inner,
-              "theta": 0,
-              "theta2": 6.284
-            },
-            "encoding": {
-              "color": {"value": generateRingColor(index, numRings)},
-              "opacity": {"value": 0.2}
-            }
-          })),
-          // Actual progress rings
-          ...processedData.map((d, index) => ({
-            "description": `RING ${index + 1} PROGRESS`,
-            "mark": {
-              "type": "arc", 
-              "radius": d.ring_outer,
-              "radius2": d.ring_inner,
-              "theta": 0,
-              "theta2": {"expr": `datum.ring_index === ${index} ? datum.theta2 : 0`},
-              "cornerRadius": Math.min(8, ringWidth / 2),
-              "tooltip": true
-            },
-            "encoding": {
-              "color": {"value": generateRingColor(index, numRings)},
-              "tooltip": [
-                {"field": "category", "type": "nominal", "title": "Metric"},
-                {"field": "percent_label", "type": "nominal", "title": "Progress"}
-              ]
-            }
-          })),
-          // Labels
-          ...processedData.map((d, index) => ({
-            "description": `RING ${index + 1} LABEL`,
-            "mark": {
-              "type": "text",
-              "align": "center",
-              "baseline": "middle", 
-              "dx": 0,
-              "dy": -d.ring_middle + 10,
-              "fontSize": Math.max(10, Math.min(14, 200 / numRings)),
-              "font": "Segoe UI",
-              "fontWeight": "bold"
-            },
-            "encoding": {
-              "text": {"field": "percent_label", "type": "nominal"},
-              "color": {"value": "white"},
-              "opacity": {
-                "condition": {
-                  "test": `datum.ring_index === ${index}`,
-                  "value": 1
-                },
-                "value": 0
-              }
-            }
-          }))
+    "data": {"values": data},
+    "layer": [
+      // Background rings for each data point
+      ...data.map((d, index) => ({
+        "mark": {
+          "type": "arc",
+          "radius": ringPositions[index].outer,
+          "radius2": ringPositions[index].inner,
+          "theta": 0,
+          "theta2": 6.283185307179586, // 2π
+          "opacity": 0.2
+        },
+        "encoding": {
+          "color": {"value": generateRingColor(index, numRings)}
+        }
+      })),
+      // Progress arcs for each data point
+      ...data.map((d, index) => ({
+        "mark": {
+          "type": "arc",
+          "radius": ringPositions[index].outer,
+          "radius2": ringPositions[index].inner,
+          "theta": 0,
+          "theta2": {"expr": `2 * PI * datum['${headers[1]}'] / 100`},
+          "cornerRadius": Math.min(8, ringWidth / 2),
+          "tooltip": true
+        },
+        "encoding": {
+          "color": {"value": generateRingColor(index, numRings)},
+          "tooltip": [
+            {"field": headers[0], "type": "nominal", "title": "Category"},
+            {"value": d[headers[1]] + "%", "title": "Progress"}
+          ]
+        },
+        "transform": [
+          {"filter": `datum['${headers[0]}'] === '${d[headers[0]]}'`}
         ]
-      }
+      })),
+      // Labels for each ring
+      ...data.map((d, index) => ({
+        "mark": {
+          "type": "text",
+          "align": "center",
+          "baseline": "middle",
+          "dx": 0,
+          "dy": -ringPositions[index].middle + 15,
+          "fontSize": Math.max(10, Math.min(14, 180 / numRings)),
+          "font": "Segoe UI",
+          "fontWeight": "bold",
+          "color": "white"
+        },
+        "encoding": {
+          "text": {"value": d[headers[1]] + "%"}
+        },
+        "transform": [
+          {"filter": `datum['${headers[0]}'] === '${d[headers[0]]}'`}
+        ]
+      }))
     ]
-  };
-}
-
-  spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "usermeta": {
-      "deneb": {
-        "build": "1.0.0.157",
-        "metaVersion": 1,
-        "provider": "vegaLite"
-      },
-      "interactivity": {
-        "tooltip": true,
-        "contextMenu": true,
-        "selection": false,
-        "dataPointLimit": 50
-      },
-      "information": {
-        "name": "Ring Chart",
-        "description": "A chart of 3 concentric donut charts (rings) depicting percentage measures as a proportion of 100%",
-        "author": "Greg Philps",
-        "uuid": "f03340ee-e114-41f0-bf65-3feacfad174d",
-        "generated": "2022-01-24T16:51:24.701Z"
-      }
-    },
-    "config": {
-      "autosize": {
-        "type": "fit",
-        "contains": "padding"
-      },
-      "concat": {"spacing": 0}
-    },
-    "description": "A chart of 3 concentric donut charts (rings) depicting percentage measures as a proportion of 100%",
-    "title": {
-      "text": "Ring Chart - Concentric Performance Metrics",
-      "anchor": "start",
-      "align": "left",
-      "font": "Segoe UI",
-      "fontSize": 16,
-      "fontWeight": "bold",
-      "offset": 10
-    },
-    "data": {"values": processedData},
-    "params": [
-      {"name": "ring_max", "value": 200},
-      {"name": "ring_width", "value": 20},
-      {"name": "ring_gap", "value": 5},
-      {"name": "ring0_color", "value": "#FFFFFF"},
-      {"name": "ring1_color", "value": "#0F4C81"},
-      {"name": "ring2_color", "value": "#6086BC"},
-      {"name": "ring3_color", "value": "#ACBDC8"},
-      {"name": "label_color", "value": "#FFFFFF"},
-      {"name": "ring_background_opacity", "value": 0.3},
-      {"name": "ring0_percent", "value": 100},
-      {"name": "ring0_outer", "expr": "ring_max+2"},
-      {"name": "ring0_inner", "expr": "ring_max+1"},
-      {"name": "ring1_outer", "expr": "ring0_inner-ring_gap"},
-      {"name": "ring1_inner", "expr": "ring1_outer-ring_width"},
-      {"name": "ring1_middle", "expr": "(ring1_outer+ring1_inner)/2"},
-      {"name": "ring2_outer", "expr": "ring1_inner-ring_gap"},
-      {"name": "ring2_inner", "expr": "ring2_outer-ring_width"},
-      {"name": "ring2_middle", "expr": "(ring2_outer+ring2_inner)/2"},
-      {"name": "ring3_outer", "expr": "ring2_inner-ring_gap"},
-      {"name": "ring3_inner", "expr": "ring3_outer-ring_width"},
-      {"name": "ring3_middle", "expr": "(ring3_outer+ring3_inner)/2"},
-      {"name": "circle_size", "value": 200},
-      {"name": "x_label_gap", "value": 10},
-      {"name": "x_circle_1", "value": -100},
-      {"name": "x_circle_2", "value": -20},
-      {"name": "x_circle_3", "value": 60},
-      {"name": "x_label_1", "expr": "x_circle_1 + x_label_gap"},
-      {"name": "x_label_2", "expr": "x_circle_2 + x_label_gap"},
-      {"name": "x_label_3", "expr": "x_circle_3 + x_label_gap"}
-    ],
-    "vconcat": [
-      {
-        "description": "LEGEND",
-        "layer": [
-          {
-            "description": "CATEGORY 1 COLOUR",
-            "mark": {
-              "type": "circle",
-              "size": {"expr": "circle_size"},
-              "x": {"expr": "x_circle_1"},
-              "y": 0,
-              "color": {"expr": "ring1_color"}
-            }
-          },
-          {
-            "description": "CATEGORY 1 LABEL",
-            "mark": {
-              "type": "text",
-              "x": {"expr": "x_label_1"},
-              "y": 0,
-              "align": "left",
-              "baseline": "middle"
-            },
-            "encoding": {
-              "text": {"field": "__0__"}
-            }
-          },
-          {
-            "description": "CATEGORY 2 COLOUR",
-            "mark": {
-              "type": "circle",
-              "size": {"expr": "circle_size"},
-              "x": {"expr": "x_circle_2"},
-              "y": 0,
-              "color": {"expr": "ring2_color"}
-            }
-          },
-          {
-            "description": "CATEGORY 2 LABEL",
-            "mark": {
-              "type": "text",
-              "x": {"expr": "x_label_2"},
-              "y": 0,
-              "align": "left",
-              "baseline": "middle"
-            },
-            "encoding": {
-              "text": {"field": "__1__"}
-            }
-          },
-          {
-            "description": "CATEGORY 3 COLOUR",
-            "mark": {
-              "type": "circle",
-              "size": {"expr": "circle_size"},
-              "x": {"expr": "x_circle_3"},
-              "y": 0,
-              "color": {"expr": "ring3_color"}
-            }
-          },
-          {
-            "description": "CATEGORY 3 LABEL",
-            "mark": {
-              "type": "text",
-              "x": {"expr": "x_label_3"},
-              "y": 0,
-              "align": "left",
-              "baseline": "middle"
-            },
-            "encoding": {
-              "text": {"field": "__2__"}
-            }
-          }
-        ]
-      },
-      {
-        "description": "RINGS",
-        "layer": [
-          {
-            "layer": [
-              {
-                "description": "RING 1 (OUTER) BACKGROUND",
-                "mark": {
-                  "type": "arc",
-                  "radius": {"expr": "ring1_outer"},
-                  "radius2": {"expr": "ring1_inner"},
-                  "theta": 0,
-                  "theta2": 6.284
-                },
-                "encoding": {
-                  "color": {"value": {"expr": "ring1_color"}},
-                  "opacity": {"value": {"expr": "ring_background_opacity"}}
-                }
-              },
-              {
-                "description": "RING 1 (OUTER)",
-                "mark": {
-                  "type": "arc",
-                  "radius": {"expr": "ring1_outer"},
-                  "radius2": {"expr": "ring1_inner"},
-                  "theta": 0,
-                  "theta2": {"expr": "datum.Ring1_Theta2"},
-                  "cornerRadius": 10
-                },
-                "encoding": {
-                  "color": {"value": {"expr": "ring1_color"}},
-                  "tooltip": [
-                    {"field": "__0__", "type": "nominal", "title": "Channel"},
-                    {"field": "Ring1_Percent_Label", "type": "nominal", "title": "Percent of Total Sales"}
-                  ]
-                }
-              },
-              {
-                "description": "RING 1 (OUTER) LABEL",
-                "mark": {
-                  "type": "text",
-                  "align": "right",
-                  "baseline": "middle",
-                  "dx": 30,
-                  "dy": {"expr": "-1*ring1_middle"},
-                  "fontSize": 12
-                },
-                "encoding": {
-                  "text": {"field": "Ring1_Percent_Label", "type": "nominal"},
-                  "color": {"value": {"expr": "label_color"}}
-                }
-              }
-            ]
-          },
-          {
-            "layer": [
-              {
-                "description": "RING 2 (MIDDLE) BACKGROUND",
-                "mark": {
-                  "type": "arc",
-                  "radius": {"expr": "ring2_outer"},
-                  "radius2": {"expr": "ring2_inner"},
-                  "theta": 0,
-                  "theta2": 6.284
-                },
-                "encoding": {
-                  "color": {"value": {"expr": "ring2_color"}},
-                  "opacity": {"value": {"expr": "ring_background_opacity"}}
-                }
-              },
-              {
-                "description": "RING 2 (MIDDLE)",
-                "mark": {
-                  "type": "arc",
-                  "radius": {"expr": "ring2_outer"},
-                  "radius2": {"expr": "ring2_inner"},
-                  "theta": 0,
-                  "theta2": {"expr": "datum.Ring2_Theta2"},
-                  "cornerRadius": 10
-                },
-                "encoding": {
-                  "color": {"value": {"expr": "ring2_color"}},
-                  "tooltip": [
-                    {"field": "__1__", "type": "nominal", "title": "Channel"},
-                    {"field": "Ring2_Percent_Label", "type": "nominal", "title": "Percent of Total Sales"}
-                  ]
-                }
-              },
-              {
-                "description": "RING 2 (MIDDLE) LABEL",
-                "mark": {
-                  "type": "text",
-                  "align": "right",
-                  "baseline": "middle",
-                  "dx": 30,
-                  "dy": {"expr": "-1*ring2_middle"},
-                  "fontSize": 12
-                },
-                "encoding": {
-                  "text": {"field": "Ring2_Percent_Label", "type": "nominal"},
-                  "color": {"value": {"expr": "label_color"}}
-                }
-              }
-            ]
-          },
-          {
-            "layer": [
-              {
-                "description": "RING 3 (INNER) BACKGROUND",
-                "mark": {
-                  "type": "arc",
-                  "radius": {"expr": "ring3_outer"},
-                  "radius2": {"expr": "ring3_inner"},
-                  "theta": 0,
-                  "theta2": 6.284
-                },
-                "encoding": {
-                  "color": {"value": {"expr": "ring3_color"}},
-                  "opacity": {"value": {"expr": "ring_background_opacity"}}
-                }
-              },
-              {
-                "description": "RING 3 (INNER)",
-                "mark": {
-                  "type": "arc",
-                  "radius": {"expr": "ring3_outer"},
-                  "radius2": {"expr": "ring3_inner"},
-                  "theta": 0,
-                  "theta2": {"expr": "datum.Ring3_Theta2"},
-                  "cornerRadius": 10
-                },
-                "encoding": {
-                  "color": {"value": {"expr": "ring3_color"}},
-                  "tooltip": [
-                    {"field": "__2__", "type": "nominal", "title": "Channel"},
-                    {"field": "Ring3_Percent_Label", "type": "nominal", "title": "Percent of Total Sales"}
-                  ]
-                }
-              },
-              {
-                "description": "RING 3 (INNER) LABEL",
-                "mark": {
-                  "type": "text",
-                  "align": "right",
-                  "baseline": "middle",
-                  "dx": 30,
-                  "dy": {"expr": "-1*ring3_middle"},
-                  "fontSize": 12
-                },
-                "encoding": {
-                  "text": {"field": "Ring3_Percent_Label", "type": "nominal"},
-                  "color": {"value": {"expr": "label_color"}}
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "view": {"stroke": null}
   };
 }
 
