@@ -107,6 +107,76 @@ export async function run() {
         };
       }
 
+      else if (chartType === "bubble") {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+          description: "Bubble chart from Excel selection",
+          background: "white",
+          config: { view: { stroke: "transparent" }},
+          data: { values: data },
+          mark: { type: "circle", tooltip: true, opacity: 0.7 },
+          encoding: {
+            x: { 
+              field: headers[0], 
+              type: "quantitative",
+              scale: { zero: false },
+              axis: {
+                title: headers[0],
+                labelFontSize: 12,
+                titleFontSize: 14
+              }
+            },
+            y: { 
+              field: headers[1], 
+              type: "quantitative",
+              scale: { zero: false },
+              axis: {
+                title: headers[1],
+                labelFontSize: 12,
+                titleFontSize: 14
+              }
+            },
+            size: {
+              field: headers[2],
+              type: "quantitative",
+              scale: {
+                type: "linear",
+                range: [100, 1000]
+              },
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            },
+            // Add color encoding if 4th column exists
+            ...(headers.length >= 4 && {
+              color: { 
+                field: headers[3], 
+                type: "nominal",
+                legend: {
+                  title: headers[3],
+                  titleFontSize: 12,
+                  labelFontSize: 11
+                }
+              }
+            })
+          },
+          config: {
+            font: "Segoe UI",
+            axis: {
+              labelColor: "#605e5c",
+              titleColor: "#323130",
+              gridColor: "#f3f2f1"
+            },
+            legend: {
+              titleColor: "#323130",
+              labelColor: "#605e5c"
+            }
+          }
+        };
+      }
+
 else if (chartType === "ring") {
   // Ring chart requires 2 columns: Category, Value
   if (headers.length < 2) {
@@ -603,76 +673,6 @@ else if (chartType === "ring") {
     "view": {"stroke": null}
   };
 }
-
-      else if (chartType === "bubble") {
-        spec = {
-          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-          description: "Bubble chart from Excel selection",
-          background: "white",
-          config: { view: { stroke: "transparent" }},
-          data: { values: data },
-          mark: { type: "circle", tooltip: true, opacity: 0.7 },
-          encoding: {
-            x: { 
-              field: headers[0], 
-              type: "quantitative",
-              scale: { zero: false },
-              axis: {
-                title: headers[0],
-                labelFontSize: 12,
-                titleFontSize: 14
-              }
-            },
-            y: { 
-              field: headers[1], 
-              type: "quantitative",
-              scale: { zero: false },
-              axis: {
-                title: headers[1],
-                labelFontSize: 12,
-                titleFontSize: 14
-              }
-            },
-            size: {
-              field: headers[2],
-              type: "quantitative",
-              scale: {
-                type: "linear",
-                range: [100, 1000]
-              },
-              legend: {
-                title: headers[2],
-                titleFontSize: 12,
-                labelFontSize: 11
-              }
-            },
-            // Add color encoding if 4th column exists
-            ...(headers.length >= 4 && {
-              color: { 
-                field: headers[3], 
-                type: "nominal",
-                legend: {
-                  title: headers[3],
-                  titleFontSize: 12,
-                  labelFontSize: 11
-                }
-              }
-            })
-          },
-          config: {
-            font: "Segoe UI",
-            axis: {
-              labelColor: "#605e5c",
-              titleColor: "#323130",
-              gridColor: "#f3f2f1"
-            },
-            legend: {
-              titleColor: "#323130",
-              labelColor: "#605e5c"
-            }
-          }
-        };
-      }
 
       else if (chartType === "line") {
         const transformedData = [];
