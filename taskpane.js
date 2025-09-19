@@ -191,7 +191,7 @@ else if (chartType === "ring") {
   // Dynamic ring parameters based on number of rings
   const ringWidth = Math.max(15, Math.min(25, 120 / numRings));
   const ringGap = Math.max(3, Math.min(8, 40 / numRings));
-  const maxRadius = 120 + (numRings * 8); // Reduced for tighter layout
+  const maxRadius = 150 + (numRings * 5);
 
   // Generate colors dynamically
   const generateRingColor = (index, total) => {
@@ -223,57 +223,62 @@ else if (chartType === "ring") {
     currentOuter = inner - ringGap;
   }
 
-  // Dynamic sizing - compact layout
-  const chartSize = maxRadius * 2 + 60; // Tight bounds
-  const legendHeight = Math.max(25, Math.min(40, numRings * 8));
+  // Create legend data
+  const legendData = data.map((d, index) => ({
+    category: d[headers[0]],
+    color: generateRingColor(index, numRings),
+    x_position: -150 + (index * Math.min(100, 300 / numRings)),
+    label_x_position: -140 + (index * Math.min(100, 300 / numRings))
+  }));
 
   spec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "config": {
-      "autosize": {"type": "pad", "resize": true},
-      "concat": {"spacing": 5},
-      "padding": 5
+      "autosize": {
+        "type": "fit",
+        "contains": "padding"
+      },
+      "concat": {"spacing": 10}
     },
     "description": `Dynamic ring chart with ${numRings} concentric rings`,
     "background": "white",
     "data": {"values": chartData},
     "vconcat": [
       {
-        "description": "LEGEND - Compact",
-        "width": chartSize,
-        "height": legendHeight,
-        "layer": data.map((d, index) => [
+        "description": "LEGEND",
+        "width": Math.max(400, numRings * 80),
+        "height": 30,
+        "layer": legendData.map((item, index) => [
           {
-            "description": `LEGEND CIRCLE ${index + 1}`,
+            "description": `CATEGORY ${index + 1} COLOUR`,
             "mark": {
               "type": "circle",
-              "size": 120,
-              "x": -Math.min(150, numRings * 25) + (index * Math.min(60, 300 / numRings)),
+              "size": 150,
+              "x": item.x_position,
               "y": 0,
-              "color": generateRingColor(index, numRings)
+              "color": item.color
             }
           },
           {
-            "description": `LEGEND LABEL ${index + 1}`,
+            "description": `CATEGORY ${index + 1} LABEL`,
             "mark": {
               "type": "text",
-              "x": -Math.min(140, numRings * 25) + (index * Math.min(60, 300 / numRings)),
+              "x": item.label_x_position,
               "y": 0,
               "align": "left",
               "baseline": "middle",
-              "fontSize": Math.max(9, Math.min(11, 100 / numRings)),
-              "font": "Segoe UI"
+              "fontSize": Math.max(10, Math.min(12, 120 / numRings))
             },
             "encoding": {
-              "text": {"value": d[headers[0]]}
+              "text": {"value": item.category}
             }
           }
         ]).flat()
       },
       {
-        "description": "RINGS - Compact and Centered",
-        "width": chartSize,
-        "height": chartSize,
+        "description": "RINGS",
+        "width": Math.max(400, numRings * 40),
+        "height": Math.max(400, numRings * 40),
         "layer": [
           // Background rings (full circles)
           ...data.map((d, index) => ({
@@ -299,7 +304,7 @@ else if (chartType === "ring") {
               "radius2": ringPositions[index].inner,
               "theta": 0,
               "theta2": {"expr": `datum['Ring${index + 1}_Theta2']`},
-              "cornerRadius": Math.min(6, ringWidth / 3),
+              "cornerRadius": Math.min(8, ringWidth / 2),
               "tooltip": true
             },
             "encoding": {
@@ -310,22 +315,29 @@ else if (chartType === "ring") {
               ]
             }
           })),
-          // White percentage labels positioned to the right on dark sections
+          // White percentage labels at the beginning (12 o'clock) of dark sections only
           ...data.map((d, index) => ({
             "description": `RING ${index + 1} LABEL`,
             "mark": {
               "type": "text",
               "align": "center",
               "baseline": "middle",
-              "dx": ringPositions[index].middle * 0.5, // Position to the right
-              "dy": -ringPositions[index].middle * 0.3, // Slight upward angle
-              "fontSize": Math.max(9, Math.min(12, 150 / numRings)),
+              "dx": 0,
+              "dy": -ringPositions[index].middle, // At the top (12 o'clock position)
+              "fontSize": Math.max(10, Math.min(14, 180 / numRings)),
               "font": "Segoe UI",
               "fontWeight": "bold",
               "color": "white" // White text on dark sections
             },
             "encoding": {
-              "text": {"value": d[headers[1]] + "%"}
+              "text": {"value": d[headers[1]] + "%"},
+              "opacity": {
+                "condition": {
+                  "test": `datum['Ring${index + 1}_Theta2'] > 0`, // Only show if there's progress
+                  "value": 1
+                },
+                "value": 0
+              }
             }
           }))
         ]
