@@ -229,13 +229,6 @@ else if (chartType === "ring") {
     "config": {
       "view": {"stroke": null}
     },
-    "title": {
-      "text": `Ring Chart - ${numRings} Performance Metrics`,
-      "anchor": "start",
-      "fontSize": 16,
-      "fontWeight": "bold",
-      "font": "Segoe UI"
-    },
     "data": {"values": data},
     "layer": [
       // Background rings for each data point
