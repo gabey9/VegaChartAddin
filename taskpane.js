@@ -178,182 +178,106 @@ export async function run() {
       }
 
 else if (chartType === "ring") {
-  // Ring chart requires 2 columns: Category, Value
-  if (headers.length < 2) {
-    throw new Error("Ring chart requires 2 columns: Category, Value");
-  }
+  const numRings = values.length;
+  const ringWidth = 20; // thickness of each ring
+  const gap = 10;       // gap between rings
 
-  const numRings = data.length;
-  if (numRings === 0) {
-    throw new Error("Ring chart requires at least one data row");
-  }
-
-  // Dynamic ring parameters based on number of rings
-  const ringWidth = Math.max(15, Math.min(25, 120 / numRings));
-  const ringGap = Math.max(3, Math.min(8, 40 / numRings));
-  const maxRadius = 150 + (numRings * 5);
-
-  // Generate colors dynamically
-  const generateRingColor = (index, total) => {
-    const baseHue = 210; // Blue base
-    const saturation = Math.max(50, 80 - (index * 5));
-    const lightness = Math.max(25, 60 - (index * 8));
-    return `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
-  };
-
-  // Transform data for the chart
-  const transformedData = data.map((d, index) => ({
-    [`__${index}__`]: d[headers[0]], // Category
-    [`__${index + 100}__`]: d[headers[1]], // Value
-    [`Ring${index + 1}_Theta2`]: 2 * Math.PI * d[headers[1]] / 100,
-    [`Ring${index + 1}_Percent_Label`]: d[headers[1]] + '%'
-  }));
-
-  // Flatten into single object
-  const chartData = [Object.assign({}, ...transformedData)];
-
-  // Calculate ring positions
-  const ringPositions = [];
-  let currentOuter = maxRadius;
-  for (let i = 0; i < numRings; i++) {
-    const outer = currentOuter;
+  // Compute radius positions for each ring
+  const ringPositions = Array.from({ length: numRings }, (_, i) => {
+    const outer = (numRings - i) * (ringWidth + gap);
     const inner = outer - ringWidth;
     const middle = (outer + inner) / 2;
-    ringPositions.push({ outer, inner, middle });
-    currentOuter = inner - ringGap;
-  }
-
-  // Create legend data
-  const legendData = data.map((d, index) => ({
-    category: d[headers[0]],
-    color: generateRingColor(index, numRings),
-    x_position: -150 + (index * Math.min(100, 300 / numRings)),
-    label_x_position: -140 + (index * Math.min(100, 300 / numRings))
-  }));
+    // font size decreases inward, but not smaller than 10px
+    const fontSize = Math.max(10, 14 - i);
+    return { outer, inner, middle, fontSize };
+  });
 
   spec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "config": {
-      "autosize": {
-        "type": "fit",
-        "contains": "padding"
-      },
-      "concat": {"spacing": 10}
+    "description": "Multi-ring progress chart",
+    "width": 400,
+    "height": 400,
+    "autosize": "none",   // keep centered
+    "data": { 
+      "values": values.map((row, i) => {
+        const category = row[0];
+        const percent = row[1];
+        return {
+          category,
+          percent,
+          theta2: (percent / 100) * 2 * Math.PI,
+          index: i
+        };
+      }) 
     },
-    "description": `Dynamic ring chart with ${numRings} concentric rings`,
-    "background": "white",
-    "data": {"values": chartData},
-    "vconcat": [
-      {
-        "description": "LEGEND",
-        "width": Math.max(400, numRings * 80),
-        "height": 30,
-        "layer": legendData.map((item, index) => [
-          {
-            "description": `CATEGORY ${index + 1} COLOUR`,
-            "mark": {
-              "type": "circle",
-              "size": 150,
-              "x": item.x_position,
-              "y": 0,
-              "color": item.color
-            }
-          },
-          {
-            "description": `CATEGORY ${index + 1} LABEL`,
-            "mark": {
-              "type": "text",
-              "x": item.label_x_position,
-              "y": 0,
-              "align": "left",
-              "baseline": "middle",
-              "fontSize": Math.max(10, Math.min(12, 120 / numRings))
-            },
-            "encoding": {
-              "text": {"value": item.category}
-            }
-          }
-        ]).flat()
-      },
-      {
-        "description": "RINGS",
-        "width": Math.max(400, numRings * 40),
-        "height": Math.max(400, numRings * 40),
-        "layer": [
-          // Background rings (full circles)
-          ...data.map((d, index) => ({
-            "description": `RING ${index + 1} BACKGROUND`,
-            "mark": {
-              "type": "arc",
-              "x": {"signal": "width/2"},
-              "y": {"signal": "height/2"},
-              "radius": ringPositions[index].outer,
-              "radius2": ringPositions[index].inner,
-              "theta": 0,
-              "theta2": 2 * Math.PI,
-              "opacity": 0.25
-            },
-            "encoding": {
-              "color": {"value": generateRingColor(index, numRings)}
-            }
-          })),
-
-          // Progress rings
-          ...data.map((d, index) => ({
-            "description": `RING ${index + 1} PROGRESS`,
-            "mark": {
-              "type": "arc",
-              "x": {"signal": "width/2"},
-              "y": {"signal": "height/2"},
-              "radius": ringPositions[index].outer,
-              "radius2": ringPositions[index].inner,
-              "theta": 0,
-              "theta2": {"expr": `datum['Ring${index + 1}_Theta2']`},
-              "cornerRadius": Math.min(8, ringWidth / 2),
-              "tooltip": true
-            },
-            "encoding": {
-              "color": {"value": generateRingColor(index, numRings)},
-              "tooltip": [
-                {"value": d[headers[0]], "title": "Category"},
-                {"value": d[headers[1]] + "%", "title": "Progress"}
-              ]
-            }
-          })),
-
-          // Percentage labels at end of dark arcs
-          ...data.map((d, index) => ({
-            "description": `RING ${index + 1} LABEL`,
-            "mark": {
-              "type": "text",
-              "align": "center",
-              "baseline": "middle",
-              "fontSize": Math.max(10, Math.min(14, 180 / numRings)),
-              "font": "Segoe UI",
-              "fontWeight": "bold",
-              "fill": "white"
-            },
-            "encoding": {
-              "text": {"value": d[headers[1]] + "%"},
-              "x": {
-                "signal": `width/2 + (${ringPositions[index].middle} * cos(datum['Ring${index + 1}_Theta2'] - PI/2))`
-              },
-              "y": {
-                "signal": `height/2 + (${ringPositions[index].middle} * sin(datum['Ring${index + 1}_Theta2'] - PI/2))`
-              },
-              "opacity": {
-                "condition": {
-                  "test": `datum['Ring${index + 1}_Theta2'] > 0`,
-                  "value": 1
-                },
-                "value": 0
-              }
-            }
-          }))
-        ]
+    "encoding": {
+      "color": {
+        "field": "category",
+        "type": "nominal",
+        "legend": { "orient": "top", "direction": "horizontal" },
+        "scale": { "scheme": "blues" }
       }
-    ],
-    "view": {"stroke": null}
+    },
+    "layer": [
+      // Background rings
+      ...ringPositions.map((pos, i) => ({
+        "transform": [{ "filter": `datum.index == ${i}` }],
+        "mark": {
+          "type": "arc",
+          "x": { "signal": "width/2" },
+          "y": { "signal": "height/2" },
+          "radius": pos.outer,
+          "radius2": pos.inner,
+          "theta": 0,
+          "theta2": 2 * Math.PI,
+          "opacity": 0.25
+        }
+      })),
+
+      // Progress arcs
+      ...ringPositions.map((pos, i) => ({
+        "transform": [{ "filter": `datum.index == ${i}` }],
+        "mark": {
+          "type": "arc",
+          "x": { "signal": "width/2" },
+          "y": { "signal": "height/2" },
+          "radius": pos.outer,
+          "radius2": pos.inner,
+          "theta": 0,
+          "theta2": { "expr": "datum.theta2" },
+          "cornerRadius": Math.min(8, ringWidth / 2)
+        },
+        "encoding": {
+          "tooltip": [
+            { "field": "category", "title": "Category" },
+            { "field": "percent", "title": "Progress", "format": ".0f" }
+          ]
+        }
+      })),
+
+      // Labels at arc end
+      ...ringPositions.map((pos, i) => ({
+        "transform": [{ "filter": `datum.index == ${i}` }],
+        "mark": {
+          "type": "text",
+          "align": "center",
+          "baseline": "middle",
+          "font": "Segoe UI",
+          "fontWeight": "bold",
+          "fill": "white",
+          "fontSize": pos.fontSize
+        },
+        "encoding": {
+          "text": { "expr": "datum.percent + '%'" },
+          "x": {
+            "signal": `width/2 + (${pos.middle} * cos(datum.theta2 - PI/2))`
+          },
+          "y": {
+            "signal": `height/2 + (${pos.middle} * sin(datum.theta2 - PI/2))`
+          }
+        }
+      }))
+    ]
   };
 }
 
