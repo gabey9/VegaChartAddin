@@ -1,3 +1,6368 @@
-/*! For license information please see functions.js.LICENSE.txt */
-!function(){function e(){var a,n,r="function"==typeof Symbol?Symbol:{},o=r.iterator||"@@iterator",i=r.toStringTag||"@@toStringTag";function l(e,r,o,i){var l=r&&r.prototype instanceof s?r:s,u=Object.create(l.prototype);return t(u,"_invoke",function(e,t,r){var o,i,l,s=0,u=r||[],d=!1,f={p:0,n:0,v:a,a:m,f:m.bind(a,4),d:function(e,t){return o=e,i=0,l=a,f.n=t,c}};function m(e,t){for(i=e,l=t,n=0;!d&&s&&!r&&n<u.length;n++){var r,o=u[n],m=f.p,g=o[2];e>3?(r=g===t)&&(l=o[(i=o[4])?5:(i=3,3)],o[4]=o[5]=a):o[0]<=m&&((r=e<2&&m<o[1])?(i=0,f.v=t,f.n=o[1]):m<g&&(r=e<3||o[0]>t||t>g)&&(o[4]=e,o[5]=t,f.n=g,i=0))}if(r||e>1)return c;throw d=!0,t}return function(r,u,g){if(s>1)throw TypeError("Generator is already running");for(d&&1===u&&m(u,g),i=u,l=g;(n=i<2?a:l)||!d;){o||(i?i<3?(i>1&&(f.n=-1),m(i,l)):f.n=l:f.v=l);try{if(s=2,o){if(i||(r="next"),n=o[r]){if(!(n=n.call(o,l)))throw TypeError("iterator result is not an object");if(!n.done)return n;l=n.value,i<2&&(i=0)}else 1===i&&(n=o.return)&&n.call(o),i<2&&(l=TypeError("The iterator does not provide a '"+r+"' method"),i=1);o=a}else if((n=(d=f.n<0)?l:e.call(t,f))!==c)break}catch(e){o=a,i=1,l=e}finally{s=1}}return{value:n,done:d}}}(e,o,i),!0),u}var c={};function s(){}function u(){}function d(){}n=Object.getPrototypeOf;var f=[][o]?n(n([][o]())):(t(n={},o,function(){return this}),n),m=d.prototype=s.prototype=Object.create(f);function g(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,d):(e.__proto__=d,t(e,i,"GeneratorFunction")),e.prototype=Object.create(m),e}return u.prototype=d,t(m,"constructor",d),t(d,"constructor",u),u.displayName="GeneratorFunction",t(d,i,"GeneratorFunction"),t(m),t(m,i,"Generator"),t(m,o,function(){return this}),t(m,"toString",function(){return"[object Generator]"}),(e=function(){return{w:l,m:g}})()}function t(e,a,n,r){var o=Object.defineProperty;try{o({},"",{})}catch(e){o=0}t=function(e,a,n,r){function i(a,n){t(e,a,function(e){return this._invoke(a,n,e)})}a?o?o(e,a,{value:n,enumerable:!r,configurable:!r,writable:!r}):e[a]=n:(i("next",0),i("throw",1),i("return",2))},t(e,a,n,r)}function a(e){return a="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},a(e)}function n(e,t,a,n,r,o,i){try{var l=e[o](i),c=l.value}catch(e){return void a(e)}l.done?t(c):Promise.resolve(c).then(n,r)}function r(e){return function(){var t=this,a=arguments;return new Promise(function(r,o){var i=e.apply(t,a);function l(e){n(i,r,o,l,c,"next",e)}function c(e){n(i,r,o,l,c,"throw",e)}l(void 0)})}}function o(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){var a=null==e?null:"undefined"!=typeof Symbol&&e[Symbol.iterator]||e["@@iterator"];if(null!=a){var n,r,o,i,l=[],c=!0,s=!1;try{if(o=(a=a.call(e)).next,0===t){if(Object(a)!==a)return;c=!1}else for(;!(c=(n=o.call(a)).done)&&(l.push(n.value),l.length!==t);c=!0);}catch(e){s=!0,r=e}finally{try{if(!c&&null!=a.return&&(i=a.return(),Object(i)!==i))return}finally{if(s)throw r}}return l}}(e,t)||c(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function i(e,t){var a="undefined"!=typeof Symbol&&e[Symbol.iterator]||e["@@iterator"];if(!a){if(Array.isArray(e)||(a=c(e))||t&&e&&"number"==typeof e.length){a&&(e=a);var n=0,r=function(){};return{s:r,n:function(){return n>=e.length?{done:!0}:{done:!1,value:e[n++]}},e:function(e){throw e},f:r}}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}var o,i=!0,l=!1;return{s:function(){a=a.call(e)},n:function(){var e=a.next();return i=e.done,e},e:function(e){l=!0,o=e},f:function(){try{i||null==a.return||a.return()}finally{if(l)throw o}}}}function l(e){return function(e){if(Array.isArray(e))return s(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||c(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function c(e,t){if(e){if("string"==typeof e)return s(e,t);var a={}.toString.call(e).slice(8,-1);return"Object"===a&&e.constructor&&(a=e.constructor.name),"Map"===a||"Set"===a?Array.from(e):"Arguments"===a||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(a)?s(e,t):void 0}}function s(e,t){(null==t||t>e.length)&&(t=e.length);for(var a=0,n=Array(t);a<t;a++)n[a]=e[a];return n}function u(e,t){var a=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),a.push.apply(a,n)}return a}function d(e){for(var t=1;t<arguments.length;t++){var a=null!=arguments[t]?arguments[t]:{};t%2?u(Object(a),!0).forEach(function(t){f(e,t,a[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(a)):u(Object(a)).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(a,t))})}return e}function f(e,t,n){return(t=function(e){var t=function(e){if("object"!=a(e)||!e)return e;var t=e[Symbol.toPrimitive];if(void 0!==t){var n=t.call(e,"string");if("object"!=a(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return String(e)}(e);return"symbol"==a(t)?t:t+""}(t))in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function m(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1),r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=[],i=a.slice(1);r.forEach(function(e){i.forEach(function(t){null!==e[t]&&void 0!==e[t]&&""!==e[t]&&o.push(f(f(f({},a[0],e[a[0]]),"series",t),"value",parseFloat(e[t])||0))})}),Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Multi-series line chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:o},mark:{type:"line",point:!1,tooltip:!0,strokeWidth:2},encoding:{x:{field:a[0],type:"ordinal",axis:{title:a[0],labelFontSize:12,titleFontSize:14,labelAngle:0}},y:{field:"value",type:"quantitative",axis:{title:"Value",labelFontSize:12,titleFontSize:14}},color:{field:"series",type:"nominal",scale:{scheme:"category10"},legend:{title:"Series",titleFontSize:12,labelFontSize:11}}}},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"},point:{size:60,filled:!0}}),"line",a,n).then(function(){return t("Line")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function g(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Bar chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"bar",tooltip:!0},encoding:d({x:{field:a[0],type:"nominal",axis:{title:a[0],labelFontSize:12,titleFontSize:14}},y:{field:a[1],type:"quantitative",axis:{title:a[1],labelFontSize:12,titleFontSize:14}}},a.length>=3&&{color:{field:a[2],type:"nominal",legend:{title:a[2],titleFontSize:12,labelFontSize:11}}})},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"bar",a,n).then(function(){return t("Bar")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function p(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Gauge chart requires 2 columns (Current Value, Max Value)");var r=n[0];Z({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Gauge chart from Excel selection",width:400,height:300,background:"white",config:{view:{stroke:"transparent"}},signals:[{name:"centerX",update:"width / 2"},{name:"centerY",update:"height / 2"},{name:"outerRadius",update:"min(width, height) / 2 - 10"},{name:"innerRadius",update:"outerRadius - outerRadius * 0.25"},{name:"mainValue",value:parseFloat(r[0])||0},{name:"minValue",value:0},{name:"maxValue",value:parseFloat(r[1])||100},{name:"usedValue",update:"min(max(minValue, mainValue), maxValue)"},{name:"fontFactor",update:"(min(width, height)/5)/25"},{name:"backgroundColor",value:"#e1e4e8"},{name:"fillColor",value:"#0078d4"},{name:"needleColor",value:"#323130"},{name:"needleSize",update:"innerRadius"}],scales:[{name:"gaugeScale",type:"linear",domain:[{signal:"minValue"},{signal:"maxValue"}],range:[{signal:"-PI/2"},{signal:"PI/2"}]},{name:"needleScale",type:"linear",domain:[{signal:"minValue"},{signal:"maxValue"}],range:[-90,90]}],marks:[{type:"arc",name:"gauge",encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY"},startAngle:{signal:"-PI/2"},endAngle:{signal:"PI/2"},outerRadius:{signal:"outerRadius"},innerRadius:{signal:"innerRadius"},fill:{signal:"backgroundColor"}}}},{type:"arc",encode:{enter:{startAngle:{signal:"-PI/2"}},update:{x:{signal:"centerX"},y:{signal:"centerY"},innerRadius:{signal:"innerRadius"},outerRadius:{signal:"outerRadius"},endAngle:{scale:"gaugeScale",signal:"usedValue"},fill:{signal:"fillColor"}}}},{type:"text",description:"displayed main value at the center",encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY + fontFactor * 15"},baseline:{value:"middle"},align:{value:"center"},fontSize:{signal:"fontFactor * 7"},font:{value:"Segoe UI"},fontWeight:{value:"bold"}},update:{text:{signal:"mainValue < 1 ? format(mainValue, '.0%') : format(mainValue, ',.0f')"},fill:{signal:"fillColor"}}}},{type:"symbol",name:"needle",encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY"}},update:{shape:{signal:"'M-2.5 -2.5 Q 0 0 2.5 -2.5 L 0 -' + toString(needleSize) + ' Z '"},angle:{signal:"usedValue",scale:"needleScale"},size:{signal:"4"},stroke:{signal:"needleColor"},fill:{signal:"needleColor"}}}},{type:"symbol",description:"center circle",encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY"},shape:{value:"circle"},size:{signal:"pow(fontFactor * 8, 2)"},fill:{signal:"needleColor"},stroke:{value:"white"},strokeWidth:{value:2}}}}]},"gauge",a,n).then(function(){return t("Gauge")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function h(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Pie chart requires 2 columns (Category, Value)");if(n.some(function(e){return isNaN(e[1])||e[1]<=0}))return void t("Error: Pie chart values must be positive numbers");Z({$schema:"https://vega.github.io/schema/vega-lite/v6.json",background:"white",config:{view:{stroke:"transparent"}},description:"Pie chart from Excel selection",data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"arc",outerRadius:120},encoding:{theta:{field:a[1],type:"quantitative"},color:{field:a[0],type:"nominal"}}},"pie",a,n).then(function(){return t("Pie")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function y(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Area chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"area",tooltip:!0,opacity:.7},encoding:d({x:{field:a[0],type:"ordinal",axis:{title:a[0],labelFontSize:12,titleFontSize:14}},y:{field:a[1],type:"quantitative",axis:{title:a[1],labelFontSize:12,titleFontSize:14}}},a.length>=3&&{color:{field:a[2],type:"nominal",legend:{title:a[2],titleFontSize:12,labelFontSize:11}}})},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"area",a,n).then(function(){return t("Area")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function v(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Scatter plot requires at least 2 columns (X, Y values)");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Colored scatter plot from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"point",size:100,tooltip:!0},encoding:d(d({x:{field:a[0],type:"quantitative",scale:{zero:!1},axis:{title:a[0],labelFontSize:12,titleFontSize:14}},y:{field:a[1],type:"quantitative",scale:{zero:!1},axis:{title:a[1],labelFontSize:12,titleFontSize:14}}},a.length>=3&&{color:{field:a[2],type:"nominal",legend:{title:a[2],titleFontSize:12,labelFontSize:11}}}),a.length>=4&&{shape:{field:a[3],type:"nominal",legend:{title:a[3],titleFontSize:12,labelFontSize:11}}})},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"scatter",a,n).then(function(){return t("Scatter")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function b(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Bubble chart requires at least 3 columns (X values, Y values, Size values)");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Bubble chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"circle",tooltip:!0,opacity:.7},encoding:d({x:{field:a[0],type:"quantitative",scale:{zero:!1},axis:{title:a[0],labelFontSize:12,titleFontSize:14}},y:{field:a[1],type:"quantitative",scale:{zero:!1},axis:{title:a[1],labelFontSize:12,titleFontSize:14}},size:{field:a[2],type:"quantitative",scale:{type:"linear",range:[100,1e3]},legend:{title:a[2],titleFontSize:12,labelFontSize:11}}},a.length>=4&&{color:{field:a[3],type:"nominal",legend:{title:a[3],titleFontSize:12,labelFontSize:11}}})},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"bubble",a,n).then(function(){return t("Bubble")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function x(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Ring chart requires 2 columns: Category, Value");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=r.length;if(0===o)return void t("Error: Ring chart requires at least one data row");for(var i=Math.max(15,Math.min(25,120/o)),c=Math.max(3,Math.min(8,40/o)),s=150+5*o,u=function(e,t){var a=Math.max(50,80-5*e),n=Math.max(25,60-8*e);return"hsl(".concat(210,", ").concat(a,"%, ").concat(n,"%)")},d=r.map(function(e,t){return f(f(f(f({},"__".concat(t,"__"),e[a[0]]),"__".concat(t+100,"__"),e[a[1]]),"Ring".concat(t+1,"_Theta2"),2*Math.PI*e[a[1]]/100),"Ring".concat(t+1,"_Percent_Label"),e[a[1]]+"%")}),m=[Object.assign.apply(Object,[{}].concat(l(d)))],g=[],p=s,h=0;h<o;h++){var y=p,v=y-i,b=(y+v)/2;g.push({outer:y,inner:v,middle:b}),p=v-c}var x=s+50-25*o/2;Z({$schema:"https://vega.github.io/schema/vega-lite/v5.json",config:{autosize:{type:"pad",resize:!0},concat:{spacing:20}},description:"Dynamic ring chart with ".concat(o," concentric rings"),background:"white",data:{values:m},hconcat:[{description:"RINGS - Main Chart",width:2*(s+50),height:2*(s+50),view:{stroke:null},layer:[].concat(l(r.map(function(e,t){return{description:"RING ".concat(t+1," BACKGROUND"),mark:{type:"arc",radius:g[t].outer,radius2:g[t].inner,theta:0,theta2:6.283185307179586,opacity:.25,x:s+50,y:s+50},encoding:{color:{value:u(t)}}}})),l(r.map(function(e,t){return{description:"RING ".concat(t+1," PROGRESS"),mark:{type:"arc",radius:g[t].outer,radius2:g[t].inner,theta:0,theta2:{expr:"datum['Ring".concat(t+1,"_Theta2']")},cornerRadius:Math.min(8,i/2),tooltip:!0,x:s+50,y:s+50},encoding:{color:{value:u(t)},tooltip:[{value:e[a[0]],title:"Category"},{value:e[a[1]]+"%",title:"Progress"}]}}})),l(r.map(function(e,t){return{description:"RING ".concat(t+1," LABEL"),mark:{type:"text",align:"center",baseline:"middle",x:s+50+15,y:s+50-g[t].middle,fontSize:Math.max(10,Math.min(14,180/o)),font:"Segoe UI",fontWeight:"bold",color:"white"},encoding:{text:{value:e[a[1]]+"%"},opacity:{condition:{test:"datum['Ring".concat(t+1,"_Theta2'] > 0"),value:1},value:0}}}})))},{description:"LEGEND - Right Side",width:120,height:2*(s+50),view:{stroke:null},layer:r.map(function(e,t){return[{description:"LEGEND CIRCLE ".concat(t+1),mark:{type:"circle",size:150,x:15,y:x+25*t,color:u(t)}},{description:"LEGEND LABEL ".concat(t+1),mark:{type:"text",x:35,y:x+25*t,align:"left",baseline:"middle",fontSize:11,font:"Segoe UI"},encoding:{text:{value:e[a[0]]}}}]}).flat()}],view:{stroke:null}},"ring",a,n).then(function(){return t("Ring")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function k(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Radial chart requires 2 columns (Category, Value)");Z({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Radial chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},layer:[{mark:{type:"arc",innerRadius:20,stroke:"#fff"}},{mark:{type:"text",radiusOffset:10},encoding:{text:{field:a[1],type:"quantitative"}}}],encoding:{theta:{field:a[1],type:"quantitative",stack:!0},radius:{field:a[1],scale:{type:"sqrt",zero:!0,rangeMin:20}},color:{field:a[0],type:"nominal",legend:null}}},"radial",a,n).then(function(){return t("Radial")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function w(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Box plot requires 2 columns (Category, Values)");var r=n.filter(function(e){return e[0]&&!isNaN(+e[1])}).map(function(e){return{category:e[0],value:+e[1]}});if(0===r.length)return void t("Error: No valid numeric data found for box plot");Z({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Box plot from Excel selection",data:{values:r},mark:{type:"boxplot",extent:"min-max"},encoding:{x:{field:"category",type:"nominal"},y:{field:"value",type:"quantitative",scale:{zero:!1}},color:{field:"category",type:"nominal",legend:null}}},"box",a,n).then(function(){return t("Box")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function E(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Radar chart requires at least 3 columns (Series, Dimension1, Dimension2, ...)");var r=[],o=a.slice(1);n.forEach(function(e,t){var n=e[a[0]]||"Series ".concat(t+1);o.forEach(function(o){var i=parseFloat(e[a.indexOf(o)])||0;r.push({series:n,dimension:o,value:i,category:t})})});var i=l(new Set(r.map(function(e){return e.dimension})));Z({$schema:"https://vega.github.io/schema/vega/v6.json",description:"Radar chart from Excel selection",width:400,height:400,padding:60,autosize:{type:"none",contains:"padding"},background:"white",config:{view:{stroke:"transparent"}},signals:[{name:"radius",update:"width / 2"}],data:[{name:"table",values:r},{name:"dimensions",values:i.map(function(e){return{dimension:e}})}],scales:[{name:"angular",type:"point",range:{signal:"[-PI, PI]"},padding:.5,domain:i},{name:"radial",type:"linear",range:{signal:"[0, radius]"},zero:!0,nice:!0,domain:{data:"table",field:"value"},domainMin:0},{name:"color",type:"ordinal",domain:{data:"table",field:"category"},range:["#0078d4","#00bcf2","#40e0d0","#00cc6a","#10893e","#107c10","#bad80a","#ffb900","#ff8c00","#d13438"]}],encode:{enter:{x:{signal:"radius"},y:{signal:"radius"}}},marks:[{type:"group",name:"categories",zindex:1,from:{facet:{data:"table",name:"facet",groupby:["category","series"]}},marks:[{type:"line",name:"category-line",from:{data:"facet"},encode:{enter:{interpolate:{value:"linear-closed"},x:{signal:"scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},y:{signal:"scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},stroke:{scale:"color",field:"category"},strokeWidth:{value:2},fill:{scale:"color",field:"category"},fillOpacity:{value:.1},strokeOpacity:{value:.8}}}},{type:"symbol",name:"category-points",from:{data:"facet"},encode:{enter:{x:{signal:"scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},y:{signal:"scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},size:{value:50},fill:{scale:"color",field:"category"},stroke:{value:"white"},strokeWidth:{value:1}}}}]},{type:"rule",name:"radial-grid",from:{data:"dimensions"},zindex:0,encode:{enter:{x:{value:0},y:{value:0},x2:{signal:"radius * cos(scale('angular', datum.dimension))"},y2:{signal:"radius * sin(scale('angular', datum.dimension))"},stroke:{value:"#e1e4e8"},strokeWidth:{value:1}}}},{type:"text",name:"dimension-label",from:{data:"dimensions"},zindex:1,encode:{enter:{x:{signal:"(radius + 20) * cos(scale('angular', datum.dimension))"},y:{signal:"(radius + 20) * sin(scale('angular', datum.dimension))"},text:{field:"dimension"},align:[{test:"abs(scale('angular', datum.dimension)) > PI / 2",value:"right"},{value:"left"}],baseline:[{test:"scale('angular', datum.dimension) > 0",value:"top"},{test:"scale('angular', datum.dimension) == 0",value:"middle"},{value:"bottom"}],fill:{value:"#323130"},fontWeight:{value:"bold"},font:{value:"Segoe UI"},fontSize:{value:12}}}},{type:"line",name:"outer-line",from:{data:"radial-grid"},encode:{enter:{interpolate:{value:"linear-closed"},x:{field:"x2"},y:{field:"y2"},stroke:{value:"#8a8886"},strokeWidth:{value:2},strokeOpacity:{value:.6}}}}]},"radar",a,n).then(function(){return t("Radar")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function S(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Waterfall chart requires 3 columns (Category, Amount, Type)");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=l(r);o.length>0&&(o[o.length-1]=d(d({},o[o.length-1]),{},f({},a[1],0)));var i=r.length,c=Math.max(400,Math.min(1600,50*i)),s=Math.max.apply(Math,l(r.map(function(e){return Math.abs(e[a[1]])})));Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Waterfall chart with multiple subtotals",background:"white",data:{values:o},config:{view:{stroke:"transparent"}},width:c,height:Math.max(300,Math.min(600,s/100+200)),transform:[{window:[{op:"sum",field:a[1],as:"sum"}]},{window:[{op:"lead",field:a[0],as:"lead"}]},{calculate:"datum.lead === null ? datum.".concat(a[0]," : datum.lead"),as:"lead"},{calculate:"datum.".concat(a[2]," == 'total' ? 0 : datum.sum - datum.").concat(a[1]),as:"previous_sum"},{calculate:"datum.".concat(a[2]," == 'total' ? datum.sum : datum.").concat(a[1]),as:"amount"},{calculate:"datum.".concat(a[2]," == 'total' ? datum.").concat(a[1]," / 2 : (datum.sum + datum.previous_sum) / 2"),as:"center"},{calculate:"datum.".concat(a[2]," == 'total' ? datum.sum : (datum.").concat(a[1]," > 0 ? '+' : '') + datum.").concat(a[1]),as:"text_amount"},{calculate:"(datum.sum + datum.previous_sum) / 2",as:"center"},{window:[{op:"rank",as:"group_index"}],frame:[null,null],groupby:[a[0]]},{calculate:"\n            datum.".concat(a[2]," == 'total'\n                ? '#00B0F0'\n                : datum.amount >= 0\n                ? (datum.group_index == 1 ? '#70AD47'\n                    : (datum.group_index == 2 ? '#8BC97A'\n                    : (datum.group_index == 3 ? '#A7DA9D'\n                    : '#C3EBC0')))\n                : (datum.group_index == 1 ? '#E15759'\n                    : (datum.group_index == 2 ? '#EC7A7C'\n                    : (datum.group_index == 3 ? '#F29C9D'\n                    : '#F8BEBF')))\n            "),as:"bar_color"}],encoding:{x:{field:a[0],type:"ordinal",sort:null,axis:{labelAngle:-45,title:null},scale:{paddingInner:.05,paddingOuter:.025}}},layer:[{mark:{type:"bar",size:60},encoding:{y:{field:"previous_sum",type:"quantitative",title:null},y2:{field:"sum"},color:{field:"bar_color",type:"nominal",scale:null}}},{mark:{type:"text",fontWeight:"bold",baseline:"middle"},encoding:{y:{field:"center",type:"quantitative"},text:{field:"text_amount",type:"nominal"},color:{condition:[{test:"datum.".concat(a[2]," == 'total'"),value:"#725a30"}],value:"white"}}}]},"config",{text:{fontWeight:"bold",color:"#D9D9D9"}}),"waterfall",a,n).then(function(){return t("Waterfall")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function C(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Sunburst chart requires at least 2 columns (Parent, Child, optional Value)");var r=new Map;n.forEach(function(e,t){var n=e[0]||"",o=e[1]||"node_".concat(t),i=a.length>=3&&parseFloat(e[2])||1;if(n&&!r.has(n)&&r.set(n,{id:n,parent:"",name:n,size:0}),r.has(o)){var l=r.get(o);l.parent=n,l.size=i}else r.set(o,{id:o,parent:n,name:o,size:i})});var o=Array.from(r.values()),i=new Set(o.map(function(e){return e.id}));o.forEach(function(e){e.parent&&!i.has(e.parent)&&(e.parent="")});var l=o.length,c=Math.max(400,Math.min(600,15*l+300));Z({$schema:"https://vega.github.io/schema/vega/v6.json",description:"Sunburst chart from Excel selection",width:c,height:c,padding:10,autosize:"none",background:"white",config:{view:{stroke:"transparent"}},signals:[{name:"centerX",update:"width / 2"},{name:"centerY",update:"height / 2"},{name:"outerRadius",update:"min(width, height) / 2 - 10"}],data:[{name:"tree",values:o,transform:[{type:"stratify",key:"id",parentKey:"parent"},{type:"partition",field:"size",sort:{field:"size",order:"descending"},size:[{signal:"2 * PI"},{signal:"outerRadius"}],as:["a0","r0","a1","r1","depth","children"]}]}],scales:[{name:"color",type:"ordinal",domain:{data:"tree",field:"depth"},range:["#0078d4","#00bcf2","#40e0d0","#00cc6a","#10893e","#107c10","#bad80a","#ffb900","#ff8c00","#d13438","#8764b8","#e3008c","#00b7c3","#038387","#486991"]},{name:"opacity",type:"linear",domain:{data:"tree",field:"depth"},range:[.8,.4]}],marks:[{type:"arc",from:{data:"tree"},encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY"},stroke:{value:"white"},strokeWidth:{value:1}},update:{startAngle:{field:"a0"},endAngle:{field:"a1"},innerRadius:{field:"r0"},outerRadius:{field:"r1"},fill:{scale:"color",field:"depth"},fillOpacity:{scale:"opacity",field:"depth"}}}},{type:"text",from:{data:"tree"},encode:{enter:{x:{signal:"centerX"},y:{signal:"centerY"},radius:{signal:"(datum.r0 + datum.r1) / 2"},theta:{signal:"(datum.a0 + datum.a1) / 2"},fill:{value:"#323130"},font:{value:"Segoe UI"},fontSize:{value:10},fontWeight:{value:"bold"},align:{value:"center"},baseline:{value:"middle"}},update:{text:{signal:"(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"},opacity:{signal:"(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"}}}}]},"sunburst",a,n).then(function(){return t("Sunburst")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function F(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Treemap chart requires 3 columns (Parent, Category, Value)");var r,o=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t});a.length>=3?(r=o.map(function(e,t){return{id:"".concat(e[a[1]],"_").concat(t),name:e[a[1]],parent:e[a[0]]||"root",size:parseFloat(e[a[2]])||0}}),l(new Set(r.map(function(e){return e.parent}))).forEach(function(e){"root"===e||r.find(function(t){return t.id===e})||r.push({id:e,name:e,parent:"root",size:0})}),r.push({id:"root",name:"Root",parent:"",size:0})):r=[{id:"root",name:"Root",parent:"",size:0}].concat(l(o.map(function(e,t){return{id:"item_".concat(t),name:e[a[1]],parent:"root",size:parseFloat(e[a[2]])||0}}))),Z({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Treemap visualization from Excel data",background:"white",width:600,height:400,padding:5,autosize:"fit",data:[{name:"tree",values:r,transform:[{type:"stratify",key:"id",parentKey:"parent"},{type:"treemap",field:"size",sort:{field:"value"},round:!0,method:"squarify",ratio:1.6,size:[{signal:"width"},{signal:"height"}]}]},{name:"nodes",source:"tree",transform:[{type:"filter",expr:"datum.children"}]},{name:"leaves",source:"tree",transform:[{type:"filter",expr:"!datum.children"}]}],scales:[{name:"color",type:"ordinal",domain:{data:"nodes",field:"name"},range:["#0078d4","#00bcf2","#40e0d0","#00cc6a","#10893e","#107c10","#bad80a","#ffb900","#ff8c00","#d13438"]},{name:"fontSize",type:"ordinal",domain:[0,1,2,3],range:[20,16,12,10]},{name:"opacity",type:"ordinal",domain:[0,1,2,3],range:[.3,.6,.8,1]}],marks:[{type:"rect",from:{data:"nodes"},interactive:!1,encode:{enter:{fill:{scale:"color",field:"name"},fillOpacity:{scale:"opacity",field:"depth"}},update:{x:{field:"x0"},y:{field:"y0"},x2:{field:"x1"},y2:{field:"y1"},stroke:{value:"#ffffff"},strokeWidth:{value:1}}}},{type:"rect",from:{data:"leaves"},encode:{enter:{stroke:{value:"#ffffff"},strokeWidth:{value:2}},update:{x:{field:"x0"},y:{field:"y0"},x2:{field:"x1"},y2:{field:"y1"},fill:{value:"transparent"},tooltip:{signal:"{'Category': datum.name, 'Value': datum.size, 'Parent': datum.parent}"}},hover:{fill:{value:"#323130"},fillOpacity:{value:.1}}}},{type:"text",from:{data:"leaves"},interactive:!1,encode:{enter:{font:{value:"Segoe UI, Arial, sans-serif"},align:{value:"center"},baseline:{value:"middle"},fill:{value:"#323130"},fontWeight:{value:"bold"},text:{field:"name"},fontSize:{scale:"fontSize",field:"depth"}},update:{x:{signal:"0.5 * (datum.x0 + datum.x1)"},y:{signal:"0.5 * (datum.y0 + datum.y1)"},opacity:{signal:"(datum.x1 - datum.x0) > 50 && (datum.y1 - datum.y0) > 20 ? 1 : 0"}}}}]},"treemap",a,n).then(function(){return t("Treemap")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function z(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1),r=n.filter(function(e){return!isNaN(+e[0])}).map(function(e){return{value:+e[0]}});if(0===r.length)return void t("Error: No valid numeric data found for histogram");var o=r.map(function(e){return e.value}),i=Math.min.apply(Math,l(o)),c=Math.max.apply(Math,l(o)),s=(c-i)/20,u=Math.floor(i/s)*s,d=Math.ceil(c/s)*s;Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Histogram from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:r},mark:{type:"bar",tooltip:!0,stroke:"white",strokeWidth:1},encoding:{x:{field:"value",bin:{extent:[u,d],step:s,nice:!1},type:"quantitative",axis:{title:"Value",labelFontSize:12,titleFontSize:14,labelColor:"#605e5c",titleColor:"#323130"},scale:{domain:[u,d],range:"width",paddingInner:.05,paddingOuter:.02}},y:{aggregate:"count",type:"quantitative",axis:{title:"Count",labelFontSize:12,titleFontSize:14,labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"}},color:{value:"#0078d4"}}},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"}}),"histogram",a,n).then(function(){return t("Histogram")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function A(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Map chart requires 2 columns (Country ISO3, Value)");var r={AFG:4,AGO:24,ALB:8,AND:20,ARE:784,ARG:32,ARM:51,ATA:10,ATG:28,AUS:36,AUT:40,AZE:31,BDI:108,BEL:56,BEN:204,BFA:854,BGD:50,BGR:100,BHR:48,BHS:44,BIH:70,BLR:112,BLZ:84,BOL:68,BRA:76,BRB:52,BRN:96,BTN:64,BWA:72,CAF:140,CAN:124,CHE:756,CHL:152,CHN:156,CIV:384,CMR:120,COD:180,COG:178,COL:170,COM:174,CPV:132,CRI:188,CUB:192,CYP:196,CZE:203,DEU:276,DJI:262,DMA:212,DNK:208,DOM:214,DZA:12,ECU:218,EGY:818,ERI:232,ESH:732,ESP:724,EST:233,ETH:231,FIN:246,FJI:242,FRA:250,FSM:583,GAB:266,GBR:826,GEO:268,GHA:288,GIN:324,GMB:270,GNB:624,GNQ:226,GRC:300,GRD:308,GRL:304,GTM:320,GUY:328,HND:340,HRV:191,HTI:332,HUN:348,IDN:360,IND:356,IRL:372,IRN:364,IRQ:368,ISL:352,ISR:376,ITA:380,JAM:388,JOR:400,JPN:392,KAZ:398,KEN:404,KGZ:417,KHM:116,KIR:296,KNA:659,KOR:410,KWT:414,LAO:418,LBN:422,LBR:430,LBY:434,LCA:662,LIE:438,LKA:144,LSO:426,LTU:440,LUX:442,LVA:428,MAR:504,MCO:492,MDA:498,MDG:450,MDV:462,MEX:484,MHL:584,MKD:807,MLI:466,MLT:470,MMR:104,MNE:499,MNG:496,MOZ:508,MRT:478,MUS:480,MWI:454,MYS:458,NAM:516,NCL:540,NER:562,NGA:566,NIC:558,NLD:528,NOR:578,NPL:524,NRU:520,NZL:554,OMN:512,PAK:586,PAN:591,PER:604,PHL:608,PLW:585,PNG:598,POL:616,PRI:630,PRK:408,PRT:620,PRY:600,PSE:275,QAT:634,ROU:642,RUS:643,RWA:646,SAU:682,SDN:729,SEN:686,SGP:702,SLB:90,SLE:694,SLV:222,SMR:674,SOM:706,SRB:688,SSD:728,STP:678,SUR:740,SVK:703,SVN:705,SWE:752,SWZ:748,SYC:690,SYR:760,TCD:148,TGO:768,THA:764,TJK:762,TKM:795,TLS:626,TON:776,TTO:780,TUN:788,TUR:792,TUV:798,TWN:158,TZA:834,UGA:800,UKR:804,URY:858,USA:840,UZB:860,VAT:336,VCT:670,VEN:862,VNM:704,VUT:548,WSM:882,XKX:383,YEM:887,ZAF:710,ZMB:894,ZWE:716},o=n.filter(function(e){return e[0]&&!isNaN(+e[1])}).map(function(e){var t=(e[0]||"").toUpperCase().trim();return{id:r[t],iso:t,rate:+e[1]}}).filter(function(e){return e.id});if(0===o.length)return void t("Error: No valid country data found. Please use ISO3 country codes (USA, GBR, DEU, etc.)");Z({$schema:"https://vega.github.io/schema/vega-lite/v6.json",width:800,height:450,data:{url:"https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",format:{type:"topojson",feature:"countries"}},transform:[{lookup:"id",from:{data:{values:o},key:"id",fields:["rate","iso"]}}],projection:{type:"equalEarth"},mark:{type:"geoshape",stroke:"white",strokeWidth:.5},encoding:{color:{field:"rate",type:"quantitative",scale:{scheme:"blues"}},tooltip:[{field:"iso",type:"nominal",title:"Country (ISO3)"},{field:"rate",type:"quantitative",title:"Value"}]}},"map",a,n).then(function(){return t("Map")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function I(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<5)return void t("Error: Candlestick chart requires 5 columns (Date, Open, High, Low, Close)");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}).map(function(e,t){var n,r="number"==typeof(n=e[a[0]])?new Date(Math.round(86400*(n-25569)*1e3)):new Date(n),o=parseFloat(e[a[1]])||0,i=parseFloat(e[a[2]])||0,l=parseFloat(e[a[3]])||0,c=parseFloat(e[a[4]])||0;return isNaN(r.getTime())||isNaN(o)||isNaN(i)||isNaN(l)||isNaN(c)?null:{date:r.toISOString(),open:o,high:i,low:l,close:c}}).filter(Boolean);if(0===r.length)return void t("Error: No valid candlestick data found");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",width:600,description:"Candlestick chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:r},encoding:{x:{field:"date",type:"temporal",title:"Date",axis:{format:"%m/%d",labelAngle:-45,labelFontSize:11,titleFontSize:12,labelColor:"#605e5c",titleColor:"#323130",font:"Segoe UI"}},y:{type:"quantitative",scale:{zero:!1},axis:{title:"Price",labelFontSize:11,titleFontSize:12,labelColor:"#605e5c",titleColor:"#323130",font:"Segoe UI",grid:!0,gridColor:"#f3f2f1"}},color:{condition:{test:"datum.open < datum.close",value:"#06982d"},value:"#ae1325"}},layer:[{mark:{type:"rule",tooltip:!0},encoding:{y:{field:"low"},y2:{field:"high"},tooltip:[{field:"date",type:"temporal",title:"Date",format:"%Y-%m-%d"},{field:"open",type:"quantitative",title:"Open",format:".2f"},{field:"high",type:"quantitative",title:"High",format:".2f"},{field:"low",type:"quantitative",title:"Low",format:".2f"},{field:"close",type:"quantitative",title:"Close",format:".2f"}]}},{mark:{type:"bar",tooltip:!0},encoding:{y:{field:"open"},y2:{field:"close"},tooltip:[{field:"date",type:"temporal",title:"Date",format:"%Y-%m-%d"},{field:"open",type:"quantitative",title:"Open",format:".2f"},{field:"high",type:"quantitative",title:"High",format:".2f"},{field:"low",type:"quantitative",title:"Low",format:".2f"},{field:"close",type:"quantitative",title:"Close",format:".2f"}]}}]},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"}}),"candlestick",a,n).then(function(){return t("Candlestick")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function P(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Arc chart requires at least 2 columns (Source, Target, Weight optional)");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}).map(function(e,t){return{source:e[a[0]],target:e[a[1]],value:a.length>=3&&e[a[2]]?e[a[2]]:1,group:a.length>=4&&e[a[3]]?e[a[3]]:"default"}}),o=new Map;r.forEach(function(e){o.has(e.source)||o.set(e.source,{name:e.source,group:e.group,index:o.size}),o.has(e.target)||o.set(e.target,{name:e.target,group:e.group,index:o.size})});var i=Array.from(o.values()),l=r.map(function(e){return{source:o.get(e.source).index,target:o.get(e.target).index,value:e.value}});Z(f({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Arc diagram from Excel selection",width:Math.max(600,40*i.length),height:300,padding:{top:20,bottom:80,left:20,right:20},background:"white",config:{view:{stroke:"transparent"}},data:[{name:"edges",values:l},{name:"sourceDegree",source:"edges",transform:[{type:"aggregate",groupby:["source"],as:["count"]}]},{name:"targetDegree",source:"edges",transform:[{type:"aggregate",groupby:["target"],as:["count"]}]},{name:"nodes",values:i,transform:[{type:"window",ops:["rank"],as:["order"]},{type:"lookup",from:"sourceDegree",key:"source",fields:["index"],as:["sourceDegree"],default:{count:0}},{type:"lookup",from:"targetDegree",key:"target",fields:["index"],as:["targetDegree"],default:{count:0}},{type:"formula",as:"degree",expr:"(datum.sourceDegree.count || 0) + (datum.targetDegree.count || 0)"}]}],scales:[{name:"position",type:"band",domain:{data:"nodes",field:"order",sort:!0},range:"width"},{name:"color",type:"ordinal",range:{scheme:"category20"},domain:{data:"nodes",field:"group"}}],marks:[{type:"symbol",name:"layout",interactive:!1,from:{data:"nodes"},encode:{enter:{opacity:{value:0}},update:{x:{scale:"position",field:"order"},y:{value:0},size:{field:"degree",mult:8,offset:50},fill:{scale:"color",field:"group"}}}},{type:"path",from:{data:"edges"},encode:{update:{stroke:{value:"#0078d4"},strokeOpacity:{value:.4},strokeWidth:{field:"value",mult:2,offset:1}}},transform:[{type:"lookup",from:"layout",key:"datum.index",fields:["datum.source","datum.target"],as:["sourceNode","targetNode"]},{type:"linkpath",sourceX:{expr:"min(datum.sourceNode.x, datum.targetNode.x)"},targetX:{expr:"max(datum.sourceNode.x, datum.targetNode.x)"},sourceY:{expr:"0"},targetY:{expr:"0"},shape:"arc"}]},{type:"symbol",from:{data:"layout"},encode:{update:{x:{field:"x"},y:{field:"y"},fill:{field:"fill"},size:{field:"size"},stroke:{value:"white"},strokeWidth:{value:1},tooltip:{signal:"{'Node': datum.datum.name, 'Group': datum.datum.group, 'Connections': datum.datum.degree}"}}}},{type:"text",from:{data:"nodes"},encode:{update:{x:{scale:"position",field:"order"},y:{value:25},fontSize:{value:10},align:{value:"center"},baseline:{value:"top"},angle:{value:-45},text:{field:"name"},fill:{value:"#323130"},font:{value:"Segoe UI"}}}}]},"config",{view:{stroke:"transparent"},font:"Segoe UI",text:{font:"Segoe UI",fontSize:10,fill:"#605e5c"}}),"arc",a,n).then(function(){return t("Arc")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function N(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Tree chart requires at least 2 columns (Parent, Child, Value optional)");var r=new Map;n.forEach(function(e,t){var n=e[0]||"",o=e[1]||"node_".concat(t),i=a.length>=3&&parseFloat(e[2])||1;if(n&&!r.has(n)&&r.set(n,{id:n,parent:"",name:n,value:1}),r.has(o)){var l=r.get(o);l.parent=n,l.value=i}else r.set(o,{id:o,parent:n,name:o,value:i})});var o=Array.from(r.values()),i=new Set(o.map(function(e){return e.id}));o.forEach(function(e){e.parent&&!i.has(e.parent)&&(e.parent="")});var l=o.length;Z({$schema:"https://vega.github.io/schema/vega/v6.json",description:"Tree diagram from Excel selection",width:Math.max(600,Math.min(1200,40*l)),height:Math.max(400,Math.min(1600,30*l)),padding:20,background:"white",config:{view:{stroke:"transparent"}},signals:[{name:"layout",value:"tidy"},{name:"links",value:"diagonal"}],data:[{name:"tree",values:o,transform:[{type:"stratify",key:"id",parentKey:"parent"},{type:"tree",method:{signal:"layout"},size:[{signal:"height - 40"},{signal:"width - 100"}],as:["y","x","depth","children"]}]},{name:"links",source:"tree",transform:[{type:"treelinks"},{type:"linkpath",orient:"horizontal",shape:{signal:"links"}}]}],scales:[{name:"color",type:"ordinal",range:["#0078d4","#00bcf2","#40e0d0","#00cc6a","#10893e","#107c10","#bad80a","#ffb900","#ff8c00","#d13438"],domain:{data:"tree",field:"depth"}},{name:"size",type:"linear",range:[100,400],domain:{data:"tree",field:"value"}}],marks:[{type:"path",from:{data:"links"},encode:{update:{path:{field:"path"},stroke:{value:"#8a8886"},strokeWidth:{value:2},strokeOpacity:{value:.6}}}},{type:"symbol",from:{data:"tree"},encode:{enter:{stroke:{value:"#ffffff"},strokeWidth:{value:2}},update:{x:{field:"x"},y:{field:"y"},size:{scale:"size",field:"value"},fill:{scale:"color",field:"depth"},fillOpacity:{value:.8},tooltip:{signal:"{'Name': datum.name, 'ID': datum.id, 'Parent': datum.parent, 'Depth': datum.depth, 'Value': datum.value}"}},hover:{fillOpacity:{value:1},strokeWidth:{value:3}}}},{type:"text",from:{data:"tree"},encode:{enter:{fontSize:{value:11},baseline:{value:"middle"},font:{value:"Segoe UI"},fontWeight:{value:"bold"}},update:{x:{field:"x"},y:{field:"y"},text:{field:"name"},dx:{signal:"datum.children ? -12 : 12"},align:{signal:"datum.children ? 'right' : 'left'"},fill:{value:"#323130"}}}}]},"tree",a,n).then(function(){return t("Tree")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function R(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<1)return void t("Error: Wordcloud requires at least 1 column (Text data)");Z({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Word cloud from Excel selection",width:800,height:400,padding:0,background:"white",config:{view:{stroke:"transparent"}},data:[{name:"table",values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),transform:[{type:"countpattern",field:a[0],case:"upper",pattern:"[\\w']{3,}",stopwords:"(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall)"},{type:"formula",as:"angle",expr:"[-45, 0, 45][~~(random() * 3)]"},{type:"formula",as:"weight",expr:"if(datum.count > 10, 600, 300)"}]}],scales:[{name:"color",type:"ordinal",domain:{data:"table",field:"text"},range:["#d5a928","#652c90","#939597","#2563eb","#dc2626","#059669"]}],marks:[{type:"text",from:{data:"table"},encode:{enter:{text:{field:"text"},align:{value:"center"},baseline:{value:"alphabetic"},fill:{scale:"color",field:"text"}},update:{fillOpacity:{value:1}},hover:{fillOpacity:{value:.5}}},transform:[{type:"wordcloud",size:[800,400],text:{field:"text"},rotate:{field:"datum.angle"},font:"Helvetica Neue, Arial",fontSize:{field:"datum.count"},fontWeight:{field:"datum.weight"},fontSizeRange:[12,56],padding:2}]}]},"wordcloud",a,n).then(function(){return t("Wordcloud")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function M(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Strip plot requires at least 2 columns (Categories, Values)");Z({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Strip plot showing distribution using tick marks",background:"white",config:{view:{stroke:"transparent"},axis:{labelFontSize:11,titleFontSize:12,labelColor:"#605E5C",titleColor:"#323130"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"tick",thickness:2,size:15,color:"#0078d4",opacity:.8,tooltip:!0},encoding:d(d({y:{field:a[0],type:"ordinal",axis:{title:a[0],labelAngle:0}},x:{field:a[1],type:"quantitative",axis:{title:a[1],grid:!0,gridColor:"#f3f2f1",gridOpacity:.5}}},a.length>2&&{color:{field:a[2],type:"nominal",scale:{scheme:"category10"},legend:{title:a[2],orient:"right",titleFontSize:11,labelFontSize:10}}}),{},{tooltip:a.map(function(e){return{field:e,type:"nominal"}})})},"strip",a,n).then(function(){return t("Strip")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function O(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Heatmap requires 3 columns (Y-categories, X-categories, Values)");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v5.json",description:"Heatmap with marginal bars from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},spacing:15,bounds:"flush",vconcat:[{height:60,mark:{type:"bar",stroke:null,cornerRadiusEnd:2,tooltip:!0,color:"lightgrey"},encoding:{x:{field:a[1],type:"ordinal",axis:null},y:{field:a[2],aggregate:"mean",type:"quantitative",axis:null}}},{spacing:15,bounds:"flush",hconcat:[{mark:{type:"rect",stroke:"white",tooltip:!0},encoding:{y:{field:a[0],type:"ordinal",title:a[0],axis:{domain:!1,ticks:!1,labels:!0,labelAngle:0,labelPadding:5}},x:{field:a[1],type:"ordinal",title:a[1],axis:{domain:!1,ticks:!1,labels:!0,labelAngle:0}},color:{aggregate:"mean",field:a[2],type:"quantitative",title:a[2],scale:{scheme:"blues"},legend:{direction:"vertical",gradientLength:120}}}},{mark:{type:"bar",stroke:null,cornerRadiusEnd:2,tooltip:!0,color:"lightgrey"},width:60,encoding:{y:{field:a[0],type:"ordinal",axis:null},x:{field:a[2],type:"quantitative",aggregate:"mean",axis:null}}}]}]},"config",{autosize:{type:"fit",contains:"padding"},view:{stroke:"transparent"},font:"Segoe UI",text:{font:"Segoe UI",fontSize:12,fill:"#605E5C"},axis:{ticks:!1,grid:!1,domain:!1,labelColor:"#605E5C",labelFontSize:12,titleFontSize:14,titleColor:"#323130"},legend:{titleFont:"Segoe UI",titleFontWeight:"bold",titleColor:"#605E5C",labelFont:"Segoe UI",labelFontSize:12,labelColor:"#605E5C"}}),"heatmap",a,n).then(function(){return t("Heatmap")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function T(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<7)return void t("Error: Bullet chart requires 7 columns (Title, Poor max, Satisfactory max, Good max, Actual, Forecast, Target)");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){return{title:e[0],ranges:[+e[1],+e[2],+e[3]],measures:[+e[4],+e[5]],markers:[+e[6]]}})},facet:{row:{field:"title",type:"ordinal",header:{labelAngle:0,title:"",labelAlign:"left"}}},spacing:10,spec:{encoding:{x:{type:"quantitative",scale:{nice:!1},title:null}},layer:[{mark:{type:"bar",color:"#eee"},encoding:{x:{field:"ranges[2]"}}},{mark:{type:"bar",color:"#ddd"},encoding:{x:{field:"ranges[1]"}}},{mark:{type:"bar",color:"#ccc"},encoding:{x:{field:"ranges[0]"}}},{mark:{type:"bar",color:"lightsteelblue",size:10},encoding:{x:{field:"measures[1]"}}},{mark:{type:"bar",color:"steelblue",size:10},encoding:{x:{field:"measures[0]"}}},{mark:{type:"tick",color:"black"},encoding:{x:{field:"markers[0]"}}}]},resolve:{scale:{x:"independent"}}},"config",{tick:{thickness:2},scale:{barBandPaddingInner:0}}),"bullet",a,n).then(function(){return t("Bullet")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function D(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Horizon chart requires 2 columns (X values, Y values)");var r=n.map(function(e,t){return{x:e[0]||t+1,y:parseFloat(e[1])||0}}),o=r.map(function(e){return e.y}),i=Math.max.apply(Math,l(o)),c=Math.min.apply(Math,l(o)),s=i-c,u=s/6,d=c+s/2,f=r.length;Z({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Horizon Graph from Excel selection (IDL methodology)",width:Math.max(300,Math.min(800,15*f)),height:60,background:"white",config:{view:{stroke:"transparent"},area:{interpolate:"monotone"}},data:{values:r},encoding:{x:{field:"x",type:a[0].toLowerCase().includes("date")?"temporal":"quantitative",scale:{zero:!1,nice:!1},axis:{title:a[0],labelFontSize:10,titleFontSize:12,labelColor:"#605e5c",titleColor:"#323130",font:"Segoe UI"}},y:{type:"quantitative",scale:{domain:[0,u]},axis:{title:a[1],orient:"left",labelFontSize:10,titleFontSize:12,labelColor:"#605e5c",titleColor:"#323130",font:"Segoe UI",tickCount:3}}},layer:[{transform:[{calculate:"max(0, min(datum.y - ".concat(d,", ").concat(u,"))"),as:"band1"}],mark:{type:"area",clip:!0,opacity:.3,color:"#4a90e2",interpolate:"monotone"},encoding:{y:{field:"band1"}}},{transform:[{calculate:"max(0, min(datum.y - ".concat(d," - ").concat(u,", ").concat(u,"))"),as:"band2"}],mark:{type:"area",clip:!0,opacity:.6,color:"#2e7bd6",interpolate:"monotone"},encoding:{y:{field:"band2"}}},{transform:[{calculate:"max(0, datum.y - ".concat(d," - ").concat(2*u,")"),as:"band3"}],mark:{type:"area",clip:!0,opacity:.9,color:"#1a5bb8",interpolate:"monotone"},encoding:{y:{field:"band3"}}},{transform:[{calculate:"max(0, min(".concat(d," - datum.y, ").concat(u,"))"),as:"nband1"}],mark:{type:"area",clip:!0,opacity:.3,color:"#e74c3c",interpolate:"monotone"},encoding:{y:{field:"nband1"}}},{transform:[{calculate:"max(0, min(".concat(d," - datum.y - ").concat(u,", ").concat(u,"))"),as:"nband2"}],mark:{type:"area",clip:!0,opacity:.6,color:"#c0392b",interpolate:"monotone"},encoding:{y:{field:"nband2"}}},{transform:[{calculate:"max(0, ".concat(d," - datum.y - ").concat(2*u,")"),as:"nband3"}],mark:{type:"area",clip:!0,opacity:.9,color:"#a93226",interpolate:"monotone"},encoding:{y:{field:"nband3"}}}]},"horizon",a,n).then(function(){return t("Horizon")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function q(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Dumbbell chart requires 3 columns: Category, Value 1, Value 2");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=[];r.forEach(function(e){var t=e[a[0]],n=parseFloat(e[a[1]])||0,r=parseFloat(e[a[2]])||0;o.push({category:t,period:a[1],value:n}),o.push({category:t,period:a[2],value:r})});var i,c,s,u=l(new Set(r.map(function(e){return e[a[0]]}))).length;u<=3?(i=Math.max(200,80*u),c=.3,s=.2):u<=6?(i=Math.max(300,60*u),c=.2,s=.1):(i=Math.max(400,Math.min(600,50*u)),c=.1,s=.05),Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Dumbbell chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},width:500,height:i,data:{values:o},encoding:{x:{field:"value",type:"quantitative",title:null,scale:{zero:!1},axis:{labelFontSize:12,labelColor:"#605e5c",grid:!0,gridColor:"#f3f2f1",labelAlign:"center"}},y:{field:"category",type:"nominal",title:null,scale:{paddingInner:c,paddingOuter:s},axis:{offset:5,ticks:!1,minExtent:70,domain:!1,labelFontSize:12,labelColor:"#605e5c"}}},layer:[{mark:"line",encoding:{detail:{field:"category",type:"nominal"},color:{value:"#d1d5db"}}},{mark:{type:"point",filled:!0,tooltip:!0},encoding:{color:{field:"period",type:"ordinal",scale:{domain:[a[1],a[2]],range:["#87ceeb","#1e3a8a"]},title:"Measure",legend:{titleFontSize:12,labelFontSize:11,titleColor:"#323130",labelColor:"#605e5c"}},size:{value:100},opacity:{value:1},tooltip:[{field:"category",type:"nominal",title:"Category"},{field:"period",type:"nominal",title:"Measure"},{field:"value",type:"quantitative",title:"Value",format:",.1f"}]}}]},"config",{font:"Segoe UI",axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"},legend:{titleColor:"#323130",labelColor:"#605e5c"}}),"dumbbell",a,n).then(function(){return t("Dumbbell")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function L(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Slope chart requires 3 columns (Time Period, Category, Value)");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=l(new Set(r.map(function(e){return e[a[0]]}))),i=l(new Set(r.map(function(e){return e[a[1]]}))),c=o[0],s=o[o.length-1],u=r.filter(function(e){return e[a[0]]===c||e[a[0]]===s}),d=u.map(function(e){return e[a[2]]}).every(function(e){return e>=-1&&e<=1})?".1%":",.0f";Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Slope chart from Excel selection",background:"white",config:{view:{stroke:"transparent"},autosize:{type:"fit",contains:"padding"}},width:500,height:Math.max(300,Math.min(600,40*i.length)),data:{values:u},encoding:{x:{field:a[0],type:"ordinal",axis:{title:null,labelFontSize:14,labelFontWeight:"bold",labelPadding:10,domain:!1,ticks:!1,labelColor:"#323130"},scale:{padding:.1}},y:{field:a[2],type:"quantitative",axis:null,scale:{zero:!1}},color:{field:a[1],type:"nominal",legend:null,scale:{scheme:"category10"}}},layer:[{mark:{type:"rule",strokeDash:[2,2],opacity:.3},data:{values:[{}]},encoding:{x:{datum:c},x2:{datum:s},y:{value:0},color:{value:"#e0e0e0"}}},{mark:{type:"line",strokeWidth:2,opacity:.7,tooltip:!0},encoding:{detail:{field:a[1],type:"nominal"},tooltip:[{field:a[1],type:"nominal",title:"Category"},{field:a[0],type:"nominal",title:"Period"},{field:a[2],type:"quantitative",title:"Value",format:d}]}},{mark:{type:"circle",size:100,opacity:1,tooltip:!0}},{transform:[{filter:"datum['".concat(a[0],"'] == '").concat(c,"'")}],mark:{type:"text",align:"right",baseline:"middle",dx:-8,fontSize:11,fontWeight:"normal"},encoding:{text:{field:a[2],type:"quantitative",format:d}}},{transform:[{filter:"datum['".concat(a[0],"'] == '").concat(c,"'")},{window:[{op:"rank",as:"rank"}],sort:[{field:a[2],order:"descending"}]},{filter:"datum.rank <= 3"}],mark:{type:"text",align:"right",baseline:"bottom",dx:-8,dy:-12,fontSize:10,fontWeight:"bold",fontStyle:"italic"},encoding:{text:{field:a[1],type:"nominal"}}},{transform:[{filter:"datum['".concat(a[0],"'] == '").concat(s,"'")}],mark:{type:"text",align:"left",baseline:"middle",dx:8,fontSize:11,fontWeight:"normal"},encoding:{text:{field:a[2],type:"quantitative",format:d}}},{transform:[{filter:"datum['".concat(a[0],"'] == '").concat(s,"'")}],mark:{type:"text",align:"left",baseline:"middle",dx:35,fontSize:10,fontWeight:"bold"},encoding:{text:{field:a[1],type:"nominal"}}}]},"config",{view:{stroke:"transparent"},font:"Segoe UI",text:{font:"Segoe UI",fontSize:11,fill:"#605E5C"},axis:{labelColor:"#605e5c",titleColor:"#323130",gridColor:"#f3f2f1"}}),"slope",a,n).then(function(){return t("Slope")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function U(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Mekko chart requires 3 columns (Category, Subcategory, Value)");Z({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Marimekko chart from Excel selection",width:800,height:500,background:"white",config:{view:{stroke:"transparent"}},view:{stroke:null},padding:{top:60,bottom:80,left:60,right:60},data:[{name:"table",values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},{name:"categories",source:"table",transform:[{type:"aggregate",fields:[a[2]],ops:["sum"],as:["categoryTotal"],groupby:[a[0]]},{type:"stack",offset:"normalize",sort:{field:"categoryTotal",order:"descending"},field:"categoryTotal",as:["x0","x1"]},{type:"formula",as:"Percent",expr:"datum.x1-datum.x0"},{type:"formula",as:"Label",expr:"datum.".concat(a[0]," + ' (' + format(datum.Percent,'.1%') + ')'")}]},{name:"finalTable",source:"table",transform:[{type:"stack",offset:"normalize",groupby:[a[0]],sort:{field:a[2],order:"descending"},field:a[2],as:["y0","y1"]},{type:"stack",groupby:[a[0]],sort:{field:a[2],order:"descending"},field:a[2],as:["z0","z1"]},{type:"lookup",from:"categories",key:a[0],values:["x0","x1"],fields:[a[0]]},{type:"formula",as:"Percent",expr:"datum.y1-datum.y0"},{type:"formula",as:"Label",expr:"[datum.".concat(a[1],", format(datum.").concat(a[2],", '.0f') + ' (' + format(datum.Percent, '.1%') + ')']")},{type:"window",sort:{field:"y0",order:"ascending"},ops:["row_number"],fields:[null],as:["rank"],groupby:[a[0]]}]}],scales:[{name:"x",type:"linear",range:"width",domain:{data:"finalTable",field:"x1"}},{name:"y",type:"linear",range:"height",nice:!1,zero:!0,domain:{data:"finalTable",field:"z1"}},{name:"opacity",type:"linear",range:[1,.6],domain:{data:"finalTable",field:"rank"}},{name:"color",type:"ordinal",range:{scheme:"category20"},domain:{data:"categories",field:a[0],sort:{field:"x0",order:"ascending",op:"sum"}}}],axes:[{orient:"left",scale:"y",zindex:1,format:"",tickCount:5,tickSize:15,labelColor:{value:"#333740"},labelFontWeight:{value:"normal"},labelFontSize:{value:12},labelFont:{value:"Segoe UI"},offset:5,domain:!1,encode:{labels:{update:{text:{signal:"format(datum.value, '.0f')"}}}}}],marks:[{type:"rect",name:"bars",from:{data:"finalTable"},encode:{update:{x:{scale:"x",field:"x0"},x2:{scale:"x",field:"x1"},y:{scale:"y",field:"z0"},y2:{scale:"y",field:"z1"},fill:{scale:"color",field:a[0]},stroke:{value:"white"},strokeWidth:{value:1},fillOpacity:{scale:"opacity",field:"rank"},tooltip:{signal:"datum"}}}},{type:"text",name:"labels",interactive:!1,from:{data:"bars"},encode:{update:{x:{signal:"(datum.x2 - datum.x)*0.5 + datum.x"},align:{value:"center"},text:{field:"datum.Label"},y:{signal:"(datum.y2 - datum.y)*0.5 + datum.y"},fill:{value:"white"},font:{value:"Segoe UI"},lineHeight:{value:12},fontSize:{value:10},opacity:{signal:"(datum.x2 - datum.x) > 0.05 && (datum.y2 - datum.y) > 20 ? 1 : 0"}}}},{type:"text",name:"categoryLabels",from:{data:"categories"},encode:{update:{x:{scale:"x",signal:"(datum.x1-datum.x0)/2 + datum.x0"},y:{signal:"-15"},text:{field:a[0]},align:{value:"center"},baseline:{value:"bottom"},fill:{value:"#333740"},fontWeight:{value:"bold"},fontSize:{value:12},font:{value:"Segoe UI"}}}},{type:"text",name:"categoryPercentages",from:{data:"categories"},encode:{update:{x:{scale:"x",signal:"(datum.x1-datum.x0)/2 + datum.x0"},y:{signal:"height + 30"},text:{field:"Label"},align:{value:"center"},baseline:{value:"top"},fill:{value:"#666666"},fontWeight:{value:"normal"},fontSize:{value:10},font:{value:"Segoe UI"}}}}]},"mekko",a,n).then(function(){return t("Mekko")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function V(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Marimekko chart requires at least 3 columns: Category, Subcategory, Value");Z({$schema:"https://vega.github.io/schema/vega/v5.json",description:"Marimekko Chart from Excel selection",width:600,height:400,background:"white",config:{view:{stroke:"transparent"}},padding:{top:30,bottom:60,left:60,right:60},data:[{name:"table",values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),transform:[{type:"formula",as:"Category",expr:"datum['".concat(a[0],"']")},{type:"formula",as:"Subcategory",expr:"datum['".concat(a[1],"']")},{type:"formula",as:"Value",expr:"datum['".concat(a[2],"']")}]},{name:"categories",source:"table",transform:[{type:"aggregate",fields:["Value"],ops:["sum"],as:["categoryTotal"],groupby:["Category"]},{type:"stack",offset:"normalize",sort:{field:"categoryTotal",order:"descending"},field:"categoryTotal",as:["x0","x1"]},{type:"formula",as:"Percent",expr:"datum.x1 - datum.x0"}]},{name:"finalTable",source:"table",transform:[{type:"stack",offset:"normalize",groupby:["Category"],sort:{field:"Value",order:"descending"},field:"Value",as:["y0","y1"]},{type:"lookup",from:"categories",key:"Category",values:["x0","x1"],fields:["Category"]},{type:"formula",as:"Percent",expr:"datum.y1 - datum.y0"}]}],scales:[{name:"x",type:"linear",range:"width",domain:{data:"finalTable",field:"x1"}},{name:"y",type:"linear",range:"height",nice:!1,zero:!0,domain:{data:"finalTable",field:"y1"}},{name:"color",type:"ordinal",range:{scheme:"category20"},domain:{data:"categories",field:"Category",sort:{field:"x0",order:"ascending",op:"sum"}}}],axes:[{orient:"left",scale:"y",format:"%",tickCount:5,labelColor:"#333333",labelFontSize:11,domain:!1},{orient:"bottom",scale:"x",format:"%",tickCount:5,labelColor:"#333333",labelFontSize:11,domain:!1}],marks:[{type:"rect",name:"bars",from:{data:"finalTable"},encode:{update:{x:{scale:"x",field:"x0"},x2:{scale:"x",field:"x1"},y:{scale:"y",field:"y0"},y2:{scale:"y",field:"y1"},fill:{scale:"color",field:"Category"},stroke:{value:"white"},strokeWidth:{value:1},opacity:{value:.8},tooltip:{signal:"{'Category': datum.Category, 'Subcategory': datum.Subcategory, 'Value': datum.Value, 'Percentage': format(datum.Percent, '.1%')}"}},hover:{opacity:{value:1}}}},{type:"text",name:"valueLabels",from:{data:"finalTable"},encode:{update:{x:{scale:"x",signal:"(datum.x1 - datum.x0)/2 + datum.x0"},y:{scale:"y",signal:"(datum.y1 - datum.y0)/2 + datum.y0"},text:{signal:"datum.Percent > 0.027 ? [datum.Subcategory, format(datum.Value, ',.0f') + ' (' + format(datum.Percent, '.0%') + ')'] : []"},align:{value:"center"},baseline:{value:"middle"},fill:{value:"white"},fontSize:{value:10},fontWeight:{value:"normal"},font:{value:"Segoe UI"},lineHeight:{value:12},opacity:{signal:"datum.Percent > 0.027 ? 1 : 0"}}}}]},"marimekko",a,n).then(function(){return t("Marimekko")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function W(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Bump chart requires 3 columns: Time periods, Categories, Rank values");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=l(new Set(r.map(function(e){return e[a[0]]})));Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Bump chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:r},width:Math.max(400,80*o.length),height:200,encoding:{x:{field:a[0],type:"nominal",axis:{title:""},scale:{type:"point",padding:1}},y:{field:a[2],type:"ordinal",axis:!1}},layer:[{mark:{type:"line",interpolate:"monotone"},encoding:{color:{field:a[1],type:"nominal",legend:!1}}},{mark:{type:"circle",size:400,tooltip:!0},encoding:{color:{field:a[1],type:"nominal",legend:!1}}},{mark:{type:"text",color:"white"},encoding:{text:{field:a[2]}}},{transform:[{window:[{op:"rank",as:"rank"}],sort:[{field:a[0],order:"descending"}]},{filter:"datum.rank === 1"}],mark:{type:"text",align:"left",baseline:"middle",dx:15,fontWeight:"bold",fontSize:12},encoding:{text:{field:a[1],type:"nominal"},color:{field:a[1],type:"nominal",legend:!1}}},{transform:[{window:[{op:"rank",as:"rank"}],sort:[{field:a[0],order:"ascending"}]},{filter:"datum.rank === 1"}],mark:{type:"text",align:"right",baseline:"middle",dx:-15,fontWeight:"bold",fontSize:12},encoding:{text:{field:a[1],type:"nominal"},color:{field:a[1],type:"nominal",legend:!1}}}]},"config",{view:{stroke:"transparent"},line:{strokeWidth:3,strokeCap:"round",strokeJoin:"round"},axis:{ticks:!1,grid:!1,domain:!1,labelColor:"#666666",labelFontSize:12}}),"bump",a,n).then(function(){return t("Bump")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function B(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Waffle chart requires 2 columns: Category names, Values");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v5.json",description:"Waffle chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},transform:[{joinaggregate:[{op:"sum",field:a[1],as:"TotalValue"}]},{calculate:"round(datum.".concat(a[1],"/datum.TotalValue * 100)"),as:"PercentOfTotal"},{aggregate:[{op:"min",field:"PercentOfTotal",as:"Percent"}],groupby:[a[0]]},{calculate:"sequence(1,101)",as:"Sequence"},{flatten:["Sequence"]},{calculate:"if(datum.Sequence <= datum.Percent, datum.".concat(a[0],",'_blank')"),as:"Plot"},{calculate:"ceil (datum.Sequence / 10)",as:"row"},{calculate:"datum.Sequence - datum.row * 10",as:"col"}],facet:{column:{field:a[0],header:{labelOrient:"bottom"}}},spec:{layer:[{mark:{type:"circle",filled:!0,tooltip:!0,stroke:"#9e9b9b",strokeWidth:.7},encoding:{x:{field:"col",type:"ordinal",axis:null},y:{field:"row",type:"ordinal",axis:null,sort:"-y"},color:{condition:{test:"datum.Plot == '_blank'",value:"#e6e3e3"},scale:{scheme:"set1"},field:"Plot",type:"nominal",legend:null},size:{value:241},tooltip:[{field:a[0],type:"nominal"}]}},{mark:{type:"text",fontSize:30,fontWeight:"bold"},encoding:{y:{value:30},text:{condition:{test:"datum.Sequence == 1",value:{expr:"datum.Percent + '%'"}}},color:{scale:{scheme:"set1"},field:"Plot"}}}]}},"config",{view:{stroke:"transparent"},font:"Segoe UI",text:{font:"Segoe UI",fontSize:12,fill:"#605E5C"},axis:{ticks:!1,grid:!1,domain:!1,labelColor:"#605E5C",labelFontSize:12},header:{titleFont:"Segoe UI",titleFontSize:16,titleColor:"#757575",labelFont:"Segoe UI",labelFontSize:13,labelColor:"#605E5C"},legend:{titleFont:"Segoe UI",titleFontWeight:"bold",titleColor:"#605E5C",labelFont:"Segoe UI",labelFontSize:13,labelColor:"#605E5C",symbolType:"circle",symbolSize:75}}),"waffle",a,n).then(function(){return t("Waffle")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function j(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Lollipop chart requires 2 columns: Category names, Values");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v5.json",description:"Lollipop chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},encoding:{y:{field:a[0],type:"nominal",sort:"-x",axis:{domain:!1,title:null,ticks:!1,labelFont:"Segoe UI",labelFontSize:14,labelPadding:10,labelColor:"#605e5c"}},x:{field:a[1],type:"quantitative",axis:{domain:!1,ticks:!1,grid:!0,gridColor:"#e0e0e0",labelFont:"Segoe UI",labelFontSize:12,labelColor:"#605e5c",title:a[1],titleFont:"Segoe UI",titleFontSize:14,titleColor:"#323130"}},color:{value:"#0078d4"}},layer:[{mark:{type:"rule",tooltip:!0,strokeWidth:3,opacity:.7}},{mark:{type:"circle",tooltip:!0,size:300,opacity:.9},encoding:{size:{field:a[1],type:"quantitative",scale:{range:[200,800]},legend:null}}}]},"config",{autosize:{type:"fit",contains:"padding"},view:{stroke:"transparent"},font:"Segoe UI",text:{font:"Segoe UI",fontSize:12,fill:"#605E5C"}}),"lollipop",a,n).then(function(){return t("Lollipop")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function G(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<2)return void t("Error: Violin chart requires 2 columns: Categories/Groups, Continuous values");Z({$schema:"https://vega.github.io/schema/vega-lite/v5.20.1.json",description:"Violin chart from Excel selection",background:"white",config:{view:{continuousWidth:300,continuousHeight:300,stroke:null},facet:{spacing:0}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"area",orient:"horizontal"},encoding:{color:{field:a[0],type:"nominal"},column:{field:a[0],header:{labelOrient:"bottom",labelPadding:0,titleOrient:"bottom"},type:"nominal"},x:{axis:{grid:!1,labels:!1,ticks:!0,values:[0]},field:"density",impute:null,stack:"center",title:null,type:"quantitative"},y:{field:a[1],type:"quantitative"}},transform:[{density:a[1],groupby:[a[0]],as:[a[1],"density"]}],width:100},"violin",a,n).then(function(){return t("Violin")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function _(e){return new Promise(function(t){try{var a=function(e){return new Date(Math.round(86400*(e-25569)*1e3))},n=function(){var e,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,a=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,r=[],o=i(u.get(t)||[]);try{for(o.s();!(e=o.n()).done;){var c=e.value;c.level=a,r.push(c),r.push.apply(r,l(n(c.id,a+1)))}}catch(e){o.e(e)}finally{o.f()}return r};if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var r=e[0],c=e.slice(1);if(r.length<6)return void t("Error: Gantt chart requires 6 columns (Parent ID, Task ID, Task Name, Start Date, End Date, Progress)");var s=c.map(function(e){var t=e[0]||null,n=e[1],r=e[2]||"Task ".concat(n);if(!n)return null;var o="number"==typeof e[3]?a(e[3]):new Date(e[3]),i="number"==typeof e[4]?a(e[4]):new Date(e[4]);if(!(o instanceof Date)||isNaN(o)||!(i instanceof Date)||isNaN(i))return null;var l=0;return e[5]&&(l="string"==typeof e[5]&&e[5].includes("%")?parseFloat(e[5])/100:e[5]>1?e[5]/100:e[5]),{id:n,parentId:t,name:r,startDate:o,endDate:i,progress:l,dependencies:e[6]?String(e[6]).split(",").map(function(e){return e.trim()}):[]}}).filter(Boolean);s.forEach(function(e){var t=e.endDate-e.startDate;e.progressEnd=new Date(e.startDate.getTime()+t*e.progress)});var u=new Map;s.forEach(function(e){u.has(e.parentId)||u.set(e.parentId,[]),u.get(e.parentId).push(e)});var d,f=i(u.entries());try{for(f.s();!(d=f.n()).done;){var m=o(d.value,2);m[0],m[1].sort(function(e,t){return e.startDate-t.startDate})}}catch(e){f.e(e)}finally{f.f()}var g=n(null);Z({$schema:"https://vega.github.io/schema/vega-lite/v5.json",description:"Gantt Chart from Excel Data",width:800,height:Math.max(300,30*g.length),data:{values:g},layer:[{mark:{type:"bar",opacity:.3,height:20},encoding:{y:{field:"name",type:"nominal",axis:{title:null,labelFontSize:11},sort:null},x:{field:"startDate",type:"temporal",axis:{title:"Timeline",format:"%b %d",labelAngle:-45}},x2:{field:"endDate",type:"temporal"},color:{field:"level",type:"ordinal",scale:{scheme:"category10"},legend:{title:"Level"}},tooltip:[{field:"name",type:"nominal",title:"Task"},{field:"startDate",type:"temporal",title:"Start",format:"%Y-%m-%d"},{field:"endDate",type:"temporal",title:"End",format:"%Y-%m-%d"},{field:"progress",type:"quantitative",title:"Progress",format:".0%"}]}},{mark:{type:"bar",opacity:.8,height:20},encoding:{y:{field:"name",type:"nominal",sort:null},x:{field:"startDate",type:"temporal"},x2:{field:"progressEnd",type:"temporal"},color:{field:"level",type:"ordinal",scale:{scheme:"category10"}}}},{mark:{type:"text",align:"left",baseline:"middle",dx:5,fontSize:10},encoding:{y:{field:"name",type:"nominal",sort:null},x:{field:"endDate",type:"temporal"},text:{field:"progress",type:"quantitative",format:".0%"},color:{value:"#666"}}},{mark:{type:"rule",strokeDash:[4,4],opacity:.5},data:{values:[{date:(new Date).toISOString()}]},encoding:{x:{field:"date",type:"temporal"},color:{value:"red"},size:{value:1}}}],config:{view:{stroke:null},axis:{grid:!0,gridColor:"#f0f0f0"}}},"gantt",r,c).then(function(){return t("Gantt")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function H(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Sankey chart requires 3 columns (Source Category, Destination Category, Values)");var r=n.filter(function(e){return e[0]&&e[1]&&!isNaN(+e[2])}).map(function(e){return{key:{stk1:e[0],stk2:e[1]},doc_count:+e[2]}});if(0===r.length)return void t("Error: No valid data found for Sankey chart");Z({$schema:"https://vega.github.io/schema/vega/v5.2.json",height:300,width:600,background:"white",config:{view:{stroke:"transparent"}},view:{stroke:null},padding:{top:60,bottom:80,left:60,right:60},data:[{name:"rawData",values:r,transform:[{type:"formula",expr:"datum.key.stk1",as:"stk1"},{type:"formula",expr:"datum.key.stk2",as:"stk2"},{type:"formula",expr:"datum.doc_count",as:"size"}]},{name:"nodes",source:"rawData",transform:[{type:"filter",expr:"!groupSelector || groupSelector.stk1 == datum.stk1 || groupSelector.stk2 == datum.stk2"},{type:"formula",expr:"datum.stk1+datum.stk2",as:"key"},{type:"fold",fields:["stk1","stk2"],as:["stack","grpId"]},{type:"formula",expr:"datum.stack == 'stk1' ? datum.stk1+' '+datum.stk2 : datum.stk2+' '+datum.stk1",as:"sortField"},{type:"stack",groupby:["stack"],sort:{field:"sortField",order:"descending"},field:"size"},{type:"formula",expr:"(datum.y0+datum.y1)/2",as:"yc"}]},{name:"groups",source:"nodes",transform:[{type:"aggregate",groupby:["stack","grpId"],fields:["size"],ops:["sum"],as:["total"]},{type:"stack",groupby:["stack"],sort:{field:"grpId",order:"descending"},field:"total"},{type:"formula",expr:"scale('y', datum.y0)",as:"scaledY0"},{type:"formula",expr:"scale('y', datum.y1)",as:"scaledY1"},{type:"formula",expr:"datum.stack == 'stk1'",as:"rightLabel"},{type:"formula",expr:"datum.total/domain('y')[1]",as:"percentage"}]},{name:"destinationNodes",source:"nodes",transform:[{type:"filter",expr:"datum.stack == 'stk2'"}]},{name:"edges",source:"nodes",transform:[{type:"filter",expr:"datum.stack == 'stk1'"},{type:"lookup",from:"destinationNodes",key:"key",fields:["key"],as:["target"]},{type:"linkpath",orient:"horizontal",shape:"diagonal",sourceY:{expr:"scale('y', datum.yc)"},sourceX:{expr:"scale('x', 'stk1') + bandwidth('x')"},targetY:{expr:"scale('y', datum.target.yc)"},targetX:{expr:"scale('x', 'stk2')"}},{type:"formula",expr:"range('y')[0]-scale('y', datum.size)",as:"strokeWidth"},{type:"formula",expr:"datum.size/domain('y')[1]",as:"percentage"}]}],scales:[{name:"x",type:"band",range:"width",domain:["stk1","stk2"],paddingOuter:.05,paddingInner:.95},{name:"y",type:"linear",range:"height",domain:{data:"nodes",field:"y1"}},{name:"color",type:"ordinal",range:"category",domain:{fields:[{data:"rawData",field:"stk1"},{data:"rawData",field:"stk2"}]}},{name:"stackNames",type:"ordinal",range:["Source","Destination"],domain:["stk1","stk2"]}],axes:[{orient:"bottom",scale:"x",encode:{labels:{update:{text:{scale:"stackNames",field:"value"}}}}},{orient:"left",scale:"y"}],marks:[{type:"path",name:"edgeMark",from:{data:"edges"},clip:!0,encode:{update:{stroke:{scale:"color",field:"stk1"},strokeWidth:{field:"strokeWidth"},path:{field:"path"},strokeOpacity:{signal:"!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 0.9 : 0.3"},zindex:{signal:"!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 1 : 0"},tooltip:{signal:"datum.stk1 + ' → ' + datum.stk2 + '    ' + format(datum.size, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"}},hover:{strokeOpacity:{value:1}}}},{type:"rect",name:"groupMark",from:{data:"groups"},encode:{enter:{fill:{scale:"color",field:"grpId"},width:{scale:"x",band:1}},update:{x:{scale:"x",field:"stack"},y:{field:"scaledY0"},y2:{field:"scaledY1"},fillOpacity:{value:.6},tooltip:{signal:"datum.grpId + '   ' + format(datum.total, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"}},hover:{fillOpacity:{value:1}}}},{type:"text",from:{data:"groups"},interactive:!1,encode:{update:{x:{signal:"scale('x', datum.stack) + (datum.rightLabel ? bandwidth('x') + 8 : -8)"},yc:{signal:"(datum.scaledY0 + datum.scaledY1)/2"},align:{signal:"datum.rightLabel ? 'left' : 'right'"},baseline:{value:"middle"},fontWeight:{value:"bold"},text:{signal:"abs(datum.scaledY0-datum.scaledY1) > 13 ? datum.grpId : ''"}}}}],signals:[{name:"groupHover",value:{},on:[{events:"@groupMark:mouseover",update:"{stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"},{events:"mouseout",update:"{}"}]},{name:"groupSelector",value:!1,on:[{events:"@groupMark:click!",update:"{stack:datum.stack, stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"},{events:[{type:"click",markname:"groupReset"},{type:"dblclick"}],update:"false"}]}]},"sankey",a,n).then(function(){return t("Sankey")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function Y(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Ridgeline chart requires 3 columns (Time/X-axis, Categories, Values)");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Ridgeline (Joyplot) chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},mark:{type:"area",fillOpacity:.7,strokeOpacity:1,strokeWidth:1,interpolate:"monotone"},width:400,height:20,encoding:{x:{field:a[0],type:"ordinal",title:a[0]},y:{aggregate:"sum",field:a[2],type:"quantitative",scale:{range:[20,-40]},axis:{title:null,values:[0],domain:!1,labels:!1,ticks:!1}},row:{field:a[1],type:"nominal",title:a[1],header:{title:null,labelAngle:0,labelOrient:"left",labelAlign:"left",labelPadding:0},sort:{field:a[0],op:"max",order:"ascending"}},fill:{field:a[1],type:"nominal",legend:null,scale:{scheme:"plasma"}}},resolve:{scale:{y:"independent"}}},"config",{view:{stroke:"transparent"},facet:{spacing:20},header:{labelFontSize:12,labelFontWeight:500,labelAngle:0,labelAnchor:"end",labelOrient:"top",labelPadding:-19},axis:{domain:!1,grid:!1,ticks:!1,tickCount:5,labelFontSize:12,titleFontSize:12,titleFontWeight:400,titleColor:"#605E5C"}}),"ridgeline",a,n).then(function(){return t("Ridgeline")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function $(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Variance chart requires 3 columns (Business Unit, First Metric, Second Metric)");Z({$schema:"https://vega.github.io/schema/vega-lite/v5.json",data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},transform:[{aggregate:[{op:"sum",field:a[1],as:a[1]},{op:"sum",field:a[2],as:a[2]}],groupby:[a[0]]},{calculate:"datum['".concat(a[1],"'] - datum['").concat(a[2],"']"),as:"Variance Absolute"},{calculate:"datum['".concat(a[2],"'] === 0 ? 0 : datum['").concat(a[1],"']/datum['").concat(a[2],"']-1"),as:"Variance Percent"}],hconcat:[{width:350,height:{step:50},view:{stroke:"transparent"},encoding:{color:{type:"nominal",scale:{domain:[a[1],a[2]],range:["#404040","silver"]},legend:{title:null,orient:"top"}},y:{field:a[0],type:"nominal",sort:null,axis:{domain:!1,offset:0,ticks:!1,title:"",labelPadding:35}},x:{type:"quantitative",axis:{domain:!1,labels:!1,title:null,ticks:!1,grid:!0,gridColor:{condition:{test:"datum.value === 0",value:"#605E5C"},value:"transparent"}}}},layer:[{mark:{type:"bar",tooltip:!0,cornerRadius:3,yOffset:12,height:{band:.5}},encoding:{x:{field:a[2]},color:{datum:a[2]}}},{mark:{type:"bar",tooltip:!0,cornerRadius:3,yOffset:0,height:{band:.5}},encoding:{x:{field:a[1]},color:{datum:a[1]}}},{mark:{type:"text",align:{expr:"datum['".concat(a[1],"'] < 0 ? 'right' : 'left'")},dx:{expr:"datum['".concat(a[1],"'] < 0 ? -5 : 5")},color:"black",fontSize:11},encoding:{x:{field:a[1],type:"quantitative"},text:{field:a[1],type:"quantitative",format:","}}}]},{width:150,height:{step:50},view:{stroke:"transparent"},encoding:{y:{field:a[0],type:"nominal",sort:null,axis:null},x:{field:"Variance Absolute",type:"quantitative",axis:{domain:!1,labels:!1,title:null,ticks:!1,grid:!0,gridWidth:1,gridColor:{condition:{test:"datum.value === 0",value:"#605E5C"},value:"transparent"}}}},layer:[{mark:{type:"bar",tooltip:!0,cornerRadius:3,yOffset:0,height:{band:.5}},encoding:{fill:{condition:{test:"datum['Variance Absolute'] < 0",value:"#b92929"},value:"#329351"}}},{mark:{type:"text",align:{expr:"datum['Variance Absolute'] < 0 ? 'right' : 'left'"},dx:{expr:"datum['Variance Absolute'] < 0 ? -5 : 5"}},encoding:{text:{field:"Variance Absolute",type:"quantitative",format:"+,"}}}]},{width:150,height:{step:50},view:{stroke:"transparent"},transform:[{calculate:"datum['".concat(a[2],"'] === 0 ? 'n/m' : format(datum['Variance Percent'], '+.1%')"),as:"PercentDisplay"}],encoding:{y:{field:a[0],type:"nominal",sort:null,axis:null},x:{field:"Variance Percent",type:"quantitative",axis:{domain:!1,labels:!1,title:null,ticks:!1,grid:!0,gridColor:{condition:{test:"datum.value === 0",value:"#605E5C"},value:"transparent"}}}},layer:[{mark:{type:"rule",tooltip:!0},encoding:{strokeWidth:{value:2},stroke:{condition:{test:"datum['Variance Absolute'] < 0",value:"#b92929"},value:"#329351"}}},{mark:{type:"circle",tooltip:!0},encoding:{size:{value:100},color:{condition:{test:"datum['Variance Absolute'] < 0",value:"#b92929"},value:"#329351"}}},{mark:{type:"text",align:{expr:"datum['Variance Absolute'] < 0 ? 'right' : 'left'"},dx:{expr:"datum['Variance Absolute'] < 0 ? -10 : 10"}},encoding:{text:{field:"PercentDisplay",type:"nominal"}}}]}],config:{view:{stroke:"transparent"},padding:{left:5,top:20,right:5,bottom:5},font:"Segoe UI",axis:{labelFontSize:12,labelPadding:10,offset:5,labelFont:"Segoe UI",labelColor:"#252423"},text:{fontSize:12,font:"Segoe UI",color:"#605E5C"},concat:{spacing:50},legend:{labelFontSize:12,labelFont:"Segoe UI",labelColor:"#605E5C"}}},"variance",a,n).then(function(){return t("Variance")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function K(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Deviation chart requires 3 columns (Date/Period, Actual Values, Target/Baseline Values)");Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Deviation chart from Excel selection",background:"white",config:{view:{stroke:"transparent"}},data:{values:n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t})},layer:[{mark:{type:"line",tooltip:!0,color:"grey"},encoding:{x:{field:a[0],type:"ordinal"},y:{field:a[1],type:"quantitative"}}},{mark:{type:"circle",size:80,color:"grey",tooltip:!0},encoding:{x:{field:a[0],type:"ordinal"},y:{field:a[1],type:"quantitative"}}},{mark:{type:"rule",strokeWidth:2,tooltip:!0},encoding:{x:{field:a[0],type:"ordinal"},y:{field:a[1],type:"quantitative"},y2:{field:a[2]},color:{condition:{test:'datum["'.concat(a[1],'"] < datum["').concat(a[2],'"]'),value:"red"},value:"green"}}},{mark:{type:"circle",size:60,tooltip:!0},encoding:{x:{field:a[0],type:"ordinal"},y:{field:a[2],type:"quantitative"},color:{condition:{test:'datum["'.concat(a[1],'"] < datum["').concat(a[2],'"]'),value:"red"},value:"green"}}}],encoding:{x:{field:a[0],type:"ordinal",axis:{title:null,labelAngle:0}},y:{type:"quantitative",axis:{title:""}}}},"config",{view:{stroke:"transparent"},line:{strokeWidth:3,strokeCap:"round",strokeJoin:"round"},axis:{ticks:!1,grid:!1,domain:!1,labelColor:"#605E5C",labelFontSize:12}}),"deviation",a,n).then(function(){return t("Deviation")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function X(e){return new Promise(function(t){try{if(!e||e.length<2)return void t("Error: Need at least header row + one data row");var a=e[0],n=e.slice(1);if(a.length<3)return void t("Error: Ribbon chart requires 3 columns (Time periods, Categories, Values)");var r=n.map(function(e){var t={};return a.forEach(function(a,n){t[a]=e[n]}),t}),o=l(new Set(r.map(function(e){return e[a[0]]})));Z(f({$schema:"https://vega.github.io/schema/vega-lite/v6.json",description:"Ribbon chart from Excel selection",background:"white",width:Math.max(600,100*o.length),height:400,config:{view:{stroke:"transparent"}},data:{values:r},layer:[{mark:{type:"area",interpolate:"monotone",tooltip:!0,opacity:.8},encoding:{x:{field:a[0],type:"ordinal",scale:{type:"point",padding:.3},axis:{title:a[0],labelAngle:-45,labelFontSize:12,titleFontSize:14,labelPadding:10,titlePadding:20}},y:{aggregate:"sum",field:a[2],type:"quantitative",axis:{title:a[2],labelFontSize:12,titleFontSize:14,grid:!0,gridOpacity:.3},stack:"center"},color:{field:a[1],type:"nominal",legend:{title:a[1],titleFontSize:12,labelFontSize:11,orient:"right"}},order:{aggregate:"sum",field:a[2],type:"quantitative"}}}]},"config",{view:{stroke:"transparent"},font:"Segoe UI",axis:{ticks:!1,grid:!0,gridColor:"#f0f0f0",gridOpacity:.5,gridWidth:1,domain:!1,labelColor:"#605e5c",titleColor:"#323130"},legend:{titleFont:"Segoe UI",titleFontWeight:"bold",titleColor:"#323130",labelFont:"Segoe UI",labelColor:"#605e5c",symbolType:"circle",symbolSize:75}}),"ribbon",a,n).then(function(){return t("Ribbon")}).catch(function(e){return t("Error: ".concat(e.message))})}catch(e){t("Error: ".concat(e.message))}})}function Z(e,t,a,n){return J.apply(this,arguments)}function J(){return J=r(e().m(function t(a,n,o,i){return e().w(function(t){for(;;)if(0===t.n)return t.a(2,new Promise(function(){var t=r(e().m(function t(o,i){var l,c,s,u,d,f,m,g,p;return e().w(function(t){for(;;)switch(t.p=t.n){case 0:if(t.p=0,l="".concat(n,"_").concat(Date.now(),"_").concat(Math.random().toString(36).substr(2,6)),(c=document.createElement("div")).style.display="none",c.id=l,document.body.appendChild(c),"undefined"!=typeof vegaEmbed){t.n=1;break}return t.n=1,ne();case 1:return t.n=2,vegaEmbed(c,a,{actions:!1});case 2:return s=t.v,u=s.view,t.n=3,u.toImageURL("png");case 3:return d=t.v,t.n=4,fetch(d);case 4:return f=t.v,t.n=5,f.blob();case 5:m=t.v,(g=new FileReader).onloadend=r(e().m(function t(){var a,r;return e().w(function(e){for(;;)switch(e.p=e.n){case 0:return e.p=0,a=g.result.split(",")[1],e.n=1,Q(a,n,l);case 1:document.body.removeChild(c),o(),e.n=3;break;case 2:e.p=2,r=e.v,document.body.contains(c)&&document.body.removeChild(c),i(r);case 3:return e.a(2)}},t,null,[[0,2]])})),g.readAsDataURL(m),t.n=7;break;case 6:t.p=6,p=t.v,i(p);case 7:return t.a(2)}},t,null,[[0,6]])}));return function(e,a){return t.apply(this,arguments)}}()))},t)})),J.apply(this,arguments)}function Q(e,t,a){return ee.apply(this,arguments)}function ee(){return ee=r(e().m(function t(a,n,o){return e().w(function(t){for(;;)if(0===t.n)return t.a(2,Excel.run(function(){var t=r(e().m(function t(r){var i,l,c,s,u,d,f;return e().w(function(e){for(;;)switch(e.n){case 0:return i=r.workbook.worksheets.getActiveWorksheet(),e.n=1,te(r,i,n);case 1:if(!(l=e.v)){e.n=2;break}c=l.left,s=l.top,u=l.width,targetHeight=l.height,e.n=4;break;case 2:return(d=r.workbook.getSelectedRange()).load("left, top, width, height"),e.n=3,r.sync();case 3:c=d.left,s=d.top,u=Math.max(400,8*d.width),targetHeight=300;case 4:return(f=i.shapes.addImage(a)).left=c,f.top=s,l?(f.lockAspectRatio=!1,f.width=u,f.height=targetHeight):(f.lockAspectRatio=!0,f.width=u),f.name="".concat(n.charAt(0).toUpperCase()+n.slice(1),"Chart_").concat(o),e.n=5,r.sync();case 5:return e.a(2)}},t)}));return function(e){return t.apply(this,arguments)}}()))},t)})),ee.apply(this,arguments)}function te(e,t,a){return ae.apply(this,arguments)}function ae(){return(ae=r(e().m(function t(a,n,r){var o,i,l,c,s,u;return e().w(function(e){for(;;)switch(e.n){case 0:return(o=n.shapes).load("items"),e.n=1,a.sync();case 1:for(i="".concat(r.charAt(0).toUpperCase()+r.slice(1),"Chart_"),l=null,c=o.items.length-1;c>=0;c--)o.items[c].load(["name","left","top","width","height"]);return e.n=2,a.sync();case 2:s=o.items.length-1;case 3:if(!(s>=0)){e.n=5;break}if(!(u=o.items[s]).name||!u.name.startsWith(i)){e.n=4;break}return l={left:u.left,top:u.top,width:u.width,height:u.height},u.delete(),e.n=4,a.sync();case 4:s--,e.n=3;break;case 5:return e.a(2,l)}},t)}))).apply(this,arguments)}function ne(){return new Promise(function(e,t){if("undefined"==typeof vegaEmbed){var a=["https://cdn.jsdelivr.net/npm/vega@6","https://cdn.jsdelivr.net/npm/vega-lite@6","https://cdn.jsdelivr.net/npm/vega-embed@6"],n=0;a.forEach(function(r,o){var i=document.createElement("script");i.src=r,i.onload=function(){++n===a.length&&e()},i.onerror=function(){return t(new Error("Failed to load ".concat(r)))},document.head.appendChild(i)})}else e()})}"undefined"!=typeof CustomFunctions&&(CustomFunctions.associate("LINE",m),CustomFunctions.associate("BAR",g),CustomFunctions.associate("PIE",h),CustomFunctions.associate("GAUGE",p),CustomFunctions.associate("AREA",y),CustomFunctions.associate("SCATTER",v),CustomFunctions.associate("BUBBLE",b),CustomFunctions.associate("RADIAL",k),CustomFunctions.associate("RING",x),CustomFunctions.associate("BOX",w),CustomFunctions.associate("RADAR",E),CustomFunctions.associate("WATERFALL",S),CustomFunctions.associate("SUNBURST",C),CustomFunctions.associate("TREEMAP",F),CustomFunctions.associate("HISTOGRAM",z),CustomFunctions.associate("CANDLESTICK",I),CustomFunctions.associate("MAP",A),CustomFunctions.associate("ARC",P),CustomFunctions.associate("TREE",N),CustomFunctions.associate("WORDCLOUD",R),CustomFunctions.associate("STRIP",M),CustomFunctions.associate("HEATMAP",O),CustomFunctions.associate("BULLET",T),CustomFunctions.associate("HORIZON",D),CustomFunctions.associate("DUMBBELL",q),CustomFunctions.associate("SLOPE",L),CustomFunctions.associate("MEKKO",U),CustomFunctions.associate("MARIMEKKO",V),CustomFunctions.associate("BUMP",W),CustomFunctions.associate("WAFFLE",B),CustomFunctions.associate("LOLLIPOP",j),CustomFunctions.associate("VIOLIN",G),CustomFunctions.associate("GANTT",_),CustomFunctions.associate("SANKEY",H),CustomFunctions.associate("RIBBON",X),CustomFunctions.associate("RIDGELINE",Y),CustomFunctions.associate("DEVIATION",K),CustomFunctions.associate("VARIANCE",$)),CustomFunctions.associate("LINE",m),CustomFunctions.associate("BAR",g),CustomFunctions.associate("GAUGE",p),CustomFunctions.associate("PIE",h),CustomFunctions.associate("AREA",y),CustomFunctions.associate("SCATTER",v),CustomFunctions.associate("BUBBLE",b),CustomFunctions.associate("RING",x),CustomFunctions.associate("RADIAL",k),CustomFunctions.associate("BOX",w),CustomFunctions.associate("RADAR",E),CustomFunctions.associate("WATERFALL",S),CustomFunctions.associate("SUNBURST",C),CustomFunctions.associate("TREEMAP",F),CustomFunctions.associate("HISTOGRAM",z),CustomFunctions.associate("MAP",A),CustomFunctions.associate("CANDLESTICK",I),CustomFunctions.associate("ARC",P),CustomFunctions.associate("TREE",N),CustomFunctions.associate("WORDCLOUD",R),CustomFunctions.associate("STRIP",M),CustomFunctions.associate("HEATMAP",O),CustomFunctions.associate("BULLET",T),CustomFunctions.associate("HORIZON",D),CustomFunctions.associate("DUMBBELL",q),CustomFunctions.associate("SLOPE",L),CustomFunctions.associate("MEKKO",U),CustomFunctions.associate("MARIMEKKO",V),CustomFunctions.associate("BUMP",W),CustomFunctions.associate("WAFFLE",B),CustomFunctions.associate("LOLLIPOP",j),CustomFunctions.associate("VIOLIN",G),CustomFunctions.associate("GANTT",_),CustomFunctions.associate("SANKEY",H),CustomFunctions.associate("RIDGELINE",Y),CustomFunctions.associate("VARIANCE",$),CustomFunctions.associate("DEVIATION",K),CustomFunctions.associate("RIBBON",X)}();
-//# sourceMappingURL=functions.js.map
+﻿/**
+ * LINE custom function
+ * Creates a multi-series line chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function LINE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Transform data for multi-series line chart (exact copy from taskpane.js)
+      const transformedData = [];
+      const valueColumns = headers.slice(1);
+      processedData.forEach(row => {
+        valueColumns.forEach(colName => {
+          if (row[colName] !== null && row[colName] !== undefined && row[colName] !== "") {
+            transformedData.push({
+              [headers[0]]: row[headers[0]], // x-axis value (first column)
+              series: colName,               // series name (column header)
+              value: parseFloat(row[colName]) || 0  // y-axis value
+            });
+          }
+        });
+      });
+
+      // Use EXACT specification from taskpane.js line chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Multi-series line chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: transformedData },
+        mark: { 
+          type: "line", 
+          point: false,
+          tooltip: true,
+          strokeWidth: 2
+        },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14,
+              labelAngle: 0
+            }
+          },
+          y: { 
+            field: "value", 
+            type: "quantitative",
+            axis: {
+              title: "Value",
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          color: { 
+            field: "series", 
+            type: "nominal",
+            scale: {
+              scheme: "category10"
+            },
+            legend: {
+              title: "Series",
+              titleFontSize: 12,
+              labelFontSize: 11
+            }
+          }
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          },
+          point: {
+            size: 60,
+            filled: true
+          }
+        }
+      };
+
+      createChart(spec, "line", headers, rows)
+        .then(() => resolve("Line"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BAR custom function
+ * Creates a bar chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BAR(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js bar chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bar chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { 
+          type: "bar", 
+          tooltip: true
+        },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "nominal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          // Add color encoding for grouped bars if 3rd column exists
+          ...(headers.length >= 3 && {
+            color: { 
+              field: headers[2], 
+              type: "nominal",
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "bar", headers, rows)
+        .then(() => resolve("Bar"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * GAUGE custom function 
+ * Creates a gauge chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function GAUGE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Gauge chart requires 2 columns (Current Value, Max Value)");
+        return;
+      }
+
+      // Process gauge data - expect one row with current value and max value
+      const gaugeRow = rows[0]; // Use first data row
+      const mainValue = parseFloat(gaugeRow[0]) || 0;
+      const maxValue = parseFloat(gaugeRow[1]) || 100;
+      const minValue = 0; // Always start from 0
+
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v5.json",
+        "description": "Gauge chart from Excel selection",
+        "width": 400,
+        "height": 300,
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+        
+        "signals": [
+          {"name": "centerX", "update": "width / 2"},
+          {"name": "centerY", "update": "height / 2"},
+          {"name": "outerRadius", "update": "min(width, height) / 2 - 10"},
+          {"name": "innerRadius", "update": "outerRadius - outerRadius * 0.25"},
+          {"name": "mainValue", "value": mainValue},
+          {"name": "minValue", "value": minValue},
+          {"name": "maxValue", "value": maxValue},
+          {"name": "usedValue", "update": "min(max(minValue, mainValue), maxValue)"},
+          {"name": "fontFactor", "update": "(min(width, height)/5)/25"},
+          {"name": "backgroundColor", "value": "#e1e4e8"},
+          {"name": "fillColor", "value": "#0078d4"},
+          {"name": "needleColor", "value": "#323130"},
+          {"name": "needleSize", "update": "innerRadius"}
+        ],
+        
+        "scales": [
+          {
+            "name": "gaugeScale",
+            "type": "linear",
+            "domain": [{"signal": "minValue"}, {"signal": "maxValue"}],
+            "range": [{"signal": "-PI/2"}, {"signal": "PI/2"}]
+          },
+          {
+            "name": "needleScale",
+            "type": "linear",
+            "domain": [{"signal": "minValue"}, {"signal": "maxValue"}],
+            "range": [-90, 90]
+          }
+        ],
+        
+        "marks": [
+          {
+            "type": "arc",
+            "name": "gauge",
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "startAngle": {"signal": "-PI/2"},
+                "endAngle": {"signal": "PI/2"},
+                "outerRadius": {"signal": "outerRadius"},
+                "innerRadius": {"signal": "innerRadius"},
+                "fill": {"signal": "backgroundColor"}
+              }
+            }
+          },
+          {
+            "type": "arc",
+            "encode": {
+              "enter": {"startAngle": {"signal": "-PI/2"}},
+              "update": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "innerRadius": {"signal": "innerRadius"},
+                "outerRadius": {"signal": "outerRadius"},
+                "endAngle": {"scale": "gaugeScale", "signal": "usedValue"},
+                "fill": {"signal": "fillColor"}
+              }
+            }
+          },
+          {
+            "type": "text",
+            "description": "displayed main value at the center",
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY + fontFactor * 15"},
+                "baseline": {"value": "middle"},
+                "align": {"value": "center"},
+                "fontSize": {"signal": "fontFactor * 7"},
+                "font": {"value": "Segoe UI"},
+                "fontWeight": {"value": "bold"}
+              },
+              "update": {
+                "text": {"signal": "mainValue < 1 ? format(mainValue, '.0%') : format(mainValue, ',.0f')"},
+                "fill": {"signal": "fillColor"}
+              }
+            }
+          },
+          {
+            "type": "symbol",
+            "name": "needle",
+            "encode": {
+              "enter": {"x": {"signal": "centerX"}, "y": {"signal": "centerY"}},
+              "update": {
+                "shape": {
+                  "signal": "'M-2.5 -2.5 Q 0 0 2.5 -2.5 L 0 -' + toString(needleSize) + ' Z '"
+                },
+                "angle": {"signal": "usedValue", "scale": "needleScale"},
+                "size": {"signal": "4"},
+                "stroke": {"signal": "needleColor"},
+                "fill": {"signal": "needleColor"}
+              }
+            }
+          },
+          {
+            "type": "symbol",
+            "description": "center circle",
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "shape": {"value": "circle"},
+                "size": {"signal": "pow(fontFactor * 8, 2)"},
+                "fill": {"signal": "needleColor"},
+                "stroke": {"value": "white"},
+                "strokeWidth": {"value": 2}
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "gauge", headers, rows)
+        .then(() => resolve("Gauge"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * PIE custom function
+ * Creates a pie chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function PIE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Pie chart requires 2 columns (Category, Value)");
+        return;
+      }
+
+      // Validate that all values are positive numbers
+      const hasInvalidValues = rows.some(row => isNaN(row[1]) || row[1] <= 0);
+      if (hasInvalidValues) {
+        resolve("Error: Pie chart values must be positive numbers");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js pie chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        description: "Pie chart from Excel selection",
+        data: { values: processedData },
+        mark: { type: "arc", outerRadius: 120 },
+        encoding: {
+          theta: { field: headers[1], type: "quantitative" },
+          color: { field: headers[0], type: "nominal" }
+        }
+      };
+
+      createChart(spec, "pie", headers, rows)
+        .then(() => resolve("Pie"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * AREA custom function
+ * Creates an area chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function AREA(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js area chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Area chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { 
+          type: "area", 
+          tooltip: true,
+          opacity: 0.7
+        },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          // Add color encoding for multiple areas if 3rd column exists
+          ...(headers.length >= 3 && {
+            color: { 
+              field: headers[2], 
+              type: "nominal",
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "area", headers, rows)
+        .then(() => resolve("Area"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SCATTER custom function
+ * Creates a scatter plot from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SCATTER(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Scatter plot requires at least 2 columns (X, Y values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js point chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Colored scatter plot from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { type: "point", size: 100, tooltip: true },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          // Add color encoding if 3rd column exists
+          ...(headers.length >= 3 && {
+            color: { 
+              field: headers[2], 
+              type: "nominal",
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          }),
+          // Add shape encoding if 4th column exists
+          ...(headers.length >= 4 && {
+            shape: { 
+              field: headers[3], 
+              type: "nominal",
+              legend: {
+                title: headers[3],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "scatter", headers, rows)
+        .then(() => resolve("Scatter"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BUBBLE custom function
+ * Creates a bubble chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BUBBLE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Bubble chart requires at least 3 columns (X values, Y values, Size values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js bubble chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bubble chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: { type: "circle", tooltip: true, opacity: 0.7 },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          size: {
+            field: headers[2],
+            type: "quantitative",
+            scale: {
+              type: "linear",
+              range: [100, 1000]
+            },
+            legend: {
+              title: headers[2],
+              titleFontSize: 12,
+              labelFontSize: 11
+            }
+          },
+          // Add color encoding if 4th column exists
+          ...(headers.length >= 4 && {
+            color: { 
+              field: headers[3], 
+              type: "nominal",
+              legend: {
+                title: headers[3],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        },
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "bubble", headers, rows)
+        .then(() => resolve("Bubble"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RING custom function
+ * Creates a ring chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RING(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Ring chart requires 2 columns: Category, Value");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      const numRings = processedData.length;
+      if (numRings === 0) {
+        resolve("Error: Ring chart requires at least one data row");
+        return;
+      }
+
+      // Dynamic ring parameters based on number of rings
+      const ringWidth = Math.max(15, Math.min(25, 120 / numRings));
+      const ringGap = Math.max(3, Math.min(8, 40 / numRings));
+      const maxRadius = 150 + (numRings * 5);
+
+      // Generate colors dynamically
+      const generateRingColor = (index, total) => {
+        const baseHue = 210; // Blue base
+        const saturation = Math.max(50, 80 - (index * 5));
+        const lightness = Math.max(25, 60 - (index * 8));
+        return `hsl(${baseHue}, ${saturation}%, ${lightness}%)`;
+      };
+
+      // Transform data for the chart
+      const transformedData = processedData.map((d, index) => ({
+        [`__${index}__`]: d[headers[0]], // Category
+        [`__${index + 100}__`]: d[headers[1]], // Value
+        [`Ring${index + 1}_Theta2`]: 2 * Math.PI * d[headers[1]] / 100,
+        [`Ring${index + 1}_Percent_Label`]: d[headers[1]] + '%'
+      }));
+
+      // Flatten into single object
+      const chartData = [Object.assign({}, ...transformedData)];
+
+      // Calculate ring positions
+      const ringPositions = [];
+      let currentOuter = maxRadius;
+      for (let i = 0; i < numRings; i++) {
+        const outer = currentOuter;
+        const inner = outer - ringWidth;
+        const middle = (outer + inner) / 2;
+        ringPositions.push({ outer, inner, middle });
+        currentOuter = inner - ringGap;
+      }
+
+      // Calculate legend dimensions and positioning
+      const legendWidth = 120; // Fixed width for legend area
+      const legendItemHeight = 25; // Height per legend item
+      const totalLegendHeight = numRings * legendItemHeight;
+      const chartCenterY = maxRadius + 50; // Y center of the chart
+      const legendStartY = chartCenterY - (totalLegendHeight / 2); // Center legend relative to chart center
+
+      // Use EXACT specification from taskpane.js ring chart with right-side legend
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "config": {
+          "autosize": {
+            "type": "pad",
+            "resize": true
+          },
+          "concat": {"spacing": 20} // Spacing between chart and legend
+        },
+        "description": `Dynamic ring chart with ${numRings} concentric rings`,
+        "background": "white",
+        "data": {"values": chartData},
+        "hconcat": [
+          {
+            "description": "RINGS - Main Chart",
+            "width": (maxRadius + 50) * 2,
+            "height": (maxRadius + 50) * 2,
+            "view": {"stroke": null},
+            "layer": [
+              // Background rings (full circles) - centered
+              ...processedData.map((d, index) => ({
+                "description": `RING ${index + 1} BACKGROUND`,
+                "mark": {
+                  "type": "arc",
+                  "radius": ringPositions[index].outer,
+                  "radius2": ringPositions[index].inner,
+                  "theta": 0,
+                  "theta2": 6.283185307179586, // 2π
+                  "opacity": 0.25,
+                  "x": maxRadius + 50,
+                  "y": maxRadius + 50
+                },
+                "encoding": {
+                  "color": {"value": generateRingColor(index, numRings)}
+                }
+              })),
+              // Progress rings - centered
+              ...processedData.map((d, index) => ({
+                "description": `RING ${index + 1} PROGRESS`,
+                "mark": {
+                  "type": "arc",
+                  "radius": ringPositions[index].outer,
+                  "radius2": ringPositions[index].inner,
+                  "theta": 0,
+                  "theta2": {"expr": `datum['Ring${index + 1}_Theta2']`},
+                  "cornerRadius": Math.min(8, ringWidth / 2),
+                  "tooltip": true,
+                  "x": maxRadius + 50,
+                  "y": maxRadius + 50
+                },
+                "encoding": {
+                  "color": {"value": generateRingColor(index, numRings)},
+                  "tooltip": [
+                    {"value": d[headers[0]], "title": "Category"},
+                    {"value": d[headers[1]] + "%", "title": "Progress"}
+                  ]
+                }
+              })),
+              // White percentage labels slightly to the right - centered
+              ...processedData.map((d, index) => ({
+                "description": `RING ${index + 1} LABEL`,
+                "mark": {
+                  "type": "text",
+                  "align": "center",
+                  "baseline": "middle",
+                  "x": maxRadius + 50 + 15, // Center + offset to right
+                  "y": maxRadius + 50 - ringPositions[index].middle, // Center + offset up
+                  "fontSize": Math.max(10, Math.min(14, 180 / numRings)),
+                  "font": "Segoe UI",
+                  "fontWeight": "bold",
+                  "color": "white"
+                },
+                "encoding": {
+                  "text": {"value": d[headers[1]] + "%"},
+                  "opacity": {
+                    "condition": {
+                      "test": `datum['Ring${index + 1}_Theta2'] > 0`,
+                      "value": 1
+                    },
+                    "value": 0
+                  }
+                }
+              }))
+            ]
+          },
+          {
+            "description": "LEGEND - Right Side",
+            "width": legendWidth,
+            "height": (maxRadius + 50) * 2, // Match chart height exactly
+            "view": {"stroke": null},
+            "layer": processedData.map((d, index) => [
+              {
+                "description": `LEGEND CIRCLE ${index + 1}`,
+                "mark": {
+                  "type": "circle",
+                  "size": 150,
+                  "x": 15, // Fixed position from left edge
+                  "y": legendStartY + (index * legendItemHeight),
+                  "color": generateRingColor(index, numRings)
+                }
+              },
+              {
+                "description": `LEGEND LABEL ${index + 1}`,
+                "mark": {
+                  "type": "text",
+                  "x": 35, // Positioned to the right of the circle
+                  "y": legendStartY + (index * legendItemHeight),
+                  "align": "left",
+                  "baseline": "middle",
+                  "fontSize": 11,
+                  "font": "Segoe UI"
+                },
+                "encoding": {
+                  "text": {"value": d[headers[0]]}
+                }
+              }
+            ]).flat()
+          }
+        ],
+        "view": {"stroke": null}
+      };
+
+      createChart(spec, "ring", headers, rows)
+        .then(() => resolve("Ring"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RADIAL custom function
+ * Creates a radial chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RADIAL(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Radial chart requires 2 columns (Category, Value)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js radial chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Radial chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        layer: [{
+          mark: { type: "arc", innerRadius: 20, stroke: "#fff" }
+        }, {
+          mark: { type: "text", radiusOffset: 10 },
+          encoding: {
+            text: { field: headers[1], type: "quantitative" }
+          }
+        }],
+        encoding: {
+          theta: { field: headers[1], type: "quantitative", stack: true },
+          radius: { 
+            field: headers[1], 
+            scale: { type: "sqrt", zero: true, rangeMin: 20 }
+          },
+          color: { field: headers[0], type: "nominal", legend: null }
+        }
+      };
+
+      createChart(spec, "radial", headers, rows)
+        .then(() => resolve("Radial"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BOX custom function
+ * Creates a box plot from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BOX(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Box plot requires 2 columns (Category, Values)");
+        return;
+      }
+
+      // Expect headers: Category | Value (same as taskpane.js)
+      const processedData = rows
+        .filter(r => r[0] && !isNaN(+r[1]))
+        .map(r => ({
+          category: r[0],
+          value: +r[1]
+        }));
+
+      if (processedData.length === 0) {
+        resolve("Error: No valid numeric data found for box plot");
+        return;
+      }
+
+      // Use EXACT specification from taskpane.js box chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Box plot from Excel selection",
+        data: { values: processedData },
+        mark: {
+          type: "boxplot",
+          extent: "min-max"   // show whiskers from min to max
+        },
+        encoding: {
+          x: { field: "category", type: "nominal" },
+          y: {
+            field: "value",
+            type: "quantitative",
+            scale: { zero: false }
+          },
+          color: {
+            field: "category",
+            type: "nominal",
+            legend: null
+          }
+        }
+      };
+
+      createChart(spec, "box", headers, rows)
+        .then(() => resolve("Box"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RADAR custom function
+ * Creates a radar chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RADAR(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Radar chart requires at least 3 columns (Series, Dimension1, Dimension2, ...)");
+        return;
+      }
+
+      const radarData = [];
+      const dimensions = headers.slice(1); // All columns except first are dimensions
+      
+      rows.forEach((row, seriesIndex) => {
+        const seriesName = row[headers[0]] || `Series ${seriesIndex + 1}`;
+        
+        dimensions.forEach(dimension => {
+          const value = parseFloat(row[headers.indexOf(dimension)]) || 0;
+          radarData.push({
+            series: seriesName,
+            dimension: dimension,
+            value: value,
+            category: seriesIndex
+          });
+        });
+      });
+
+      // Get unique dimensions for grid
+      const uniqueDimensions = [...new Set(radarData.map(d => d.dimension))];
+
+      // Use EXACT specification from taskpane.js radar chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v6.json",
+        description: "Radar chart from Excel selection",
+        width: 400,
+        height: 400,
+        padding: 60,
+        autosize: {"type": "none", "contains": "padding"},
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+
+        signals: [
+          {"name": "radius", "update": "width / 2"}
+        ],
+
+        data: [
+          {
+            name: "table",
+            values: radarData
+          },
+          {
+            name: "dimensions",
+            values: uniqueDimensions.map(d => ({dimension: d}))
+          }
+        ],
+
+        scales: [
+          {
+            name: "angular",
+            type: "point",
+            range: {"signal": "[-PI, PI]"},
+            padding: 0.5,
+            domain: uniqueDimensions
+          },
+          {
+            name: "radial",
+            type: "linear",
+            range: {"signal": "[0, radius]"},
+            zero: true,
+            nice: true,
+            domain: {"data": "table", "field": "value"},
+            domainMin: 0
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            domain: {"data": "table", "field": "category"},
+            range: [
+              "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e",
+              "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"
+            ]
+          }
+        ],
+
+        encode: {
+          enter: {
+            x: {"signal": "radius"},
+            y: {"signal": "radius"}
+          }
+        },
+
+        marks: [
+          {
+            type: "group",
+            name: "categories",
+            zindex: 1,
+            from: {
+              facet: {"data": "table", "name": "facet", "groupby": ["category", "series"]}
+            },
+            marks: [
+              {
+                type: "line",
+                name: "category-line",
+                from: {"data": "facet"},
+                encode: {
+                  enter: {
+                    interpolate: {"value": "linear-closed"},
+                    x: {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                    y: {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                    stroke: {"scale": "color", "field": "category"},
+                    strokeWidth: {"value": 2},
+                    fill: {"scale": "color", "field": "category"},
+                    fillOpacity: {"value": 0.1},
+                    strokeOpacity: {"value": 0.8}
+                  }
+                }
+              },
+              {
+                type: "symbol",
+                name: "category-points",
+                from: {"data": "facet"},
+                encode: {
+                  enter: {
+                    x: {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.dimension))"},
+                    y: {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.dimension))"},
+                    size: {"value": 50},
+                    fill: {"scale": "color", "field": "category"},
+                    stroke: {"value": "white"},
+                    strokeWidth: {"value": 1}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            type: "rule",
+            name: "radial-grid",
+            from: {"data": "dimensions"},
+            zindex: 0,
+            encode: {
+              enter: {
+                x: {"value": 0},
+                y: {"value": 0},
+                x2: {"signal": "radius * cos(scale('angular', datum.dimension))"},
+                y2: {"signal": "radius * sin(scale('angular', datum.dimension))"},
+                stroke: {"value": "#e1e4e8"},
+                strokeWidth: {"value": 1}
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "dimension-label",
+            from: {"data": "dimensions"},
+            zindex: 1,
+            encode: {
+              enter: {
+                x: {"signal": "(radius + 20) * cos(scale('angular', datum.dimension))"},
+                y: {"signal": "(radius + 20) * sin(scale('angular', datum.dimension))"},
+                text: {"field": "dimension"},
+                align: [
+                  {
+                    test: "abs(scale('angular', datum.dimension)) > PI / 2",
+                    value: "right"
+                  },
+                  {
+                    value: "left"
+                  }
+                ],
+                baseline: [
+                  {
+                    test: "scale('angular', datum.dimension) > 0", 
+                    value: "top"
+                  },
+                  {
+                    test: "scale('angular', datum.dimension) == 0", 
+                    value: "middle"
+                  },
+                  {
+                    value: "bottom"
+                  }
+                ],
+                fill: {"value": "#323130"},
+                fontWeight: {"value": "bold"},
+                font: {"value": "Segoe UI"},
+                fontSize: {"value": 12}
+              }
+            }
+          },
+          {
+            type: "line",
+            name: "outer-line",
+            from: {"data": "radial-grid"},
+            encode: {
+              enter: {
+                interpolate: {"value": "linear-closed"},
+                x: {"field": "x2"},
+                y: {"field": "y2"},
+                stroke: {"value": "#8a8886"},
+                strokeWidth: {"value": 2},
+                strokeOpacity: {"value": 0.6}
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "radar", headers, rows)
+        .then(() => resolve("Radar"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * WATERFALL custom function
+ * Creates a waterfall chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function WATERFALL(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Waterfall chart requires 3 columns (Category, Amount, Type)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedDataRaw = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Process waterfall data inline - set last entry's amount to 0 (same as taskpane.js)
+      const processedData = [...processedDataRaw];
+      if (processedData.length > 0) {
+        processedData[processedData.length - 1] = {
+          ...processedData[processedData.length - 1],
+          [headers[1]]: 0
+        };
+      }
+
+      // Calculate dynamic dimensions
+      const numDataPoints = processedDataRaw.length;
+      const dynamicWidth = Math.max(400, Math.min(1600, numDataPoints * 50));
+      const maxAmount = Math.max(...processedDataRaw.map(d => Math.abs(d[headers[1]])));
+      const dynamicHeight = Math.max(300, Math.min(600, maxAmount / 100 + 200));
+
+      // Use EXACT specification from taskpane.js waterfall chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Waterfall chart with multiple subtotals",
+        background: "white",
+        data: { values: processedData },
+        config: { view: { stroke: "transparent" }},
+        width: dynamicWidth,
+        height: dynamicHeight,
+        transform: [
+          { "window": [{ "op": "sum", "field": headers[1], "as": "sum" }] },
+          { "window": [{ "op": "lead", "field": headers[0], "as": "lead" }] },
+          {
+            "calculate": `datum.lead === null ? datum.${headers[0]} : datum.lead`,
+            "as": "lead"
+          },
+          {
+            // If total → reset, else → running sum step
+            "calculate": `datum.${headers[2]} == 'total' ? 0 : datum.sum - datum.${headers[1]}`,
+            "as": "previous_sum"
+          },
+          {
+            "calculate": `datum.${headers[2]} == 'total' ? datum.sum : datum.${headers[1]}`,
+            "as": "amount"
+          },
+          {
+            "calculate": `datum.${headers[2]} == 'total' ? datum.${headers[1]} / 2 : (datum.sum + datum.previous_sum) / 2`,
+            "as": "center"
+          },
+          {
+            "calculate": `datum.${headers[2]} == 'total' ? datum.sum : (datum.${headers[1]} > 0 ? '+' : '') + datum.${headers[1]}`,
+            "as": "text_amount"
+          },
+          { "calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center" },
+
+          // Add group index for stacked handling
+          {
+            "window": [{ "op": "rank", "as": "group_index" }],
+            "frame": [null, null],
+            "groupby": [headers[0]]
+          },
+
+          // Precompute color shades
+          {
+            "calculate": `
+            datum.${headers[2]} == 'total'
+                ? '#00B0F0'
+                : datum.amount >= 0
+                ? (datum.group_index == 1 ? '#70AD47'
+                    : (datum.group_index == 2 ? '#8BC97A'
+                    : (datum.group_index == 3 ? '#A7DA9D'
+                    : '#C3EBC0')))
+                : (datum.group_index == 1 ? '#E15759'
+                    : (datum.group_index == 2 ? '#EC7A7C'
+                    : (datum.group_index == 3 ? '#F29C9D'
+                    : '#F8BEBF')))
+            `,
+            "as": "bar_color"
+          }
+        ],
+        encoding: {
+          x: {
+            field: headers[0],
+            type: "ordinal",
+            sort: null,
+            axis: { labelAngle: -45, title: null },
+            scale: { paddingInner: 0.05, paddingOuter: 0.025 }
+          }
+        },
+        layer: [
+          {
+            mark: { type: "bar", size: 60},
+            encoding: {
+              y: { field: "previous_sum", type: "quantitative", title: null },
+              y2: { field: "sum" },
+              color: { field: "bar_color", type: "nominal", scale: null }
+            }
+          },
+          {
+            mark: { type: "text", fontWeight: "bold", baseline: "middle" },
+            encoding: {
+              y: { field: "center", type: "quantitative" },
+              text: { field: "text_amount", type: "nominal" },
+              color: {
+                condition: [
+                  { test: `datum.${headers[2]} == 'total'`, value: "#725a30" }
+                ],
+                value: "white"
+              }
+            }
+          }
+        ],
+        config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
+      };
+
+      createChart(spec, "waterfall", headers, rows)
+        .then(() => resolve("Waterfall"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SUNBURST custom function
+ * Creates a sunburst chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SUNBURST(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Sunburst chart requires at least 2 columns (Parent, Child, optional Value)");
+        return;
+      }
+
+      // Build hierarchical data (same as taskpane.js)
+      const nodes = new Map();
+      rows.forEach((row, i) => {
+        const parent = row[0] || "";
+        const child = row[1] || `node_${i}`;
+        const value = headers.length >= 3 ? (parseFloat(row[2]) || 1) : 1;
+        
+        // Add parent node if it doesn't exist and is not empty
+        if (parent && !nodes.has(parent)) {
+          nodes.set(parent, {
+            id: parent,
+            parent: "",
+            name: parent,
+            size: 0 // Will be calculated later
+          });
+        }
+        
+        // Add child node
+        if (!nodes.has(child)) {
+          nodes.set(child, {
+            id: child,
+            parent: parent,
+            name: child,
+            size: value
+          });
+        } else {
+          // Update parent and value if child already exists
+          const existingNode = nodes.get(child);
+          existingNode.parent = parent;
+          existingNode.size = value;
+        }
+      });
+      
+      // Convert Map to array
+      const hierarchicalData = Array.from(nodes.values());
+      
+      // Find root nodes (nodes with no parent or parent not in dataset)
+      const allIds = new Set(hierarchicalData.map(d => d.id));
+      hierarchicalData.forEach(node => {
+        if (node.parent && !allIds.has(node.parent)) {
+          node.parent = ""; // Make it a root node if parent doesn't exist
+        }
+      });
+
+      // Calculate chart size based on data complexity
+      const nodeCount = hierarchicalData.length;
+      const chartSize = Math.max(400, Math.min(600, nodeCount * 15 + 300));
+
+      // Use EXACT specification from taskpane.js sunburst chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v6.json",
+        "description": "Sunburst chart from Excel selection",
+        "width": chartSize,
+        "height": chartSize,
+        "padding": 10,
+        "autosize": "none",
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+
+        "signals": [
+          {
+            "name": "centerX",
+            "update": "width / 2"
+          },
+          {
+            "name": "centerY", 
+            "update": "height / 2"
+          },
+          {
+            "name": "outerRadius",
+            "update": "min(width, height) / 2 - 10"
+          }
+        ],
+
+        "data": [
+          {
+            "name": "tree",
+            "values": hierarchicalData,
+            "transform": [
+              {
+                "type": "stratify",
+                "key": "id",
+                "parentKey": "parent"
+              },
+              {
+                "type": "partition",
+                "field": "size",
+                "sort": {"field": "size", "order": "descending"},
+                "size": [{"signal": "2 * PI"}, {"signal": "outerRadius"}],
+                "as": ["a0", "r0", "a1", "r1", "depth", "children"]
+              }
+            ]
+          }
+        ],
+
+        "scales": [
+          {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {"data": "tree", "field": "depth"},
+            "range": [
+              "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", 
+              "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438",
+              "#8764b8", "#e3008c", "#00b7c3", "#038387", "#486991"
+            ]
+          },
+          {
+            "name": "opacity",
+            "type": "linear",
+            "domain": {"data": "tree", "field": "depth"},
+            "range": [0.8, 0.4]
+          }
+        ],
+
+        "marks": [
+          {
+            "type": "arc",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "stroke": {"value": "white"},
+                "strokeWidth": {"value": 1}
+              },
+              "update": {
+                "startAngle": {"field": "a0"},
+                "endAngle": {"field": "a1"},
+                "innerRadius": {"field": "r0"},
+                "outerRadius": {"field": "r1"},
+                "fill": {"scale": "color", "field": "depth"},
+                "fillOpacity": {"scale": "opacity", "field": "depth"}
+              }
+            }
+          },
+          {
+            "type": "text",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "x": {"signal": "centerX"},
+                "y": {"signal": "centerY"},
+                "radius": {"signal": "(datum.r0 + datum.r1) / 2"},
+                "theta": {"signal": "(datum.a0 + datum.a1) / 2"},
+                "fill": {"value": "#323130"},
+                "font": {"value": "Segoe UI"},
+                "fontSize": {"value": 10},
+                "fontWeight": {"value": "bold"},
+                "align": {"value": "center"},
+                "baseline": {"value": "middle"}
+              },
+              "update": {
+                "text": {
+                  "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? datum.name : ''"
+                },
+                "opacity": {
+                  "signal": "(datum.r1 - datum.r0) > 20 && (datum.a1 - datum.a0) > 0.3 ? 1 : 0"
+                }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "sunburst", headers, rows)
+        .then(() => resolve("Sunburst"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * TREEMAP custom function
+ * Creates a treemap chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function TREEMAP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Treemap chart requires 3 columns (Parent, Category, Value)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Build treemap data structure (same as taskpane.js)
+      let treeData;
+      
+      if (headers.length >= 3) {
+        // Hierarchical data with parent column
+        treeData = processedData.map((d, i) => ({
+          id: `${d[headers[1]]}_${i}`,
+          name: d[headers[1]],
+          parent: d[headers[0]] || "root",
+          size: parseFloat(d[headers[2]]) || 0
+        }));
+        
+        // Add root and parent nodes
+        const parents = [...new Set(treeData.map(d => d.parent))];
+        parents.forEach(parent => {
+          if (parent !== "root" && !treeData.find(d => d.id === parent)) {
+            treeData.push({
+              id: parent,
+              name: parent,
+              parent: "root",
+              size: 0
+            });
+          }
+        });
+        
+        // Add root node
+        treeData.push({
+          id: "root",
+          name: "Root",
+          parent: "",
+          size: 0
+        });
+      } else {
+        // Simple flat data - create single level hierarchy
+        treeData = [
+          {
+            id: "root",
+            name: "Root", 
+            parent: "",
+            size: 0
+          },
+          ...processedData.map((d, i) => ({
+            id: `item_${i}`,
+            name: d[headers[1]],
+            parent: "root",
+            size: parseFloat(d[headers[2]]) || 0
+          }))
+        ];
+      }
+
+      // Use EXACT specification from taskpane.js treemap chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Treemap visualization from Excel data",
+        background: "white",
+        width: 600,
+        height: 400,
+        padding: 5,
+        autosize: "fit",
+        
+        data: [
+          {
+            name: "tree",
+            values: treeData,
+            transform: [
+              {
+                type: "stratify",
+                key: "id",
+                parentKey: "parent"
+              },
+              {
+                type: "treemap",
+                field: "size",
+                sort: { field: "value" },
+                round: true,
+                method: "squarify",
+                ratio: 1.6,
+                size: [{ signal: "width" }, { signal: "height" }]
+              }
+            ]
+          },
+          {
+            name: "nodes",
+            source: "tree",
+            transform: [
+              { type: "filter", expr: "datum.children" }
+            ]
+          },
+          {
+            name: "leaves", 
+            source: "tree",
+            transform: [
+              { type: "filter", expr: "!datum.children" }
+            ]
+          }
+        ],
+        
+        scales: [
+          {
+            name: "color",
+            type: "ordinal",
+            domain: { data: "nodes", field: "name" },
+            range: [
+              "#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e",
+              "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"
+            ]
+          },
+          {
+            name: "fontSize",
+            type: "ordinal", 
+            domain: [0, 1, 2, 3],
+            range: [20, 16, 12, 10]
+          },
+          {
+            name: "opacity",
+            type: "ordinal",
+            domain: [0, 1, 2, 3], 
+            range: [0.3, 0.6, 0.8, 1.0]
+          }
+        ],
+        
+        marks: [
+          {
+            type: "rect",
+            from: { data: "nodes" },
+            interactive: false,
+            encode: {
+              enter: {
+                fill: { scale: "color", field: "name" },
+                fillOpacity: { scale: "opacity", field: "depth" }
+              },
+              update: {
+                x: { field: "x0" },
+                y: { field: "y0" },
+                x2: { field: "x1" },
+                y2: { field: "y1" },
+                stroke: { value: "#ffffff" },
+                strokeWidth: { value: 1 }
+              }
+            }
+          },
+          {
+            type: "rect",
+            from: { data: "leaves" },
+            encode: {
+              enter: {
+                stroke: { value: "#ffffff" },
+                strokeWidth: { value: 2 }
+              },
+              update: {
+                x: { field: "x0" },
+                y: { field: "y0" },
+                x2: { field: "x1" },
+                y2: { field: "y1" },
+                fill: { value: "transparent" },
+                tooltip: {
+                  signal: `{'Category': datum.name, 'Value': datum.size, 'Parent': datum.parent}`
+                }
+              },
+              hover: {
+                fill: { value: "#323130" },
+                fillOpacity: { value: 0.1 }
+              }
+            }
+          },
+          {
+            type: "text",
+            from: { data: "leaves" },
+            interactive: false,
+            encode: {
+              enter: {
+                font: { value: "Segoe UI, Arial, sans-serif" },
+                align: { value: "center" },
+                baseline: { value: "middle" },
+                fill: { value: "#323130" },
+                fontWeight: { value: "bold" },
+                text: { field: "name" },
+                fontSize: { scale: "fontSize", field: "depth" }
+              },
+              update: {
+                x: { signal: "0.5 * (datum.x0 + datum.x1)" },
+                y: { signal: "0.5 * (datum.y0 + datum.y1)" },
+                opacity: {
+                  signal: "(datum.x1 - datum.x0) > 50 && (datum.y1 - datum.y0) > 20 ? 1 : 0"
+                }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "treemap", headers, rows)
+        .then(() => resolve("Treemap"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * HISTOGRAM custom function
+ * Creates a histogram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function HISTOGRAM(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      // Expect a single numeric column
+      const numericData = rows
+        .filter(r => !isNaN(+r[0]))
+        .map(r => ({ value: +r[0] }));
+
+      if (numericData.length === 0) {
+        resolve("Error: No valid numeric data found for histogram");
+        return;
+      }
+
+      // Calculate data range for better binning control
+      const values = numericData.map(d => d.value);
+      const minVal = Math.min(...values);
+      const maxVal = Math.max(...values);
+      const range = maxVal - minVal;
+      
+      // Calculate nice bin boundaries
+      const binCount = 20;
+      const binWidth = range / binCount;
+      const niceMin = Math.floor(minVal / binWidth) * binWidth;
+      const niceMax = Math.ceil(maxVal / binWidth) * binWidth;
+
+      // Use EXACT specification from taskpane.js histogram
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        "description": "Histogram from Excel selection",
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+        "data": { "values": numericData },
+        "mark": {
+          "type": "bar",
+          "tooltip": true,
+          "stroke": "white",
+          "strokeWidth": 1
+        },
+        "encoding": {
+          "x": {
+            "field": "value",
+            "bin": { 
+              "extent": [niceMin, niceMax],
+              "step": binWidth,
+              "nice": false  // Prevent Vega from adjusting our nice boundaries
+            },
+            "type": "quantitative",
+            "axis": { 
+              "title": "Value",
+              "labelFontSize": 12,
+              "titleFontSize": 14,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130"
+            },
+            "scale": {
+              "domain": [niceMin, niceMax],
+              "range": "width",
+              "paddingInner": 0.05,
+              "paddingOuter": 0.02
+            }
+          },
+          "y": {
+            "aggregate": "count",
+            "type": "quantitative",
+            "axis": { 
+              "title": "Count",
+              "labelFontSize": 12,
+              "titleFontSize": 14,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "gridColor": "#f3f2f1"
+            }
+          },
+          "color": {
+            "value": "#0078d4"
+          }
+        },
+        "config": {
+          "font": "Segoe UI",
+          "axis": {
+            "labelColor": "#605e5c",
+            "titleColor": "#323130",
+            "gridColor": "#f3f2f1"
+          }
+        }
+      };
+
+      createChart(spec, "histogram", headers, rows)
+        .then(() => resolve("Histogram"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * MAP custom function
+ * Creates a world map chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function MAP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Map chart requires 2 columns (Country ISO3, Value)");
+        return;
+      }
+
+      // ISO3 to numeric ID mapping (same as taskpane.js)
+      const isoToId = {
+        "AFG": 4,    // Afghanistan
+        "AGO": 24,   // Angola
+        "ALB": 8,    // Albania
+        "AND": 20,   // Andorra
+        "ARE": 784,  // United Arab Emirates
+        "ARG": 32,   // Argentina
+        "ARM": 51,   // Armenia
+        "ATA": 10,   // Antarctica
+        "ATG": 28,   // Antigua and Barbuda
+        "AUS": 36,   // Australia
+        "AUT": 40,   // Austria
+        "AZE": 31,   // Azerbaijan
+        "BDI": 108,  // Burundi
+        "BEL": 56,   // Belgium
+        "BEN": 204,  // Benin
+        "BFA": 854,  // Burkina Faso
+        "BGD": 50,   // Bangladesh
+        "BGR": 100,  // Bulgaria
+        "BHR": 48,   // Bahrain
+        "BHS": 44,   // Bahamas
+        "BIH": 70,   // Bosnia and Herzegovina
+        "BLR": 112,  // Belarus
+        "BLZ": 84,   // Belize
+        "BOL": 68,   // Bolivia
+        "BRA": 76,   // Brazil
+        "BRB": 52,   // Barbados
+        "BRN": 96,   // Brunei
+        "BTN": 64,   // Bhutan
+        "BWA": 72,   // Botswana
+        "CAF": 140,  // Central African Republic
+        "CAN": 124,  // Canada
+        "CHE": 756,  // Switzerland
+        "CHL": 152,  // Chile
+        "CHN": 156,  // China
+        "CIV": 384,  // Côte d'Ivoire
+        "CMR": 120,  // Cameroon
+        "COD": 180,  // Democratic Republic of Congo
+        "COG": 178,  // Congo
+        "COL": 170,  // Colombia
+        "COM": 174,  // Comoros
+        "CPV": 132,  // Cape Verde
+        "CRI": 188,  // Costa Rica
+        "CUB": 192,  // Cuba
+        "CYP": 196,  // Cyprus
+        "CZE": 203,  // Czechia
+        "DEU": 276,  // Germany
+        "DJI": 262,  // Djibouti
+        "DMA": 212,  // Dominica
+        "DNK": 208,  // Denmark
+        "DOM": 214,  // Dominican Republic
+        "DZA": 12,   // Algeria
+        "ECU": 218,  // Ecuador
+        "EGY": 818,  // Egypt
+        "ERI": 232,  // Eritrea
+        "ESH": 732,  // Western Sahara
+        "ESP": 724,  // Spain
+        "EST": 233,  // Estonia
+        "ETH": 231,  // Ethiopia
+        "FIN": 246,  // Finland
+        "FJI": 242,  // Fiji
+        "FRA": 250,  // France
+        "FSM": 583,  // Micronesia
+        "GAB": 266,  // Gabon
+        "GBR": 826,  // United Kingdom
+        "GEO": 268,  // Georgia
+        "GHA": 288,  // Ghana
+        "GIN": 324,  // Guinea
+        "GMB": 270,  // Gambia
+        "GNB": 624,  // Guinea-Bissau
+        "GNQ": 226,  // Equatorial Guinea
+        "GRC": 300,  // Greece
+        "GRD": 308,  // Grenada
+        "GRL": 304,  // Greenland
+        "GTM": 320,  // Guatemala
+        "GUY": 328,  // Guyana
+        "HND": 340,  // Honduras
+        "HRV": 191,  // Croatia
+        "HTI": 332,  // Haiti
+        "HUN": 348,  // Hungary
+        "IDN": 360,  // Indonesia
+        "IND": 356,  // India
+        "IRL": 372,  // Ireland
+        "IRN": 364,  // Iran
+        "IRQ": 368,  // Iraq
+        "ISL": 352,  // Iceland
+        "ISR": 376,  // Israel
+        "ITA": 380,  // Italy
+        "JAM": 388,  // Jamaica
+        "JOR": 400,  // Jordan
+        "JPN": 392,  // Japan
+        "KAZ": 398,  // Kazakhstan
+        "KEN": 404,  // Kenya
+        "KGZ": 417,  // Kyrgyzstan
+        "KHM": 116,  // Cambodia
+        "KIR": 296,  // Kiribati
+        "KNA": 659,  // Saint Kitts and Nevis
+        "KOR": 410,  // South Korea
+        "KWT": 414,  // Kuwait
+        "LAO": 418,  // Laos
+        "LBN": 422,  // Lebanon
+        "LBR": 430,  // Liberia
+        "LBY": 434,  // Libya
+        "LCA": 662,  // Saint Lucia
+        "LIE": 438,  // Liechtenstein
+        "LKA": 144,  // Sri Lanka
+        "LSO": 426,  // Lesotho
+        "LTU": 440,  // Lithuania
+        "LUX": 442,  // Luxembourg
+        "LVA": 428,  // Latvia
+        "MAR": 504,  // Morocco
+        "MCO": 492,  // Monaco
+        "MDA": 498,  // Moldova
+        "MDG": 450,  // Madagascar
+        "MDV": 462,  // Maldives
+        "MEX": 484,  // Mexico
+        "MHL": 584,  // Marshall Islands
+        "MKD": 807,  // North Macedonia
+        "MLI": 466,  // Mali
+        "MLT": 470,  // Malta
+        "MMR": 104,  // Myanmar
+        "MNE": 499,  // Montenegro
+        "MNG": 496,  // Mongolia
+        "MOZ": 508,  // Mozambique
+        "MRT": 478,  // Mauritania
+        "MUS": 480,  // Mauritius
+        "MWI": 454,  // Malawi
+        "MYS": 458,  // Malaysia
+        "NAM": 516,  // Namibia
+        "NCL": 540,  // New Caledonia
+        "NER": 562,  // Niger
+        "NGA": 566,  // Nigeria
+        "NIC": 558,  // Nicaragua
+        "NLD": 528,  // Netherlands
+        "NOR": 578,  // Norway
+        "NPL": 524,  // Nepal
+        "NRU": 520,  // Nauru
+        "NZL": 554,  // New Zealand
+        "OMN": 512,  // Oman
+        "PAK": 586,  // Pakistan
+        "PAN": 591,  // Panama
+        "PER": 604,  // Peru
+        "PHL": 608,  // Philippines
+        "PLW": 585,  // Palau
+        "PNG": 598,  // Papua New Guinea
+        "POL": 616,  // Poland
+        "PRI": 630,  // Puerto Rico
+        "PRK": 408,  // North Korea
+        "PRT": 620,  // Portugal
+        "PRY": 600,  // Paraguay
+        "PSE": 275,  // Palestine
+        "QAT": 634,  // Qatar
+        "ROU": 642,  // Romania
+        "RUS": 643,  // Russia
+        "RWA": 646,  // Rwanda
+        "SAU": 682,  // Saudi Arabia
+        "SDN": 729,  // Sudan
+        "SEN": 686,  // Senegal
+        "SGP": 702,  // Singapore
+        "SLB": 90,   // Solomon Islands
+        "SLE": 694,  // Sierra Leone
+        "SLV": 222,  // El Salvador
+        "SMR": 674,  // San Marino
+        "SOM": 706,  // Somalia
+        "SRB": 688,  // Serbia
+        "SSD": 728,  // South Sudan
+        "STP": 678,  // São Tomé and Príncipe
+        "SUR": 740,  // Suriname
+        "SVK": 703,  // Slovakia
+        "SVN": 705,  // Slovenia
+        "SWE": 752,  // Sweden
+        "SWZ": 748,  // Eswatini
+        "SYC": 690,  // Seychelles
+        "SYR": 760,  // Syria
+        "TCD": 148,  // Chad
+        "TGO": 768,  // Togo
+        "THA": 764,  // Thailand
+        "TJK": 762,  // Tajikistan
+        "TKM": 795,  // Turkmenistan
+        "TLS": 626,  // Timor-Leste
+        "TON": 776,  // Tonga
+        "TTO": 780,  // Trinidad and Tobago
+        "TUN": 788,  // Tunisia
+        "TUR": 792,  // Turkey
+        "TUV": 798,  // Tuvalu
+        "TWN": 158,  // Taiwan
+        "TZA": 834,  // Tanzania
+        "UGA": 800,  // Uganda
+        "UKR": 804,  // Ukraine
+        "URY": 858,  // Uruguay
+        "USA": 840,  // United States
+        "UZB": 860,  // Uzbekistan
+        "VAT": 336,  // Vatican City
+        "VCT": 670,  // Saint Vincent and the Grenadines
+        "VEN": 862,  // Venezuela
+        "VNM": 704,  // Vietnam
+        "VUT": 548,  // Vanuatu
+        "WSM": 882,  // Samoa
+        "XKX": 383,  // Kosovo
+        "YEM": 887,  // Yemen
+        "ZAF": 710,  // South Africa
+        "ZMB": 894,  // Zambia
+        "ZWE": 716   // Zimbabwe
+      };
+
+      // Process data (same as taskpane.js)
+      const worldData = rows
+        .filter(r => r[0] && !isNaN(+r[1]))
+        .map(r => {
+          const iso = (r[0] || "").toUpperCase().trim();
+          const idVal = isoToId[iso];
+          return {
+            id: idVal,     // numeric ID matching topojson country.id
+            iso: iso,       // original ISO3 for tooltip
+            rate: +r[1]
+          };
+        })
+        .filter(d => d.id); // drop rows where iso isn't in lookup
+
+      if (worldData.length === 0) {
+        resolve("Error: No valid country data found. Please use ISO3 country codes (USA, GBR, DEU, etc.)");
+        return;
+      }
+
+      // Use EXACT specification from taskpane.js map chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        width: 800,
+        height: 450,
+        data: {
+          url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+          format: { type: "topojson", feature: "countries" }
+        },
+        transform: [
+          {
+            lookup: "id",
+            from: {
+              data: { values: worldData },
+              key: "id",
+              fields: ["rate", "iso"]
+            }
+          }
+        ],
+        projection: { type: "equalEarth" },
+        mark: { type: "geoshape", stroke: "white", strokeWidth: 0.5 },
+        encoding: {
+          color: {
+            field: "rate",
+            type: "quantitative",
+            scale: { scheme: "blues" }
+          },
+          tooltip: [
+            { field: "iso", type: "nominal", title: "Country (ISO3)" },
+            { field: "rate", type: "quantitative", title: "Value" }
+          ]
+        }
+      };
+
+      createChart(spec, "map", headers, rows)
+        .then(() => resolve("Map"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * CANDLESTICK custom function
+ * Creates a candlestick chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function CANDLESTICK(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 5) {
+        resolve("Error: Candlestick chart requires 5 columns (Date, Open, High, Low, Close)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Helper function to convert Excel dates to JS dates
+      function excelDateToJSDate(serial) {
+        if (typeof serial === 'number') {
+          return new Date(Math.round((serial - 25569) * 86400 * 1000));
+        }
+        return new Date(serial);
+      }
+
+      // Process and validate data
+      const candlestickData = processedData.map((row, index) => {
+        const date = excelDateToJSDate(row[headers[0]]);
+        const open = parseFloat(row[headers[1]]) || 0;
+        const high = parseFloat(row[headers[2]]) || 0;
+        const low = parseFloat(row[headers[3]]) || 0;
+        const close = parseFloat(row[headers[4]]) || 0;
+        
+        if (isNaN(date.getTime()) || isNaN(open) || isNaN(high) || isNaN(low) || isNaN(close)) {
+          return null;
+        }
+        
+        return {
+          date: date.toISOString(),
+          open: open,
+          high: high,
+          low: low,
+          close: close
+        };
+      }).filter(Boolean);
+
+      if (candlestickData.length === 0) {
+        resolve("Error: No valid candlestick data found");
+        return;
+      }
+
+      // Use EXACT specification from taskpane.js candlestick chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        "width": 600,
+        "description": "Candlestick chart from Excel selection",
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+        "data": { "values": candlestickData },
+        "encoding": {
+          "x": {
+            "field": "date",
+            "type": "temporal",
+            "title": "Date",
+            "axis": {
+              "format": "%m/%d",
+              "labelAngle": -45,
+              "labelFontSize": 11,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI"
+            }
+          },
+          "y": {
+            "type": "quantitative",
+            "scale": { "zero": false },
+            "axis": {
+              "title": "Price",
+              "labelFontSize": 11,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI",
+              "grid": true,
+              "gridColor": "#f3f2f1"
+            }
+          },
+          "color": {
+            "condition": {
+              "test": "datum.open < datum.close",
+              "value": "#06982d"
+            },
+            "value": "#ae1325"
+          }
+        },
+        "layer": [
+          {
+            "mark": {
+              "type": "rule",
+              "tooltip": true
+            },
+            "encoding": {
+              "y": { "field": "low" },
+              "y2": { "field": "high" },
+              "tooltip": [
+                { "field": "date", "type": "temporal", "title": "Date", "format": "%Y-%m-%d" },
+                { "field": "open", "type": "quantitative", "title": "Open", "format": ".2f" },
+                { "field": "high", "type": "quantitative", "title": "High", "format": ".2f" },
+                { "field": "low", "type": "quantitative", "title": "Low", "format": ".2f" },
+                { "field": "close", "type": "quantitative", "title": "Close", "format": ".2f" }
+              ]
+            }
+          },
+          {
+            "mark": {
+              "type": "bar",
+              "tooltip": true
+            },
+            "encoding": {
+              "y": { "field": "open" },
+              "y2": { "field": "close" },
+              "tooltip": [
+                { "field": "date", "type": "temporal", "title": "Date", "format": "%Y-%m-%d" },
+                { "field": "open", "type": "quantitative", "title": "Open", "format": ".2f" },
+                { "field": "high", "type": "quantitative", "title": "High", "format": ".2f" },
+                { "field": "low", "type": "quantitative", "title": "Low", "format": ".2f" },
+                { "field": "close", "type": "quantitative", "title": "Close", "format": ".2f" }
+              ]
+            }
+          }
+        ],
+        "config": {
+          "font": "Segoe UI",
+          "axis": {
+            "labelColor": "#605e5c",
+            "titleColor": "#323130",
+            "gridColor": "#f3f2f1"
+          }
+        }
+      };
+
+      createChart(spec, "candlestick", headers, rows)
+        .then(() => resolve("Candlestick"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * ARC custom function
+ * Creates an arc diagram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function ARC(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Arc chart requires at least 2 columns (Source, Target, Weight optional)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // EXACT data processing from taskpane.js - Transform Excel data for arc chart
+      const edges = processedData.map((row, index) => ({
+        source: row[headers[0]],
+        target: row[headers[1]],
+        value: headers.length >= 3 && row[headers[2]] ? row[headers[2]] : 1,
+        group: headers.length >= 4 && row[headers[3]] ? row[headers[3]] : "default"
+      }));
+
+      // Get unique nodes from edges
+      const nodeMap = new Map();
+      edges.forEach(edge => {
+        if (!nodeMap.has(edge.source)) {
+          nodeMap.set(edge.source, { 
+            name: edge.source, 
+            group: edge.group,
+            index: nodeMap.size
+          });
+        }
+        if (!nodeMap.has(edge.target)) {
+          nodeMap.set(edge.target, { 
+            name: edge.target, 
+            group: edge.group,
+            index: nodeMap.size
+          });
+        }
+      });
+
+      const nodes = Array.from(nodeMap.values());
+
+      // Transform edges to use node indices
+      const edgesWithIndices = edges.map(edge => ({
+        source: nodeMap.get(edge.source).index,
+        target: nodeMap.get(edge.target).index,
+        value: edge.value
+      }));
+
+      // Use EXACT specification from taskpane.js arc chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Arc diagram from Excel selection",
+        width: Math.max(600, nodes.length * 40),
+        height: 300,
+        padding: { top: 20, bottom: 80, left: 20, right: 20 },
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: [
+          {
+            name: "edges",
+            values: edgesWithIndices
+          },
+          {
+            name: "sourceDegree",
+            source: "edges",
+            transform: [
+              { type: "aggregate", groupby: ["source"], as: ["count"] }
+            ]
+          },
+          {
+            name: "targetDegree", 
+            source: "edges",
+            transform: [
+              { type: "aggregate", groupby: ["target"], as: ["count"] }
+            ]
+          },
+          {
+            name: "nodes",
+            values: nodes,
+            transform: [
+              { type: "window", ops: ["rank"], as: ["order"] },
+              {
+                type: "lookup", from: "sourceDegree", key: "source",
+                fields: ["index"], as: ["sourceDegree"],
+                default: { count: 0 }
+              },
+              {
+                type: "lookup", from: "targetDegree", key: "target", 
+                fields: ["index"], as: ["targetDegree"],
+                default: { count: 0 }
+              },
+              {
+                type: "formula", as: "degree",
+                expr: "(datum.sourceDegree.count || 0) + (datum.targetDegree.count || 0)"
+              }
+            ]
+          }
+        ],
+
+        scales: [
+          {
+            name: "position",
+            type: "band",
+            domain: { data: "nodes", field: "order", sort: true },
+            range: "width"
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            range: { scheme: "category20" },
+            domain: { data: "nodes", field: "group" }
+          }
+        ],
+
+        marks: [
+          {
+            type: "symbol",
+            name: "layout",
+            interactive: false,
+            from: { data: "nodes" },
+            encode: {
+              enter: { opacity: { value: 0 } },
+              update: {
+                x: { scale: "position", field: "order" },
+                y: { value: 0 },
+                size: { field: "degree", mult: 8, offset: 50 },
+                fill: { scale: "color", field: "group" }
+              }
+            }
+          },
+          {
+            type: "path",
+            from: { data: "edges" },
+            encode: {
+              update: {
+                stroke: { value: "#0078d4" },
+                strokeOpacity: { value: 0.4 },
+                strokeWidth: { field: "value", mult: 2, offset: 1 }
+              }
+            },
+            transform: [
+              {
+                type: "lookup", from: "layout", key: "datum.index",
+                fields: ["datum.source", "datum.target"],
+                as: ["sourceNode", "targetNode"]
+              },
+              {
+                type: "linkpath",
+                sourceX: { expr: "min(datum.sourceNode.x, datum.targetNode.x)" },
+                targetX: { expr: "max(datum.sourceNode.x, datum.targetNode.x)" },
+                sourceY: { expr: "0" },
+                targetY: { expr: "0" },
+                shape: "arc"
+              }
+            ]
+          },
+          {
+            type: "symbol",
+            from: { data: "layout" },
+            encode: {
+              update: {
+                x: { field: "x" },
+                y: { field: "y" },
+                fill: { field: "fill" },
+                size: { field: "size" },
+                stroke: { value: "white" },
+                strokeWidth: { value: 1 },
+                tooltip: { 
+                  signal: "{'Node': datum.datum.name, 'Group': datum.datum.group, 'Connections': datum.datum.degree}" 
+                }
+              }
+            }
+          },
+          {
+            type: "text",
+            from: { data: "nodes" },
+            encode: {
+              update: {
+                x: { scale: "position", field: "order" },
+                y: { value: 25 },
+                fontSize: { value: 10 },
+                align: { value: "center" },
+                baseline: { value: "top" },
+                angle: { value: -45 },
+                text: { field: "name" },
+                fill: { value: "#323130" },
+                font: { value: "Segoe UI" }
+              }
+            }
+          }
+        ],
+        
+        config: {
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 10, fill: "#605e5c" }
+        }
+      };
+
+      createChart(spec, "arc", headers, rows)
+        .then(() => resolve("Arc"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * TREE custom function
+ * Creates a tree diagram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function TREE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Tree chart requires at least 2 columns (Parent, Child, Value optional)");
+        return;
+      }
+
+      // Process data same as taskpane.js
+      const nodes = new Map();
+
+      rows.forEach((row, i) => {
+        const parent = row[0] || "";
+        const child = row[1] || `node_${i}`;
+        const value = headers.length >= 3 ? (parseFloat(row[2]) || 1) : 1;
+        
+        // Add parent node if it doesn't exist and is not empty
+        if (parent && !nodes.has(parent)) {
+          nodes.set(parent, {
+            id: parent,
+            parent: "",
+            name: parent,
+            value: 1
+          });
+        }
+        
+        // Add child node
+        if (!nodes.has(child)) {
+          nodes.set(child, {
+            id: child,
+            parent: parent,
+            name: child,
+            value: value
+          });
+        } else {
+          // Update parent and value if child already exists
+          const existingNode = nodes.get(child);
+          existingNode.parent = parent;
+          existingNode.value = value;
+        }
+      });
+      
+      // Convert Map to array
+      const treeData = Array.from(nodes.values());
+      
+      // Find root nodes (nodes with no parent or parent not in dataset)
+      const allIds = new Set(treeData.map(d => d.id));
+      treeData.forEach(node => {
+        if (node.parent && !allIds.has(node.parent)) {
+          node.parent = ""; // Make it a root node if parent doesn't exist
+        }
+      });
+
+      // Calculate dynamic dimensions based on data size
+      const nodeCount = treeData.length;
+      const dynamicWidth = Math.max(600, Math.min(1200, nodeCount * 40));
+      const dynamicHeight = Math.max(400, Math.min(1600, nodeCount * 30));
+
+      // Use EXACT specification from taskpane.js tree chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v6.json",
+        "description": "Tree diagram from Excel selection",
+        "width": dynamicWidth,
+        "height": dynamicHeight,
+        "padding": 20,
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+
+        "signals": [
+          {
+            "name": "layout", 
+            "value": "tidy"
+          },
+          {
+            "name": "links", 
+            "value": "diagonal"
+          }
+        ],
+
+        "data": [
+          {
+            "name": "tree",
+            "values": treeData,
+            "transform": [
+              {
+                "type": "stratify",
+                "key": "id",
+                "parentKey": "parent"
+              },
+              {
+                "type": "tree",
+                "method": {"signal": "layout"},
+                "size": [{"signal": "height - 40"}, {"signal": "width - 100"}],
+                "as": ["y", "x", "depth", "children"]
+              }
+            ]
+          },
+          {
+            "name": "links",
+            "source": "tree",
+            "transform": [
+              { "type": "treelinks" },
+              {
+                "type": "linkpath",
+                "orient": "horizontal",
+                "shape": {"signal": "links"}
+              }
+            ]
+          }
+        ],
+
+        "scales": [
+          {
+            "name": "color",
+            "type": "ordinal",
+            "range": ["#0078d4", "#00bcf2", "#40e0d0", "#00cc6a", "#10893e", "#107c10", "#bad80a", "#ffb900", "#ff8c00", "#d13438"],
+            "domain": {"data": "tree", "field": "depth"}
+          },
+          {
+            "name": "size",
+            "type": "linear",
+            "range": [100, 400],
+            "domain": {"data": "tree", "field": "value"}
+          }
+        ],
+
+        "marks": [
+          {
+            "type": "path",
+            "from": {"data": "links"},
+            "encode": {
+              "update": {
+                "path": {"field": "path"},
+                "stroke": {"value": "#8a8886"},
+                "strokeWidth": {"value": 2},
+                "strokeOpacity": {"value": 0.6}
+              }
+            }
+          },
+          {
+            "type": "symbol",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "stroke": {"value": "#ffffff"},
+                "strokeWidth": {"value": 2}
+              },
+              "update": {
+                "x": {"field": "x"},
+                "y": {"field": "y"},
+                "size": {"scale": "size", "field": "value"},
+                "fill": {"scale": "color", "field": "depth"},
+                "fillOpacity": {"value": 0.8},
+                "tooltip": {
+                  "signal": "{'Name': datum.name, 'ID': datum.id, 'Parent': datum.parent, 'Depth': datum.depth, 'Value': datum.value}"
+                }
+              },
+              "hover": {
+                "fillOpacity": {"value": 1.0},
+                "strokeWidth": {"value": 3}
+              }
+            }
+          },
+          {
+            "type": "text",
+            "from": {"data": "tree"},
+            "encode": {
+              "enter": {
+                "fontSize": {"value": 11},
+                "baseline": {"value": "middle"},
+                "font": {"value": "Segoe UI"},
+                "fontWeight": {"value": "bold"}
+              },
+              "update": {
+                "x": {"field": "x"},
+                "y": {"field": "y"},
+                "text": {"field": "name"},
+                "dx": {"signal": "datum.children ? -12 : 12"},
+                "align": {"signal": "datum.children ? 'right' : 'left'"},
+                "fill": {"value": "#323130"}
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "tree", headers, rows)
+        .then(() => resolve("Tree"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * WORDCLOUD custom function
+ * Creates a word cloud from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function WORDCLOUD(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 1) {
+        resolve("Error: Wordcloud requires at least 1 column (Text data)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js wordcloud chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Word cloud from Excel selection",
+        width: 800,
+        height: 400,
+        padding: 0,
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: [
+          {
+            name: "table",
+            values: processedData,
+            transform: [
+              {
+                type: "countpattern",
+                field: headers[0], // Use first column as text source
+                case: "upper",
+                pattern: "[\\w']{3,}",
+                stopwords: "(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall)"
+              },
+              {
+                type: "formula", 
+                as: "angle",
+                expr: "[-45, 0, 45][~~(random() * 3)]"
+              },
+              {
+                type: "formula", 
+                as: "weight",
+                expr: "if(datum.count > 10, 600, 300)"
+              }
+            ]
+          }
+        ],
+        
+        scales: [
+          {
+            name: "color",
+            type: "ordinal",
+            domain: { data: "table", field: "text" },
+            range: ["#d5a928", "#652c90", "#939597", "#2563eb", "#dc2626", "#059669"]
+          }
+        ],
+        
+        marks: [
+          {
+            type: "text",
+            from: { data: "table" },
+            encode: {
+              enter: {
+                text: { field: "text" },
+                align: { value: "center" },
+                baseline: { value: "alphabetic" },
+                fill: { scale: "color", field: "text" }
+              },
+              update: {
+                fillOpacity: { value: 1 }
+              },
+              hover: {
+                fillOpacity: { value: 0.5 }
+              }
+            },
+            transform: [
+              {
+                type: "wordcloud",
+                size: [800, 400],
+                text: { field: "text" },
+                rotate: { field: "datum.angle" },
+                font: "Helvetica Neue, Arial",
+                fontSize: { field: "datum.count" },
+                fontWeight: { field: "datum.weight" },
+                fontSizeRange: [12, 56],
+                padding: 2
+              }
+            ]
+          }
+        ]
+      };
+
+      createChart(spec, "wordcloud", headers, rows)
+        .then(() => resolve("Wordcloud"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * STRIP custom function
+ * Creates a strip plot from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function STRIP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Strip plot requires at least 2 columns (Categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js strip chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Strip plot showing distribution using tick marks",
+        background: "white",
+        config: { 
+          view: { stroke: "transparent" },
+          axis: {
+            labelFontSize: 11,
+            titleFontSize: 12,
+            labelColor: "#605E5C",
+            titleColor: "#323130"
+          }
+        },
+        data: { values: processedData },
+        mark: {
+          type: "tick",
+          thickness: 2,
+          size: 15,
+          color: "#0078d4",
+          opacity: 0.8,
+          tooltip: true
+        },
+        encoding: {
+          y: { 
+            field: headers[0],
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelAngle: 0
+            }
+          },
+          x: { 
+            field: headers[1],
+            type: "quantitative",
+            axis: {
+              title: headers[1],
+              grid: true,
+              gridColor: "#f3f2f1",
+              gridOpacity: 0.5
+            }
+          },
+          // Add color encoding if 3rd column exists
+          ...(headers.length > 2 && {
+            color: {
+              field: headers[2],
+              type: "nominal",
+              scale: { scheme: "category10" },
+              legend: {
+                title: headers[2],
+                orient: "right",
+                titleFontSize: 11,
+                labelFontSize: 10
+              }
+            }
+          }),
+          tooltip: headers.map(h => ({ field: h, type: "nominal" }))
+        }
+      };
+
+      createChart(spec, "strip", headers, rows)
+        .then(() => resolve("Strip"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * HEATMAP custom function
+ * Creates a heatmap from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function HEATMAP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Heatmap requires 3 columns (Y-categories, X-categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js heatmap chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Heatmap with marginal bars from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        spacing: 15,
+        bounds: "flush",
+        vconcat: [
+          {
+            height: 60,
+            mark: {
+              type: "bar",
+              stroke: null,
+              cornerRadiusEnd: 2,
+              tooltip: true,
+              color: "lightgrey"
+            },
+            encoding: {
+              x: {
+                field: headers[1],
+                type: "ordinal",
+                axis: null
+              },
+              y: {
+                field: headers[2],
+                aggregate: "mean",
+                type: "quantitative",
+                axis: null
+              }
+            }
+          },
+          {
+            spacing: 15,
+            bounds: "flush",
+            hconcat: [
+              {
+                mark: {
+                  type: "rect",
+                  stroke: "white",
+                  tooltip: true
+                },
+                encoding: {
+                  y: {
+                    field: headers[0],
+                    type: "ordinal",
+                    title: headers[0],
+                    axis: {
+                      domain: false,
+                      ticks: false,
+                      labels: true,
+                      labelAngle: 0,
+                      labelPadding: 5
+                    }
+                  },
+                  x: {
+                    field: headers[1],
+                    type: "ordinal",
+                    title: headers[1],
+                    axis: {
+                      domain: false,
+                      ticks: false,
+                      labels: true,
+                      labelAngle: 0
+                    }
+                  },
+                  color: {
+                    aggregate: "mean",
+                    field: headers[2],
+                    type: "quantitative",
+                    title: headers[2],
+                    scale: {
+                      scheme: "blues"
+                    },
+                    legend: {
+                      direction: "vertical",
+                      gradientLength: 120
+                    }
+                  }
+                }
+              },
+              {
+                mark: {
+                  type: "bar",
+                  stroke: null,
+                  cornerRadiusEnd: 2,
+                  tooltip: true,
+                  color: "lightgrey"
+                },
+                width: 60,
+                encoding: {
+                  y: {
+                    field: headers[0],
+                    type: "ordinal",
+                    axis: null
+                  },
+                  x: {
+                    field: headers[2],
+                    type: "quantitative",
+                    aggregate: "mean",
+                    axis: null
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        config: {
+          autosize: {
+            type: "fit",
+            contains: "padding"
+          },
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12,
+            titleFontSize: 14,
+            titleColor: "#323130"
+          },
+          legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#605E5C",
+            labelFont: "Segoe UI",
+            labelFontSize: 12,
+            labelColor: "#605E5C"
+          }
+        }
+      };
+
+      createChart(spec, "heatmap", headers, rows)
+        .then(() => resolve("Heatmap"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BULLET custom function
+ * Creates a bullet chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BULLET(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 7) {
+        resolve("Error: Bullet chart requires 7 columns (Title, Poor max, Satisfactory max, Good max, Actual, Forecast, Target)");
+        return;
+      }
+
+      // Convert to bullet chart data format (same as taskpane.js)
+      const processedData = rows.map(r => ({
+        title: r[0],
+        ranges: [+r[1], +r[2], +r[3]],
+        measures: [+r[4], +r[5]],
+        markers: [+r[6]]
+      }));
+
+      // Use EXACT specification from taskpane.js bullet chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        "data": { "values": processedData },
+        "facet": {
+          "row": {
+            "field": "title", "type": "ordinal",
+            "header": { "labelAngle": 0, "title": "", "labelAlign": "left" }
+          }
+        },
+        "spacing": 10,
+        "spec": {
+          "encoding": {
+            "x": {
+              "type": "quantitative",
+              "scale": { "nice": false },
+              "title": null
+            }
+          },
+          "layer": [
+            { "mark": { "type": "bar", "color": "#eee" }, "encoding": { "x": { "field": "ranges[2]" } } },
+            { "mark": { "type": "bar", "color": "#ddd" }, "encoding": { "x": { "field": "ranges[1]" } } },
+            { "mark": { "type": "bar", "color": "#ccc" }, "encoding": { "x": { "field": "ranges[0]" } } },
+            { "mark": { "type": "bar", "color": "lightsteelblue", "size": 10 }, "encoding": { "x": { "field": "measures[1]" } } },
+            { "mark": { "type": "bar", "color": "steelblue", "size": 10 }, "encoding": { "x": { "field": "measures[0]" } } },
+            { "mark": { "type": "tick", "color": "black" }, "encoding": { "x": { "field": "markers[0]" } } }
+          ]
+        },
+        "resolve": { "scale": { "x": "independent" } },
+        "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
+      };
+
+      createChart(spec, "bullet", headers, rows)
+        .then(() => resolve("Bullet"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * HORIZON custom function
+ * Creates a horizon chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function HORIZON(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Horizon chart requires 2 columns (X values, Y values)");
+        return;
+      }
+
+      // Convert rows -> objects and transform data (same as taskpane.js)
+      const horizonData = rows.map((row, index) => ({
+        x: row[0] || index + 1,
+        y: parseFloat(row[1]) || 0
+      }));
+
+      // Calculate data range and bands (same as taskpane.js)
+      const yValues = horizonData.map(d => d.y);
+      const maxY = Math.max(...yValues);
+      const minY = Math.min(...yValues);
+      const range = maxY - minY;
+      
+      // Define number of bands (typically 2-4 for horizon graphs)
+      const numBands = 3;
+      const bandHeight = range / (numBands * 2); // Divide by 2 for positive and negative
+      const baseline = minY + range / 2; // Use middle as baseline
+      
+      // Calculate dynamic dimensions
+      const dataPoints = horizonData.length;
+      const dynamicWidth = Math.max(300, Math.min(800, dataPoints * 15));
+
+      // Use EXACT specification from taskpane.js horizon chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+        "description": "Horizon Graph from Excel selection (IDL methodology)",
+        "width": dynamicWidth,
+        "height": 60,
+        "background": "white",
+        "config": { 
+          "view": { "stroke": "transparent" },
+          "area": {"interpolate": "monotone"}
+        },
+        "data": { "values": horizonData },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "type": headers[0].toLowerCase().includes('date') ? "temporal" : "quantitative",
+            "scale": {"zero": false, "nice": false},
+            "axis": {
+              "title": headers[0],
+              "labelFontSize": 10,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI"
+            }
+          },
+          "y": {
+            "type": "quantitative",
+            "scale": {"domain": [0, bandHeight]},
+            "axis": {
+              "title": headers[1],
+              "orient": "left",
+              "labelFontSize": 10,
+              "titleFontSize": 12,
+              "labelColor": "#605e5c",
+              "titleColor": "#323130",
+              "font": "Segoe UI",
+              "tickCount": 3
+            }
+          }
+        },
+        "layer": [
+          // Band 1 (lightest positive)
+          {
+            "transform": [
+              {"calculate": `max(0, min(datum.y - ${baseline}, ${bandHeight}))`, "as": "band1"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.3,
+              "color": "#4a90e2",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "band1"}
+            }
+          },
+          // Band 2 (medium positive)
+          {
+            "transform": [
+              {"calculate": `max(0, min(datum.y - ${baseline} - ${bandHeight}, ${bandHeight}))`, "as": "band2"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.6,
+              "color": "#2e7bd6",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "band2"}
+            }
+          },
+          // Band 3 (darkest positive)
+          {
+            "transform": [
+              {"calculate": `max(0, datum.y - ${baseline} - ${bandHeight * 2})`, "as": "band3"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.9,
+              "color": "#1a5bb8",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "band3"}
+            }
+          },
+          // Band -1 (lightest negative, mirrored)
+          {
+            "transform": [
+              {"calculate": `max(0, min(${baseline} - datum.y, ${bandHeight}))`, "as": "nband1"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.3,
+              "color": "#e74c3c",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "nband1"}
+            }
+          },
+          // Band -2 (medium negative, mirrored)
+          {
+            "transform": [
+              {"calculate": `max(0, min(${baseline} - datum.y - ${bandHeight}, ${bandHeight}))`, "as": "nband2"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.6,
+              "color": "#c0392b",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "nband2"}
+            }
+          },
+          // Band -3 (darkest negative, mirrored)
+          {
+            "transform": [
+              {"calculate": `max(0, ${baseline} - datum.y - ${bandHeight * 2})`, "as": "nband3"}
+            ],
+            "mark": {
+              "type": "area",
+              "clip": true,
+              "opacity": 0.9,
+              "color": "#a93226",
+              "interpolate": "monotone"
+            },
+            "encoding": {
+              "y": {"field": "nband3"}
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "horizon", headers, rows)
+        .then(() => resolve("Horizon"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * DUMBBELL custom function
+ * Creates a dumbbell chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function DUMBBELL(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Dumbbell chart requires 3 columns: Category, Value 1, Value 2");
+        return;
+      }
+
+      // Convert rows -> objects
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Transform wide data (Category | Value1 | Value2) to long format for Vega-Lite
+      const dumbellData = [];
+      
+      processedData.forEach(row => {
+        const category = row[headers[0]];
+        const value1 = parseFloat(row[headers[1]]) || 0;
+        const value2 = parseFloat(row[headers[2]]) || 0;
+        
+        // Add both data points for each category
+        dumbellData.push({
+          category: category,
+          period: headers[1], // First value label
+          value: value1
+        });
+        
+        dumbellData.push({
+          category: category,
+          period: headers[2], // Second value label  
+          value: value2
+        });
+      });
+
+      // Calculate dynamic dimensions based on number of categories
+      const categories = [...new Set(processedData.map(d => d[headers[0]]))];
+      const categoryCount = categories.length;
+      
+      // Auto-adjust height and padding based on category count
+      let dynamicHeight, paddingInner, paddingOuter;
+      
+      if (categoryCount <= 3) {
+        // Few categories: smaller height, minimal padding
+        dynamicHeight = Math.max(200, categoryCount * 80);
+        paddingInner = 0.3;
+        paddingOuter = 0.2;
+      } else if (categoryCount <= 6) {
+        // Medium categories: moderate height and padding
+        dynamicHeight = Math.max(300, categoryCount * 60);
+        paddingInner = 0.2;
+        paddingOuter = 0.1;
+      } else {
+        // Many categories: larger height, tight padding
+        dynamicHeight = Math.max(400, Math.min(600, categoryCount * 50));
+        paddingInner = 0.1;
+        paddingOuter = 0.05;
+      }
+
+      // Use EXACT specification matching taskpane.js
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Dumbbell chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        width: 500,
+        height: dynamicHeight,
+        data: { values: dumbellData },
+        encoding: {
+          x: { 
+            field: "value", 
+            type: "quantitative", 
+            title: null,
+            scale: { zero: false },
+            axis: {
+              labelFontSize: 12,
+              labelColor: "#605e5c",
+              grid: true,
+              gridColor: "#f3f2f1",
+              labelAlign: "center"
+            }
+          },
+          y: { 
+            field: "category", 
+            type: "nominal", 
+            title: null,
+            scale: { paddingInner: paddingInner, paddingOuter: paddingOuter },
+            axis: {
+              offset: 5,
+              ticks: false,
+              minExtent: 70,
+              domain: false,
+              labelFontSize: 12,
+              labelColor: "#605e5c"
+            }
+          }
+        },
+        layer: [
+          {
+            mark: "line",
+            encoding: {
+              detail: { field: "category", type: "nominal" },
+              color: { value: "#d1d5db" }
+            }
+          },
+          {
+            mark: { 
+              type: "point", 
+              filled: true,
+              tooltip: true
+            },
+            encoding: {
+              color: { 
+                field: "period", 
+                type: "ordinal",
+                scale: {
+                  domain: [headers[1], headers[2]],
+                  range: ["#87ceeb", "#1e3a8a"]
+                },
+                title: "Measure",
+                legend: {
+                  titleFontSize: 12,
+                  labelFontSize: 11,
+                  titleColor: "#323130",
+                  labelColor: "#605e5c"
+                }
+              },
+              size: { value: 100 },
+              opacity: { value: 1 },
+              tooltip: [
+                { field: "category", type: "nominal", title: "Category" },
+                { field: "period", type: "nominal", title: "Measure" },
+                { field: "value", type: "quantitative", title: "Value", format: ",.1f" }
+              ]
+            }
+          }
+        ],
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      createChart(spec, "dumbbell", headers, rows)
+        .then(() => resolve("Dumbbell"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SLOPE custom function
+ * Creates a slope chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SLOPE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Slope chart requires 3 columns (Time Period, Category, Value)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      const timePeriods = [...new Set(processedData.map(d => d[headers[0]]))];
+      const categories = [...new Set(processedData.map(d => d[headers[1]]))];
+      
+      // Filter data for first and last periods only (same as taskpane.js)
+      const firstPeriod = timePeriods[0];
+      const lastPeriod = timePeriods[timePeriods.length - 1];
+      
+      const slopeData = processedData.filter(d => 
+        d[headers[0]] === firstPeriod || d[headers[0]] === lastPeriod
+      );
+
+      // Check if values are percentages (between -1 and 1)
+      const allValues = slopeData.map(d => d[headers[2]]);
+      const isPercentage = allValues.every(v => v >= -1 && v <= 1);
+      const formatString = isPercentage ? ".1%" : ",.0f";
+
+      // Calculate dynamic dimensions based on number of categories
+      const dynamicHeight = Math.max(300, Math.min(600, categories.length * 40));
+      const dynamicWidth = 500;
+
+      // Use EXACT specification from taskpane.js slope chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Slope chart from Excel selection",
+        background: "white",
+        config: { 
+          view: { stroke: "transparent" },
+          autosize: { type: "fit", contains: "padding" }
+        },
+        width: dynamicWidth,
+        height: dynamicHeight,
+        data: { values: slopeData },
+        encoding: {
+          x: {
+            field: headers[0],
+            type: "ordinal",
+            axis: {
+              title: null,
+              labelFontSize: 14,
+              labelFontWeight: "bold",
+              labelPadding: 10,
+              domain: false,
+              ticks: false,
+              labelColor: "#323130"
+            },
+            scale: { padding: 0.1 }
+          },
+          y: {
+            field: headers[2],
+            type: "quantitative",
+            axis: null,
+            scale: { zero: false }
+          },
+          color: {
+            field: headers[1],
+            type: "nominal",
+            legend: null,
+            scale: { scheme: "category10" }
+          }
+        },
+        layer: [
+          // Background grid lines
+          {
+            mark: {
+              type: "rule",
+              strokeDash: [2, 2],
+              opacity: 0.3
+            },
+            data: { values: [{}] },
+            encoding: {
+              x: { datum: firstPeriod },
+              x2: { datum: lastPeriod },
+              y: { value: 0 },
+              color: { value: "#e0e0e0" }
+            }
+          },
+          // Slope lines
+          {
+            mark: {
+              type: "line",
+              strokeWidth: 2,
+              opacity: 0.7,
+              tooltip: true
+            },
+            encoding: {
+              detail: { field: headers[1], type: "nominal" },
+              tooltip: [
+                { field: headers[1], type: "nominal", title: "Category" },
+                { field: headers[0], type: "nominal", title: "Period" },
+                { field: headers[2], type: "quantitative", title: "Value", format: formatString }
+              ]
+            }
+          },
+          // Points at the ends
+          {
+            mark: {
+              type: "circle",
+              size: 100,
+              opacity: 1,
+              tooltip: true
+            }
+          },
+          // Left side value labels
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${firstPeriod}'` }
+            ],
+            mark: {
+              type: "text",
+              align: "right",
+              baseline: "middle",
+              dx: -8,
+              fontSize: 11,
+              fontWeight: "normal"
+            },
+            encoding: {
+              text: { 
+                field: headers[2], 
+                type: "quantitative",
+                format: formatString
+              }
+            }
+          },
+          // Left side category labels (for top values)
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${firstPeriod}'` },
+              {
+                window: [{ op: "rank", as: "rank" }],
+                sort: [{ field: headers[2], order: "descending" }]
+              },
+              { filter: "datum.rank <= 3" }
+            ],
+            mark: {
+              type: "text",
+              align: "right",
+              baseline: "bottom",
+              dx: -8,
+              dy: -12,
+              fontSize: 10,
+              fontWeight: "bold",
+              fontStyle: "italic"
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" }
+            }
+          },
+          // Right side value labels
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+            ],
+            mark: {
+              type: "text",
+              align: "left",
+              baseline: "middle",
+              dx: 8,
+              fontSize: 11,
+              fontWeight: "normal"
+            },
+            encoding: {
+              text: { 
+                field: headers[2], 
+                type: "quantitative",
+                format: formatString
+              }
+            }
+          },
+          // Right side category labels
+          {
+            transform: [
+              { filter: `datum['${headers[0]}'] == '${lastPeriod}'` }
+            ],
+            mark: {
+              type: "text",
+              align: "left",
+              baseline: "middle",
+              dx: 35,
+              fontSize: 10,
+              fontWeight: "bold"
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" }
+            }
+          }
+        ],
+        config: {
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { 
+            font: "Segoe UI", 
+            fontSize: 11, 
+            fill: "#605E5C" 
+          },
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          }
+        }
+      };
+
+      createChart(spec, "slope", headers, rows)
+        .then(() => resolve("Slope"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * MEKKO custom function
+ * Creates a Mekko chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function MEKKO(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Mekko chart requires 3 columns (Category, Subcategory, Value)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js mekko chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.json",
+        description: "Marimekko chart from Excel selection",
+        width: 800,
+        height: 500,
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        view: { stroke: null },
+        padding: { top: 60, bottom: 80, left: 60, right: 60 },
+        data: [
+          {
+            name: "table",
+            values: processedData
+          },
+          {
+            name: "categories",
+            source: "table",
+            transform: [
+              {
+                type: "aggregate",
+                fields: [headers[2]],
+                ops: ["sum"],
+                as: ["categoryTotal"],
+                groupby: [headers[0]]
+              },
+              {
+                type: "stack",
+                offset: "normalize",
+                sort: { field: "categoryTotal", order: "descending" },
+                field: "categoryTotal",
+                as: ["x0", "x1"]
+              },
+              {
+                type: "formula",
+                as: "Percent",
+                expr: "datum.x1-datum.x0"
+              },
+              {
+                type: "formula",
+                as: "Label",
+                expr: `datum.${headers[0]} + ' (' + format(datum.Percent,'.1%') + ')'`
+              }
+            ]
+          },
+          {
+            name: "finalTable",
+            source: "table",
+            transform: [
+              {
+                type: "stack",
+                offset: "normalize",
+                groupby: [headers[0]],
+                sort: { field: headers[2], order: "descending" },
+                field: headers[2],
+                as: ["y0", "y1"]
+              },
+              {
+                type: "stack",
+                groupby: [headers[0]],
+                sort: { field: headers[2], order: "descending" },
+                field: headers[2],
+                as: ["z0", "z1"]
+              },
+              {
+                type: "lookup",
+                from: "categories",
+                key: headers[0],
+                values: ["x0", "x1"],
+                fields: [headers[0]]
+              },
+              {
+                type: "formula",
+                as: "Percent",
+                expr: "datum.y1-datum.y0"
+              },
+              {
+                type: "formula",
+                as: "Label",
+                expr: `[datum.${headers[1]}, format(datum.${headers[2]}, '.0f') + ' (' + format(datum.Percent, '.1%') + ')']`
+              },
+              {
+                type: "window",
+                sort: { field: "y0", order: "ascending" },
+                ops: ["row_number"],
+                fields: [null],
+                as: ["rank"],
+                groupby: [headers[0]]
+              }
+            ]
+          }
+        ],
+        scales: [
+          {
+            name: "x",
+            type: "linear",
+            range: "width",
+            domain: { data: "finalTable", field: "x1" }
+          },
+          {
+            name: "y",
+            type: "linear",
+            range: "height",
+            nice: false,
+            zero: true,
+            domain: { data: "finalTable", field: "z1" }
+          },
+          {
+            name: "opacity",
+            type: "linear",
+            range: [1, 0.6],
+            domain: { data: "finalTable", field: "rank" }
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            range: { scheme: "category20" },
+            domain: {
+              data: "categories",
+              field: headers[0],
+              sort: { field: "x0", order: "ascending", op: "sum" }
+            }
+          }
+        ],
+        axes: [
+          {
+            orient: "left",
+            scale: "y",
+            zindex: 1,
+            format: "",
+            tickCount: 5,
+            tickSize: 15,
+            labelColor: { value: "#333740" },
+            labelFontWeight: { value: "normal" },
+            labelFontSize: { value: 12 },
+            labelFont: { value: "Segoe UI" },
+            offset: 5,
+            domain: false,
+            encode: {
+              labels: {
+                update: {
+                  text: { signal: `format(datum.value, '.0f')` }
+                }
+              }
+            }
+          }
+        ],
+        marks: [
+          {
+            type: "rect",
+            name: "bars",
+            from: { data: "finalTable" },
+            encode: {
+              update: {
+                x: { scale: "x", field: "x0" },
+                x2: { scale: "x", field: "x1" },
+                y: { scale: "y", field: "z0" },
+                y2: { scale: "y", field: "z1" },
+                fill: { scale: "color", field: headers[0] },
+                stroke: { value: "white" },
+                strokeWidth: { value: 1 },
+                fillOpacity: { scale: "opacity", field: "rank" },
+                tooltip: { signal: "datum" }
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "labels",
+            interactive: false,
+            from: { data: "bars" },
+            encode: {
+              update: {
+                x: { signal: "(datum.x2 - datum.x)*0.5 + datum.x" },
+                align: { value: "center" },
+                text: { field: "datum.Label" },
+                y: { signal: "(datum.y2 - datum.y)*0.5 + datum.y" },
+                fill: { value: "white" },
+                font: { value: "Segoe UI" },
+                lineHeight: { value: 12 },
+                fontSize: { value: 10 },
+                opacity: { signal: "(datum.x2 - datum.x) > 0.05 && (datum.y2 - datum.y) > 20 ? 1 : 0" }
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "categoryLabels",
+            from: { data: "categories" },
+            encode: {
+              update: {
+                x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                y: { signal: "-15" },
+                text: { field: headers[0] },
+                align: { value: "center" },
+                baseline: { value: "bottom" },
+                fill: { value: "#333740" },
+                fontWeight: { value: "bold" },
+                fontSize: { value: 12 },
+                font: { value: "Segoe UI" }
+              }
+            }
+          },
+          {
+            type: "text",
+            name: "categoryPercentages",
+            from: { data: "categories" },
+            encode: {
+              update: {
+                x: { scale: "x", signal: "(datum.x1-datum.x0)/2 + datum.x0" },
+                y: { signal: "height + 30" },
+                text: { field: "Label" },
+                align: { value: "center" },
+                baseline: { value: "top" },
+                fill: { value: "#666666" },
+                fontWeight: { value: "normal" },
+                fontSize: { value: 10 },
+                font: { value: "Segoe UI" }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "mekko", headers, rows)
+        .then(() => resolve("Mekko"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * MARIMEKKO custom function
+ * Creates a marimekko chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function MARIMEKKO(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Marimekko chart requires at least 3 columns: Category, Subcategory, Value");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js marimekko chart
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega/v5.json",
+        "description": "Marimekko Chart from Excel selection",
+        "width": 600,
+        "height": 400,
+        "background": "white",
+        "config": { "view": { "stroke": "transparent" }},
+        "padding": { "top": 30, "bottom": 60, "left": 60, "right": 60 },
+        "data": [
+          {
+            "name": "table",
+            "values": processedData,
+            "transform": [
+              {
+                "type": "formula",
+                "as": "Category",
+                "expr": `datum['${headers[0]}']`
+              },
+              {
+                "type": "formula", 
+                "as": "Subcategory",
+                "expr": `datum['${headers[1]}']`
+              },
+              {
+                "type": "formula",
+                "as": "Value", 
+                "expr": `datum['${headers[2]}']`
+              }
+            ]
+          },
+          {
+            "name": "categories",
+            "source": "table",
+            "transform": [
+              {
+                "type": "aggregate",
+                "fields": ["Value"],
+                "ops": ["sum"],
+                "as": ["categoryTotal"],
+                "groupby": ["Category"]
+              },
+              {
+                "type": "stack",
+                "offset": "normalize",
+                "sort": { "field": "categoryTotal", "order": "descending" },
+                "field": "categoryTotal",
+                "as": ["x0", "x1"]
+              },
+              {
+                "type": "formula",
+                "as": "Percent",
+                "expr": "datum.x1 - datum.x0"
+              }
+            ]
+          },
+          {
+            "name": "finalTable",
+            "source": "table",
+            "transform": [
+              {
+                "type": "stack",
+                "offset": "normalize",
+                "groupby": ["Category"],
+                "sort": { "field": "Value", "order": "descending" },
+                "field": "Value",
+                "as": ["y0", "y1"]
+              },
+              {
+                "type": "lookup",
+                "from": "categories",
+                "key": "Category",
+                "values": ["x0", "x1"],
+                "fields": ["Category"]
+              },
+              {
+                "type": "formula",
+                "as": "Percent",
+                "expr": "datum.y1 - datum.y0"
+              }
+            ]
+          }
+        ],
+        "scales": [
+          {
+            "name": "x",
+            "type": "linear",
+            "range": "width",
+            "domain": { "data": "finalTable", "field": "x1" }
+          },
+          {
+            "name": "y",
+            "type": "linear",
+            "range": "height",
+            "nice": false,
+            "zero": true,
+            "domain": { "data": "finalTable", "field": "y1" }
+          },
+          {
+            "name": "color",
+            "type": "ordinal",
+            "range": { "scheme": "category20" },
+            "domain": {
+              "data": "categories",
+              "field": "Category",
+              "sort": { "field": "x0", "order": "ascending", "op": "sum" }
+            }
+          }
+        ],
+        "axes": [
+          {
+            "orient": "left",
+            "scale": "y",
+            "format": "%",
+            "tickCount": 5,
+            "labelColor": "#333333",
+            "labelFontSize": 11,
+            "domain": false
+          },
+          {
+            "orient": "bottom",
+            "scale": "x",
+            "format": "%",
+            "tickCount": 5,
+            "labelColor": "#333333", 
+            "labelFontSize": 11,
+            "domain": false
+          }
+        ],
+        "marks": [
+          {
+            "type": "rect",
+            "name": "bars",
+            "from": { "data": "finalTable" },
+            "encode": {
+              "update": {
+                "x": { "scale": "x", "field": "x0" },
+                "x2": { "scale": "x", "field": "x1" },
+                "y": { "scale": "y", "field": "y0" },
+                "y2": { "scale": "y", "field": "y1" },
+                "fill": { "scale": "color", "field": "Category" },
+                "stroke": { "value": "white" },
+                "strokeWidth": { "value": 1 },
+                "opacity": { "value": 0.8 },
+                "tooltip": { 
+                  "signal": "{'Category': datum.Category, 'Subcategory': datum.Subcategory, 'Value': datum.Value, 'Percentage': format(datum.Percent, '.1%')}" 
+                }
+              },
+              "hover": {
+                "opacity": { "value": 1.0 }
+              }
+            }
+          },
+          {
+            "type": "text",
+            "name": "valueLabels",
+            "from": { "data": "finalTable" },
+            "encode": {
+              "update": {
+                "x": { "scale": "x", "signal": "(datum.x1 - datum.x0)/2 + datum.x0" },
+                "y": { "scale": "y", "signal": "(datum.y1 - datum.y0)/2 + datum.y0" },
+                "text": { 
+                  "signal": "datum.Percent > 0.027 ? [datum.Subcategory, format(datum.Value, ',.0f') + ' (' + format(datum.Percent, '.0%') + ')'] : []" 
+                },
+                "align": { "value": "center" },
+                "baseline": { "value": "middle" },
+                "fill": { "value": "white" },
+                "fontSize": { "value": 10 },
+                "fontWeight": { "value": "normal" },
+                "font": { "value": "Segoe UI" },
+                "lineHeight": { "value": 12 },
+                "opacity": { "signal": "datum.Percent > 0.027 ? 1 : 0" }
+              }
+            }
+          }
+        ]
+      };
+
+      createChart(spec, "marimekko", headers, rows)
+        .then(() => resolve("Marimekko"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * BUMP custom function
+ * Creates a bump chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function BUMP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Bump chart requires 3 columns: Time periods, Categories, Rank values");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Calculate width based on number of unique x-values
+      const uniqueX = [...new Set(processedData.map(d => d[headers[0]]))];
+      const dynamicWidth = Math.max(400, uniqueX.length * 80);
+
+      // Use EXACT specification from taskpane.js bump chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Bump chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        width: dynamicWidth,
+        height: 200,   // give it some room
+        encoding: {
+          x: {
+            field: headers[0],
+            type: "nominal",
+            axis: { title: "" },
+            scale: { type: "point", padding: 1 }   // padding 1 for more spread
+          },
+          y: {
+            field: headers[2],      
+            type: "ordinal",
+            axis: false
+          }
+        },
+        layer: [
+          {
+            mark: { type: "line", interpolate: "monotone" },
+            encoding: {
+              color: {
+                field: headers[1],   
+                type: "nominal",
+                legend: false
+              }
+            }
+          },
+          {
+            mark: { type: "circle", size: 400, tooltip: true },
+            encoding: {
+              color: {
+                field: headers[1],
+                type: "nominal",
+                legend: false
+              }
+            }
+          },
+          {
+            mark: { type: "text", color: "white" },
+            encoding: {
+              text: { field: headers[2] }
+            }
+          },
+          {
+            // Left-side labels
+            transform: [
+              { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "descending" }] },
+              { filter: "datum.rank === 1" }
+            ],
+            mark: {
+              type: "text",
+              align: "left",
+              baseline: "middle",
+              dx: 15,
+              fontWeight: "bold",
+              fontSize: 12
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" },
+              color: { field: headers[1], type: "nominal", legend: false }
+            }
+          },
+          {
+            // Right-side labels
+            transform: [
+              { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "ascending" }] },
+              { filter: "datum.rank === 1" }
+            ],
+            mark: {
+              type: "text",
+              align: "right",
+              baseline: "middle",
+              dx: -15,
+              fontWeight: "bold",
+              fontSize: 12
+            },
+            encoding: {
+              text: { field: headers[1], type: "nominal" },
+              color: { field: headers[1], type: "nominal", legend: false }
+            }
+          }
+        ],
+        config: {
+          view: { stroke: "transparent" },
+          line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#666666",
+            labelFontSize: 12
+          }
+        }
+      };
+
+      createChart(spec, "bump", headers, rows)
+        .then(() => resolve("Bump"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * WAFFLE custom function
+ * Creates a waffle chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function WAFFLE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Waffle chart requires 2 columns: Category names, Values");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js waffle chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Waffle chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        transform: [
+          {
+            joinaggregate: [{"op": "sum", "field": headers[1], "as": "TotalValue"}]
+          },
+          {
+            calculate: `round(datum.${headers[1]}/datum.TotalValue * 100)`,
+            as: "PercentOfTotal"
+          },
+          {
+            aggregate: [{"op": "min", "field": "PercentOfTotal", "as": "Percent"}],
+            groupby: [headers[0]]
+          },
+          {"calculate": "sequence(1,101)", "as": "Sequence"},
+          {"flatten": ["Sequence"]},
+          {
+            calculate: `if(datum.Sequence <= datum.Percent, datum.${headers[0]},'_blank')`,
+            as: "Plot"
+          },
+          {"calculate": "ceil (datum.Sequence / 10)", "as": "row"},
+          {"calculate": "datum.Sequence - datum.row * 10", "as": "col"}
+        ],
+        facet: {"column": {"field": headers[0], "header": {"labelOrient": "bottom"}}},
+        spec: {
+          layer: [
+            {
+              mark: {
+                type: "circle",
+                filled: true,
+                tooltip: true,
+                stroke: "#9e9b9b",
+                strokeWidth: 0.7
+              },
+              encoding: {
+                x: {"field": "col", "type": "ordinal", "axis": null},
+                y: {"field": "row", "type": "ordinal", "axis": null, "sort": "-y"},
+                color: {
+                  condition: {"test": "datum.Plot == '_blank'", "value": "#e6e3e3"},
+                  scale: {"scheme": "set1"},
+                  field: "Plot",
+                  type: "nominal",
+                  legend: null
+                },
+                size: {"value": 241},
+                tooltip: [{"field": headers[0], "type": "nominal"}]
+              }
+            },
+            {
+              mark: {"type": "text", "fontSize": 30, "fontWeight": "bold"},
+              encoding: {
+                y: {"value": 30},
+                text: {
+                  condition: {
+                    test: "datum.Sequence == 1",
+                    value: {"expr": "datum.Percent + '%'"}
+                  }
+                },
+                color: {"scale": {"scheme": "set1"}, "field": "Plot"}
+              }
+            }
+          ]
+        },
+        config: {
+          view: {"stroke": "transparent"},
+          font: "Segoe UI",
+          text: {"font": "Segoe UI", "fontSize": 12, "fill": "#605E5C"},
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12
+          },
+          header: {
+            titleFont: "Segoe UI",
+            titleFontSize: 16,
+            titleColor: "#757575",
+            labelFont: "Segoe UI",
+            labelFontSize: 13,
+            labelColor: "#605E5C"
+          },
+          legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#605E5C",
+            labelFont: "Segoe UI",
+            labelFontSize: 13,
+            labelColor: "#605E5C",
+            symbolType: "circle",
+            symbolSize: 75
+          }
+        }
+      };
+
+      createChart(spec, "waffle", headers, rows)
+        .then(() => resolve("Waffle"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * LOLLIPOP custom function
+ * Creates a lollipop chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function LOLLIPOP(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Lollipop chart requires 2 columns: Category names, Values");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js lollipop chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Lollipop chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        encoding: {
+          y: {
+            field: headers[0],
+            type: "nominal",
+            sort: "-x",
+            axis: {
+              domain: false,
+              title: null,
+              ticks: false,
+              labelFont: "Segoe UI",
+              labelFontSize: 14,
+              labelPadding: 10,
+              labelColor: "#605e5c"
+            }
+          },
+          x: {
+            field: headers[1],
+            type: "quantitative",
+            axis: {
+              domain: false,
+              ticks: false,
+              grid: true,
+              gridColor: "#e0e0e0",
+              labelFont: "Segoe UI",
+              labelFontSize: 12,
+              labelColor: "#605e5c",
+              title: headers[1],
+              titleFont: "Segoe UI",
+              titleFontSize: 14,
+              titleColor: "#323130"
+            }
+          },
+          color: { value: "#0078d4" }
+        },
+        layer: [
+          {
+            mark: {
+              type: "rule",
+              tooltip: true,
+              strokeWidth: 3,
+              opacity: 0.7
+            }
+          },
+          {
+            mark: {
+              type: "circle",
+              tooltip: true,
+              size: 300,
+              opacity: 0.9
+            },
+            encoding: {
+              size: {
+                field: headers[1],
+                type: "quantitative",
+                scale: {
+                  range: [200, 800]
+                },
+                legend: null
+              }
+            }
+          }
+        ],
+        config: {
+          autosize: {
+            type: "fit",
+            contains: "padding"
+          },
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" }
+        }
+      };
+
+      createChart(spec, "lollipop", headers, rows)
+        .then(() => resolve("Lollipop"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * VIOLIN custom function
+ * Creates a violin chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function VIOLIN(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Violin chart requires 2 columns: Categories/Groups, Continuous values");
+        return;
+      }
+
+      // Convert rows -> objects
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification as provided
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.20.1.json",
+        description: "Violin chart from Excel selection",
+        background: "white",
+        config: {
+          view: { continuousWidth: 300, continuousHeight: 300, stroke: null },
+          facet: { spacing: 0 }
+        },
+        data: { values: processedData },
+        mark: { type: "area", orient: "horizontal" },
+        encoding: {
+          color: { field: headers[0], type: "nominal" },
+          column: {
+            field: headers[0],
+            header: {
+              labelOrient: "bottom",
+              labelPadding: 0,
+              titleOrient: "bottom"
+            },
+            type: "nominal"
+          },
+          x: {
+            axis: { grid: false, labels: false, ticks: true, values: [0] },
+            field: "density",
+            impute: null,
+            stack: "center",
+            title: null,
+            type: "quantitative"
+          },
+          y: { field: headers[1], type: "quantitative" }
+        },
+        transform: [
+          {
+            density: headers[1],
+            groupby: [headers[0]],
+            as: [headers[1], "density"]
+          }
+        ],
+        width: 100
+      };
+
+      createChart(spec, "violin", headers, rows)
+        .then(() => resolve("Violin"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * GANTT custom function
+ * Creates a Gantt chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function GANTT(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 6) {
+        resolve("Error: Gantt chart requires 6 columns (Parent ID, Task ID, Task Name, Start Date, End Date, Progress)");
+        return;
+      }
+
+      // Helper function to convert Excel dates (same as taskpane.js)
+      function excelDateToJSDate(serial) {
+        return new Date(Math.round((serial - 25569) * 86400 * 1000));
+      }
+
+      const ganttData = rows.map(row => {
+        const parentId = row[0] || null;   // col 1 = parent id
+        const id = row[1];                 // col 2 = task id
+        const name = row[2] || `Task ${id}`;
+        if (!id) return null;
+
+        const start = typeof row[3] === "number" ? excelDateToJSDate(row[3]) : new Date(row[3]);
+        const end = typeof row[4] === "number" ? excelDateToJSDate(row[4]) : new Date(row[4]);
+        if (!(start instanceof Date) || isNaN(start) || !(end instanceof Date) || isNaN(end)) return null;
+
+        let progress = 0;
+        if (row[5]) {
+          if (typeof row[5] === "string" && row[5].includes("%")) {
+            progress = parseFloat(row[5]) / 100;
+          } else if (row[5] > 1) {
+            progress = row[5] / 100;
+          } else {
+            progress = row[5];
+          }
+        }
+
+        const dependencies = row[6] ? String(row[6]).split(",").map(d => d.trim()) : [];
+
+        return { id, parentId, name, startDate: start, endDate: end, progress, dependencies };
+      }).filter(Boolean);
+
+      // Precompute progressEnd
+      ganttData.forEach(task => {
+        const duration = task.endDate - task.startDate;
+        task.progressEnd = new Date(task.startDate.getTime() + duration * task.progress);
+      });
+
+      // Build parent->children map
+      const childrenMap = new Map();
+      ganttData.forEach(task => {
+        if (!childrenMap.has(task.parentId)) {
+          childrenMap.set(task.parentId, []);
+        }
+        childrenMap.get(task.parentId).push(task);
+      });
+
+      // Sort children by startDate
+      for (let [pid, childList] of childrenMap.entries()) {
+        childList.sort((a, b) => a.startDate - b.startDate);
+      }
+
+      // Recursive hierarchy ordering
+      function buildHierarchy(parentId = null, level = 0) {
+        const ordered = [];
+        const tasks = childrenMap.get(parentId) || [];
+        for (const task of tasks) {
+          task.level = level;
+          ordered.push(task);
+          ordered.push(...buildHierarchy(task.id, level + 1));
+        }
+        return ordered;
+      }
+
+      const orderedTasks = buildHierarchy(null);
+
+      // Use EXACT specification from taskpane.js gantt chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Gantt Chart from Excel Data",
+        width: 800,
+        height: Math.max(300, orderedTasks.length * 30),
+        data: { values: orderedTasks },
+        layer: [
+          {
+            mark: { type: "bar", opacity: 0.3, height: 20 },
+            encoding: {
+              y: { field: "name", type: "nominal", axis: { title: null, labelFontSize: 11 }, sort: null },
+              x: { field: "startDate", type: "temporal", axis: { title: "Timeline", format: "%b %d", labelAngle: -45 } },
+              x2: { field: "endDate", type: "temporal" },
+              color: { field: "level", type: "ordinal", scale: { scheme: "category10" }, legend: { title: "Level" } },
+              tooltip: [
+                { field: "name", type: "nominal", title: "Task" },
+                { field: "startDate", type: "temporal", title: "Start", format: "%Y-%m-%d" },
+                { field: "endDate", type: "temporal", title: "End", format: "%Y-%m-%d" },
+                { field: "progress", type: "quantitative", title: "Progress", format: ".0%" }
+              ]
+            }
+          },
+          {
+            mark: { type: "bar", opacity: 0.8, height: 20 },
+            encoding: {
+              y: { field: "name", type: "nominal", sort: null },
+              x: { field: "startDate", type: "temporal" },
+              x2: { field: "progressEnd", type: "temporal" },
+              color: { field: "level", type: "ordinal", scale: { scheme: "category10" } }
+            }
+          },
+          {
+            mark: { type: "text", align: "left", baseline: "middle", dx: 5, fontSize: 10 },
+            encoding: {
+              y: { field: "name", type: "nominal", sort: null },
+              x: { field: "endDate", type: "temporal" },
+              text: { field: "progress", type: "quantitative", format: ".0%" },
+              color: { value: "#666" }
+            }
+          },
+          {
+            mark: { type: "rule", strokeDash: [4, 4], opacity: 0.5 },
+            data: { values: [{ date: new Date().toISOString() }] },
+            encoding: {
+              x: { field: "date", type: "temporal" },
+              color: { value: "red" },
+              size: { value: 1 }
+            }
+          }
+        ],
+        config: { view: { stroke: null }, axis: { grid: true, gridColor: "#f0f0f0" } }
+      };
+
+      createChart(spec, "gantt", headers, rows)
+        .then(() => resolve("Gantt"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * SANKEY custom function
+ * Creates a Sankey diagram from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function SANKEY(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Sankey chart requires 3 columns (Source Category, Destination Category, Values)");
+        return;
+      }
+
+      // Filter and transform data (same as taskpane.js)
+      const processedData = rows
+        .filter(r => r[0] && r[1] && !isNaN(+r[2]))
+        .map(r => ({
+          key: { stk1: r[0], stk2: r[1] },
+          doc_count: +r[2]
+        }));
+
+      if (processedData.length === 0) {
+        resolve("Error: No valid data found for Sankey chart");
+        return;
+      }
+
+      // Use EXACT specification from taskpane.js sankey chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega/v5.2.json",
+        height: 300,
+        width: 600,
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        view: { stroke: null },
+        padding: { top: 60, bottom: 80, left: 60, right: 60 },
+        data: [
+          {
+            name: "rawData",
+            values: processedData,
+            transform: [
+              { type: "formula", expr: "datum.key.stk1", as: "stk1" },
+              { type: "formula", expr: "datum.key.stk2", as: "stk2" },
+              { type: "formula", expr: "datum.doc_count", as: "size" }
+            ]
+          },
+          {
+            name: "nodes",
+            source: "rawData",
+            transform: [
+              {
+                type: "filter",
+                expr:
+                  "!groupSelector || groupSelector.stk1 == datum.stk1 || groupSelector.stk2 == datum.stk2"
+              },
+              { type: "formula", expr: "datum.stk1+datum.stk2", as: "key" },
+              { type: "fold", fields: ["stk1", "stk2"], as: ["stack", "grpId"] },
+              {
+                type: "formula",
+                expr:
+                  "datum.stack == 'stk1' ? datum.stk1+' '+datum.stk2 : datum.stk2+' '+datum.stk1",
+                as: "sortField"
+              },
+              {
+                type: "stack",
+                groupby: ["stack"],
+                sort: { field: "sortField", order: "descending" },
+                field: "size"
+              },
+              { type: "formula", expr: "(datum.y0+datum.y1)/2", as: "yc" }
+            ]
+          },
+          {
+            name: "groups",
+            source: "nodes",
+            transform: [
+              {
+                type: "aggregate",
+                groupby: ["stack", "grpId"],
+                fields: ["size"],
+                ops: ["sum"],
+                as: ["total"]
+              },
+              {
+                type: "stack",
+                groupby: ["stack"],
+                sort: { field: "grpId", order: "descending" },
+                field: "total"
+              },
+              { type: "formula", expr: "scale('y', datum.y0)", as: "scaledY0" },
+              { type: "formula", expr: "scale('y', datum.y1)", as: "scaledY1" },
+              { type: "formula", expr: "datum.stack == 'stk1'", as: "rightLabel" },
+              { type: "formula", expr: "datum.total/domain('y')[1]", as: "percentage" }
+            ]
+          },
+          {
+            name: "destinationNodes",
+            source: "nodes",
+            transform: [{ type: "filter", expr: "datum.stack == 'stk2'" }]
+          },
+          {
+            name: "edges",
+            source: "nodes",
+            transform: [
+              { type: "filter", expr: "datum.stack == 'stk1'" },
+              {
+                type: "lookup",
+                from: "destinationNodes",
+                key: "key",
+                fields: ["key"],
+                as: ["target"]
+              },
+              {
+                type: "linkpath",
+                orient: "horizontal",
+                shape: "diagonal",
+                sourceY: { expr: "scale('y', datum.yc)" },
+                sourceX: { expr: "scale('x', 'stk1') + bandwidth('x')" },
+                targetY: { expr: "scale('y', datum.target.yc)" },
+                targetX: { expr: "scale('x', 'stk2')" }
+              },
+              { type: "formula", expr: "range('y')[0]-scale('y', datum.size)", as: "strokeWidth" },
+              { type: "formula", expr: "datum.size/domain('y')[1]", as: "percentage" }
+            ]
+          }
+        ],
+        scales: [
+          {
+            name: "x",
+            type: "band",
+            range: "width",
+            domain: ["stk1", "stk2"],
+            paddingOuter: 0.05,
+            paddingInner: 0.95
+          },
+          {
+            name: "y",
+            type: "linear",
+            range: "height",
+            domain: { data: "nodes", field: "y1" }
+          },
+          {
+            name: "color",
+            type: "ordinal",
+            range: "category",
+            domain: {
+              fields: [
+                { data: "rawData", field: "stk1" },
+                { data: "rawData", field: "stk2" }
+              ]
+            }
+          },
+          {
+            name: "stackNames",
+            type: "ordinal",
+            range: ["Source", "Destination"],
+            domain: ["stk1", "stk2"]
+          }
+        ],
+        axes: [
+          {
+            orient: "bottom",
+            scale: "x",
+            encode: {
+              labels: { update: { text: { scale: "stackNames", field: "value" } } }
+            }
+          },
+          { orient: "left", scale: "y" }
+        ],
+        marks: [
+          {
+            type: "path",
+            name: "edgeMark",
+            from: { data: "edges" },
+            clip: true,
+            encode: {
+              update: {
+                stroke: { scale: "color", field: "stk1" }, // links colored by source
+                strokeWidth: { field: "strokeWidth" },
+                path: { field: "path" },
+                strokeOpacity: {
+                  signal:
+                    "!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 0.9 : 0.3"
+                },
+                zindex: {
+                  signal:
+                    "!groupSelector && (groupHover.stk1 == datum.stk1 || groupHover.stk2 == datum.stk2) ? 1 : 0"
+                },
+                tooltip: {
+                  signal:
+                    "datum.stk1 + ' → ' + datum.stk2 + '    ' + format(datum.size, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+                }
+              },
+              hover: { strokeOpacity: { value: 1 } }
+            }
+          },
+          {
+            type: "rect",
+            name: "groupMark",
+            from: { data: "groups" },
+            encode: {
+              enter: {
+                fill: { scale: "color", field: "grpId" }, // both source & destination use union colors
+                width: { scale: "x", band: 1 }
+              },
+              update: {
+                x: { scale: "x", field: "stack" },
+                y: { field: "scaledY0" },
+                y2: { field: "scaledY1" },
+                fillOpacity: { value: 0.6 },
+                tooltip: {
+                  signal:
+                    "datum.grpId + '   ' + format(datum.total, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+                }
+              },
+              hover: { fillOpacity: { value: 1 } }
+            }
+          },
+          {
+            type: "text",
+            from: { data: "groups" },
+            interactive: false,
+            encode: {
+              update: {
+                x: {
+                  signal:
+                    "scale('x', datum.stack) + (datum.rightLabel ? bandwidth('x') + 8 : -8)"
+                },
+                yc: { signal: "(datum.scaledY0 + datum.scaledY1)/2" },
+                align: { signal: "datum.rightLabel ? 'left' : 'right'" },
+                baseline: { value: "middle" },
+                fontWeight: { value: "bold" },
+                text: {
+                  signal: "abs(datum.scaledY0-datum.scaledY1) > 13 ? datum.grpId : ''"
+                }
+              }
+            }
+          }
+        ],
+        signals: [
+          {
+            name: "groupHover",
+            value: {},
+            on: [
+              {
+                events: "@groupMark:mouseover",
+                update:
+                  "{stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"
+              },
+              { events: "mouseout", update: "{}" }
+            ]
+          },
+          {
+            name: "groupSelector",
+            value: false,
+            on: [
+              {
+                events: "@groupMark:click!",
+                update:
+                  "{stack:datum.stack, stk1:datum.stack=='stk1' && datum.grpId, stk2:datum.stack=='stk2' && datum.grpId}"
+              },
+              {
+                events: [
+                  { type: "click", markname: "groupReset" },
+                  { type: "dblclick" }
+                ],
+                update: "false"
+              }
+            ]
+          }
+        ]
+      };
+
+      createChart(spec, "sankey", headers, rows)
+        .then(() => resolve("Sankey"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RIDGELINE custom function
+ * Creates a ridgeline (joyplot) chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RIDGELINE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Ridgeline chart requires 3 columns (Time/X-axis, Categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js ridgeline chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ridgeline (Joyplot) chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        mark: {
+          type: "area",
+          fillOpacity: 0.7,
+          strokeOpacity: 1,
+          strokeWidth: 1,
+          interpolate: "monotone"
+        },
+        width: 400,
+        height: 20,
+        encoding: {
+          x: {
+            field: headers[0],       // date/time column
+            type: "ordinal",
+            title: headers[0]
+          },
+          y: {
+            aggregate: "sum",
+            field: headers[2],       // value column
+            type: "quantitative",
+            scale: { range: [20, -40] },
+            axis: {
+              title: null,
+              values: [0],
+              domain: false,
+              labels: false,
+              ticks: false
+            }
+          },
+          row: {
+            field: headers[1],       // category column
+            type: "nominal",
+            title: headers[1],
+            header: {
+              title: null,
+              labelAngle: 0,
+              labelOrient: "left",
+              labelAlign: "left",
+              labelPadding: 0
+            },
+            sort: { field: headers[0], op: "max", order: "ascending" }
+          },
+          fill: {
+            field: headers[1],
+            type: "nominal",
+            legend: null,
+            scale: { scheme: "plasma" }
+          }
+        },
+        resolve: { scale: { y: "independent" } },
+        config: {
+          view: { stroke: "transparent" },
+          facet: { spacing: 20 },
+          header: {
+            labelFontSize: 12,
+            labelFontWeight: 500,
+            labelAngle: 0,
+            labelAnchor: "end",
+            labelOrient: "top",
+            labelPadding: -19
+          },
+          axis: {
+            domain: false,
+            grid: false,
+            ticks: false,
+            tickCount: 5,
+            labelFontSize: 12,
+            titleFontSize: 12,
+            titleFontWeight: 400,
+            titleColor: "#605E5C"
+          }
+        }
+      };
+
+      createChart(spec, "ridgeline", headers, rows)
+        .then(() => resolve("Ridgeline"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * VARIANCE custom function
+ * Creates a variance chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function VARIANCE(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Variance chart requires 3 columns (Business Unit, First Metric, Second Metric)");
+        return;
+      }
+
+      // Convert rows -> objects
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      const spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "data": { "values": processedData },
+        "transform": [
+          {
+            "aggregate": [
+              {"op": "sum", "field": headers[1], "as": headers[1]},
+              {"op": "sum", "field": headers[2], "as": headers[2]}
+            ],
+            "groupby": [headers[0]]
+          },
+          {
+            "calculate": `datum['${headers[1]}'] - datum['${headers[2]}']`,
+            "as": "Variance Absolute"
+          },
+          {
+            "calculate": `datum['${headers[2]}'] === 0 ? 0 : datum['${headers[1]}']/datum['${headers[2]}']-1`,
+            "as": "Variance Percent"
+          }
+        ],
+        "hconcat": [
+          {
+            "width": 350,
+            "height": {"step": 50},
+            "view": {"stroke": "transparent"},
+            "encoding": {
+              "color": {
+                "type": "nominal",
+                "scale": {
+                  "domain": [headers[1], headers[2]],
+                  "range": ["#404040", "silver"]
+                },
+                "legend": {"title": null, "orient": "top"}
+              },
+              "y": {
+                "field": headers[0],
+                "type": "nominal",
+                "sort": null,
+                "axis": {"domain": false, "offset": 0, "ticks": false, "title": "", "labelPadding": 35}
+              },
+              "x": {
+                "type": "quantitative",
+                "axis": {
+                  "domain": false,
+                  "labels": false,
+                  "title": null,
+                  "ticks": false,
+                  "grid": true,
+                  "gridColor": {
+                    "condition": {"test": "datum.value === 0", "value": "#605E5C"},
+                    "value": "transparent"
+                  }
+                }
+              }
+            },
+            "layer": [
+              {
+                "mark": {
+                  "type": "bar",
+                  "tooltip": true,
+                  "cornerRadius": 3,
+                  "yOffset": 12,
+                  "height": {"band": 0.5}
+                },
+                "encoding": {
+                  "x": {"field": headers[2]},
+                  "color": {"datum": headers[2]}
+                }
+              },
+              {
+                "mark": {
+                  "type": "bar",
+                  "tooltip": true,
+                  "cornerRadius": 3,
+                  "yOffset": 0,
+                  "height": {"band": 0.5}
+                },
+                "encoding": {
+                  "x": {"field": headers[1]},
+                  "color": {"datum": headers[1]}
+                }
+              },
+              {
+                "mark": {
+                  "type": "text",
+                  "align": {
+                    "expr": `datum['${headers[1]}'] < 0 ? 'right' : 'left'`
+                  },
+                  "dx": {"expr": `datum['${headers[1]}'] < 0 ? -5 : 5`},
+                  "color": "black",
+                  "fontSize": 11
+                },
+                "encoding": {
+                  "x": {"field": headers[1], "type": "quantitative"},
+                  "text": {"field": headers[1], "type": "quantitative", "format": ","}
+                }
+              }
+            ]
+          },
+          {
+            "width": 150,
+            "height": {"step": 50},
+            "view": {"stroke": "transparent"},
+            "encoding": {
+              "y": {
+                "field": headers[0],
+                "type": "nominal",
+                "sort": null,
+                "axis": null
+              },
+              "x": {
+                "field": "Variance Absolute",
+                "type": "quantitative",
+                "axis": {
+                  "domain": false,
+                  "labels": false,
+                  "title": null,
+                  "ticks": false,
+                  "grid": true,
+                  "gridWidth": 1,
+                  "gridColor": {
+                    "condition": {"test": "datum.value === 0", "value": "#605E5C"},
+                    "value": "transparent"
+                  }
+                }
+              }
+            },
+            "layer": [
+              {
+                "mark": {
+                  "type": "bar",
+                  "tooltip": true,
+                  "cornerRadius": 3,
+                  "yOffset": 0,
+                  "height": {"band": 0.5}
+                },
+                "encoding": {
+                  "fill": {
+                    "condition": {
+                      "test": "datum['Variance Absolute'] < 0",
+                      "value": "#b92929"
+                    },
+                    "value": "#329351"
+                  }
+                }
+              },
+              {
+                "mark": {
+                  "type": "text",
+                  "align": {
+                    "expr": "datum['Variance Absolute'] < 0 ? 'right' : 'left'"
+                  },
+                  "dx": {"expr": "datum['Variance Absolute'] < 0 ? -5 : 5"}
+                },
+                "encoding": {
+                  "text": {
+                    "field": "Variance Absolute",
+                    "type": "quantitative",
+                    "format": "+,"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "width": 150,
+            "height": {"step": 50},
+            "view": {"stroke": "transparent"},
+            "transform": [
+              {
+                "calculate": `datum['${headers[2]}'] === 0 ? 'n/m' : format(datum['Variance Percent'], '+.1%')`,
+                "as": "PercentDisplay"
+              }
+            ],
+            "encoding": {
+              "y": {
+                "field": headers[0],
+                "type": "nominal",
+                "sort": null,
+                "axis": null
+              },
+              "x": {
+                "field": "Variance Percent",
+                "type": "quantitative",
+                "axis": {
+                  "domain": false,
+                  "labels": false,
+                  "title": null,
+                  "ticks": false,
+                  "grid": true,
+                  "gridColor": {
+                    "condition": {"test": "datum.value === 0", "value": "#605E5C"},
+                    "value": "transparent"
+                  }
+                }
+              }
+            },
+            "layer": [
+              {
+                "mark": {"type": "rule", "tooltip": true},
+                "encoding": {
+                  "strokeWidth": {"value": 2},
+                  "stroke": {
+                    "condition": {
+                      "test": "datum['Variance Absolute'] < 0",
+                      "value": "#b92929"
+                    },
+                    "value": "#329351"
+                  }
+                }
+              },
+              {
+                "mark": {"type": "circle", "tooltip": true},
+                "encoding": {
+                  "size": {"value": 100},
+                  "color": {
+                    "condition": {
+                      "test": "datum['Variance Absolute'] < 0",
+                      "value": "#b92929"
+                    },
+                    "value": "#329351"
+                  }
+                }
+              },
+              {
+                "mark": {
+                  "type": "text",
+                  "align": {
+                    "expr": "datum['Variance Absolute'] < 0 ? 'right' : 'left'"
+                  },
+                  "dx": {"expr": "datum['Variance Absolute'] < 0 ? -10 : 10"}
+                },
+                "encoding": {
+                  "text": {
+                    "field": "PercentDisplay",
+                    "type": "nominal"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "config": {
+          "view": {"stroke": "transparent"},
+          "padding": {"left": 5, "top": 20, "right": 5, "bottom": 5},
+          "font": "Segoe UI",
+          "axis": {
+            "labelFontSize": 12,
+            "labelPadding": 10,
+            "offset": 5,
+            "labelFont": "Segoe UI",
+            "labelColor": "#252423"
+          },
+          "text": {"fontSize": 12, "font": "Segoe UI", "color": "#605E5C"},
+          "concat": {"spacing": 50},
+          "legend": {
+            "labelFontSize": 12,
+            "labelFont": "Segoe UI",
+            "labelColor": "#605E5C"
+          }
+        }
+      };
+
+      createChart(spec, "variance", headers, rows)
+        .then(() => resolve("Variance"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * DEVIATION custom function
+ * Creates a deviation chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function DEVIATION(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Deviation chart requires 3 columns (Date/Period, Actual Values, Target/Baseline Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js deviation chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Deviation chart from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        layer: [
+          {
+            mark: { type: "line", tooltip: true, color: "grey" },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[1], type: "quantitative" }
+            }
+          },
+          {
+            mark: { type: "circle", size: 80, color: "grey", tooltip: true },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[1], type: "quantitative" }
+            }
+          },
+          {
+            mark: { type: "rule", strokeWidth: 2, tooltip: true },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[1], type: "quantitative" },
+              y2: { field: headers[2] },
+              color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+              }
+            }
+          },
+          {
+            mark: { type: "circle", size: 60, tooltip: true },
+            encoding: {
+              x: { field: headers[0], type: "ordinal" },
+              y: { field: headers[2], type: "quantitative" },
+              color: {
+                condition: { test: `datum["${headers[1]}"] < datum["${headers[2]}"]`, value: "red" },
+                value: "green"
+              }
+            }
+          }
+        ],
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal", 
+            axis: { 
+              title: null,
+              labelAngle: 0
+            } 
+          },
+          y: { type: "quantitative", axis: { title: "" } }
+        },
+        config: {
+          view: { stroke: "transparent" },
+          line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12
+          }
+        }
+      };
+
+      createChart(spec, "deviation", headers, rows)
+        .then(() => resolve("Deviation"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * RIBBON custom function
+ * Creates a ribbon chart from Excel data range
+ * 
+ * @customfunction
+ * @param {any[][]} data The data range including headers
+ * @returns {string} Status message
+ */
+function RIBBON(data) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Ribbon chart requires 3 columns (Time periods, Categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Calculate dynamic dimensions based on data
+      const uniquePeriods = [...new Set(processedData.map(d => d[headers[0]]))];
+      const dynamicWidth = Math.max(600, uniquePeriods.length * 100);
+      const dynamicHeight = 400;
+
+      // Use EXACT specification from taskpane.js ribbon chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Ribbon chart from Excel selection",
+        background: "white",
+        width: dynamicWidth,
+        height: dynamicHeight,
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        layer: [
+          {
+            mark: { 
+              type: "area", 
+              interpolate: "monotone", 
+              tooltip: true,
+              opacity: 0.8
+            },
+            encoding: {
+              x: {
+                field: headers[0],
+                type: "ordinal",
+                scale: {
+                  type: "point",
+                  padding: 0.3
+                },
+                axis: {
+                  title: headers[0],
+                  labelAngle: -45,
+                  labelFontSize: 12,
+                  titleFontSize: 14,
+                  labelPadding: 10,
+                  titlePadding: 20
+                }
+              },
+              y: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative",
+                axis: {
+                  title: headers[2],
+                  labelFontSize: 12,
+                  titleFontSize: 14,
+                  grid: true,
+                  gridOpacity: 0.3
+                },
+                stack: "center"
+              },
+              color: {
+                field: headers[1],
+                type: "nominal",
+                legend: {
+                  title: headers[1],
+                  titleFontSize: 12,
+                  labelFontSize: 11,
+                  orient: "right"
+                }
+              },
+              order: {
+                aggregate: "sum",
+                field: headers[2],
+                type: "quantitative"
+              }
+            }
+          }
+        ],
+        config: {
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          axis: {
+            ticks: false,
+            grid: true,
+            gridColor: "#f0f0f0",
+            gridOpacity: 0.5,
+            gridWidth: 1,
+            domain: false,
+            labelColor: "#605e5c",
+            titleColor: "#323130"
+          },
+          legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#323130",
+            labelFont: "Segoe UI",
+            labelColor: "#605e5c",
+            symbolType: "circle",
+            symbolSize: 75
+          }
+        }
+      };
+
+      createChart(spec, "ribbon", headers, rows)
+        .then(() => resolve("Ribbon"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * Create chart
+ */
+async function createChart(spec, chartType, headers, rows) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const chartId = `${chartType}_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+      
+      // Render hidden chart (same as taskpane.js)
+      const hiddenDiv = document.createElement("div");
+      hiddenDiv.style.display = "none";
+      hiddenDiv.id = chartId;
+      document.body.appendChild(hiddenDiv);
+
+      // Load Vega-Lite if not available
+      if (typeof vegaEmbed === 'undefined') {
+        await loadVegaLibraries();
+      }
+
+      const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+      const view = result.view;
+
+      // Export chart -> PNG (same as taskpane.js)
+      const pngUrl = await view.toImageURL("png");
+      const response = await fetch(pngUrl);
+      const blob = await response.blob();
+
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64data = reader.result.split(",")[1];
+
+          // Insert into Excel (same approach as taskpane.js)
+          await insertChart(base64data, chartType, chartId);
+          
+          // Clean up hidden div
+          document.body.removeChild(hiddenDiv);
+          resolve();
+          
+        } catch (error) {
+          // Clean up on error
+          if (document.body.contains(hiddenDiv)) {
+            document.body.removeChild(hiddenDiv);
+          }
+          reject(error);
+        }
+      };
+      
+      reader.readAsDataURL(blob);
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+/**
+ * Insert chart
+ */
+async function insertChart(base64data, chartType, chartId) {
+  return Excel.run(async (context) => {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
+
+    // Remove old chart and get its position
+    const oldPosition = await removeExistingCharts(context, sheet, chartType);
+
+    let left, top, targetWidth;
+
+    if (oldPosition) {
+      // Use old chart position and size
+      left = oldPosition.left;
+      top = oldPosition.top;
+      targetWidth = oldPosition.width;
+      targetHeight = oldPosition.height;
+    } else {
+      // Fall back to current selection
+      const range = context.workbook.getSelectedRange();
+      range.load("left, top, width, height");
+      await context.sync();
+      left = range.left;
+      top = range.top;
+    }
+
+    // Insert the new image
+    const image = sheet.shapes.addImage(base64data);
+    image.left = left;
+    image.top = top;
+    // If we have old dimensions, preserve them exactly
+    if (oldPosition) {
+      image.lockAspectRatio = false;
+      image.width = targetWidth;
+      image.height = targetHeight;
+    } else {
+      // For new charts, maintain aspect ratio
+      image.lockAspectRatio = true;
+    }
+    image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
+
+    await context.sync();
+  });
+}
+
+/**
+ * Remove existing chart
+ */
+async function removeExistingCharts(context, sheet, chartType) {
+  const shapes = sheet.shapes;
+  shapes.load("items");
+  await context.sync();
+
+  const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_`;
+  let oldPosition = null;
+
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
+    shape.load(["name", "left", "top", "width", "height"]);
+  }
+  await context.sync();
+
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
+    if (shape.name && shape.name.startsWith(chartPrefix)) {
+      // Save position before deleting
+      oldPosition = {
+        left: shape.left,
+        top: shape.top,
+        width: shape.width,
+        height: shape.height,
+      };
+      shape.delete();
+      await context.sync();
+    }
+  }
+
+  return oldPosition;
+}
+
+/**
+ * Load Vega libraries
+ */
+function loadVegaLibraries() {
+  return new Promise((resolve, reject) => {
+    if (typeof vegaEmbed !== 'undefined') {
+      resolve();
+      return;
+    }
+
+    // Load libraries in sequence (same as taskpane.html)
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/vega@6',
+      'https://cdn.jsdelivr.net/npm/vega-lite@6', 
+      'https://cdn.jsdelivr.net/npm/vega-embed@6'
+    ];
+
+    let loadedCount = 0;
+    
+    scripts.forEach((src, index) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => {
+        loadedCount++;
+        if (loadedCount === scripts.length) {
+          resolve();
+        }
+      };
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.head.appendChild(script);
+    });
+  });
+}
+
+if (typeof CustomFunctions !== 'undefined') {
+  CustomFunctions.associate("LINE", LINE);
+  CustomFunctions.associate("BAR", BAR);
+  CustomFunctions.associate("PIE", PIE);
+  CustomFunctions.associate("GAUGE", GAUGE);
+  CustomFunctions.associate("AREA", AREA);
+  CustomFunctions.associate("SCATTER", SCATTER);
+  CustomFunctions.associate("BUBBLE", BUBBLE);
+  CustomFunctions.associate("RADIAL", RADIAL);
+  CustomFunctions.associate("RING", RING);
+  CustomFunctions.associate("BOX", BOX);
+  CustomFunctions.associate("RADAR", RADAR);
+  CustomFunctions.associate("WATERFALL", WATERFALL);
+  CustomFunctions.associate("SUNBURST", SUNBURST);
+  CustomFunctions.associate("TREEMAP", TREEMAP);
+  CustomFunctions.associate("HISTOGRAM", HISTOGRAM);
+  CustomFunctions.associate("CANDLESTICK", CANDLESTICK);
+  CustomFunctions.associate("MAP", MAP);
+  CustomFunctions.associate("ARC", ARC);
+  CustomFunctions.associate("TREE", TREE);
+  CustomFunctions.associate("WORDCLOUD", WORDCLOUD);
+  CustomFunctions.associate("STRIP", STRIP);
+  CustomFunctions.associate("HEATMAP", HEATMAP);
+  CustomFunctions.associate("BULLET", BULLET);
+  CustomFunctions.associate("HORIZON", HORIZON);
+  CustomFunctions.associate("DUMBBELL", DUMBBELL);
+  CustomFunctions.associate("SLOPE", SLOPE);
+  CustomFunctions.associate("MEKKO", MEKKO);
+  CustomFunctions.associate("MARIMEKKO", MARIMEKKO);
+  CustomFunctions.associate("BUMP", BUMP);
+  CustomFunctions.associate("WAFFLE", WAFFLE);
+  CustomFunctions.associate("LOLLIPOP", LOLLIPOP);
+  CustomFunctions.associate("VIOLIN", VIOLIN);
+  CustomFunctions.associate("GANTT", GANTT);
+  CustomFunctions.associate("SANKEY", SANKEY);
+  CustomFunctions.associate("RIBBON", RIBBON);
+  CustomFunctions.associate("RIDGELINE", RIDGELINE);
+  CustomFunctions.associate("DEVIATION", DEVIATION);
+  CustomFunctions.associate("VARIANCE", VARIANCE);
+}
