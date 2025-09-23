@@ -15,9 +15,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -34,9 +31,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -53,9 +47,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -72,9 +63,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -91,9 +79,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -110,9 +95,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -129,9 +111,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -148,9 +127,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -167,9 +143,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -186,9 +159,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -205,9 +175,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -224,9 +191,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -243,9 +207,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -262,9 +223,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -281,9 +239,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -300,9 +255,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -319,9 +271,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -338,9 +287,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -357,9 +303,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -376,9 +319,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -395,9 +335,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -414,9 +351,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -433,9 +367,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -452,9 +383,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -471,9 +399,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -490,9 +415,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -509,9 +431,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -528,9 +447,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -547,9 +463,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -566,9 +479,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -585,9 +495,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -604,9 +511,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -623,9 +527,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -642,9 +543,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -661,9 +559,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -680,9 +575,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -699,9 +591,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
@@ -718,9 +607,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         }
     ]
