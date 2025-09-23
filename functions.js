@@ -6,7 +6,7 @@
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function LINE(data) {
+function LINE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -104,7 +104,7 @@ function LINE(data) {
           }
         }
       };
-      const chartId = getChartId("line");
+      const chartId = getChartId("line", invocation.address);
       createChart(spec, "line", headers, rows, chartId)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -6268,19 +6268,9 @@ async function removeExistingCharts(context, sheet, chartType, chartId) {
 /**
  * Get Chart ID
  */
-async function getChartId(chartType) {
-  const addr = await getSelectedRangeAddress();
-  const safeAddr = addr.replace(/[^A-Za-z0-9]/g, "_");
+function getChartId(chartType, invocationAddress) {
+  const safeAddr = invocationAddress.replace(/[^A-Za-z0-9]/g, "_");
   return `${chartType}_${safeAddr}`;
-}
-
-async function getSelectedRangeAddress() {
-  return Excel.run(async (context) => {
-    const range = context.workbook.getSelectedRange();
-    range.load("address");
-    await context.sync();
-    return range.address;
-  });
 }
 
 /**
