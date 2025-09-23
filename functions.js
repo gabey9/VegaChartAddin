@@ -6200,7 +6200,7 @@ async function insertChart(base64data, chartType, chartId) {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 
     // Remove old chart and get its position
-    const oldPosition = await removeExistingCharts(context, sheet, chartType);
+    const oldPosition = await removeExistingCharts(context, sheet, chartType, chartID);
 
     let left, top, targetWidth;
 
@@ -6241,12 +6241,12 @@ async function insertChart(base64data, chartType, chartId) {
 /**
  * Remove existing chart
  */
-async function removeExistingCharts(context, sheet, chartType) {
+async function removeExistingCharts(context, sheet, chartType, chartId) {
   const shapes = sheet.shapes;
   shapes.load("items");
   await context.sync();
 
-  const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_`;
+  const chartName = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
   let oldPosition = null;
 
   for (let i = shapes.items.length - 1; i >= 0; i--) {
@@ -6257,7 +6257,7 @@ async function removeExistingCharts(context, sheet, chartType) {
 
   for (let i = shapes.items.length - 1; i >= 0; i--) {
     const shape = shapes.items[i];
-    if (shape.name && shape.name.startsWith(chartPrefix)) {
+    if (shape.name === chartName) {
       // Save position before deleting
       oldPosition = {
         left: shape.left,
