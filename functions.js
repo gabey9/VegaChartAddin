@@ -4,6 +4,7 @@
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function LINE(data, invocation) {
