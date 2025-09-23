@@ -5,6 +5,9 @@
             "description": "LINE custom function\nCreates a multi-series line chart from Excel data range",
             "id": "LINE",
             "name": "LINE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -15,15 +18,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "BAR custom function\nCreates a bar chart from Excel data range",
             "id": "BAR",
             "name": "BAR",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -34,15 +37,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "GAUGE custom function \nCreates a gauge chart from Excel data range",
             "id": "GAUGE",
             "name": "GAUGE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -53,15 +56,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "PIE custom function\nCreates a pie chart from Excel data range",
             "id": "PIE",
             "name": "PIE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -72,15 +75,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "AREA custom function\nCreates an area chart from Excel data range",
             "id": "AREA",
             "name": "AREA",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -91,15 +94,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "SCATTER custom function\nCreates a scatter plot from Excel data range",
             "id": "SCATTER",
             "name": "SCATTER",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -110,15 +113,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "BUBBLE custom function\nCreates a bubble chart from Excel data range",
             "id": "BUBBLE",
             "name": "BUBBLE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -129,15 +132,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "RING custom function\nCreates a ring chart from Excel data range",
             "id": "RING",
             "name": "RING",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -148,15 +151,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "RADIAL custom function\nCreates a radial chart from Excel data range",
             "id": "RADIAL",
             "name": "RADIAL",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -167,15 +170,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "BOX custom function\nCreates a box plot from Excel data range",
             "id": "BOX",
             "name": "BOX",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -186,15 +189,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "RADAR custom function\nCreates a radar chart from Excel data range",
             "id": "RADAR",
             "name": "RADAR",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -205,15 +208,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "WATERFALL custom function\nCreates a waterfall chart from Excel data range",
             "id": "WATERFALL",
             "name": "WATERFALL",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -224,15 +227,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "SUNBURST custom function\nCreates a sunburst chart from Excel data range",
             "id": "SUNBURST",
             "name": "SUNBURST",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -243,15 +246,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "TREEMAP custom function\nCreates a treemap chart from Excel data range",
             "id": "TREEMAP",
             "name": "TREEMAP",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -262,15 +265,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "HISTOGRAM custom function\nCreates a histogram from Excel data range",
             "id": "HISTOGRAM",
             "name": "HISTOGRAM",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -281,15 +284,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "MAP custom function\nCreates a world map chart from Excel data range",
             "id": "MAP",
             "name": "MAP",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -300,15 +303,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "CANDLESTICK custom function\nCreates a candlestick chart from Excel data range",
             "id": "CANDLESTICK",
             "name": "CANDLESTICK",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -319,15 +322,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "ARC custom function\nCreates an arc diagram from Excel data range",
             "id": "ARC",
             "name": "ARC",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -338,15 +341,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "TREE custom function\nCreates a tree diagram from Excel data range",
             "id": "TREE",
             "name": "TREE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -357,15 +360,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "WORDCLOUD custom function\nCreates a word cloud from Excel data range",
             "id": "WORDCLOUD",
             "name": "WORDCLOUD",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -376,15 +379,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "STRIP custom function\nCreates a strip plot from Excel data range",
             "id": "STRIP",
             "name": "STRIP",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -395,15 +398,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "HEATMAP custom function\nCreates a heatmap from Excel data range",
             "id": "HEATMAP",
             "name": "HEATMAP",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -414,15 +417,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "BULLET custom function\nCreates a bullet chart from Excel data range",
             "id": "BULLET",
             "name": "BULLET",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -433,15 +436,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "HORIZON custom function\nCreates a horizon chart from Excel data range",
             "id": "HORIZON",
             "name": "HORIZON",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -452,15 +455,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "DUMBBELL custom function\nCreates a dumbbell chart from Excel data range",
             "id": "DUMBBELL",
             "name": "DUMBBELL",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -471,15 +474,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "SLOPE custom function\nCreates a slope chart from Excel data range",
             "id": "SLOPE",
             "name": "SLOPE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -490,15 +493,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "MEKKO custom function\nCreates a Mekko chart from Excel data range",
             "id": "MEKKO",
             "name": "MEKKO",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -509,15 +512,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "MARIMEKKO custom function\nCreates a marimekko chart from Excel data range",
             "id": "MARIMEKKO",
             "name": "MARIMEKKO",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -528,15 +531,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "BUMP custom function\nCreates a bump chart from Excel data range",
             "id": "BUMP",
             "name": "BUMP",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -547,15 +550,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "WAFFLE custom function\nCreates a waffle chart from Excel data range",
             "id": "WAFFLE",
             "name": "WAFFLE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -566,15 +569,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "LOLLIPOP custom function\nCreates a lollipop chart from Excel data range",
             "id": "LOLLIPOP",
             "name": "LOLLIPOP",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -585,15 +588,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "VIOLIN custom function\nCreates a violin chart from Excel data range",
             "id": "VIOLIN",
             "name": "VIOLIN",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -604,15 +607,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "GANTT custom function\nCreates a Gantt chart from Excel data range",
             "id": "GANTT",
             "name": "GANTT",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -623,15 +626,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "SANKEY custom function\nCreates a Sankey diagram from Excel data range",
             "id": "SANKEY",
             "name": "SANKEY",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -642,15 +645,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "RIDGELINE custom function\nCreates a ridgeline (joyplot) chart from Excel data range",
             "id": "RIDGELINE",
             "name": "RIDGELINE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -661,15 +664,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "VARIANCE custom function\nCreates a variance chart from Excel data range",
             "id": "VARIANCE",
             "name": "VARIANCE",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -680,15 +683,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "DEVIATION custom function\nCreates a deviation chart from Excel data range",
             "id": "DEVIATION",
             "name": "DEVIATION",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -699,15 +702,15 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         },
         {
             "description": "RIBBON custom function\nCreates a ribbon chart from Excel data range",
             "id": "RIBBON",
             "name": "RIBBON",
+            "options": {
+                "requiresAddress": true
+            },
             "parameters": [
                 {
                     "description": "The data range including headers",
@@ -718,9 +721,6 @@
             ],
             "result": {
                 "type": "string"
-            },
-	        "options": {
-                "requiresAddress": true
             }
         }
     ]
