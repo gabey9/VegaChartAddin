@@ -105,7 +105,7 @@ function LINE(data, invocation) {
         }
       };
       const chartId = `line_${invocation.address}`;
-      createChart(spec, "line", headers, rows, chartID)
+      createChart(spec, "line", headers, rows, chartId)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -6244,16 +6244,13 @@ async function removeExistingCharts(context, sheet, chartType, chartId) {
   const chartName = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
   let oldPosition = null;
 
-  for (let i = shapes.items.length - 1; i >= 0; i--) {
-    const shape = shapes.items[i];
+  shapes.items.forEach(shape => {
     shape.load(["name", "left", "top", "width", "height"]);
-  }
+  });
   await context.sync();
 
-  for (let i = shapes.items.length - 1; i >= 0; i--) {
-    const shape = shapes.items[i];
+  for (let shape of shapes.items) {
     if (shape.name === chartName) {
-      // Save position before deleting
       oldPosition = {
         left: shape.left,
         top: shape.top,
@@ -6261,11 +6258,19 @@ async function removeExistingCharts(context, sheet, chartType, chartId) {
         height: shape.height,
       };
       shape.delete();
-      await context.sync();
     }
   }
 
+  await context.sync();
   return oldPosition;
+}
+
+/**
+ * Get Chart ID
+ */
+function getChartId(invocation, chartType) {
+  const safeAddress = invocation.address.replace(/[^A-Za-z0-9]/g, "_");
+  return `${chartType}_${safeAddress}`;
 }
 
 /**
