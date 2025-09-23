@@ -6,7 +6,7 @@
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function LINE(data, invocation) {
+function LINE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -104,7 +104,7 @@ function LINE(data, invocation) {
           }
         }
       };
-      const chartId = getChartId(invocation, "line");
+      const chartId = `line_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
       createChart(spec, "line", headers, rows, chartId)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -123,7 +123,7 @@ function LINE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BAR(data, invocation) {
+function BAR(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -6269,8 +6269,7 @@ async function removeExistingCharts(context, sheet, chartType, chartId) {
  * Get Chart ID
  */
 function getChartId(invocation, chartType) {
-  const safeAddress = invocation.address.replace(/[^A-Za-z0-9]/g, "_");
-  return `${chartType}_${safeAddress}`;
+  return `${chartType}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 }
 
 /**
