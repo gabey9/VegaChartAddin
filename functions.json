@@ -15,6 +15,9 @@
             ],
             "result": {
                 "type": "string"
+            },
+	    "options": {
+                "requiresAddress": true
             }
         },
         {
@@ -101,22 +104,6 @@
             "description": "BUBBLE custom function\nCreates a bubble chart from Excel data range",
             "id": "BUBBLE",
             "name": "BUBBLE",
-            "parameters": [
-                {
-                    "description": "The data range including headers",
-                    "dimensionality": "matrix",
-                    "name": "data",
-                    "type": "any"
-                }
-            ],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
-            "description": "RING custom function\nCreates a ring chart from Excel data range",
-            "id": "RING",
-            "name": "RING",
             "parameters": [
                 {
                     "description": "The data range including headers",
