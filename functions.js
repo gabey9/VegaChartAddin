@@ -122,9 +122,10 @@ function LINE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
-function BAR(data) {
+function BAR(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -200,7 +201,7 @@ function BAR(data) {
           }
         }
       };
-      const chartId = getChartId(invocation, "bar");
+      const chartId = getChartId("bar", invocation.address);
       createChart(spec, "bar", headers, rows, chartId)
         .then(() => resolve("Bar"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -217,6 +218,7 @@ function BAR(data) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function GAUGE(data, invocation) {
@@ -362,7 +364,7 @@ function GAUGE(data, invocation) {
           }
         ]
       };
-      const chartId = getChartId(invocation, "gauge");
+      const chartId = getChartId("gauge", invocation.address);
       createChart(spec, "gauge", headers, rows, chartId)
         .then(() => resolve("Gauge"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -379,6 +381,7 @@ function GAUGE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function PIE(data, invocation) {
@@ -426,7 +429,7 @@ function PIE(data, invocation) {
           color: { field: headers[0], type: "nominal" }
         }
       };
-      const chartId = `pie_${invocation.address}`;
+      const chartId = getChartId("pie", invocation.address);
       createChart(spec, "pie", headers, rows)
         .then(() => resolve("Pie"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -443,6 +446,7 @@ function PIE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function AREA(data, invocation) {
@@ -522,7 +526,7 @@ function AREA(data, invocation) {
           }
         }
       };
-      const chartId = `area_${invocation.address}`;
+      const chartId = getChartId("area", invocation.address);
       createChart(spec, "area", headers, rows)
         .then(() => resolve("Area"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -539,6 +543,7 @@ function AREA(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function SCATTER(data, invocation) {
@@ -633,7 +638,7 @@ function SCATTER(data, invocation) {
           }
         }
       };
-      const chartId = `scatter_${invocation.address}`;
+      const chartId = getChartId("scatter", invocation.address);
       createChart(spec, "scatter", headers, rows)
         .then(() => resolve("Scatter"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -650,6 +655,7 @@ function SCATTER(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function BUBBLE(data, invocation) {
@@ -745,7 +751,7 @@ function BUBBLE(data, invocation) {
           }
         }
       };
-      const chartId = `bubble_${invocation.address}`;
+      const chartId = getChartId("bubble", invocation.address);
       createChart(spec, "bubble", headers, rows)
         .then(() => resolve("Bubble"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -762,6 +768,7 @@ function BUBBLE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function RING(data, invocation) {
@@ -959,7 +966,7 @@ function RING(data, invocation) {
         ],
         "view": {"stroke": null}
       };
-      const chartId = `ring_${invocation.address}`;
+      const chartId = getChartId("ring", invocation.address);
       createChart(spec, "ring", headers, rows)
         .then(() => resolve("Ring"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -976,6 +983,7 @@ function RING(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function RADIAL(data, invocation) {
@@ -1027,7 +1035,7 @@ function RADIAL(data, invocation) {
           color: { field: headers[0], type: "nominal", legend: null }
         }
       };
-      const chartId = `radial_${invocation.address}`;
+      const chartId = getChartId("radial", invocation.address);
       createChart(spec, "radial", headers, rows)
         .then(() => resolve("Radial"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1044,6 +1052,7 @@ function RADIAL(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function BOX(data, invocation) {
@@ -1098,7 +1107,7 @@ function BOX(data, invocation) {
           }
         }
       };
-      const chartId = `box_${invocation.address}`;
+      const chartId = getChartId("box", invocation.address);
       createChart(spec, "box", headers, rows)
         .then(() => resolve("Box"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1115,6 +1124,7 @@ function BOX(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function RADAR(data, invocation) {
@@ -1329,7 +1339,7 @@ function RADAR(data, invocation) {
           }
         ]
       };
-      const chartId = `radar_${invocation.address}`;
+      const chartId = getChartId("radar", invocation.address);
       createChart(spec, "radar", headers, rows)
         .then(() => resolve("Radar"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1346,6 +1356,7 @@ function RADAR(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function WATERFALL(data, invocation) {
@@ -1482,7 +1493,7 @@ function WATERFALL(data, invocation) {
         ],
         config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
       };
-      const chartId = `waterfall_${invocation.address}`;
+      const chartId = getChartId("waterfall", invocation.address);
       createChart(spec, "waterfall", headers, rows)
         .then(() => resolve("Waterfall"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1499,6 +1510,7 @@ function WATERFALL(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function SUNBURST(data, invocation) {
@@ -1680,7 +1692,7 @@ function SUNBURST(data, invocation) {
           }
         ]
       };
-      const chartId = `sunburst_${invocation.address}`;
+      const chartId = getChartId("sunburst", invocation.address);
       createChart(spec, "sunburst", headers, rows)
         .then(() => resolve("Sunburst"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1697,6 +1709,7 @@ function SUNBURST(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function TREEMAP(data, invocation) {
@@ -1914,7 +1927,7 @@ function TREEMAP(data, invocation) {
           }
         ]
       };
-
+      const chartId = getChartId("treemap", invocation.address);
       createChart(spec, "treemap", headers, rows)
         .then(() => resolve("Treemap"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1931,6 +1944,7 @@ function TREEMAP(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function HISTOGRAM(data, invocation) {
@@ -2027,7 +2041,7 @@ function HISTOGRAM(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("histogram", invocation.address);
       createChart(spec, "histogram", headers, rows)
         .then(() => resolve("Histogram"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -2044,6 +2058,7 @@ function HISTOGRAM(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function MAP(data, invocation) {
@@ -2320,7 +2335,7 @@ function MAP(data, invocation) {
           ]
         }
       };
-
+      const chartId = getChartId("map", invocation.address);
       createChart(spec, "map", headers, rows)
         .then(() => resolve("Map"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -2337,6 +2352,7 @@ function MAP(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function CANDLESTICK(data, invocation) {
@@ -2488,7 +2504,7 @@ function CANDLESTICK(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("candlestick", invocation.address);
       createChart(spec, "candlestick", headers, rows)
         .then(() => resolve("Candlestick"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -2505,6 +2521,7 @@ function CANDLESTICK(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function ARC(data, invocation) {
@@ -2718,7 +2735,7 @@ function ARC(data, invocation) {
           text: { font: "Segoe UI", fontSize: 10, fill: "#605e5c" }
         }
       };
-
+      const chartId = getChartId("arc", invocation.address);
       createChart(spec, "arc", headers, rows)
         .then(() => resolve("Arc"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -2735,6 +2752,7 @@ function ARC(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function TREE(data, invocation) {
@@ -2930,7 +2948,7 @@ function TREE(data, invocation) {
           }
         ]
       };
-
+      const chartId = getChartId("tree", invocation.address);
       createChart(spec, "tree", headers, rows)
         .then(() => resolve("Tree"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -2947,6 +2965,7 @@ function TREE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function WORDCLOUD(data, invocation) {
@@ -3052,7 +3071,7 @@ function WORDCLOUD(data, invocation) {
           }
         ]
       };
-
+      const chartId = getChartId("wordcloud", invocation.address);
       createChart(spec, "wordcloud", headers, rows)
         .then(() => resolve("Wordcloud"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -3069,6 +3088,7 @@ function WORDCLOUD(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function STRIP(data, invocation) {
@@ -3155,7 +3175,7 @@ function STRIP(data, invocation) {
           tooltip: headers.map(h => ({ field: h, type: "nominal" }))
         }
       };
-
+      const chartId = getChartId("strip", invocation.address);
       createChart(spec, "strip", headers, rows)
         .then(() => resolve("Strip"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -3172,6 +3192,7 @@ function STRIP(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function HEATMAP(data, invocation) {
@@ -3334,7 +3355,7 @@ function HEATMAP(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("heatmap", invocation.address);
       createChart(spec, "heatmap", headers, rows)
         .then(() => resolve("Heatmap"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -3351,6 +3372,7 @@ function HEATMAP(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function BULLET(data, invocation) {
@@ -3410,7 +3432,7 @@ function BULLET(data, invocation) {
         "resolve": { "scale": { "x": "independent" } },
         "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
       };
-
+      const chartId = getChartId("bullet", invocation.address);
       createChart(spec, "bullet", headers, rows)
         .then(() => resolve("Bullet"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -3427,6 +3449,7 @@ function BULLET(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function HORIZON(data, invocation) {
@@ -3606,7 +3629,7 @@ function HORIZON(data, invocation) {
           }
         ]
       };
-
+      const chartId = getChartId("horizon", invocation.address);
       createChart(spec, "horizon", headers, rows)
         .then(() => resolve("Horizon"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -3623,6 +3646,7 @@ function HORIZON(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function DUMBBELL(data, invocation) {
@@ -3787,7 +3811,7 @@ function DUMBBELL(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("dumbbell", invocation.address);
       createChart(spec, "dumbbell", headers, rows)
         .then(() => resolve("Dumbbell"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -3804,6 +3828,7 @@ function DUMBBELL(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function SLOPE(data, invocation) {
@@ -4032,7 +4057,7 @@ function SLOPE(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("slope", invocation.address);
       createChart(spec, "slope", headers, rows)
         .then(() => resolve("Slope"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -4049,6 +4074,7 @@ function SLOPE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function MEKKO(data, invocation) {
@@ -4299,7 +4325,7 @@ function MEKKO(data, invocation) {
           }
         ]
       };
-
+      const chartId = getChartId("mekko", invocation.address);
       createChart(spec, "mekko", headers, rows)
         .then(() => resolve("Mekko"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -4316,6 +4342,7 @@ function MEKKO(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function MARIMEKKO(data, invocation) {
@@ -4520,7 +4547,7 @@ function MARIMEKKO(data, invocation) {
           }
         ]
       };
-
+      const chartId = getChartId("marimekko", invocation.address);
       createChart(spec, "marimekko", headers, rows)
         .then(() => resolve("Marimekko"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -4537,6 +4564,7 @@ function MARIMEKKO(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function BUMP(data, invocation) {
@@ -4668,7 +4696,7 @@ function BUMP(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("bump", invocation.address);
       createChart(spec, "bump", headers, rows)
         .then(() => resolve("Bump"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -4685,6 +4713,7 @@ function BUMP(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function WAFFLE(data, invocation) {
@@ -4811,7 +4840,7 @@ function WAFFLE(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("waffle", invocation.address);
       createChart(spec, "waffle", headers, rows)
         .then(() => resolve("Waffle"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -4828,6 +4857,7 @@ function WAFFLE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function LOLLIPOP(data, invocation) {
@@ -4934,7 +4964,7 @@ function LOLLIPOP(data, invocation) {
           text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" }
         }
       };
-
+      const chartId = getChartId("lollipop", invocation.address);
       createChart(spec, "lollipop", headers, rows)
         .then(() => resolve("Lollipop"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -4951,6 +4981,7 @@ function LOLLIPOP(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function VIOLIN(data, invocation) {
@@ -5019,7 +5050,7 @@ function VIOLIN(data, invocation) {
         ],
         width: 100
       };
-
+      const chartId = getChartId("violin", invocation.address);
       createChart(spec, "violin", headers, rows)
         .then(() => resolve("Violin"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -5036,6 +5067,7 @@ function VIOLIN(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function GANTT(data, invocation) {
@@ -5172,7 +5204,7 @@ function GANTT(data, invocation) {
         ],
         config: { view: { stroke: null }, axis: { grid: true, gridColor: "#f0f0f0" } }
       };
-
+      const chartId = getChartId("gantt", invocation.address);
       createChart(spec, "gantt", headers, rows)
         .then(() => resolve("Gantt"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -5189,6 +5221,7 @@ function GANTT(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function SANKEY(data, invocation) {
@@ -5465,7 +5498,7 @@ function SANKEY(data, invocation) {
           }
         ]
       };
-
+      const chartId = getChartId("sankey", invocation.address);
       createChart(spec, "sankey", headers, rows)
         .then(() => resolve("Sankey"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -5482,6 +5515,7 @@ function SANKEY(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function RIDGELINE(data, invocation) {
@@ -5588,7 +5622,7 @@ function RIDGELINE(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("ridgeline", invocation.address);
       createChart(spec, "ridgeline", headers, rows)
         .then(() => resolve("Ridgeline"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -5605,6 +5639,7 @@ function RIDGELINE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function VARIANCE(data, invocation) {
@@ -5894,7 +5929,7 @@ function VARIANCE(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("variance", invocation.address);
       createChart(spec, "variance", headers, rows)
         .then(() => resolve("Variance"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -5911,6 +5946,7 @@ function VARIANCE(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function DEVIATION(data, invocation) {
@@ -6007,7 +6043,7 @@ function DEVIATION(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("deviation", invocation.address);
       createChart(spec, "deviation", headers, rows)
         .then(() => resolve("Deviation"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -6024,6 +6060,7 @@ function DEVIATION(data, invocation) {
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function RIBBON(data, invocation) {
@@ -6145,7 +6182,7 @@ function RIBBON(data, invocation) {
           }
         }
       };
-
+      const chartId = getChartId("ribbon", invocation.address);
       createChart(spec, "ribbon", headers, rows)
         .then(() => resolve("Ribbon"))
         .catch((error) => resolve(`Error: ${error.message}`));
