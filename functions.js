@@ -1,13 +1,12 @@
-/**
+﻿/**
  * LINE custom function
  * Creates a multi-series line chart from Excel data range
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
- * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
-function LINE(data, invocation) {
+function LINE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -105,8 +104,8 @@ function LINE(data, invocation) {
           }
         }
       };
-      const chartId = getChartId(invocation, "line");
-      createChart(spec, "line", headers, rows, chartId)
+
+      createChart(spec, "line", headers, rows)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -200,8 +199,8 @@ function BAR(data) {
           }
         }
       };
-      const chartId = getChartId(invocation, "bar");
-      createChart(spec, "bar", headers, rows, chartId)
+
+      createChart(spec, "bar", headers, rows)
         .then(() => resolve("Bar"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -219,7 +218,7 @@ function BAR(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function GAUGE(data, invocation) {
+function GAUGE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -362,8 +361,8 @@ function GAUGE(data, invocation) {
           }
         ]
       };
-      const chartId = getChartId(invocation, "gauge");
-      createChart(spec, "gauge", headers, rows, chartId)
+
+      createChart(spec, "gauge", headers, rows)
         .then(() => resolve("Gauge"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -381,7 +380,7 @@ function GAUGE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function PIE(data, invocation) {
+function PIE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -426,7 +425,7 @@ function PIE(data, invocation) {
           color: { field: headers[0], type: "nominal" }
         }
       };
-      const chartId = `pie_${invocation.address}`;
+
       createChart(spec, "pie", headers, rows)
         .then(() => resolve("Pie"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -445,7 +444,7 @@ function PIE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function AREA(data, invocation) {
+function AREA(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -522,7 +521,7 @@ function AREA(data, invocation) {
           }
         }
       };
-      const chartId = `area_${invocation.address}`;
+
       createChart(spec, "area", headers, rows)
         .then(() => resolve("Area"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -541,7 +540,7 @@ function AREA(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SCATTER(data, invocation) {
+function SCATTER(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -633,7 +632,7 @@ function SCATTER(data, invocation) {
           }
         }
       };
-      const chartId = `scatter_${invocation.address}`;
+
       createChart(spec, "scatter", headers, rows)
         .then(() => resolve("Scatter"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -652,7 +651,7 @@ function SCATTER(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BUBBLE(data, invocation) {
+function BUBBLE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -745,7 +744,7 @@ function BUBBLE(data, invocation) {
           }
         }
       };
-      const chartId = `bubble_${invocation.address}`;
+
       createChart(spec, "bubble", headers, rows)
         .then(() => resolve("Bubble"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -764,7 +763,7 @@ function BUBBLE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RING(data, invocation) {
+function RING(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -959,7 +958,7 @@ function RING(data, invocation) {
         ],
         "view": {"stroke": null}
       };
-      const chartId = `ring_${invocation.address}`;
+
       createChart(spec, "ring", headers, rows)
         .then(() => resolve("Ring"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -978,7 +977,7 @@ function RING(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RADIAL(data, invocation) {
+function RADIAL(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1027,7 +1026,7 @@ function RADIAL(data, invocation) {
           color: { field: headers[0], type: "nominal", legend: null }
         }
       };
-      const chartId = `radial_${invocation.address}`;
+
       createChart(spec, "radial", headers, rows)
         .then(() => resolve("Radial"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1046,7 +1045,7 @@ function RADIAL(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BOX(data, invocation) {
+function BOX(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1098,7 +1097,7 @@ function BOX(data, invocation) {
           }
         }
       };
-      const chartId = `box_${invocation.address}`;
+
       createChart(spec, "box", headers, rows)
         .then(() => resolve("Box"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1117,7 +1116,7 @@ function BOX(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RADAR(data, invocation) {
+function RADAR(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1329,7 +1328,7 @@ function RADAR(data, invocation) {
           }
         ]
       };
-      const chartId = `radar_${invocation.address}`;
+
       createChart(spec, "radar", headers, rows)
         .then(() => resolve("Radar"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1348,7 +1347,7 @@ function RADAR(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function WATERFALL(data, invocation) {
+function WATERFALL(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1482,7 +1481,7 @@ function WATERFALL(data, invocation) {
         ],
         config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
       };
-      const chartId = `waterfall_${invocation.address}`;
+
       createChart(spec, "waterfall", headers, rows)
         .then(() => resolve("Waterfall"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1501,7 +1500,7 @@ function WATERFALL(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SUNBURST(data, invocation) {
+function SUNBURST(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1680,7 +1679,7 @@ function SUNBURST(data, invocation) {
           }
         ]
       };
-      const chartId = `sunburst_${invocation.address}`;
+
       createChart(spec, "sunburst", headers, rows)
         .then(() => resolve("Sunburst"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1699,7 +1698,7 @@ function SUNBURST(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function TREEMAP(data, invocation) {
+function TREEMAP(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1933,7 +1932,7 @@ function TREEMAP(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function HISTOGRAM(data, invocation) {
+function HISTOGRAM(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2046,7 +2045,7 @@ function HISTOGRAM(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function MAP(data, invocation) {
+function MAP(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2339,7 +2338,7 @@ function MAP(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function CANDLESTICK(data, invocation) {
+function CANDLESTICK(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2507,7 +2506,7 @@ function CANDLESTICK(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function ARC(data, invocation) {
+function ARC(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2737,7 +2736,7 @@ function ARC(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function TREE(data, invocation) {
+function TREE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2949,7 +2948,7 @@ function TREE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function WORDCLOUD(data, invocation) {
+function WORDCLOUD(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3071,7 +3070,7 @@ function WORDCLOUD(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function STRIP(data, invocation) {
+function STRIP(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3174,7 +3173,7 @@ function STRIP(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function HEATMAP(data, invocation) {
+function HEATMAP(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3353,7 +3352,7 @@ function HEATMAP(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BULLET(data, invocation) {
+function BULLET(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3429,7 +3428,7 @@ function BULLET(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function HORIZON(data, invocation) {
+function HORIZON(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3625,7 +3624,7 @@ function HORIZON(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function DUMBBELL(data, invocation) {
+function DUMBBELL(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3806,7 +3805,7 @@ function DUMBBELL(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SLOPE(data, invocation) {
+function SLOPE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4051,7 +4050,7 @@ function SLOPE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function MEKKO(data, invocation) {
+function MEKKO(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4318,7 +4317,7 @@ function MEKKO(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function MARIMEKKO(data, invocation) {
+function MARIMEKKO(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4539,7 +4538,7 @@ function MARIMEKKO(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BUMP(data, invocation) {
+function BUMP(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4687,7 +4686,7 @@ function BUMP(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function WAFFLE(data, invocation) {
+function WAFFLE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4830,7 +4829,7 @@ function WAFFLE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function LOLLIPOP(data, invocation) {
+function LOLLIPOP(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4953,7 +4952,7 @@ function LOLLIPOP(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function VIOLIN(data, invocation) {
+function VIOLIN(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5038,7 +5037,7 @@ function VIOLIN(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function GANTT(data, invocation) {
+function GANTT(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5191,7 +5190,7 @@ function GANTT(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SANKEY(data, invocation) {
+function SANKEY(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5484,7 +5483,7 @@ function SANKEY(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RIDGELINE(data, invocation) {
+function RIDGELINE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5607,7 +5606,7 @@ function RIDGELINE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function VARIANCE(data, invocation) {
+function VARIANCE(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5913,7 +5912,7 @@ function VARIANCE(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function DEVIATION(data, invocation) {
+function DEVIATION(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -6026,7 +6025,7 @@ function DEVIATION(data, invocation) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RIBBON(data, invocation) {
+function RIBBON(data) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -6159,58 +6158,88 @@ function RIBBON(data, invocation) {
 /**
  * Create chart
  */
-async function createChart(spec, chartType, headers, rows, chartId) {
-  // chartId comes directly from caller (cell address based)
-  const hiddenDiv = document.createElement("div");
-  hiddenDiv.style.display = "none";
-  hiddenDiv.id = chartId;
-  document.body.appendChild(hiddenDiv);
+async function createChart(spec, chartType, headers, rows) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Get the selected range address for unique chart identification
+      await Excel.run(async (context) => {
+        const range = context.workbook.getSelectedRange();
+        range.load("address");
+        await context.sync();
+        
+        // Clean address format: remove $ and replace : with _
+        const address = range.address.replace(/\$/g, '').replace(/:/g, '_');
+        const chartId = `${chartType}_${address}_${Date.now()}`;
+        
+        // Render hidden chart (same as before)
+        const hiddenDiv = document.createElement("div");
+        hiddenDiv.style.display = "none";
+        hiddenDiv.id = chartId;
+        document.body.appendChild(hiddenDiv);
 
-  if (typeof vegaEmbed === 'undefined') {
-    await loadVegaLibraries();
-  }
+        // Load Vega-Lite if not available
+        if (typeof vegaEmbed === 'undefined') {
+          await loadVegaLibraries();
+        }
 
-  const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
-  const pngUrl = await result.view.toImageURL("png");
+        const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+        const view = result.view;
 
-  const response = await fetch(pngUrl);
-  const blob = await response.blob();
-  const reader = new FileReader();
+        // Export chart -> PNG
+        const pngUrl = await view.toImageURL("png");
+        const response = await fetch(pngUrl);
+        const blob = await response.blob();
 
-  return new Promise((resolve, reject) => {
-    reader.onloadend = async () => {
-      try {
-        const base64data = reader.result.split(",")[1];
-        await insertChart(base64data, chartType, chartId);
-        document.body.removeChild(hiddenDiv);
-        resolve();
-      } catch (err) {
-        if (document.body.contains(hiddenDiv)) document.body.removeChild(hiddenDiv);
-        reject(err);
-      }
-    };
-    reader.readAsDataURL(blob);
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          try {
+            const base64data = reader.result.split(",")[1];
+
+            // Insert into Excel with address-based chartId
+            await insertChart(base64data, chartType, chartId, address);
+            
+            // Clean up hidden div
+            document.body.removeChild(hiddenDiv);
+            resolve();
+            
+          } catch (error) {
+            // Clean up on error
+            if (document.body.contains(hiddenDiv)) {
+              document.body.removeChild(hiddenDiv);
+            }
+            reject(error);
+          }
+        };
+        
+        reader.readAsDataURL(blob);
+      });
+
+    } catch (error) {
+      reject(error);
+    }
   });
 }
 
 /**
  * Insert chart
  */
-async function insertChart(base64data, chartType, chartId) {
+async function insertChart(base64data, chartType, chartId, address) {
   return Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 
-    // Remove old chart and get its position
-    const oldPosition = await removeExistingCharts(context, sheet, chartType, chartId);
+    // Remove old chart at this specific address and get its position
+    const oldPosition = await removeExistingCharts(context, sheet, chartType, address);
 
     let left, top, targetWidth, targetHeight;
 
     if (oldPosition) {
+      // Use old chart position and size
       left = oldPosition.left;
       top = oldPosition.top;
       targetWidth = oldPosition.width;
       targetHeight = oldPosition.height;
     } else {
+      // New chart - use current selection
       const range = context.workbook.getSelectedRange();
       range.load("left, top, width, height");
       await context.sync();
@@ -6218,16 +6247,22 @@ async function insertChart(base64data, chartType, chartId) {
       top = range.top;
     }
 
+    // Insert the new image
     const image = sheet.shapes.addImage(base64data);
     image.left = left;
     image.top = top;
+    
+    // If we have old dimensions, preserve them exactly
     if (oldPosition) {
       image.lockAspectRatio = false;
       image.width = targetWidth;
       image.height = targetHeight;
     } else {
+      // For new charts, maintain aspect ratio
       image.lockAspectRatio = true;
     }
+    
+    // Use address-based naming for unique identification
     image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
 
     await context.sync();
@@ -6237,21 +6272,25 @@ async function insertChart(base64data, chartType, chartId) {
 /**
  * Remove existing chart
  */
-async function removeExistingCharts(context, sheet, chartType, chartId) {
+async function removeExistingCharts(context, sheet, chartType, address) {
   const shapes = sheet.shapes;
   shapes.load("items");
   await context.sync();
 
-  const chartName = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
+  // Create address-specific chart identifier
+  const addressKey = `${chartType}_${address}`;
   let oldPosition = null;
 
-  shapes.items.forEach(shape => {
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
     shape.load(["name", "left", "top", "width", "height"]);
-  });
+  }
   await context.sync();
 
-  for (let shape of shapes.items) {
-    if (shape.name === chartName) {
+  for (let i = shapes.items.length - 1; i >= 0; i--) {
+    const shape = shapes.items[i];
+    if (shape.name && shape.name.includes(addressKey)) {
+      // Save position before deleting
       oldPosition = {
         left: shape.left,
         top: shape.top,
@@ -6259,19 +6298,12 @@ async function removeExistingCharts(context, sheet, chartType, chartId) {
         height: shape.height,
       };
       shape.delete();
+      await context.sync();
+      break; // Only remove the chart at this specific address
     }
   }
 
-  await context.sync();
   return oldPosition;
-}
-
-/**
- * Get Chart ID
- */
-function getChartId(invocation, chartType) {
-  const safeAddress = invocation.address.replace(/[^A-Za-z0-9]/g, "_");
-  return `${chartType}_${safeAddress}`;
 }
 
 /**
