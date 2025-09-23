@@ -6277,8 +6277,9 @@ async function removeExistingCharts(context, sheet, chartType, address) {
   shapes.load("items");
   await context.sync();
 
-  // Create address-specific chart identifier
-  const addressKey = `${chartType}_${address}`;
+  // Create chart prefix that matches the naming convention
+  // Chart names follow: "BarChart_bar_Sheet1_A1_B10_timestamp"
+  const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartType}_${address}`;
   let oldPosition = null;
 
   for (let i = shapes.items.length - 1; i >= 0; i--) {
@@ -6289,7 +6290,7 @@ async function removeExistingCharts(context, sheet, chartType, address) {
 
   for (let i = shapes.items.length - 1; i >= 0; i--) {
     const shape = shapes.items[i];
-    if (shape.name && shape.name.includes(addressKey)) {
+    if (shape.name && shape.name.startsWith(chartPrefix)) {
       // Save position before deleting
       oldPosition = {
         left: shape.left,
