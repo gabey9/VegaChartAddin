@@ -104,7 +104,7 @@ function LINE(data) {
           }
         }
       };
-      const chartId = getChartId("line", data);
+      const chartId = getChartId("line");
       createChart(spec, "line", headers, rows, chartId)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -6268,11 +6268,19 @@ async function removeExistingCharts(context, sheet, chartType, chartId) {
 /**
  * Get Chart ID
  */
-function getChartId(chartType, data) {
-  // Flatten the data range into a string
-  const rangeString = JSON.stringify(data)
-    .replace(/\s+/g, "");
-  return `${chartType}_${rangeString}`;
+async function getChartId(chartType) {
+  const addr = await getSelectedRangeAddress();
+  const safeAddr = addr.replace(/[^A-Za-z0-9]/g, "_");
+  return `${chartType}_${safeAddr}`;
+}
+
+async function getSelectedRangeAddress() {
+  return Excel.run(async (context) => {
+    const range = context.workbook.getSelectedRange();
+    range.load("address");
+    await context.sync();
+    return range.address;
+  });
 }
 
 /**
