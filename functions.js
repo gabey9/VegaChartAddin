@@ -104,7 +104,7 @@ function LINE(data, invocation) {
           }
         }
       };
-      const chartId = `line_${invocation.address}`;
+      const chartId = getChartId(invocation, "line");
       createChart(spec, "line", headers, rows, chartId)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -199,8 +199,8 @@ function BAR(data, invocation) {
           }
         }
       };
-      const chartId = `bar_${invocation.address}`;
-      createChart(spec, "bar", headers, rows)
+      const chartId = getChartId(invocation, "bar");
+      createChart(spec, "bar", headers, rows, chartId)
         .then(() => resolve("Bar"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -361,8 +361,8 @@ function GAUGE(data, invocation) {
           }
         ]
       };
-      const chartId = `gauge_${invocation.address}`;
-      createChart(spec, "gauge", headers, rows)
+      const chartId = getChartId(invocation, "gauge");
+      createChart(spec, "gauge", headers, rows, chartId)
         .then(() => resolve("Gauge"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
