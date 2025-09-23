@@ -6200,18 +6200,16 @@ async function insertChart(base64data, chartType, chartId) {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 
     // Remove old chart and get its position
-    const oldPosition = await removeExistingCharts(context, sheet, chartType, chartID);
+    const oldPosition = await removeExistingCharts(context, sheet, chartType, chartId);
 
-    let left, top, targetWidth;
+    let left, top, targetWidth, targetHeight;
 
     if (oldPosition) {
-      // Use old chart position and size
       left = oldPosition.left;
       top = oldPosition.top;
       targetWidth = oldPosition.width;
       targetHeight = oldPosition.height;
     } else {
-      // New chart current selection
       const range = context.workbook.getSelectedRange();
       range.load("left, top, width, height");
       await context.sync();
@@ -6219,17 +6217,14 @@ async function insertChart(base64data, chartType, chartId) {
       top = range.top;
     }
 
-    // Insert the new image
     const image = sheet.shapes.addImage(base64data);
     image.left = left;
     image.top = top;
-    // If we have old dimensions, preserve them exactly
     if (oldPosition) {
       image.lockAspectRatio = false;
       image.width = targetWidth;
       image.height = targetHeight;
     } else {
-      // For new charts, maintain aspect ratio
       image.lockAspectRatio = true;
     }
     image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
