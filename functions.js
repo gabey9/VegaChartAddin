@@ -430,7 +430,7 @@ function PIE(data, invocation) {
         }
       };
       const chartId = getChartId("pie", invocation.address);
-      createChart(spec, "pie", headers, rows)
+      createChart(spec, "pie", headers, rows, chartId)
         .then(() => resolve("Pie"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -527,7 +527,7 @@ function AREA(data, invocation) {
         }
       };
       const chartId = getChartId("area", invocation.address);
-      createChart(spec, "area", headers, rows)
+      createChart(spec, "area", headers, rows, chartId)
         .then(() => resolve("Area"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -639,7 +639,7 @@ function SCATTER(data, invocation) {
         }
       };
       const chartId = getChartId("scatter", invocation.address);
-      createChart(spec, "scatter", headers, rows)
+      createChart(spec, "scatter", headers, rows, chartId)
         .then(() => resolve("Scatter"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -752,7 +752,7 @@ function BUBBLE(data, invocation) {
         }
       };
       const chartId = getChartId("bubble", invocation.address);
-      createChart(spec, "bubble", headers, rows)
+      createChart(spec, "bubble", headers, rows, chartId)
         .then(() => resolve("Bubble"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -967,7 +967,7 @@ function RING(data, invocation) {
         "view": {"stroke": null}
       };
       const chartId = getChartId("ring", invocation.address);
-      createChart(spec, "ring", headers, rows)
+      createChart(spec, "ring", headers, rows, chartId)
         .then(() => resolve("Ring"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -1036,7 +1036,7 @@ function RADIAL(data, invocation) {
         }
       };
       const chartId = getChartId("radial", invocation.address);
-      createChart(spec, "radial", headers, rows)
+      createChart(spec, "radial", headers, rows, chartId)
         .then(() => resolve("Radial"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -1108,7 +1108,7 @@ function BOX(data, invocation) {
         }
       };
       const chartId = getChartId("box", invocation.address);
-      createChart(spec, "box", headers, rows)
+      createChart(spec, "box", headers, rows, chartId)
         .then(() => resolve("Box"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -1340,7 +1340,7 @@ function RADAR(data, invocation) {
         ]
       };
       const chartId = getChartId("radar", invocation.address);
-      createChart(spec, "radar", headers, rows)
+      createChart(spec, "radar", headers, rows, chartId)
         .then(() => resolve("Radar"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -1494,7 +1494,7 @@ function WATERFALL(data, invocation) {
         config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
       };
       const chartId = getChartId("waterfall", invocation.address);
-      createChart(spec, "waterfall", headers, rows)
+      createChart(spec, "waterfall", headers, rows, chartId)
         .then(() => resolve("Waterfall"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -1693,7 +1693,7 @@ function SUNBURST(data, invocation) {
         ]
       };
       const chartId = getChartId("sunburst", invocation.address);
-      createChart(spec, "sunburst", headers, rows)
+      createChart(spec, "sunburst", headers, rows, chartId)
         .then(() => resolve("Sunburst"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -1928,7 +1928,7 @@ function TREEMAP(data, invocation) {
         ]
       };
       const chartId = getChartId("treemap", invocation.address);
-      createChart(spec, "treemap", headers, rows)
+      createChart(spec, "treemap", headers, rows, chartId)
         .then(() => resolve("Treemap"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -2042,7 +2042,7 @@ function HISTOGRAM(data, invocation) {
         }
       };
       const chartId = getChartId("histogram", invocation.address);
-      createChart(spec, "histogram", headers, rows)
+      createChart(spec, "histogram", headers, rows, chartId)
         .then(() => resolve("Histogram"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -2336,7 +2336,7 @@ function MAP(data, invocation) {
         }
       };
       const chartId = getChartId("map", invocation.address);
-      createChart(spec, "map", headers, rows)
+      createChart(spec, "map", headers, rows, chartId)
         .then(() => resolve("Map"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -2505,7 +2505,7 @@ function CANDLESTICK(data, invocation) {
         }
       };
       const chartId = getChartId("candlestick", invocation.address);
-      createChart(spec, "candlestick", headers, rows)
+      createChart(spec, "candlestick", headers, rows, chartId)
         .then(() => resolve("Candlestick"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -2736,7 +2736,7 @@ function ARC(data, invocation) {
         }
       };
       const chartId = getChartId("arc", invocation.address);
-      createChart(spec, "arc", headers, rows)
+      createChart(spec, "arc", headers, rows, chartId)
         .then(() => resolve("Arc"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -2949,7 +2949,7 @@ function TREE(data, invocation) {
         ]
       };
       const chartId = getChartId("tree", invocation.address);
-      createChart(spec, "tree", headers, rows)
+      createChart(spec, "tree", headers, rows, chartId)
         .then(() => resolve("Tree"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -3072,7 +3072,7 @@ function WORDCLOUD(data, invocation) {
         ]
       };
       const chartId = getChartId("wordcloud", invocation.address);
-      createChart(spec, "wordcloud", headers, rows)
+      createChart(spec, "wordcloud", headers, rows, chartId)
         .then(() => resolve("Wordcloud"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -3176,7 +3176,7 @@ function STRIP(data, invocation) {
         }
       };
       const chartId = getChartId("strip", invocation.address);
-      createChart(spec, "strip", headers, rows)
+      createChart(spec, "strip", headers, rows, chartId)
         .then(() => resolve("Strip"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -3356,7 +3356,7 @@ function HEATMAP(data, invocation) {
         }
       };
       const chartId = getChartId("heatmap", invocation.address);
-      createChart(spec, "heatmap", headers, rows)
+      createChart(spec, "heatmap", headers, rows, chartId)
         .then(() => resolve("Heatmap"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -3433,7 +3433,7 @@ function BULLET(data, invocation) {
         "config": { "tick": { "thickness": 2 }, "scale": { "barBandPaddingInner": 0 } }
       };
       const chartId = getChartId("bullet", invocation.address);
-      createChart(spec, "bullet", headers, rows)
+      createChart(spec, "bullet", headers, rows, chartId)
         .then(() => resolve("Bullet"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -3630,7 +3630,7 @@ function HORIZON(data, invocation) {
         ]
       };
       const chartId = getChartId("horizon", invocation.address);
-      createChart(spec, "horizon", headers, rows)
+      createChart(spec, "horizon", headers, rows, chartId)
         .then(() => resolve("Horizon"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -3812,7 +3812,7 @@ function DUMBBELL(data, invocation) {
         }
       };
       const chartId = getChartId("dumbbell", invocation.address);
-      createChart(spec, "dumbbell", headers, rows)
+      createChart(spec, "dumbbell", headers, rows, chartId)
         .then(() => resolve("Dumbbell"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -4058,7 +4058,7 @@ function SLOPE(data, invocation) {
         }
       };
       const chartId = getChartId("slope", invocation.address);
-      createChart(spec, "slope", headers, rows)
+      createChart(spec, "slope", headers, rows, chartId)
         .then(() => resolve("Slope"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -4326,7 +4326,7 @@ function MEKKO(data, invocation) {
         ]
       };
       const chartId = getChartId("mekko", invocation.address);
-      createChart(spec, "mekko", headers, rows)
+      createChart(spec, "mekko", headers, rows, chartId)
         .then(() => resolve("Mekko"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -4548,7 +4548,7 @@ function MARIMEKKO(data, invocation) {
         ]
       };
       const chartId = getChartId("marimekko", invocation.address);
-      createChart(spec, "marimekko", headers, rows)
+      createChart(spec, "marimekko", headers, rows, chartId)
         .then(() => resolve("Marimekko"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -4697,7 +4697,7 @@ function BUMP(data, invocation) {
         }
       };
       const chartId = getChartId("bump", invocation.address);
-      createChart(spec, "bump", headers, rows)
+      createChart(spec, "bump", headers, rows, chartId)
         .then(() => resolve("Bump"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -4841,7 +4841,7 @@ function WAFFLE(data, invocation) {
         }
       };
       const chartId = getChartId("waffle", invocation.address);
-      createChart(spec, "waffle", headers, rows)
+      createChart(spec, "waffle", headers, rows, chartId)
         .then(() => resolve("Waffle"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -4965,7 +4965,7 @@ function LOLLIPOP(data, invocation) {
         }
       };
       const chartId = getChartId("lollipop", invocation.address);
-      createChart(spec, "lollipop", headers, rows)
+      createChart(spec, "lollipop", headers, rows, chartId)
         .then(() => resolve("Lollipop"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -5051,7 +5051,7 @@ function VIOLIN(data, invocation) {
         width: 100
       };
       const chartId = getChartId("violin", invocation.address);
-      createChart(spec, "violin", headers, rows)
+      createChart(spec, "violin", headers, rows, chartId)
         .then(() => resolve("Violin"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -5205,7 +5205,7 @@ function GANTT(data, invocation) {
         config: { view: { stroke: null }, axis: { grid: true, gridColor: "#f0f0f0" } }
       };
       const chartId = getChartId("gantt", invocation.address);
-      createChart(spec, "gantt", headers, rows)
+      createChart(spec, "gantt", headers, rows, chartId)
         .then(() => resolve("Gantt"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -5499,7 +5499,7 @@ function SANKEY(data, invocation) {
         ]
       };
       const chartId = getChartId("sankey", invocation.address);
-      createChart(spec, "sankey", headers, rows)
+      createChart(spec, "sankey", headers, rows, chartId)
         .then(() => resolve("Sankey"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -5623,7 +5623,7 @@ function RIDGELINE(data, invocation) {
         }
       };
       const chartId = getChartId("ridgeline", invocation.address);
-      createChart(spec, "ridgeline", headers, rows)
+      createChart(spec, "ridgeline", headers, rows, chartId)
         .then(() => resolve("Ridgeline"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -5930,7 +5930,7 @@ function VARIANCE(data, invocation) {
         }
       };
       const chartId = getChartId("variance", invocation.address);
-      createChart(spec, "variance", headers, rows)
+      createChart(spec, "variance", headers, rows, chartId)
         .then(() => resolve("Variance"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -6044,7 +6044,7 @@ function DEVIATION(data, invocation) {
         }
       };
       const chartId = getChartId("deviation", invocation.address);
-      createChart(spec, "deviation", headers, rows)
+      createChart(spec, "deviation", headers, rows, chartId)
         .then(() => resolve("Deviation"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -6183,7 +6183,7 @@ function RIBBON(data, invocation) {
         }
       };
       const chartId = getChartId("ribbon", invocation.address);
-      createChart(spec, "ribbon", headers, rows)
+      createChart(spec, "ribbon", headers, rows, chartId)
         .then(() => resolve("Ribbon"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
