@@ -6156,7 +6156,7 @@ function RIBBON(data) {
 }
 
 /**
- * Create chart
+ * Create chart with address-based chartId
  */
 async function createChart(spec, chartType, headers, rows) {
   return new Promise(async (resolve, reject) => {
@@ -6167,11 +6167,14 @@ async function createChart(spec, chartType, headers, rows) {
         range.load("address");
         await context.sync();
         
-        // Clean address format: remove $ and replace : with _
-        const address = range.address.replace(/\$/g, '').replace(/:/g, '_');
-        const chartId = `${chartType}_${address}_${Date.now()}`;
+        // Clean address format: remove $ and replace : with _ and spaces
+        const cleanAddress = range.address.replace(/\$/g, '').replace(/:/g, '_').replace(/\s+/g, '');
+        // Create simple chartId with only lowercase chartType
+        const chartId = `${chartType}_${cleanAddress}_${Date.now()}`;
         
-        // Render hidden chart (same as before)
+        console.log(`Creating chart with ID: ${chartId}`);
+        
+        // Render hidden chart
         const hiddenDiv = document.createElement("div");
         hiddenDiv.style.display = "none";
         hiddenDiv.id = chartId;
@@ -6196,7 +6199,7 @@ async function createChart(spec, chartType, headers, rows) {
             const base64data = reader.result.split(",")[1];
 
             // Insert into Excel with address-based chartId
-            await insertChart(base64data, chartType, chartId, address);
+            await insertChart(base64data, chartType, chartId, cleanAddress);
             
             // Clean up hidden div
             document.body.removeChild(hiddenDiv);
@@ -6221,24 +6224,28 @@ async function createChart(spec, chartType, headers, rows) {
 }
 
 /**
- * Insert chart
+ * Insert chart with address-based tracking
  */
 async function insertChart(base64data, chartType, chartId, address) {
   return Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 
+    console.log(`Inserting chart: ${chartType} at address: ${address}`);
+
     // Remove old chart at this specific address and get its position
-    const oldPosition = await removeExistingCharts(context, sheet, chartType, address);
+    const oldPosition = await removeExistingChartsAtAddress(context, sheet, chartType, address);
 
     let left, top, targetWidth, targetHeight;
 
     if (oldPosition) {
+      console.log(`Found old chart, reusing position:`, oldPosition);
       // Use old chart position and size
       left = oldPosition.left;
       top = oldPosition.top;
       targetWidth = oldPosition.width;
       targetHeight = oldPosition.height;
     } else {
+      console.log(`No old chart found, using current selection`);
       // New chart - use current selection
       const range = context.workbook.getSelectedRange();
       range.load("left, top, width, height");
@@ -6262,35 +6269,46 @@ async function insertChart(base64data, chartType, chartId, address) {
       image.lockAspectRatio = true;
     }
     
-    // Use address-based naming for unique identification
-    image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
+    // Simplified naming: ChartType_chartid
+    const chartName = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}_${chartId}`;
+    image.name = chartName;
+    
+    console.log(`Chart created with name: ${chartName}`);
 
     await context.sync();
   });
 }
 
 /**
- * Remove existing chart
+ * Remove existing charts at specific address
  */
-async function removeExistingCharts(context, sheet, chartType, address) {
+async function removeExistingChartsAtAddress(context, sheet, chartType, address) {
   const shapes = sheet.shapes;
   shapes.load("items");
   await context.sync();
 
-  // Create chart prefix that matches the naming convention
-  // Chart names follow: "BarChart_bar_Sheet1_A1_B10_timestamp"
-  const chartPrefix = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartType}_${address}`;
+  // Pattern to match: Bar_bar_Sheet1_A1_B10_*
+  const chartTypeCapitalized = chartType.charAt(0).toUpperCase() + chartType.slice(1);
+  const searchPattern = `${chartTypeCapitalized}_${chartType}_${address}`;
+  
+  console.log(`Looking for charts matching pattern: ${searchPattern}`);
+  
   let oldPosition = null;
 
-  for (let i = shapes.items.length - 1; i >= 0; i--) {
+  // Load all shape names first
+  for (let i = 0; i < shapes.items.length; i++) {
     const shape = shapes.items[i];
     shape.load(["name", "left", "top", "width", "height"]);
   }
   await context.sync();
 
+  // Find and remove matching charts
   for (let i = shapes.items.length - 1; i >= 0; i--) {
     const shape = shapes.items[i];
-    if (shape.name && shape.name.startsWith(chartPrefix)) {
+    console.log(`Checking shape: ${shape.name}`);
+    
+    if (shape.name && shape.name.startsWith(searchPattern)) {
+      console.log(`Found matching chart to remove: ${shape.name}`);
       // Save position before deleting
       oldPosition = {
         left: shape.left,
@@ -6300,8 +6318,13 @@ async function removeExistingCharts(context, sheet, chartType, address) {
       };
       shape.delete();
       await context.sync();
-      break; // Only remove the chart at this specific address
+      console.log(`Removed chart: ${shape.name}`);
+      break; // Only remove one chart at this address
     }
+  }
+
+  if (!oldPosition) {
+    console.log(`No existing charts found at address: ${address}`);
   }
 
   return oldPosition;
