@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LINE custom function
  * Creates a multi-series line chart from Excel data range
  * 
@@ -104,8 +104,8 @@ function LINE(data) {
           }
         }
       };
-
-      createChart(spec, "line", headers, rows)
+      const chartId = getChartId("line", data);
+      createChart(spec, "line", headers, rows, chartId)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -199,8 +199,8 @@ function BAR(data) {
           }
         }
       };
-
-      createChart(spec, "bar", headers, rows)
+      const chartId = getChartId(invocation, "bar");
+      createChart(spec, "bar", headers, rows, chartId)
         .then(() => resolve("Bar"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -218,7 +218,7 @@ function BAR(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function GAUGE(data) {
+function GAUGE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -361,8 +361,8 @@ function GAUGE(data) {
           }
         ]
       };
-
-      createChart(spec, "gauge", headers, rows)
+      const chartId = getChartId(invocation, "gauge");
+      createChart(spec, "gauge", headers, rows, chartId)
         .then(() => resolve("Gauge"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
@@ -380,7 +380,7 @@ function GAUGE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function PIE(data) {
+function PIE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -425,7 +425,7 @@ function PIE(data) {
           color: { field: headers[0], type: "nominal" }
         }
       };
-
+      const chartId = `pie_${invocation.address}`;
       createChart(spec, "pie", headers, rows)
         .then(() => resolve("Pie"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -444,7 +444,7 @@ function PIE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function AREA(data) {
+function AREA(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -521,7 +521,7 @@ function AREA(data) {
           }
         }
       };
-
+      const chartId = `area_${invocation.address}`;
       createChart(spec, "area", headers, rows)
         .then(() => resolve("Area"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -540,7 +540,7 @@ function AREA(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SCATTER(data) {
+function SCATTER(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -632,7 +632,7 @@ function SCATTER(data) {
           }
         }
       };
-
+      const chartId = `scatter_${invocation.address}`;
       createChart(spec, "scatter", headers, rows)
         .then(() => resolve("Scatter"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -651,7 +651,7 @@ function SCATTER(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BUBBLE(data) {
+function BUBBLE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -744,7 +744,7 @@ function BUBBLE(data) {
           }
         }
       };
-
+      const chartId = `bubble_${invocation.address}`;
       createChart(spec, "bubble", headers, rows)
         .then(() => resolve("Bubble"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -763,7 +763,7 @@ function BUBBLE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RING(data) {
+function RING(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -958,7 +958,7 @@ function RING(data) {
         ],
         "view": {"stroke": null}
       };
-
+      const chartId = `ring_${invocation.address}`;
       createChart(spec, "ring", headers, rows)
         .then(() => resolve("Ring"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -977,7 +977,7 @@ function RING(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RADIAL(data) {
+function RADIAL(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1026,7 +1026,7 @@ function RADIAL(data) {
           color: { field: headers[0], type: "nominal", legend: null }
         }
       };
-
+      const chartId = `radial_${invocation.address}`;
       createChart(spec, "radial", headers, rows)
         .then(() => resolve("Radial"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1045,7 +1045,7 @@ function RADIAL(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BOX(data) {
+function BOX(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1097,7 +1097,7 @@ function BOX(data) {
           }
         }
       };
-
+      const chartId = `box_${invocation.address}`;
       createChart(spec, "box", headers, rows)
         .then(() => resolve("Box"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1116,7 +1116,7 @@ function BOX(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RADAR(data) {
+function RADAR(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1328,7 +1328,7 @@ function RADAR(data) {
           }
         ]
       };
-
+      const chartId = `radar_${invocation.address}`;
       createChart(spec, "radar", headers, rows)
         .then(() => resolve("Radar"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1347,7 +1347,7 @@ function RADAR(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function WATERFALL(data) {
+function WATERFALL(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1481,7 +1481,7 @@ function WATERFALL(data) {
         ],
         config: { text: { fontWeight: "bold", color: "#D9D9D9" } }
       };
-
+      const chartId = `waterfall_${invocation.address}`;
       createChart(spec, "waterfall", headers, rows)
         .then(() => resolve("Waterfall"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1500,7 +1500,7 @@ function WATERFALL(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SUNBURST(data) {
+function SUNBURST(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1679,7 +1679,7 @@ function SUNBURST(data) {
           }
         ]
       };
-
+      const chartId = `sunburst_${invocation.address}`;
       createChart(spec, "sunburst", headers, rows)
         .then(() => resolve("Sunburst"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -1698,7 +1698,7 @@ function SUNBURST(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function TREEMAP(data) {
+function TREEMAP(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1932,7 +1932,7 @@ function TREEMAP(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function HISTOGRAM(data) {
+function HISTOGRAM(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2045,7 +2045,7 @@ function HISTOGRAM(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function MAP(data) {
+function MAP(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2338,7 +2338,7 @@ function MAP(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function CANDLESTICK(data) {
+function CANDLESTICK(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2506,7 +2506,7 @@ function CANDLESTICK(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function ARC(data) {
+function ARC(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2736,7 +2736,7 @@ function ARC(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function TREE(data) {
+function TREE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -2948,7 +2948,7 @@ function TREE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function WORDCLOUD(data) {
+function WORDCLOUD(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3070,7 +3070,7 @@ function WORDCLOUD(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function STRIP(data) {
+function STRIP(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3173,7 +3173,7 @@ function STRIP(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function HEATMAP(data) {
+function HEATMAP(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3352,7 +3352,7 @@ function HEATMAP(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BULLET(data) {
+function BULLET(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3428,7 +3428,7 @@ function BULLET(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function HORIZON(data) {
+function HORIZON(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3624,7 +3624,7 @@ function HORIZON(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function DUMBBELL(data) {
+function DUMBBELL(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -3805,7 +3805,7 @@ function DUMBBELL(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SLOPE(data) {
+function SLOPE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4050,7 +4050,7 @@ function SLOPE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function MEKKO(data) {
+function MEKKO(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4317,7 +4317,7 @@ function MEKKO(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function MARIMEKKO(data) {
+function MARIMEKKO(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4538,7 +4538,7 @@ function MARIMEKKO(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function BUMP(data) {
+function BUMP(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4686,7 +4686,7 @@ function BUMP(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function WAFFLE(data) {
+function WAFFLE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4829,7 +4829,7 @@ function WAFFLE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function LOLLIPOP(data) {
+function LOLLIPOP(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -4952,7 +4952,7 @@ function LOLLIPOP(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function VIOLIN(data) {
+function VIOLIN(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5037,7 +5037,7 @@ function VIOLIN(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function GANTT(data) {
+function GANTT(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5190,7 +5190,7 @@ function GANTT(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function SANKEY(data) {
+function SANKEY(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5483,7 +5483,7 @@ function SANKEY(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RIDGELINE(data) {
+function RIDGELINE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5606,7 +5606,7 @@ function RIDGELINE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function VARIANCE(data) {
+function VARIANCE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -5912,7 +5912,7 @@ function VARIANCE(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function DEVIATION(data) {
+function DEVIATION(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -6025,7 +6025,7 @@ function DEVIATION(data) {
  * @param {any[][]} data The data range including headers
  * @returns {string} Status message
  */
-function RIBBON(data) {
+function RIBBON(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -6156,97 +6156,60 @@ function RIBBON(data) {
 }
 
 /**
- * Create chart with address-based chartId
+ * Create chart
  */
-async function createChart(spec, chartType, headers, rows) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      // Get the selected range address for unique chart identification
-      await Excel.run(async (context) => {
-        const range = context.workbook.getSelectedRange();
-        range.load("address");
-        await context.sync();
-        
-        // Clean address format: remove $ and replace : with _ and spaces
-        const cleanAddress = range.address.replace(/\$/g, '').replace(/:/g, '_').replace(/\s+/g, '');
-        // Create simple chartId with only lowercase chartType
-        const chartId = `${chartType}_${cleanAddress}_${Date.now()}`;
-        
-        console.log(`Creating chart with ID: ${chartId}`);
-        
-        // Render hidden chart
-        const hiddenDiv = document.createElement("div");
-        hiddenDiv.style.display = "none";
-        hiddenDiv.id = chartId;
-        document.body.appendChild(hiddenDiv);
+async function createChart(spec, chartType, headers, rows, chartId) {
+  // chartId comes directly from caller (cell address based)
+  const hiddenDiv = document.createElement("div");
+  hiddenDiv.style.display = "none";
+  hiddenDiv.id = chartId;
+  document.body.appendChild(hiddenDiv);
 
-        // Load Vega-Lite if not available
-        if (typeof vegaEmbed === 'undefined') {
-          await loadVegaLibraries();
-        }
+  if (typeof vegaEmbed === 'undefined') {
+    await loadVegaLibraries();
+  }
 
-        const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
-        const view = result.view;
+  const result = await vegaEmbed(hiddenDiv, spec, { actions: false });
+  const pngUrl = await result.view.toImageURL("png");
 
-        // Export chart -> PNG
-        const pngUrl = await view.toImageURL("png");
-        const response = await fetch(pngUrl);
-        const blob = await response.blob();
+  const response = await fetch(pngUrl);
+  const blob = await response.blob();
+  const reader = new FileReader();
 
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-          try {
-            const base64data = reader.result.split(",")[1];
-
-            // Insert into Excel with address-based chartId
-            await insertChart(base64data, chartType, chartId, cleanAddress);
-            
-            // Clean up hidden div
-            document.body.removeChild(hiddenDiv);
-            resolve();
-            
-          } catch (error) {
-            // Clean up on error
-            if (document.body.contains(hiddenDiv)) {
-              document.body.removeChild(hiddenDiv);
-            }
-            reject(error);
-          }
-        };
-        
-        reader.readAsDataURL(blob);
-      });
-
-    } catch (error) {
-      reject(error);
-    }
+  return new Promise((resolve, reject) => {
+    reader.onloadend = async () => {
+      try {
+        const base64data = reader.result.split(",")[1];
+        await insertChart(base64data, chartType, chartId);
+        document.body.removeChild(hiddenDiv);
+        resolve();
+      } catch (err) {
+        if (document.body.contains(hiddenDiv)) document.body.removeChild(hiddenDiv);
+        reject(err);
+      }
+    };
+    reader.readAsDataURL(blob);
   });
 }
 
 /**
- * Insert chart with address-based tracking
+ * Insert chart
  */
-async function insertChart(base64data, chartType, chartId, address) {
+async function insertChart(base64data, chartType, chartId) {
   return Excel.run(async (context) => {
     const sheet = context.workbook.worksheets.getActiveWorksheet();
 
-    console.log(`Inserting chart: ${chartType} at address: ${address}`);
-
-    // Remove old chart at this specific address and get its position
-    const oldPosition = await removeExistingChartsAtAddress(context, sheet, chartType, address);
+    // Remove old chart and get its position
+    const oldPosition = await removeExistingCharts(context, sheet, chartType, chartId);
 
     let left, top, targetWidth, targetHeight;
 
     if (oldPosition) {
-      console.log(`Found old chart, reusing position:`, oldPosition);
-      // Use old chart position and size
       left = oldPosition.left;
       top = oldPosition.top;
       targetWidth = oldPosition.width;
       targetHeight = oldPosition.height;
     } else {
-      console.log(`No old chart found, using current selection`);
-      // New chart - use current selection
       const range = context.workbook.getSelectedRange();
       range.load("left, top, width, height");
       await context.sync();
@@ -6254,62 +6217,40 @@ async function insertChart(base64data, chartType, chartId, address) {
       top = range.top;
     }
 
-    // Insert the new image
     const image = sheet.shapes.addImage(base64data);
     image.left = left;
     image.top = top;
-    
-    // If we have old dimensions, preserve them exactly
     if (oldPosition) {
       image.lockAspectRatio = false;
       image.width = targetWidth;
       image.height = targetHeight;
     } else {
-      // For new charts, maintain aspect ratio
       image.lockAspectRatio = true;
     }
-    
-    // Simplified naming: ChartType_chartid
-    const chartName = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}_${chartId}`;
-    image.name = chartName;
-    
-    console.log(`Chart created with name: ${chartName}`);
+    image.name = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
 
     await context.sync();
   });
 }
 
 /**
- * Remove existing charts at specific address
+ * Remove existing chart
  */
-async function removeExistingChartsAtAddress(context, sheet, chartType, address) {
+async function removeExistingCharts(context, sheet, chartType, chartId) {
   const shapes = sheet.shapes;
   shapes.load("items");
   await context.sync();
 
-  // Pattern to match: Bar_bar_Sheet1_A1_B10_*
-  const chartTypeCapitalized = chartType.charAt(0).toUpperCase() + chartType.slice(1);
-  const searchPattern = `${chartTypeCapitalized}_${chartType}_${address}`;
-  
-  console.log(`Looking for charts matching pattern: ${searchPattern}`);
-  
+  const chartName = `${chartType.charAt(0).toUpperCase() + chartType.slice(1)}Chart_${chartId}`;
   let oldPosition = null;
 
-  // Load all shape names first
-  for (let i = 0; i < shapes.items.length; i++) {
-    const shape = shapes.items[i];
+  shapes.items.forEach(shape => {
     shape.load(["name", "left", "top", "width", "height"]);
-  }
+  });
   await context.sync();
 
-  // Find and remove matching charts
-  for (let i = shapes.items.length - 1; i >= 0; i--) {
-    const shape = shapes.items[i];
-    console.log(`Checking shape: ${shape.name}`);
-    
-    if (shape.name && shape.name.startsWith(searchPattern)) {
-      console.log(`Found matching chart to remove: ${shape.name}`);
-      // Save position before deleting
+  for (let shape of shapes.items) {
+    if (shape.name === chartName) {
       oldPosition = {
         left: shape.left,
         top: shape.top,
@@ -6317,17 +6258,21 @@ async function removeExistingChartsAtAddress(context, sheet, chartType, address)
         height: shape.height,
       };
       shape.delete();
-      await context.sync();
-      console.log(`Removed chart: ${shape.name}`);
-      break; // Only remove one chart at this address
     }
   }
 
-  if (!oldPosition) {
-    console.log(`No existing charts found at address: ${address}`);
-  }
-
+  await context.sync();
   return oldPosition;
+}
+
+/**
+ * Get Chart ID
+ */
+function getChartId(chartType, data) {
+  // Flatten the data range into a string
+  const rangeString = JSON.stringify(data)
+    .replace(/\s+/g, "");
+  return `${chartType}_${rangeString}`;
 }
 
 /**
