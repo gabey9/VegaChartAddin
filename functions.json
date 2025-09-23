@@ -135,6 +135,25 @@
             }
         },
         {
+            "description": "RING custom function\nCreates a ring chart from Excel data range",
+            "id": "RING",
+            "name": "RING",
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            },
+	        "options": {
+                "requiresAddress": true
+            }
+        },
+        {
             "description": "RADIAL custom function\nCreates a radial chart from Excel data range",
             "id": "RADIAL",
             "name": "RADIAL",
