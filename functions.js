@@ -7,7 +7,7 @@
  * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
-function LINE(data) {
+function LINE(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
