@@ -4,6 +4,7 @@
  * 
  * @customfunction
  * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
 function LINE(data) {
@@ -104,7 +105,7 @@ function LINE(data) {
           }
         }
       };
-      const chartId = `line_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+      const chartId = getChartId(invocation, "line");
       createChart(spec, "line", headers, rows, chartId)
         .then(() => resolve("Line"))
         .catch((error) => resolve(`Error: ${error.message}`));
@@ -6269,7 +6270,8 @@ async function removeExistingCharts(context, sheet, chartType, chartId) {
  * Get Chart ID
  */
 function getChartId(invocation, chartType) {
-  return `${chartType}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+  const safeAddress = invocation.address.replace(/[^A-Za-z0-9]/g, "_");
+  return `${chartType}_${safeAddress}`;
 }
 
 /**
