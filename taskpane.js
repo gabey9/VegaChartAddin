@@ -4753,6 +4753,99 @@ else if (chartType === "donut") {
         };
       }
 
+else if (chartType === "streamgraph") {
+  // Streamgraph requires 3 columns: Time/Date, Series, Values
+  if (headers.length < 3) {
+    throw new Error("Streamgraph requires 3 columns: Time/Date, Series/Category, Values");
+  }
+
+  // Process data and handle date conversion
+  const processedData = data.map(row => {
+    let processedRow = { ...row };
+    
+    // Try to convert first column to proper date format if needed
+    if (typeof row[headers[0]] === 'string' || typeof row[headers[0]] === 'number') {
+      // Handle Excel date serial numbers or string dates
+      let dateValue = row[headers[0]];
+      if (typeof dateValue === 'number' && dateValue > 25569) { // Excel date serial
+        dateValue = new Date((dateValue - 25569) * 86400 * 1000);
+      } else if (typeof dateValue === 'string') {
+        const parsedDate = new Date(dateValue);
+        if (!isNaN(parsedDate.getTime())) {
+          dateValue = parsedDate;
+        }
+      }
+      processedRow[headers[0]] = dateValue;
+    }
+    
+    return processedRow;
+  });
+
+  // Use Vega-Lite specification for streamgraph
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    width: 700,
+    height: 400,
+    background: "white",
+    config: { view: { stroke: "transparent" }},
+    description: "Streamgraph from Excel selection",
+    data: { values: processedData },
+    mark: {
+      type: "area",
+      tooltip: true,
+      interpolate: "basis",
+      opacity: 0.8
+    },
+    encoding: {
+      x: {
+        field: headers[0],
+        type: "temporal",
+        axis: {
+          domain: false,
+          format: "%Y-%m",
+          tickSize: 0,
+          title: headers[0],
+          labelFontSize: 11,
+          titleFontSize: 12,
+          labelColor: "#605e5c",
+          titleColor: "#323130",
+          labelAngle: -45
+        }
+      },
+      y: {
+        aggregate: "sum",
+        field: headers[2],
+        type: "quantitative",
+        axis: null,
+        stack: "center"
+      },
+      color: {
+        field: headers[1],
+        type: "nominal",
+        scale: { scheme: "category20b" },
+        legend: {
+          title: headers[1],
+          titleFontSize: 12,
+          labelFontSize: 11,
+          orient: "right"
+        }
+      },
+      tooltip: [
+        { field: headers[0], type: "temporal", title: "Date", format: "%Y-%m-%d" },
+        { field: headers[1], type: "nominal", title: "Series" },
+        { field: headers[2], type: "quantitative", title: "Value", format: ",.0f" }
+      ]
+    },
+    config: {
+      font: "Segoe UI",
+      legend: {
+        titleColor: "#323130",
+        labelColor: "#605e5c"
+      }
+    }
+  };
+}
+
       else if (chartType === "bar") {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v6.json",

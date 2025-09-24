@@ -218,6 +218,7 @@
                 <div class="chart-item" data-chart="heatmap" data-folder="special">Heatmap</div>
                 <div class="chart-item" data-chart="bullet" data-folder="special">Bullet</div>
                 <div class="chart-item" data-chart="horizon" data-folder="special">Horizon</div>
+		<div class="chart-item" data-chart="streamgraph" data-folder="special">Streamgraph</div>
                 <div class="chart-item" data-chart="dumbbell" data-folder="special">Dumbbell</div>
                 <div class="chart-item" data-chart="slope" data-folder="special">Slope</div>
                 <div class="chart-item" data-chart="mekko" data-folder="special">Mekko</div>
@@ -265,6 +266,7 @@
         <option value="sunburst">Sunburst</option>
         <option value="bullet">Bullet</option>
         <option value="horizon">Horizon</option>
+	<option value="streamgraph">Streamgraph</option>
         <option value="dumbbell">Dumbbell</option>
         <option value="slope">Slope</option>
         <option value="mekko">Mekko</option>
@@ -327,6 +329,15 @@
             <li><strong>Column 3 (optional):</strong> Series grouping for multiple areas</li>
         </ul>
     </div>
+
+<div id="req-streamgraph" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Time/Date values (dates, Excel date serials, or time periods)</li>
+        <li><strong>Column 2:</strong> Series/Categories (e.g., "Product Lines", "Industries", "Regions")</li>
+        <li><strong>Column 3:</strong> Values (numbers for each series at each time point)</li>
+    </ul>
+</div>
 
     <div id="req-horizon" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
