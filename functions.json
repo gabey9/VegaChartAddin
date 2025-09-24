@@ -78,9 +78,47 @@
             }
         },
         {
+            "description": "DONUT custom function\nCreates a donut chart from Excel data range",
+            "id": "DONUT",
+            "name": "DONUT",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "AREA custom function\nCreates an area chart from Excel data range",
             "id": "AREA",
             "name": "AREA",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "STREAMGRAPH custom function\nCreates a streamgraph chart from Excel data range",
+            "id": "STREAMGRAPH",
+            "name": "STREAMGRAPH",
             "options": {
                 "requiresAddress": true
             },
