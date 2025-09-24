@@ -4759,27 +4759,58 @@ else if (chartType === "streamgraph") {
     throw new Error("Streamgraph requires 3 columns: Time/Date, Series/Category, Values");
   }
 
-  // Process data and handle date conversion
+  // Process data and detect X-axis type
+  let xAxisType = "ordinal"; // Default for simple values like years
   const processedData = data.map(row => {
     let processedRow = { ...row };
     
-    // Try to convert first column to proper date format if needed
-    if (typeof row[headers[0]] === 'string' || typeof row[headers[0]] === 'number') {
-      // Handle Excel date serial numbers or string dates
-      let dateValue = row[headers[0]];
-      if (typeof dateValue === 'number' && dateValue > 25569) { // Excel date serial
-        dateValue = new Date((dateValue - 25569) * 86400 * 1000);
-      } else if (typeof dateValue === 'string') {
-        const parsedDate = new Date(dateValue);
-        if (!isNaN(parsedDate.getTime())) {
-          dateValue = parsedDate;
-        }
+    // Check if first column needs date conversion
+    const firstColValue = row[headers[0]];
+    if (typeof firstColValue === 'number' && firstColValue > 25569) {
+      // Excel date serial
+      processedRow[headers[0]] = new Date((firstColValue - 25569) * 86400 * 1000);
+      xAxisType = "temporal";
+    } else if (typeof firstColValue === 'string' && firstColValue.includes('-')) {
+      // String dates like "2020-01-01"
+      const parsedDate = new Date(firstColValue);
+      if (!isNaN(parsedDate.getTime())) {
+        processedRow[headers[0]] = parsedDate;
+        xAxisType = "temporal";
       }
-      processedRow[headers[0]] = dateValue;
     }
+    // For simple values like 2020, 2021, keep as-is and use ordinal
     
     return processedRow;
   });
+
+  // Create axis configuration based on detected type
+  const xAxisConfig = xAxisType === "temporal" ? {
+    field: headers[0],
+    type: "temporal",
+    axis: {
+      domain: false,
+      format: "%Y-%m",
+      tickSize: 0,
+      title: headers[0],
+      labelFontSize: 11,
+      titleFontSize: 12,
+      labelColor: "#605e5c",
+      titleColor: "#323130",
+      labelAngle: -45
+    }
+  } : {
+    field: headers[0],
+    type: "ordinal",
+    axis: {
+      domain: false,
+      tickSize: 0,
+      title: headers[0],
+      labelFontSize: 11,
+      titleFontSize: 12,
+      labelColor: "#605e5c",
+      titleColor: "#323130"
+    }
+  };
 
   // Use Vega-Lite specification for streamgraph
   spec = {
@@ -4797,21 +4828,7 @@ else if (chartType === "streamgraph") {
       opacity: 0.8
     },
     encoding: {
-      x: {
-        field: headers[0],
-        type: "temporal",
-        axis: {
-          domain: false,
-          format: "%Y-%m",
-          tickSize: 0,
-          title: headers[0],
-          labelFontSize: 11,
-          titleFontSize: 12,
-          labelColor: "#605e5c",
-          titleColor: "#323130",
-          labelAngle: -45
-        }
-      },
+      x: xAxisConfig,
       y: {
         aggregate: "sum",
         field: headers[2],
@@ -4831,7 +4848,12 @@ else if (chartType === "streamgraph") {
         }
       },
       tooltip: [
-        { field: headers[0], type: "temporal", title: "Date", format: "%Y-%m-%d" },
+        { 
+          field: headers[0], 
+          type: xAxisType === "temporal" ? "temporal" : "ordinal", 
+          title: "Period",
+          format: xAxisType === "temporal" ? "%Y-%m-%d" : undefined
+        },
         { field: headers[1], type: "nominal", title: "Series" },
         { field: headers[2], type: "quantitative", title: "Value", format: ",.0f" }
       ]
