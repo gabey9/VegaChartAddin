@@ -445,6 +445,105 @@ function PIE(data, invocation) {
 }
 
 /**
+ * DONUT custom function
+ * Creates a donut chart from Excel data range
+ * 
+ * @customfunction
+ * @requiresAddress
+ * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
+ * @returns {string} Status message
+ */
+function DONUT(data, invocation) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 2) {
+        resolve("Error: Donut chart requires 2 columns (Category, Value)");
+        return;
+      }
+
+      // Validate that all values are positive numbers
+      const hasInvalidValues = rows.some(row => isNaN(row[1]) || row[1] <= 0);
+      if (hasInvalidValues) {
+        resolve("Error: Donut chart values must be positive numbers");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use Vega-Lite specification for donut chart (based on the reference provided)
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        description: "Donut chart from Excel selection",
+        data: { values: processedData },
+        mark: { 
+          type: "arc", 
+          innerRadius: 50,  // This creates the donut hole
+          outerRadius: 120,
+          tooltip: true,
+          stroke: "white",
+          strokeWidth: 2
+        },
+        encoding: {
+          theta: { 
+            field: headers[1], 
+            type: "quantitative",
+            scale: { type: "linear", range: [0, 6.28] }
+          },
+          color: { 
+            field: headers[0], 
+            type: "nominal",
+            scale: { scheme: "category10" },
+            legend: {
+              title: headers[0],
+              titleFontSize: 12,
+              labelFontSize: 11,
+              orient: "right"
+            }
+          },
+          tooltip: [
+            { field: headers[0], type: "nominal", title: "Category" },
+            { field: headers[1], type: "quantitative", title: "Value", format: ",.0f" }
+          ]
+        },
+        config: {
+          font: "Segoe UI",
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      const chartId = `donut_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
+      createChart(spec, "donut", chartId)
+        .then(() => resolve("Donut"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
  * AREA custom function
  * Creates an area chart from Excel data range
  * 
