@@ -642,6 +642,154 @@ function AREA(data, invocation) {
 }
 
 /**
+ * STREAMGRAPH custom function
+ * Creates a streamgraph chart from Excel data range
+ * 
+ * @customfunction
+ * @requiresAddress
+ * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
+ * @returns {string} Status message
+ */
+function STREAMGRAPH(data, invocation) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Streamgraph requires 3 columns (Time/Date, Series/Category, Values)");
+        return;
+      }
+
+      // Convert rows -> objects and detect data type for X-axis
+      let xAxisType = "ordinal"; // Default to ordinal for simple values like years
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        
+        // Check if first column looks like dates that need conversion
+        const firstColValue = obj[headers[0]];
+        if (typeof firstColValue === 'number' && firstColValue > 25569) {
+          // Handle Excel date serial numbers
+          obj[headers[0]] = new Date((firstColValue - 25569) * 86400 * 1000);
+          xAxisType = "temporal";
+        } else if (typeof firstColValue === 'string' && firstColValue.includes('-')) {
+          // Try to parse string dates (e.g., "2020-01-01")
+          const parsedDate = new Date(firstColValue);
+          if (!isNaN(parsedDate.getTime())) {
+            obj[headers[0]] = parsedDate;
+            xAxisType = "temporal";
+          }
+        }
+        // For simple values like 2020, 2021, keep as-is and use ordinal
+        
+        return obj;
+      });
+
+      // Create axis configuration based on detected type
+      const xAxisConfig = xAxisType === "temporal" ? {
+        field: headers[0],
+        type: "temporal",
+        axis: {
+          domain: false,
+          format: "%Y-%m",
+          tickSize: 0,
+          title: headers[0],
+          labelFontSize: 11,
+          titleFontSize: 12,
+          labelColor: "#605e5c",
+          titleColor: "#323130",
+          labelAngle: -45
+        }
+      } : {
+        field: headers[0],
+        type: "ordinal",
+        axis: {
+          domain: false,
+          tickSize: 0,
+          title: headers[0],
+          labelFontSize: 11,
+          titleFontSize: 12,
+          labelColor: "#605e5c",
+          titleColor: "#323130"
+        }
+      };
+
+      // Use Vega-Lite specification for streamgraph
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        width: 600,
+        height: 400,
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        description: "Streamgraph from Excel selection",
+        data: { values: processedData },
+        mark: {
+          type: "area",
+          tooltip: true,
+          interpolate: "basis",
+          opacity: 0.8
+        },
+        encoding: {
+          x: xAxisConfig,
+          y: {
+            aggregate: "sum",
+            field: headers[2],
+            type: "quantitative",
+            axis: null,
+            stack: "center"
+          },
+          color: {
+            field: headers[1],
+            type: "nominal",
+            scale: { scheme: "category20b" },
+            legend: {
+              title: headers[1],
+              titleFontSize: 12,
+              labelFontSize: 11,
+              orient: "right"
+            }
+          },
+          tooltip: [
+            { 
+              field: headers[0], 
+              type: xAxisType === "temporal" ? "temporal" : "ordinal", 
+              title: "Period",
+              format: xAxisType === "temporal" ? "%Y-%m-%d" : undefined
+            },
+            { field: headers[1], type: "nominal", title: "Series" },
+            { field: headers[2], type: "quantitative", title: "Value", format: ",.0f" }
+          ]
+        },
+        config: {
+          font: "Segoe UI",
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+
+      const chartId = `streamgraph_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
+      createChart(spec, "streamgraph", chartId)
+        .then(() => resolve("Streamgraph"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
  * SCATTER custom function
  * Creates a scatter plot from Excel data range
  * 
@@ -6500,6 +6648,7 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("HEATMAP", HEATMAP);
   CustomFunctions.associate("BULLET", BULLET);
   CustomFunctions.associate("HORIZON", HORIZON);
+  CustomFunctions.associate("STREAMGRAPH", STREAMGRAPH);
   CustomFunctions.associate("DUMBBELL", DUMBBELL);
   CustomFunctions.associate("SLOPE", SLOPE);
   CustomFunctions.associate("MEKKO", MEKKO);
