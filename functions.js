@@ -6478,6 +6478,7 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("LINE", LINE);
   CustomFunctions.associate("BAR", BAR);
   CustomFunctions.associate("PIE", PIE);
+  CustomFunctions.associate("DONUT", DONUT);
   CustomFunctions.associate("GAUGE", GAUGE);
   CustomFunctions.associate("AREA", AREA);
   CustomFunctions.associate("SCATTER", SCATTER);
