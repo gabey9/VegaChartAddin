@@ -2616,7 +2616,7 @@ else if (chartType === "donut") {
             {
               name: "color",
               type: "ordinal",
-              range: { scheme: "category20c" },
+              range: { scheme: "category20" },
               domain: {
                 data: "categories",
                 field: headers[0],
@@ -2831,7 +2831,7 @@ else if (chartType === "donut") {
           {
             "name": "color",
             "type": "ordinal",
-            "range": { "scheme": "category20" },
+            "range": { "scheme": "category10" },
             "domain": {
               "data": "categories",
               "field": "Category",
