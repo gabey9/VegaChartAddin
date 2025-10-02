@@ -3101,93 +3101,87 @@ else if (chartType === "chord") {
   const edges = data.map((row) => ({
     source: row[headers[0]],
     target: row[headers[1]],
-    value: headers.length >= 3 && row[headers[2]] ? row[headers[2]] : 1
+    value: headers.length >= 3 && row[headers[2]] ? +row[headers[2]] : 1
   }));
 
-  // Get unique nodes
+  // Get unique nodes in consistent order
   const nodeSet = new Set();
   edges.forEach(edge => {
     nodeSet.add(edge.source);
     nodeSet.add(edge.target);
   });
   const nodes = Array.from(nodeSet);
-  const nodeCount = nodes.length;
+  const n = nodes.length;
 
-  // Build adjacency matrix
-  const matrix = Array(nodeCount).fill(0).map(() => Array(nodeCount).fill(0));
+  // Build matrix
+  const matrix = Array(n).fill(0).map(() => Array(n).fill(0));
   edges.forEach(edge => {
-    const sourceIdx = nodes.indexOf(edge.source);
-    const targetIdx = nodes.indexOf(edge.target);
-    if (sourceIdx !== -1 && targetIdx !== -1) {
-      matrix[sourceIdx][targetIdx] += edge.value;
+    const i = nodes.indexOf(edge.source);
+    const j = nodes.indexOf(edge.target);
+    if (i !== -1 && j !== -1 && i !== j) {
+      matrix[i][j] = edge.value;
     }
   });
 
-  // Calculate total for each node
-  const nodeTotals = nodes.map((node, i) => {
-    const outgoing = matrix[i].reduce((sum, val) => sum + val, 0);
-    const incoming = matrix.map(row => row[i]).reduce((sum, val) => sum + val, 0);
-    return outgoing + incoming;
-  });
+  // Calculate totals
+  const rowSums = matrix.map(row => row.reduce((a, b) => a + b, 0));
+  const colSums = matrix[0].map((_, j) => matrix.reduce((sum, row) => sum + row[j], 0));
+  const groupTotals = rowSums.map((sum, i) => sum + colSums[i]);
+  const total = groupTotals.reduce((a, b) => a + b, 0);
 
-  const grandTotal = nodeTotals.reduce((sum, val) => sum + val, 0);
-
-  // Calculate arc positions
+  // Create groups with proper arc sizing
+  const padding = 0.02;
   const groupData = [];
   let currentAngle = 0;
-  const gapAngle = 0.04;
 
-  nodes.forEach((node, i) => {
-    const arcSize = (nodeTotals[i] / grandTotal) * (2 * Math.PI - nodeCount * gapAngle);
+  for (let i = 0; i < n; i++) {
+    const arcSize = (groupTotals[i] / total) * (2 * Math.PI - n * padding);
     groupData.push({
       index: i,
-      name: node,
+      name: nodes[i],
       startAngle: currentAngle,
       endAngle: currentAngle + arcSize,
-      value: nodeTotals[i]
+      value: groupTotals[i]
     });
-    currentAngle += arcSize + gapAngle;
-  });
+    currentAngle += arcSize + padding;
+  }
 
-  // Calculate ribbon positions
+  // Create ribbons with proper sub-arc positioning
   const ribbonData = [];
   
-  // Track sub-angles for each group
-  const sourceAngles = groupData.map(g => g.startAngle);
-  const targetAngles = groupData.map(g => g.startAngle);
+  // Track current position in each group's arc
+  const sourcePos = groupData.map(g => g.startAngle);
+  const targetPos = groupData.map(g => g.startAngle);
 
-  for (let i = 0; i < nodeCount; i++) {
-    for (let j = 0; j < nodeCount; j++) {
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
       if (matrix[i][j] > 0) {
         const value = matrix[i][j];
         
-        // Calculate source ribbon position
-        const sourceGroup = groupData[i];
-        const sourceTotal = nodeTotals[i];
-        const sourceSpan = (value * 2 / sourceTotal) * (sourceGroup.endAngle - sourceGroup.startAngle);
-        const s0 = sourceAngles[i];
+        // Source arc span
+        const sourceSpan = (value / total) * (2 * Math.PI - n * padding);
+        const s0 = sourcePos[i];
         const s1 = s0 + sourceSpan;
-        sourceAngles[i] = s1;
-
-        // Calculate target ribbon position
-        const targetGroup = groupData[j];
-        const targetTotal = nodeTotals[j];
-        const targetSpan = (value * 2 / targetTotal) * (targetGroup.endAngle - targetGroup.startAngle);
-        const t0 = targetAngles[j];
+        
+        // Target arc span
+        const targetSpan = (value / total) * (2 * Math.PI - n * padding);
+        const t0 = targetPos[j];
         const t1 = t0 + targetSpan;
-        targetAngles[j] = t1;
-
+        
         ribbonData.push({
-          source: nodes[i],
-          target: nodes[j],
           sourceIndex: i,
           targetIndex: j,
+          sourceName: nodes[i],
+          targetName: nodes[j],
           value: value,
           s0: s0,
           s1: s1,
           t0: t0,
           t1: t1
         });
+        
+        sourcePos[i] = s1;
+        targetPos[j] = t1;
       }
     }
   }
@@ -3197,14 +3191,14 @@ else if (chartType === "chord") {
     "description": "Chord diagram from Excel selection",
     "width": 700,
     "height": 700,
-    "padding": 50,
+    "padding": 60,
     "autosize": "none",
     "background": "white",
-    "config": {"view": {"stroke": "transparent"}},
+    "config": {"view": {"stroke": null}},
 
     "signals": [
-      {"name": "radius", "value": 280},
-      {"name": "innerRadius", "value": 260}
+      {"name": "outerRadius", "value": 280},
+      {"name": "innerRadius", "value": 250}
     ],
 
     "data": [
@@ -3214,23 +3208,13 @@ else if (chartType === "chord") {
         "transform": [
           {
             "type": "formula",
-            "expr": "(((datum.startAngle + datum.endAngle) / 2) * 180 / PI) - 90",
-            "as": "angle_degrees"
+            "expr": "((datum.startAngle + datum.endAngle) / 2 - PI/2) * 180 / PI",
+            "as": "labelAngle"
           },
           {
             "type": "formula",
-            "expr": "inrange(datum.angle_degrees, [90, 270])",
-            "as": "leftside"
-          },
-          {
-            "type": "formula",
-            "expr": "(radius + 25) * cos((datum.startAngle + datum.endAngle) / 2 - PI/2)",
-            "as": "x"
-          },
-          {
-            "type": "formula",
-            "expr": "(radius + 25) * sin((datum.startAngle + datum.endAngle) / 2 - PI/2)",
-            "as": "y"
+            "expr": "abs(datum.labelAngle) > 90",
+            "as": "flip"
           }
         ]
       },
@@ -3241,7 +3225,7 @@ else if (chartType === "chord") {
           {
             "type": "formula",
             "as": "path",
-            "expr": "'M' + (innerRadius * cos(datum.s0 - PI/2)) + ',' + (innerRadius * sin(datum.s0 - PI/2)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.s1 - datum.s0) > PI ? '1' : '0') + ',1 ' + (innerRadius * cos(datum.s1 - PI/2)) + ',' + (innerRadius * sin(datum.s1 - PI/2)) + ' Q0,0 ' + (innerRadius * cos(datum.t1 - PI/2)) + ',' + (innerRadius * sin(datum.t1 - PI/2)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.t0 - datum.t1) > PI ? '1' : '0') + ',0 ' + (innerRadius * cos(datum.t0 - PI/2)) + ',' + (innerRadius * sin(datum.t0 - PI/2)) + ' Q0,0 ' + (innerRadius * cos(datum.s0 - PI/2)) + ',' + (innerRadius * sin(datum.s0 - PI/2)) + 'Z'"
+            "expr": "'M' + innerRadius * cos(datum.s0 - PI/2) + ',' + innerRadius * sin(datum.s0 - PI/2) + ' A' + innerRadius + ',' + innerRadius + ',0,' + (abs(datum.s1 - datum.s0) > PI ? 1 : 0) + ',1,' + innerRadius * cos(datum.s1 - PI/2) + ',' + innerRadius * sin(datum.s1 - PI/2) + ' Q0,0,' + innerRadius * cos(datum.t1 - PI/2) + ',' + innerRadius * sin(datum.t1 - PI/2) + ' A' + innerRadius + ',' + innerRadius + ',0,' + (abs(datum.t0 - datum.t1) > PI ? 1 : 0) + ',1,' + innerRadius * cos(datum.t0 - PI/2) + ',' + innerRadius * sin(datum.t0 - PI/2) + ' Q0,0,' + innerRadius * cos(datum.s0 - PI/2) + ',' + innerRadius * sin(datum.s0 - PI/2) + 'Z'"
           }
         ]
       }
@@ -3252,7 +3236,7 @@ else if (chartType === "chord") {
         "name": "color",
         "type": "ordinal",
         "domain": {"data": "groups", "field": "index"},
-        "range": ["#667EEA", "#FF6B9D", "#4FACFE", "#FFC371", "#43E97B", "#F093FB", "#C44569", "#FF5E78", "#38F9D7", "#764BA2"]
+        "range": ["#4A90E2", "#E94B3C", "#50C878", "#F5A623", "#9B59B6", "#1ABC9C", "#E67E22", "#3498DB", "#E91E63", "#9C27B0"]
       }
     ],
 
@@ -3262,41 +3246,20 @@ else if (chartType === "chord") {
         "from": {"data": "groups"},
         "encode": {
           "enter": {
-            "fill": {"scale": "color", "field": "index"},
             "x": {"signal": "width / 2"},
             "y": {"signal": "height / 2"},
-            "tooltip": {"signal": "{'Name': datum.name, 'Total': datum.value}"}
-          },
-          "update": {
             "startAngle": {"signal": "datum.startAngle - PI/2"},
             "endAngle": {"signal": "datum.endAngle - PI/2"},
             "innerRadius": {"signal": "innerRadius"},
-            "outerRadius": {"signal": "radius"},
-            "opacity": {"value": 0.9},
+            "outerRadius": {"signal": "outerRadius"},
+            "fill": {"scale": "color", "field": "index"},
+            "fillOpacity": {"value": 0.85},
             "stroke": {"value": "white"},
-            "strokeWidth": {"value": 2.5}
+            "strokeWidth": {"value": 2},
+            "tooltip": {"signal": "datum.name + ': ' + datum.value"}
           },
           "hover": {
-            "opacity": {"value": 1}
-          }
-        }
-      },
-      {
-        "type": "text",
-        "from": {"data": "groups"},
-        "encode": {
-          "enter": {
-            "text": {"field": "name"},
-            "fill": {"value": "#333"},
-            "fontSize": {"value": 14},
-            "fontWeight": {"value": 600},
-            "font": {"value": "Segoe UI"}
-          },
-          "update": {
-            "x": {"signal": "width / 2 + datum.x"},
-            "y": {"signal": "height / 2 + datum.y"},
-            "align": {"signal": "datum.leftside ? 'right' : 'left'"},
-            "baseline": {"value": "middle"}
+            "fillOpacity": {"value": 1}
           }
         }
       },
@@ -3305,19 +3268,34 @@ else if (chartType === "chord") {
         "from": {"data": "ribbons"},
         "encode": {
           "enter": {
-            "fill": {"scale": "color", "field": "sourceIndex"},
             "x": {"signal": "width / 2"},
             "y": {"signal": "height / 2"},
-            "tooltip": {"signal": "datum.source + ' → ' + datum.target + ': ' + datum.value"}
-          },
-          "update": {
             "path": {"field": "path"},
+            "fill": {"scale": "color", "field": "sourceIndex"},
             "fillOpacity": {"value": 0.5},
             "stroke": {"value": "white"},
-            "strokeWidth": {"value": 0.5}
+            "strokeWidth": {"value": 0.5},
+            "tooltip": {"signal": "datum.sourceName + ' → ' + datum.targetName + ': ' + datum.value"}
           },
           "hover": {
-            "fillOpacity": {"value": 0.8}
+            "fillOpacity": {"value": 0.85}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "groups"},
+        "encode": {
+          "enter": {
+            "x": {"signal": "width / 2 + (outerRadius + 15) * cos((datum.startAngle + datum.endAngle) / 2 - PI/2)"},
+            "y": {"signal": "height / 2 + (outerRadius + 15) * sin((datum.startAngle + datum.endAngle) / 2 - PI/2)"},
+            "align": {"signal": "datum.flip ? 'right' : 'left'"},
+            "baseline": {"value": "middle"},
+            "fill": {"value": "#333"},
+            "fontSize": {"value": 14},
+            "fontWeight": {"value": "600"},
+            "font": {"value": "Segoe UI"},
+            "text": {"field": "name"}
           }
         }
       }
