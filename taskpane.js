@@ -3119,7 +3119,6 @@ else if (chartType === "chord") {
     const i = nodes.indexOf(edge.source);
     const j = nodes.indexOf(edge.target);
     if (i !== -1 && j !== -1) {
-      // accumulate (allow multiple edges between same nodes)
       matrix[i][j] += edge.value;
     }
   });
@@ -3130,20 +3129,18 @@ else if (chartType === "chord") {
     matrix.reduce((acc, row) => acc + row[j], 0)
   );
 
-  // Group sizes: combine outgoing + incoming (gives a fair arc size for directed graphs)
+  // Group sizes = outgoing + incoming
   const groupSizes = rowSums.map((r, idx) => r + colSums[idx]);
-
-  // Total for computing arc proportions; avoid zero
   const totalGroupSize = groupSizes.reduce((a, b) => a + b, 0) || 1;
 
   // Layout parameters
-  const padding = 0.02; // radians between groups
+  const padding = 0.02; 
   const availableAngle = 2 * Math.PI - n * padding;
 
-  // Build groupData with start/end angles
+  // Group arcs
   const groupData = [];
   let currentAngle = 0;
-  const groupArcLengths = []; // keep for later ribbon calculations
+  const groupArcLengths = [];
 
   for (let i = 0; i < n; i++) {
     const arcLength = (groupSizes[i] / totalGroupSize) * availableAngle;
@@ -3158,67 +3155,43 @@ else if (chartType === "chord") {
     currentAngle += arcLength + padding;
   }
 
-  // Cursors within each group arc:
-  // - outCursor: tracks placement within group's arc for outgoing ribbons (based on rowSums)
-  // - inCursor: tracks placement within group's arc for incoming ribbons (based on colSums)
+  // Arc cursors
   const outCursor = groupData.map(g => g.startAngle);
   const inCursor = groupData.map(g => g.startAngle);
 
-  // Build ribbonData by iterating source->target
+  // Ribbons
   const ribbonData = [];
-
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
       const value = matrix[i][j];
       if (value > 0) {
-        // compute source span: fraction of source's outgoing total
-        let sourceSpan;
-        if (rowSums[i] > 0) {
-          sourceSpan = (value / rowSums[i]) * groupArcLengths[i];
-        } else {
-          // fallback if source has no recorded outgoing (shouldn't normally happen)
-          sourceSpan = (value / totalGroupSize) * availableAngle;
-        }
-
+        const sourceSpan = rowSums[i] > 0 ? (value / rowSums[i]) * groupArcLengths[i] : 0;
         const s0 = outCursor[i];
         const s1 = s0 + sourceSpan;
 
-        // compute target span: fraction of target's incoming total
-        let targetSpan;
-        if (colSums[j] > 0) {
-          targetSpan = (value / colSums[j]) * groupArcLengths[j];
-        } else {
-          // fallback if target has no incoming
-          targetSpan = (value / totalGroupSize) * availableAngle;
-        }
-
+        const targetSpan = colSums[j] > 0 ? (value / colSums[j]) * groupArcLengths[j] : 0;
         const t0 = inCursor[j];
         const t1 = t0 + targetSpan;
 
-        // push ribbon
         ribbonData.push({
           sourceIndex: i,
           targetIndex: j,
           sourceName: nodes[i],
           targetName: nodes[j],
           value: value,
-          s0: s0,
-          s1: s1,
-          t0: t0,
-          t1: t1
+          s0, s1, t0, t1
         });
 
-        // advance cursors
         outCursor[i] = s1;
         inCursor[j] = t1;
       }
     }
   }
 
-  // Build Vega spec (kept largely the same; uses groupData + ribbonData)
+  // Vega spec
   spec = {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
-    "description": "Chord diagram from Excel selection",
+    "description": "Excel-style Chord diagram",
     "width": 700,
     "height": 700,
     "padding": 60,
@@ -3255,7 +3228,10 @@ else if (chartType === "chord") {
           {
             "type": "formula",
             "as": "path",
-            "expr": "'M' + innerRadius * cos(datum.s0 - PI/2) + ',' + innerRadius * sin(datum.s0 - PI/2) + ' A' + innerRadius + ',' + innerRadius + ',0,' + (abs(datum.s1 - datum.s0) > PI ? 1 : 0) + ',1,' + innerRadius * cos(datum.s1 - PI/2) + ',' + innerRadius * sin(datum.s1 - PI/2) + ' Q0,0,' + innerRadius * cos(datum.t1 - PI/2) + ',' + innerRadius * sin(datum.t1 - PI/2) + ' A' + innerRadius + ',' + innerRadius + ',0,' + (abs(datum.t0 - datum.t1) > PI ? 1 : 0) + ',1,' + innerRadius * cos(datum.t0 - PI/2) + ',' + innerRadius * sin(datum.t0 - PI/2) + ' Q0,0,' + innerRadius * cos(datum.s0 - PI/2) + ',' + innerRadius * sin(datum.s0 - PI/2) + 'Z'"
+            "expr": "'M' + innerRadius * cos(datum.s0 - PI/2) + ',' + innerRadius * sin(datum.s0 - PI/2)"
+                  + " L0,0"
+                  + " L' + innerRadius * cos(datum.t0 - PI/2) + ',' + innerRadius * sin(datum.t0 - PI/2)"
+                  + 'Z'"
           }
         ]
       }
@@ -3266,7 +3242,8 @@ else if (chartType === "chord") {
         "name": "color",
         "type": "ordinal",
         "domain": {"data": "groups", "field": "index"},
-        "range": ["#4A90E2", "#E94B3C", "#50C878", "#F5A623", "#9B59B6", "#1ABC9C", "#E67E22", "#3498DB", "#E91E63", "#9C27B0"]
+        "range": ["#4A90E2", "#E94B3C", "#50C878", "#F5A623", "#9B59B6",
+                  "#1ABC9C", "#E67E22", "#3498DB", "#E91E63", "#9C27B0"]
       }
     ],
 
@@ -3283,13 +3260,10 @@ else if (chartType === "chord") {
             "innerRadius": {"signal": "innerRadius"},
             "outerRadius": {"signal": "outerRadius"},
             "fill": {"scale": "color", "field": "index"},
-            "fillOpacity": {"value": 0.85},
+            "fillOpacity": {"value": 1},
             "stroke": {"value": "white"},
             "strokeWidth": {"value": 2},
             "tooltip": {"signal": "datum.name + ': ' + datum.value"}
-          },
-          "hover": {
-            "fillOpacity": {"value": 1}
           }
         }
       },
@@ -3301,14 +3275,11 @@ else if (chartType === "chord") {
             "x": {"signal": "width / 2"},
             "y": {"signal": "height / 2"},
             "path": {"field": "path"},
-            "fill": {"scale": "color", "field": "sourceIndex"},
-            "fillOpacity": {"value": 0.5},
+            "fill": {"scale": "color", "field": "targetIndex"}, // color by target
+            "fillOpacity": {"value": 1},
             "stroke": {"value": "white"},
-            "strokeWidth": {"value": 0.5},
+            "strokeWidth": {"value": 1},
             "tooltip": {"signal": "datum.sourceName + ' → ' + datum.targetName + ': ' + datum.value"}
-          },
-          "hover": {
-            "fillOpacity": {"value": 0.85}
           }
         }
       },
@@ -3317,8 +3288,8 @@ else if (chartType === "chord") {
         "from": {"data": "groups"},
         "encode": {
           "enter": {
-            "x": {"signal": "width / 2 + (outerRadius + 15) * cos((datum.startAngle + datum.endAngle) / 2 - PI/2)"},
-            "y": {"signal": "height / 2 + (outerRadius + 15) * sin((datum.startAngle + datum.endAngle) / 2 - PI/2)"},
+            "x": {"signal": "width / 2 + (outerRadius + 25) * cos((datum.startAngle + datum.endAngle) / 2 - PI/2)"},
+            "y": {"signal": "height / 2 + (outerRadius + 25) * sin((datum.startAngle + datum.endAngle) / 2 - PI/2)"},
             "align": {"signal": "datum.flip ? 'right' : 'left'"},
             "baseline": {"value": "middle"},
             "fill": {"value": "#333"},
