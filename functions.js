@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LINE custom function
  * Creates a multi-series line chart from Excel data range
  * 
@@ -1274,12 +1274,12 @@ function RADIAL(data, invocation) {
         background: "white",
         config: { view: { stroke: "transparent" }},
         data: { values: processedData },
-	transform: [
-    	{ 
-      	window: [{ op: "rank", as: "sortOrder" }],
-      	sort: [{ field: headers[1], order: "descending" }]
-    	}
-  	],
+        transform: [
+            { 
+                window: [{ op: "rank", as: "sortOrder" }],
+                sort: [{ field: headers[1], order: "descending" }]
+            }
+  	    ],
         layer: [{
           mark: { type: "arc", innerRadius: 20, stroke: "#fff" }
         }, {
@@ -1294,8 +1294,8 @@ function RADIAL(data, invocation) {
             field: headers[1], 
             scale: { type: "sqrt", zero: true, rangeMin: 20 }
           },
-          color: { field: headers[0], type: "nominal", legend: null },
-	  order: { field: "sortOrder", type: "quantitative" }
+          color: { field: headers[0], type: "nominal", legend: { title: headers[0], titleFontSize: 12, labelFontSize: 11, orient: "right" } },
+	      order: { field: "sortOrder", type: "quantitative" }
         }
       };
       const chartId = `radial_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
