@@ -3119,45 +3119,73 @@ else if (chartType === "chord") {
     const sourceIdx = nodes.indexOf(edge.source);
     const targetIdx = nodes.indexOf(edge.target);
     if (sourceIdx !== -1 && targetIdx !== -1) {
-      matrix[sourceIdx][targetIdx] = edge.value;
+      matrix[sourceIdx][targetIdx] += edge.value;
     }
   });
 
-  // Calculate angles for each node
-  const total = matrix.flat().reduce((sum, val) => sum + val, 0);
-  const chordData = [];
+  // Calculate angles for each node group
+  const groupAngles = [];
   let currentAngle = 0;
+  const padding = 0.05;
 
   for (let i = 0; i < nodeCount; i++) {
     const rowSum = matrix[i].reduce((sum, val) => sum + val, 0);
-    const angleSize = (rowSum / total) * 2 * Math.PI;
-    chordData.push({
-      index: i,
-      name: nodes[i],
-      startAngle: currentAngle,
-      endAngle: currentAngle + angleSize,
-      value: rowSum
-    });
-    currentAngle += angleSize + 0.05; // Add padding
+    const colSum = matrix.map(row => row[i]).reduce((sum, val) => sum + val, 0);
+    const totalValue = Math.max(rowSum, colSum);
+    
+    if (totalValue > 0) {
+      groupAngles.push({
+        index: i,
+        name: nodes[i],
+        startAngle: currentAngle,
+        endAngle: currentAngle + (totalValue / (matrix.flat().reduce((s, v) => s + v, 0) + nodeCount * 10)) * 2 * Math.PI,
+        value: totalValue
+      });
+      currentAngle = groupAngles[groupAngles.length - 1].endAngle + padding;
+    }
   }
 
-  // Calculate ribbon paths
+  // Generate ribbon paths using proper chord geometry
   const ribbonPaths = [];
   for (let i = 0; i < nodeCount; i++) {
+    let sourceSubAngle = groupAngles[i].startAngle;
+    const sourceAngleRange = groupAngles[i].endAngle - groupAngles[i].startAngle;
+    const sourceTotal = matrix[i].reduce((sum, val) => sum + val, 0);
+
     for (let j = 0; j < nodeCount; j++) {
-      if (matrix[i][j] > 0) {
-        const source = chordData[i];
-        const target = chordData[j];
-        const sourceAngle = (source.startAngle + source.endAngle) / 2;
-        const targetAngle = (target.startAngle + target.endAngle) / 2;
+      if (matrix[i][j] > 0 && i !== j) {
+        const value = matrix[i][j];
+        const sourceAngleSpan = (value / sourceTotal) * sourceAngleRange;
+        const sourceStart = sourceSubAngle;
+        const sourceEnd = sourceSubAngle + sourceAngleSpan;
+
+        // Find target angle span
+        let targetSubAngle = groupAngles[j].startAngle;
+        const targetAngleRange = groupAngles[j].endAngle - groupAngles[j].startAngle;
+        const targetTotal = matrix.map(row => row[j]).reduce((sum, val) => sum + val, 0);
         
+        // Calculate where in target this connection goes
+        for (let k = 0; k < i; k++) {
+          if (matrix[k][j] > 0) {
+            targetSubAngle += (matrix[k][j] / targetTotal) * targetAngleRange;
+          }
+        }
+        
+        const targetAngleSpan = (value / targetTotal) * targetAngleRange;
+        const targetStart = targetSubAngle;
+        const targetEnd = targetSubAngle + targetAngleSpan;
+
         ribbonPaths.push({
           source: nodes[i],
           target: nodes[j],
-          value: matrix[i][j],
-          sourceAngle: sourceAngle,
-          targetAngle: targetAngle
+          value: value,
+          s0: sourceStart,
+          s1: sourceEnd,
+          t0: targetStart,
+          t1: targetEnd
         });
+
+        sourceSubAngle = sourceEnd;
       }
     }
   }
@@ -3173,16 +3201,14 @@ else if (chartType === "chord") {
     "config": {"view": {"stroke": "transparent"}},
 
     "signals": [
-      {"name": "originX", "value": 0},
-      {"name": "originY", "value": 0},
-      {"name": "inner_radius", "value": 270},
-      {"name": "outer_radius", "value": 290}
+      {"name": "radius", "value": 270},
+      {"name": "innerRadius", "value": 250}
     ],
 
     "data": [
       {
-        "name": "chords",
-        "values": chordData,
+        "name": "groups",
+        "values": groupAngles,
         "transform": [
           {
             "type": "formula",
@@ -3201,34 +3227,24 @@ else if (chartType === "chord") {
           },
           {
             "type": "formula",
-            "expr": "originX + outer_radius * cos(datum.radians)",
+            "expr": "(radius + 20) * cos(datum.radians)",
             "as": "x"
           },
           {
             "type": "formula",
-            "expr": "originY + outer_radius * sin(datum.radians)",
+            "expr": "(radius + 20) * sin(datum.radians)",
             "as": "y"
           }
         ]
       },
       {
-        "name": "ribbons",
+        "name": "chords",
         "values": ribbonPaths,
         "transform": [
           {
             "type": "formula",
-            "expr": "inner_radius * cos(datum.sourceAngle) + ',' + inner_radius * sin(datum.sourceAngle)",
-            "as": "sourcePoint"
-          },
-          {
-            "type": "formula",
-            "expr": "inner_radius * cos(datum.targetAngle) + ',' + inner_radius * sin(datum.targetAngle)",
-            "as": "targetPoint"
-          },
-          {
-            "type": "formula",
-            "expr": "'M' + inner_radius * cos(datum.sourceAngle) + ',' + inner_radius * sin(datum.sourceAngle) + ' Q0,0 ' + inner_radius * cos(datum.targetAngle) + ',' + inner_radius * sin(datum.targetAngle)",
-            "as": "path"
+            "as": "path",
+            "expr": "'M' + (innerRadius * cos(datum.s0)) + ',' + (innerRadius * sin(datum.s0)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.s1 - datum.s0) > PI ? 1 : 0) + ',1 ' + (innerRadius * cos(datum.s1)) + ',' + (innerRadius * sin(datum.s1)) + ' Q0,0 ' + (innerRadius * cos(datum.t1)) + ',' + (innerRadius * sin(datum.t1)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.t1 - datum.t0) > PI ? 1 : 0) + ',0 ' + (innerRadius * cos(datum.t0)) + ',' + (innerRadius * sin(datum.t0)) + ' Q0,0 ' + (innerRadius * cos(datum.s0)) + ',' + (innerRadius * sin(datum.s0)) + 'Z'"
           }
         ]
       }
@@ -3238,29 +3254,28 @@ else if (chartType === "chord") {
       {
         "name": "color",
         "type": "ordinal",
-        "domain": {"data": "chords", "field": "name"},
-        "range": ["#FF6B9D", "#C44569", "#FFC371", "#FF5E78", "#667EEA", "#764BA2", "#F093FB", "#4FACFE", "#43E97B", "#38F9D7"]
+        "domain": {"data": "groups", "field": "name"},
+        "range": ["#667EEA", "#FF6B9D", "#4FACFE", "#FFC371", "#43E97B", "#F093FB", "#C44569", "#FF5E78", "#38F9D7", "#764BA2"]
       }
     ],
 
     "marks": [
       {
         "type": "arc",
-        "from": {"data": "chords"},
+        "from": {"data": "groups"},
         "encode": {
           "enter": {
             "fill": {"scale": "color", "field": "name"},
             "x": {"signal": "width / 2"},
             "y": {"signal": "height / 2"},
-            "tooltip": {"signal": "{'Node': datum.name, 'Value': datum.value}"}
+            "tooltip": {"signal": "{'Country': datum.name, 'Total': datum.value}"}
           },
           "update": {
             "startAngle": {"field": "startAngle"},
             "endAngle": {"field": "endAngle"},
-            "padAngle": {"value": 0.02},
-            "innerRadius": {"signal": "inner_radius"},
-            "outerRadius": {"signal": "outer_radius"},
-            "opacity": {"value": 0.85},
+            "innerRadius": {"signal": "innerRadius"},
+            "outerRadius": {"signal": "radius"},
+            "opacity": {"value": 0.9},
             "stroke": {"value": "white"},
             "strokeWidth": {"value": 2}
           },
@@ -3271,20 +3286,18 @@ else if (chartType === "chord") {
       },
       {
         "type": "text",
-        "from": {"data": "chords"},
+        "from": {"data": "groups"},
         "encode": {
           "enter": {
             "text": {"field": "name"},
             "fill": {"value": "#333"},
-            "fontSize": {"value": 12},
+            "fontSize": {"value": 13},
             "fontWeight": {"value": 600},
             "font": {"value": "Segoe UI"}
           },
           "update": {
             "x": {"signal": "width / 2 + datum.x"},
             "y": {"signal": "height / 2 + datum.y"},
-            "dx": {"signal": "(datum.leftside ? -1 : 1) * 6"},
-            "angle": {"signal": "datum.leftside ? datum.angle_degrees - 180 : datum.angle_degrees"},
             "align": {"signal": "datum.leftside ? 'right' : 'left'"},
             "baseline": {"value": "middle"}
           }
@@ -3292,21 +3305,21 @@ else if (chartType === "chord") {
       },
       {
         "type": "path",
-        "from": {"data": "ribbons"},
+        "from": {"data": "chords"},
         "encode": {
           "enter": {
-            "fill": {"value": "#999999"},
+            "fill": {"value": "#CCCCCC"},
+            "fillOpacity": {"value": 0.5},
             "x": {"signal": "width / 2"},
             "y": {"signal": "height / 2"},
             "tooltip": {"signal": "{'From': datum.source, 'To': datum.target, 'Value': datum.value}"}
           },
           "update": {
             "path": {"field": "path"},
-            "opacity": {"value": 0.35},
             "stroke": {"value": "none"}
           },
           "hover": {
-            "opacity": {"value": 0.75}
+            "fillOpacity": {"value": 0.8}
           }
         }
       }
@@ -4271,35 +4284,53 @@ else if (chartType === "chord") {
       }
 
       else if (chartType === "radial") {
-        spec = {
-        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Radial chart from Excel selection",
-        background: "white",
-        config: { view: { stroke: "transparent" }},
-        data: { values: data },
-        transform: [
-        { 
-            sort: [{ field: headers[1], order: "descending" }]
-        }
-        ],
-        layer: [{
-        mark: { type: "arc", innerRadius: 20, stroke: "#fff" }
-        }, {
-        mark: { type: "text", radiusOffset: 10 },
-        encoding: {
-            text: { field: headers[1], type: "quantitative" }
-        }
-        }],
-        encoding: {
-        theta: { field: headers[1], type: "quantitative", stack: true },
-        radius: { 
-            field: headers[1], 
-            scale: { type: "sqrt", zero: true, rangeMin: 20 }
-        },
-        color: { field: headers[0], type: "nominal", legend: { title: headers[0], titleFontSize: 12, labelFontSize: 11, orient: "right" } }
-        }
-      };
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Radial chart from Excel selection",
+    background: "white",
+    config: { 
+      view: { stroke: "transparent" },
+      font: "Segoe UI",
+      legend: {
+        titleColor: "#323130",
+        labelColor: "#605e5c"
       }
+    },
+    data: { values: data },
+    transform: [
+      { 
+        window: [{ op: "rank", as: "sortOrder" }],
+        sort: [{ field: headers[1], order: "descending" }]
+      }
+    ],
+    layer: [{
+      mark: { type: "arc", innerRadius: 20, stroke: "#fff" }
+    }, {
+      mark: { type: "text", radiusOffset: 10 },
+      encoding: {
+        text: { field: headers[1], type: "quantitative" }
+      }
+    }],
+    encoding: {
+      theta: { field: headers[1], type: "quantitative", stack: true },
+      radius: { 
+        field: headers[1], 
+        scale: { type: "sqrt", zero: true, rangeMin: 20 }
+      },
+      color: { 
+        field: headers[0], 
+        type: "nominal",
+        legend: {
+          title: headers[0],
+          titleFontSize: 12,
+          labelFontSize: 11,
+          orient: "right"
+        }
+      },
+      order: { field: "sortOrder", type: "quantitative" }
+    }
+  };
+}
 
       else if (chartType === "bump") {
       // calculate width based on number of unique x-values
