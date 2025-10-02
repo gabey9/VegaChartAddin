@@ -3096,6 +3096,224 @@ export async function run() {
         };
       }
 
+else if (chartType === "chord") {
+  // Build matrix from edge data
+  const edges = data.map((row) => ({
+    source: row[headers[0]],
+    target: row[headers[1]],
+    value: headers.length >= 3 && row[headers[2]] ? row[headers[2]] : 1
+  }));
+
+  // Get unique nodes
+  const nodeSet = new Set();
+  edges.forEach(edge => {
+    nodeSet.add(edge.source);
+    nodeSet.add(edge.target);
+  });
+  const nodes = Array.from(nodeSet);
+  const nodeCount = nodes.length;
+
+  // Build matrix
+  const matrix = Array(nodeCount).fill(0).map(() => Array(nodeCount).fill(0));
+  edges.forEach(edge => {
+    const sourceIdx = nodes.indexOf(edge.source);
+    const targetIdx = nodes.indexOf(edge.target);
+    if (sourceIdx !== -1 && targetIdx !== -1) {
+      matrix[sourceIdx][targetIdx] = edge.value;
+    }
+  });
+
+  // Calculate angles for each node
+  const total = matrix.flat().reduce((sum, val) => sum + val, 0);
+  const chordData = [];
+  let currentAngle = 0;
+
+  for (let i = 0; i < nodeCount; i++) {
+    const rowSum = matrix[i].reduce((sum, val) => sum + val, 0);
+    const angleSize = (rowSum / total) * 2 * Math.PI;
+    chordData.push({
+      index: i,
+      name: nodes[i],
+      startAngle: currentAngle,
+      endAngle: currentAngle + angleSize,
+      value: rowSum
+    });
+    currentAngle += angleSize + 0.05; // Add padding
+  }
+
+  // Calculate ribbon paths
+  const ribbonPaths = [];
+  for (let i = 0; i < nodeCount; i++) {
+    for (let j = 0; j < nodeCount; j++) {
+      if (matrix[i][j] > 0) {
+        const source = chordData[i];
+        const target = chordData[j];
+        const sourceAngle = (source.startAngle + source.endAngle) / 2;
+        const targetAngle = (target.startAngle + target.endAngle) / 2;
+        
+        ribbonPaths.push({
+          source: nodes[i],
+          target: nodes[j],
+          value: matrix[i][j],
+          sourceAngle: sourceAngle,
+          targetAngle: targetAngle
+        });
+      }
+    }
+  }
+
+  spec = {
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "description": "Chord diagram from Excel selection",
+    "width": 700,
+    "height": 700,
+    "padding": 50,
+    "autosize": "none",
+    "background": "white",
+    "config": {"view": {"stroke": "transparent"}},
+
+    "signals": [
+      {"name": "originX", "value": 0},
+      {"name": "originY", "value": 0},
+      {"name": "inner_radius", "value": 270},
+      {"name": "outer_radius", "value": 290}
+    ],
+
+    "data": [
+      {
+        "name": "chords",
+        "values": chordData,
+        "transform": [
+          {
+            "type": "formula",
+            "expr": "(((datum.startAngle + datum.endAngle) / 2) * 180 / PI) - 90",
+            "as": "angle_degrees"
+          },
+          {
+            "type": "formula",
+            "expr": "PI * datum.angle_degrees / 180",
+            "as": "radians"
+          },
+          {
+            "type": "formula",
+            "expr": "inrange(datum.angle_degrees, [90, 270])",
+            "as": "leftside"
+          },
+          {
+            "type": "formula",
+            "expr": "originX + outer_radius * cos(datum.radians)",
+            "as": "x"
+          },
+          {
+            "type": "formula",
+            "expr": "originY + outer_radius * sin(datum.radians)",
+            "as": "y"
+          }
+        ]
+      },
+      {
+        "name": "ribbons",
+        "values": ribbonPaths,
+        "transform": [
+          {
+            "type": "formula",
+            "expr": "inner_radius * cos(datum.sourceAngle) + ',' + inner_radius * sin(datum.sourceAngle)",
+            "as": "sourcePoint"
+          },
+          {
+            "type": "formula",
+            "expr": "inner_radius * cos(datum.targetAngle) + ',' + inner_radius * sin(datum.targetAngle)",
+            "as": "targetPoint"
+          },
+          {
+            "type": "formula",
+            "expr": "'M' + inner_radius * cos(datum.sourceAngle) + ',' + inner_radius * sin(datum.sourceAngle) + ' Q0,0 ' + inner_radius * cos(datum.targetAngle) + ',' + inner_radius * sin(datum.targetAngle)",
+            "as": "path"
+          }
+        ]
+      }
+    ],
+
+    "scales": [
+      {
+        "name": "color",
+        "type": "ordinal",
+        "domain": {"data": "chords", "field": "name"},
+        "range": ["#FF6B9D", "#C44569", "#FFC371", "#FF5E78", "#667EEA", "#764BA2", "#F093FB", "#4FACFE", "#43E97B", "#38F9D7"]
+      }
+    ],
+
+    "marks": [
+      {
+        "type": "arc",
+        "from": {"data": "chords"},
+        "encode": {
+          "enter": {
+            "fill": {"scale": "color", "field": "name"},
+            "x": {"signal": "width / 2"},
+            "y": {"signal": "height / 2"},
+            "tooltip": {"signal": "{'Node': datum.name, 'Value': datum.value}"}
+          },
+          "update": {
+            "startAngle": {"field": "startAngle"},
+            "endAngle": {"field": "endAngle"},
+            "padAngle": {"value": 0.02},
+            "innerRadius": {"signal": "inner_radius"},
+            "outerRadius": {"signal": "outer_radius"},
+            "opacity": {"value": 0.85},
+            "stroke": {"value": "white"},
+            "strokeWidth": {"value": 2}
+          },
+          "hover": {
+            "opacity": {"value": 1}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "chords"},
+        "encode": {
+          "enter": {
+            "text": {"field": "name"},
+            "fill": {"value": "#333"},
+            "fontSize": {"value": 12},
+            "fontWeight": {"value": 600},
+            "font": {"value": "Segoe UI"}
+          },
+          "update": {
+            "x": {"signal": "width / 2 + datum.x"},
+            "y": {"signal": "height / 2 + datum.y"},
+            "dx": {"signal": "(datum.leftside ? -1 : 1) * 6"},
+            "angle": {"signal": "datum.leftside ? datum.angle_degrees - 180 : datum.angle_degrees"},
+            "align": {"signal": "datum.leftside ? 'right' : 'left'"},
+            "baseline": {"value": "middle"}
+          }
+        }
+      },
+      {
+        "type": "path",
+        "from": {"data": "ribbons"},
+        "encode": {
+          "enter": {
+            "fill": {"value": "#999999"},
+            "x": {"signal": "width / 2"},
+            "y": {"signal": "height / 2"},
+            "tooltip": {"signal": "{'From': datum.source, 'To': datum.target, 'Value': datum.value}"}
+          },
+          "update": {
+            "path": {"field": "path"},
+            "opacity": {"value": 0.35},
+            "stroke": {"value": "none"}
+          },
+          "hover": {
+            "opacity": {"value": 0.75}
+          }
+        }
+      }
+    ]
+  };
+}
+
       else if (chartType === "lollipop") {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v5.json",
