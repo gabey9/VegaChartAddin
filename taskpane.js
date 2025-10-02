@@ -3097,125 +3097,125 @@ export async function run() {
       }
 
 else if (chartType === "chord") {
-  // Build matrix from edge data
+  // Build edges from data rows
   const edges = data.map((row) => ({
     source: row[headers[0]],
     target: row[headers[1]],
-    value: headers.length >= 3 && row[headers[2]] ? +row[headers[2]] : 1
+    value: (headers.length >= 3 && row[headers[2]] ? +row[headers[2]] : 1)
   }));
 
-  // Get unique nodes in consistent order
+  // Unique nodes in order of appearance
   const nodeSet = new Set();
-  edges.forEach(edge => {
-    nodeSet.add(edge.source);
-    nodeSet.add(edge.target);
+  edges.forEach(e => {
+    nodeSet.add(e.source);
+    nodeSet.add(e.target);
   });
   const nodes = Array.from(nodeSet);
   const n = nodes.length;
 
-  // Build matrix
-  const matrix = Array(n).fill(0).map(() => Array(n).fill(0));
+  // Build matrix (accumulate values for duplicate edges)
+  const matrix = Array.from({ length: n }, () => Array(n).fill(0));
   edges.forEach(edge => {
     const i = nodes.indexOf(edge.source);
     const j = nodes.indexOf(edge.target);
-    if (i !== -1 && j !== -1 && i !== j) {
-      matrix[i][j] = edge.value;
+    if (i !== -1 && j !== -1) {
+      // accumulate (allow multiple edges between same nodes)
+      matrix[i][j] += edge.value;
     }
   });
 
-  // Calculate row sums (outgoing only)
+  // Row sums (outgoing) and column sums (incoming)
   const rowSums = matrix.map(row => row.reduce((a, b) => a + b, 0));
-  const total = rowSums.reduce((a, b) => a + b, 0);
+  const colSums = Array.from({ length: n }, (_, j) =>
+    matrix.reduce((acc, row) => acc + row[j], 0)
+  );
 
-  // Create groups - arc size based on outgoing connections only
-  const padding = 0.02;
+  // Group sizes: combine outgoing + incoming (gives a fair arc size for directed graphs)
+  const groupSizes = rowSums.map((r, idx) => r + colSums[idx]);
+
+  // Total for computing arc proportions; avoid zero
+  const totalGroupSize = groupSizes.reduce((a, b) => a + b, 0) || 1;
+
+  // Layout parameters
+  const padding = 0.02; // radians between groups
+  const availableAngle = 2 * Math.PI - n * padding;
+
+  // Build groupData with start/end angles
   const groupData = [];
   let currentAngle = 0;
+  const groupArcLengths = []; // keep for later ribbon calculations
 
   for (let i = 0; i < n; i++) {
-    const arcSize = (rowSums[i] / total) * (2 * Math.PI - n * padding);
+    const arcLength = (groupSizes[i] / totalGroupSize) * availableAngle;
+    groupArcLengths[i] = arcLength;
     groupData.push({
       index: i,
       name: nodes[i],
       startAngle: currentAngle,
-      endAngle: currentAngle + arcSize,
-      value: rowSums[i]
+      endAngle: currentAngle + arcLength,
+      value: groupSizes[i]
     });
-    currentAngle += arcSize + padding;
+    currentAngle += arcLength + padding;
   }
 
-  // Create ribbons with proper positioning
+  // Cursors within each group arc:
+  // - outCursor: tracks placement within group's arc for outgoing ribbons (based on rowSums)
+  // - inCursor: tracks placement within group's arc for incoming ribbons (based on colSums)
+  const outCursor = groupData.map(g => g.startAngle);
+  const inCursor = groupData.map(g => g.startAngle);
+
+  // Build ribbonData by iterating source->target
   const ribbonData = [];
-  
-  // Track source positions (outgoing ribbons fill the arc sequentially)
-  const sourcePos = groupData.map(g => g.startAngle);
-  
-  // For targets, we need to track where incoming ribbons should be placed
-  // Group incoming connections by target node
-  const targetIncoming = Array(n).fill(0).map(() => []);
-  
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      if (matrix[i][j] > 0) {
-        targetIncoming[j].push({
-          sourceIndex: i,
-          value: matrix[i][j]
-        });
-      }
-    }
-  }
-  
-  // Calculate target positions based on incoming connections
-  const targetPositions = groupData.map((g, targetIdx) => {
-    const positions = [];
-    let currentPos = g.startAngle;
-    
-    targetIncoming[targetIdx].forEach(incoming => {
-      const span = (incoming.value / total) * (2 * Math.PI - n * padding);
-      positions.push({
-        sourceIndex: incoming.sourceIndex,
-        t0: currentPos,
-        t1: currentPos + span
-      });
-      currentPos += span;
-    });
-    
-    return positions;
-  });
 
-  // Build ribbon data
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
-      if (matrix[i][j] > 0) {
-        const value = matrix[i][j];
-        
-        // Source position (sequential in source arc)
-        const sourceSpan = (value / total) * (2 * Math.PI - n * padding);
-        const s0 = sourcePos[i];
-        const s1 = s0 + sourceSpan;
-        
-        // Find target position from pre-calculated positions
-        const targetPos = targetPositions[j].find(tp => tp.sourceIndex === i);
-        
-        if (targetPos) {
-          ribbonData.push({
-            sourceIndex: i,
-            targetIndex: j,
-            sourceName: nodes[i],
-            targetName: nodes[j],
-            value: value,
-            s0: s0,
-            s1: s1,
-            t0: targetPos.t0,
-            t1: targetPos.t1
-          });
-          
-          sourcePos[i] = s1;
+      const value = matrix[i][j];
+      if (value > 0) {
+        // compute source span: fraction of source's outgoing total
+        let sourceSpan;
+        if (rowSums[i] > 0) {
+          sourceSpan = (value / rowSums[i]) * groupArcLengths[i];
+        } else {
+          // fallback if source has no recorded outgoing (shouldn't normally happen)
+          sourceSpan = (value / totalGroupSize) * availableAngle;
         }
+
+        const s0 = outCursor[i];
+        const s1 = s0 + sourceSpan;
+
+        // compute target span: fraction of target's incoming total
+        let targetSpan;
+        if (colSums[j] > 0) {
+          targetSpan = (value / colSums[j]) * groupArcLengths[j];
+        } else {
+          // fallback if target has no incoming
+          targetSpan = (value / totalGroupSize) * availableAngle;
+        }
+
+        const t0 = inCursor[j];
+        const t1 = t0 + targetSpan;
+
+        // push ribbon
+        ribbonData.push({
+          sourceIndex: i,
+          targetIndex: j,
+          sourceName: nodes[i],
+          targetName: nodes[j],
+          value: value,
+          s0: s0,
+          s1: s1,
+          t0: t0,
+          t1: t1
+        });
+
+        // advance cursors
+        outCursor[i] = s1;
+        inCursor[j] = t1;
       }
     }
   }
 
+  // Build Vega spec (kept largely the same; uses groupData + ribbonData)
   spec = {
     "$schema": "https://vega.github.io/schema/vega/v5.json",
     "description": "Chord diagram from Excel selection",
