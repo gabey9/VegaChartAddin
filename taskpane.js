@@ -3123,65 +3123,95 @@ else if (chartType === "chord") {
     }
   });
 
-  // Calculate totals
+  // Calculate row sums (outgoing only)
   const rowSums = matrix.map(row => row.reduce((a, b) => a + b, 0));
-  const colSums = matrix[0].map((_, j) => matrix.reduce((sum, row) => sum + row[j], 0));
-  const groupTotals = rowSums.map((sum, i) => sum + colSums[i]);
-  const total = groupTotals.reduce((a, b) => a + b, 0);
+  const total = rowSums.reduce((a, b) => a + b, 0);
 
-  // Create groups with proper arc sizing
+  // Create groups - arc size based on outgoing connections only
   const padding = 0.02;
   const groupData = [];
   let currentAngle = 0;
 
   for (let i = 0; i < n; i++) {
-    const arcSize = (groupTotals[i] / total) * (2 * Math.PI - n * padding);
+    const arcSize = (rowSums[i] / total) * (2 * Math.PI - n * padding);
     groupData.push({
       index: i,
       name: nodes[i],
       startAngle: currentAngle,
       endAngle: currentAngle + arcSize,
-      value: groupTotals[i]
+      value: rowSums[i]
     });
     currentAngle += arcSize + padding;
   }
 
-  // Create ribbons with proper sub-arc positioning
+  // Create ribbons with proper positioning
   const ribbonData = [];
   
-  // Track current position in each group's arc
+  // Track source positions (outgoing ribbons fill the arc sequentially)
   const sourcePos = groupData.map(g => g.startAngle);
-  const targetPos = groupData.map(g => g.startAngle);
+  
+  // For targets, we need to track where incoming ribbons should be placed
+  // Group incoming connections by target node
+  const targetIncoming = Array(n).fill(0).map(() => []);
+  
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (matrix[i][j] > 0) {
+        targetIncoming[j].push({
+          sourceIndex: i,
+          value: matrix[i][j]
+        });
+      }
+    }
+  }
+  
+  // Calculate target positions based on incoming connections
+  const targetPositions = groupData.map((g, targetIdx) => {
+    const positions = [];
+    let currentPos = g.startAngle;
+    
+    targetIncoming[targetIdx].forEach(incoming => {
+      const span = (incoming.value / total) * (2 * Math.PI - n * padding);
+      positions.push({
+        sourceIndex: incoming.sourceIndex,
+        t0: currentPos,
+        t1: currentPos + span
+      });
+      currentPos += span;
+    });
+    
+    return positions;
+  });
 
+  // Build ribbon data
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
       if (matrix[i][j] > 0) {
         const value = matrix[i][j];
         
-        // Source arc span
+        // Source position (sequential in source arc)
         const sourceSpan = (value / total) * (2 * Math.PI - n * padding);
         const s0 = sourcePos[i];
         const s1 = s0 + sourceSpan;
         
-        // Target arc span
-        const targetSpan = (value / total) * (2 * Math.PI - n * padding);
-        const t0 = targetPos[j];
-        const t1 = t0 + targetSpan;
+        // Find target position from pre-calculated positions
+        const targetPos = targetPositions[j].find(tp => tp.sourceIndex === i);
         
-        ribbonData.push({
-          sourceIndex: i,
-          targetIndex: j,
-          sourceName: nodes[i],
-          targetName: nodes[j],
-          value: value,
-          s0: s0,
-          s1: s1,
-          t0: t0,
-          t1: t1
-        });
-        
-        sourcePos[i] = s1;
-        targetPos[j] = t1;
+        if (targetPos) {
+          ribbonData.push({
+            sourceIndex: i,
+            targetIndex: j,
+            sourceName: nodes[i],
+            targetName: nodes[j],
+            value: value,
+            s0: s0,
+            s1: s1,
+            t0: targetPos.t0,
+            t1: targetPos.t1
+          });
+          
+          sourcePos[i] = s1;
+        }
       }
     }
   }
