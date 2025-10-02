@@ -97,6 +97,25 @@
             }
         },
         {
+            "description": "CHORD custom function\nCreates a chord diagram from Excel data range",
+            "id": "CHORD",
+            "name": "CHORD",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "AREA custom function\nCreates an area chart from Excel data range",
             "id": "AREA",
             "name": "AREA",
