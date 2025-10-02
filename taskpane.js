@@ -3113,7 +3113,7 @@ else if (chartType === "chord") {
   const nodes = Array.from(nodeSet);
   const nodeCount = nodes.length;
 
-  // Build matrix
+  // Build adjacency matrix
   const matrix = Array(nodeCount).fill(0).map(() => Array(nodeCount).fill(0));
   edges.forEach(edge => {
     const sourceIdx = nodes.indexOf(edge.source);
@@ -3123,69 +3123,71 @@ else if (chartType === "chord") {
     }
   });
 
-  // Calculate angles for each node group
-  const groupAngles = [];
+  // Calculate total for each node
+  const nodeTotals = nodes.map((node, i) => {
+    const outgoing = matrix[i].reduce((sum, val) => sum + val, 0);
+    const incoming = matrix.map(row => row[i]).reduce((sum, val) => sum + val, 0);
+    return outgoing + incoming;
+  });
+
+  const grandTotal = nodeTotals.reduce((sum, val) => sum + val, 0);
+
+  // Calculate arc positions
+  const groupData = [];
   let currentAngle = 0;
-  const padding = 0.05;
+  const gapAngle = 0.04;
+
+  nodes.forEach((node, i) => {
+    const arcSize = (nodeTotals[i] / grandTotal) * (2 * Math.PI - nodeCount * gapAngle);
+    groupData.push({
+      index: i,
+      name: node,
+      startAngle: currentAngle,
+      endAngle: currentAngle + arcSize,
+      value: nodeTotals[i]
+    });
+    currentAngle += arcSize + gapAngle;
+  });
+
+  // Calculate ribbon positions
+  const ribbonData = [];
+  
+  // Track sub-angles for each group
+  const sourceAngles = groupData.map(g => g.startAngle);
+  const targetAngles = groupData.map(g => g.startAngle);
 
   for (let i = 0; i < nodeCount; i++) {
-    const rowSum = matrix[i].reduce((sum, val) => sum + val, 0);
-    const colSum = matrix.map(row => row[i]).reduce((sum, val) => sum + val, 0);
-    const totalValue = Math.max(rowSum, colSum);
-    
-    if (totalValue > 0) {
-      groupAngles.push({
-        index: i,
-        name: nodes[i],
-        startAngle: currentAngle,
-        endAngle: currentAngle + (totalValue / (matrix.flat().reduce((s, v) => s + v, 0) + nodeCount * 10)) * 2 * Math.PI,
-        value: totalValue
-      });
-      currentAngle = groupAngles[groupAngles.length - 1].endAngle + padding;
-    }
-  }
-
-  // Generate ribbon paths using proper chord geometry
-  const ribbonPaths = [];
-  for (let i = 0; i < nodeCount; i++) {
-    let sourceSubAngle = groupAngles[i].startAngle;
-    const sourceAngleRange = groupAngles[i].endAngle - groupAngles[i].startAngle;
-    const sourceTotal = matrix[i].reduce((sum, val) => sum + val, 0);
-
     for (let j = 0; j < nodeCount; j++) {
-      if (matrix[i][j] > 0 && i !== j) {
+      if (matrix[i][j] > 0) {
         const value = matrix[i][j];
-        const sourceAngleSpan = (value / sourceTotal) * sourceAngleRange;
-        const sourceStart = sourceSubAngle;
-        const sourceEnd = sourceSubAngle + sourceAngleSpan;
-
-        // Find target angle span
-        let targetSubAngle = groupAngles[j].startAngle;
-        const targetAngleRange = groupAngles[j].endAngle - groupAngles[j].startAngle;
-        const targetTotal = matrix.map(row => row[j]).reduce((sum, val) => sum + val, 0);
         
-        // Calculate where in target this connection goes
-        for (let k = 0; k < i; k++) {
-          if (matrix[k][j] > 0) {
-            targetSubAngle += (matrix[k][j] / targetTotal) * targetAngleRange;
-          }
-        }
-        
-        const targetAngleSpan = (value / targetTotal) * targetAngleRange;
-        const targetStart = targetSubAngle;
-        const targetEnd = targetSubAngle + targetAngleSpan;
+        // Calculate source ribbon position
+        const sourceGroup = groupData[i];
+        const sourceTotal = nodeTotals[i];
+        const sourceSpan = (value * 2 / sourceTotal) * (sourceGroup.endAngle - sourceGroup.startAngle);
+        const s0 = sourceAngles[i];
+        const s1 = s0 + sourceSpan;
+        sourceAngles[i] = s1;
 
-        ribbonPaths.push({
+        // Calculate target ribbon position
+        const targetGroup = groupData[j];
+        const targetTotal = nodeTotals[j];
+        const targetSpan = (value * 2 / targetTotal) * (targetGroup.endAngle - targetGroup.startAngle);
+        const t0 = targetAngles[j];
+        const t1 = t0 + targetSpan;
+        targetAngles[j] = t1;
+
+        ribbonData.push({
           source: nodes[i],
           target: nodes[j],
+          sourceIndex: i,
+          targetIndex: j,
           value: value,
-          s0: sourceStart,
-          s1: sourceEnd,
-          t0: targetStart,
-          t1: targetEnd
+          s0: s0,
+          s1: s1,
+          t0: t0,
+          t1: t1
         });
-
-        sourceSubAngle = sourceEnd;
       }
     }
   }
@@ -3201,14 +3203,14 @@ else if (chartType === "chord") {
     "config": {"view": {"stroke": "transparent"}},
 
     "signals": [
-      {"name": "radius", "value": 270},
-      {"name": "innerRadius", "value": 250}
+      {"name": "radius", "value": 280},
+      {"name": "innerRadius", "value": 260}
     ],
 
     "data": [
       {
         "name": "groups",
-        "values": groupAngles,
+        "values": groupData,
         "transform": [
           {
             "type": "formula",
@@ -3217,34 +3219,29 @@ else if (chartType === "chord") {
           },
           {
             "type": "formula",
-            "expr": "PI * datum.angle_degrees / 180",
-            "as": "radians"
-          },
-          {
-            "type": "formula",
             "expr": "inrange(datum.angle_degrees, [90, 270])",
             "as": "leftside"
           },
           {
             "type": "formula",
-            "expr": "(radius + 20) * cos(datum.radians)",
+            "expr": "(radius + 25) * cos((datum.startAngle + datum.endAngle) / 2 - PI/2)",
             "as": "x"
           },
           {
             "type": "formula",
-            "expr": "(radius + 20) * sin(datum.radians)",
+            "expr": "(radius + 25) * sin((datum.startAngle + datum.endAngle) / 2 - PI/2)",
             "as": "y"
           }
         ]
       },
       {
-        "name": "chords",
-        "values": ribbonPaths,
+        "name": "ribbons",
+        "values": ribbonData,
         "transform": [
           {
             "type": "formula",
             "as": "path",
-            "expr": "'M' + (innerRadius * cos(datum.s0)) + ',' + (innerRadius * sin(datum.s0)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.s1 - datum.s0) > PI ? 1 : 0) + ',1 ' + (innerRadius * cos(datum.s1)) + ',' + (innerRadius * sin(datum.s1)) + ' Q0,0 ' + (innerRadius * cos(datum.t1)) + ',' + (innerRadius * sin(datum.t1)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.t1 - datum.t0) > PI ? 1 : 0) + ',0 ' + (innerRadius * cos(datum.t0)) + ',' + (innerRadius * sin(datum.t0)) + ' Q0,0 ' + (innerRadius * cos(datum.s0)) + ',' + (innerRadius * sin(datum.s0)) + 'Z'"
+            "expr": "'M' + (innerRadius * cos(datum.s0 - PI/2)) + ',' + (innerRadius * sin(datum.s0 - PI/2)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.s1 - datum.s0) > PI ? '1' : '0') + ',1 ' + (innerRadius * cos(datum.s1 - PI/2)) + ',' + (innerRadius * sin(datum.s1 - PI/2)) + ' Q0,0 ' + (innerRadius * cos(datum.t1 - PI/2)) + ',' + (innerRadius * sin(datum.t1 - PI/2)) + ' A' + innerRadius + ',' + innerRadius + ' 0 ' + ((datum.t0 - datum.t1) > PI ? '1' : '0') + ',0 ' + (innerRadius * cos(datum.t0 - PI/2)) + ',' + (innerRadius * sin(datum.t0 - PI/2)) + ' Q0,0 ' + (innerRadius * cos(datum.s0 - PI/2)) + ',' + (innerRadius * sin(datum.s0 - PI/2)) + 'Z'"
           }
         ]
       }
@@ -3254,7 +3251,7 @@ else if (chartType === "chord") {
       {
         "name": "color",
         "type": "ordinal",
-        "domain": {"data": "groups", "field": "name"},
+        "domain": {"data": "groups", "field": "index"},
         "range": ["#667EEA", "#FF6B9D", "#4FACFE", "#FFC371", "#43E97B", "#F093FB", "#C44569", "#FF5E78", "#38F9D7", "#764BA2"]
       }
     ],
@@ -3265,19 +3262,19 @@ else if (chartType === "chord") {
         "from": {"data": "groups"},
         "encode": {
           "enter": {
-            "fill": {"scale": "color", "field": "name"},
+            "fill": {"scale": "color", "field": "index"},
             "x": {"signal": "width / 2"},
             "y": {"signal": "height / 2"},
-            "tooltip": {"signal": "{'Country': datum.name, 'Total': datum.value}"}
+            "tooltip": {"signal": "{'Name': datum.name, 'Total': datum.value}"}
           },
           "update": {
-            "startAngle": {"field": "startAngle"},
-            "endAngle": {"field": "endAngle"},
+            "startAngle": {"signal": "datum.startAngle - PI/2"},
+            "endAngle": {"signal": "datum.endAngle - PI/2"},
             "innerRadius": {"signal": "innerRadius"},
             "outerRadius": {"signal": "radius"},
             "opacity": {"value": 0.9},
             "stroke": {"value": "white"},
-            "strokeWidth": {"value": 2}
+            "strokeWidth": {"value": 2.5}
           },
           "hover": {
             "opacity": {"value": 1}
@@ -3291,7 +3288,7 @@ else if (chartType === "chord") {
           "enter": {
             "text": {"field": "name"},
             "fill": {"value": "#333"},
-            "fontSize": {"value": 13},
+            "fontSize": {"value": 14},
             "fontWeight": {"value": 600},
             "font": {"value": "Segoe UI"}
           },
@@ -3305,18 +3302,19 @@ else if (chartType === "chord") {
       },
       {
         "type": "path",
-        "from": {"data": "chords"},
+        "from": {"data": "ribbons"},
         "encode": {
           "enter": {
-            "fill": {"value": "#CCCCCC"},
-            "fillOpacity": {"value": 0.5},
+            "fill": {"scale": "color", "field": "sourceIndex"},
             "x": {"signal": "width / 2"},
             "y": {"signal": "height / 2"},
-            "tooltip": {"signal": "{'From': datum.source, 'To': datum.target, 'Value': datum.value}"}
+            "tooltip": {"signal": "datum.source + ' → ' + datum.target + ': ' + datum.value"}
           },
           "update": {
             "path": {"field": "path"},
-            "stroke": {"value": "none"}
+            "fillOpacity": {"value": 0.5},
+            "stroke": {"value": "white"},
+            "strokeWidth": {"value": 0.5}
           },
           "hover": {
             "fillOpacity": {"value": 0.8}
