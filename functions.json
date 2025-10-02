@@ -382,25 +382,6 @@
             }
         },
         {
-            "description": "CHORD custom function\nCreates an chord diagram from Excel data range",
-            "id": "CHORD",
-            "name": "CHORD",
-            "options": {
-                "requiresAddress": true
-            },
-            "parameters": [
-                {
-                    "description": "The data range including headers",
-                    "dimensionality": "matrix",
-                    "name": "data",
-                    "type": "any"
-                }
-            ],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
             "description": "TREE custom function\nCreates a tree diagram from Excel data range",
             "id": "TREE",
             "name": "TREE",
