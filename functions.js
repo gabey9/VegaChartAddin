@@ -193,14 +193,12 @@ function STEP(data, invocation) {
           "x": {
             "field": "date",
             "type": "temporal",
-            "title": "Date",
             "axis": {
+              "title": null,
               "format": "%m/%d",
               "labelAngle": -45,
               "labelFontSize": 11,
-              "titleFontSize": 12,
               "labelColor": "#605e5c",
-              "titleColor": "#323130",
               "font": "Segoe UI"
             }
           },
@@ -209,11 +207,9 @@ function STEP(data, invocation) {
             "type": "quantitative",
             "scale": { "zero": false },
             "axis": {
-              "title": "Price",
+              "title": null,
               "labelFontSize": 11,
-              "titleFontSize": 12,
               "labelColor": "#605e5c",
-              "titleColor": "#323130",
               "font": "Segoe UI",
               "grid": true,
               "gridColor": "#f3f2f1"
