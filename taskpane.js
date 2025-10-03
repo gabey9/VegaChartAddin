@@ -438,91 +438,97 @@ else if (chartType === "step") {
     throw new Error("Step chart requires at least 2 columns: Date/Time (X-axis), Values (Y-axis)");
   }
 
-  // Convert rows to objects with data cleaning
-  const processedData = [];
-  
-  data.forEach(row => {
-    // Skip rows with missing data
-    if (!row[headers[0]] || row[headers[1]] === null || row[headers[1]] === undefined || row[headers[1]] === "") {
-      return;
+  // Helper function to convert Excel dates to JS dates (same as candlestick)
+  function excelDateToJSDate(serial) {
+    if (typeof serial === 'number') {
+      return new Date(Math.round((serial - 25569) * 86400 * 1000));
     }
-    
-    let obj = {};
-    
-    // Process date field
-    let dateValue = row[headers[0]];
-    if (typeof dateValue === 'number' && dateValue > 25569) {
-      // Excel date serial number
-      dateValue = new Date((dateValue - 25569) * 86400 * 1000);
-    } else if (typeof dateValue === 'string') {
-      // Try parsing as date string
-      dateValue = new Date(dateValue);
-      if (isNaN(dateValue.getTime())) {
-        return; // Skip invalid dates
-      }
-    }
-    obj[headers[0]] = dateValue;
-    
-    // Process numeric value field
-    let numValue = parseFloat(row[headers[1]]);
-    if (isNaN(numValue)) {
-      return; // Skip non-numeric values
-    }
-    obj[headers[1]] = numValue;
-    
-    processedData.push(obj);
-  });
-
-  if (processedData.length === 0) {
-    throw new Error("No valid data found for step chart");
+    return new Date(serial);
   }
 
-  // Create step chart specification matching the Google stocks example
+  // Process and validate data (same method as candlestick)
+  const stepData = data
+    .map((row, index) => {
+      // Skip if any required value is missing/null/empty
+      if (!row[headers[0]] || 
+          row[headers[1]] == null || row[headers[1]] === "") {
+        return null;
+      }
+
+      const date = excelDateToJSDate(row[headers[0]]);
+      const price = parseFloat(row[headers[1]]);
+      
+      if (isNaN(date.getTime()) || isNaN(price)) {
+        return null;
+      }
+      
+      return {
+        date: date.toISOString(),
+        price: price
+      };
+    })
+    .filter(Boolean); // Remove null entries
+
+  if (stepData.length === 0) {
+    console.warn("No valid step chart data found");
+    return;
+  }
+
+  // Create step chart specification (using candlestick's structure)
   spec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Step chart from Excel selection",
-    background: "white",
-    width: 500,
-    height: 300,
-    config: { view: { stroke: "transparent" }},
-    data: { values: processedData },
-    mark: { 
-      type: "line", 
-      interpolate: "step-after",
-      point: false,
-      strokeWidth: 2
+    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+    "width": 600,
+    "description": "Step chart from Excel selection",
+    "background": "white",
+    "config": { "view": { "stroke": "transparent" }},
+    "data": { "values": stepData },
+    "mark": { 
+      "type": "line", 
+      "interpolate": "step-after",
+      "strokeWidth": 2
     },
-    encoding: {
-      x: { 
-        field: headers[0], 
-        type: "temporal",
-        axis: {
-          title: headers[0],
-          labelFontSize: 11,
-          titleFontSize: 12,
-          labelColor: "#605e5c",
-          titleColor: "#323130",
-          font: "Segoe UI"
+    "encoding": {
+      "x": {
+        "field": "date",
+        "type": "temporal",
+        "title": "Date",
+        "axis": {
+          "format": "%m/%d",
+          "labelAngle": -45,
+          "labelFontSize": 11,
+          "titleFontSize": 12,
+          "labelColor": "#605e5c",
+          "titleColor": "#323130",
+          "font": "Segoe UI"
         }
       },
-      y: { 
-        field: headers[1], 
-        type: "quantitative",
-        axis: {
-          title: headers[1],
-          labelFontSize: 11,
-          titleFontSize: 12,
-          labelColor: "#605e5c",
-          titleColor: "#323130",
-          font: "Segoe UI",
-          grid: true,
-          gridColor: "#f3f2f1"
+      "y": {
+        "field": "price",
+        "type": "quantitative",
+        "scale": { "zero": false },
+        "axis": {
+          "title": "Price",
+          "labelFontSize": 11,
+          "titleFontSize": 12,
+          "labelColor": "#605e5c",
+          "titleColor": "#323130",
+          "font": "Segoe UI",
+          "grid": true,
+          "gridColor": "#f3f2f1"
         }
       },
-      tooltip: [
-        { field: headers[0], type: "temporal", title: headers[0], format: "%Y-%m-%d" },
-        { field: headers[1], type: "quantitative", title: headers[1], format: ",.2f" }
+      "tooltip": [
+        { "field": "date", "type": "temporal", "title": "Date", "format": "%Y-%m-%d" },
+        { "field": "price", "type": "quantitative", "title": "Price", "format": ".2f" }
       ]
+    },
+    "config": {
+      "font": "Segoe UI",
+      "axis": {
+        "labelColor": "#605e5c",
+        "titleColor": "#323130",
+        "gridColor": "#f3f2f1"
+      }
     }
   };
 }
