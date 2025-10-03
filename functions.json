@@ -21,25 +21,6 @@
             }
         },
         {
-            "description": "STEP custom function\nCreates a step chart from Excel data range",
-            "id": "STEP",
-            "name": "STEP",
-            "options": {
-                "requiresAddress": true
-            },
-            "parameters": [
-                {
-                    "description": "The data range including headers",
-                    "dimensionality": "matrix",
-                    "name": "data",
-                    "type": "any"
-                }
-            ],
-            "result": {
-                "type": "string"
-            }
-        },
-        {
             "description": "BAR custom function\nCreates a bar chart from Excel data range",
             "id": "BAR",
             "name": "BAR",
