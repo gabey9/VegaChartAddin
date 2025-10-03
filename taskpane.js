@@ -2107,52 +2107,110 @@ else if (chartType === "histogram") {
   
   // Calculate nice bin boundaries
   const binCount = 20;
-  const binWidth = range / binCount;
-  const niceMin = Math.floor(minVal / binWidth) * binWidth;
-  const niceMax = Math.ceil(maxVal / binWidth) * binWidth;
+  const binStep = range / binCount;
 
   spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+    "$schema": "https://vega.github.io/schema/vega/v6.json",
     "description": "Histogram from Excel selection",
+    "width": 500,
+    "height": 300,
+    "padding": 5,
     "background": "white",
-    "config": { "view": { "stroke": "transparent" }},
-    "data": { "values": numericData },
-    "mark": "bar",
-    "encoding": {
-      "x": {
-        "bin": { "maxbins": 20 },
-        "field": "value",
-        "axis": { 
-          "title": "Value",
-          "labelFontSize": 12,
-          "titleFontSize": 14,
-          "labelColor": "#605e5c",
-          "titleColor": "#323130"
-        }
+
+    "data": [
+      {
+        "name": "source",
+        "values": numericData
       },
-      "y": {
-        "aggregate": "count",
-        "axis": { 
-          "title": "Count",
-          "labelFontSize": 12,
-          "titleFontSize": 14,
-          "labelColor": "#605e5c",
-          "titleColor": "#323130",
-          "gridColor": "#f3f2f1"
-        }
-      },
-      "color": {
-        "value": "#0078d4"
+      {
+        "name": "binned",
+        "source": "source",
+        "transform": [
+          {
+            "type": "bin",
+            "field": "value",
+            "extent": [minVal, maxVal],
+            "step": binStep,
+            "nice": false
+          },
+          {
+            "type": "aggregate",
+            "key": "bin0",
+            "groupby": ["bin0", "bin1"],
+            "fields": ["bin0"],
+            "ops": ["count"],
+            "as": ["count"]
+          }
+        ]
       }
-    },
-    "config": {
-      "font": "Segoe UI",
-      "axis": {
+    ],
+
+    "scales": [
+      {
+        "name": "xscale",
+        "type": "linear",
+        "range": "width",
+        "domain": [minVal, maxVal]
+      },
+      {
+        "name": "yscale",
+        "type": "linear",
+        "range": "height",
+        "round": true,
+        "domain": {"data": "binned", "field": "count"},
+        "zero": true,
+        "nice": true
+      }
+    ],
+
+    "axes": [
+      {
+        "orient": "bottom",
+        "scale": "xscale",
+        "zindex": 1,
+        "title": "Value",
+        "titleFontSize": 14,
+        "labelFontSize": 12,
         "labelColor": "#605e5c",
         "titleColor": "#323130",
+        "titleFont": "Segoe UI",
+        "labelFont": "Segoe UI"
+      },
+      {
+        "orient": "left",
+        "scale": "yscale",
+        "tickCount": 5,
+        "zindex": 1,
+        "title": "Count",
+        "titleFontSize": 14,
+        "labelFontSize": 12,
+        "labelColor": "#605e5c",
+        "titleColor": "#323130",
+        "titleFont": "Segoe UI",
+        "labelFont": "Segoe UI",
+        "grid": true,
         "gridColor": "#f3f2f1"
       }
-    }
+    ],
+
+    "marks": [
+      {
+        "type": "rect",
+        "from": {"data": "binned"},
+        "encode": {
+          "update": {
+            "x": {"scale": "xscale", "field": "bin0"},
+            "x2": {"scale": "xscale", "field": "bin1"},
+            "y": {"scale": "yscale", "field": "count"},
+            "y2": {"scale": "yscale", "value": 0},
+            "fill": {"value": "#0078d4"}
+          },
+          "hover": {
+            "fill": {"value": "#005a9e"}
+          }
+        }
+      }
+    ]
   };
 }
 
