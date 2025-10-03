@@ -2099,41 +2099,19 @@ else if (chartType === "histogram") {
     .filter(r => !isNaN(+r[0]))
     .map(r => ({ value: +r[0] }));
 
-  // Calculate data range for better binning control
-  const values = numericData.map(d => d.value);
-  const minVal = Math.min(...values);
-  const maxVal = Math.max(...values);
-  const range = maxVal - minVal;
-
-  // Calculate nice bin boundaries
-  const binCount = 20;
-  const binWidth = range / binCount;
-  const niceMin = Math.floor(minVal / binWidth) * binWidth;
-  const niceMax = Math.ceil(maxVal / binWidth) * binWidth;
-
+  // The Vega-Lite spec is now much simpler.
   spec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
     "description": "Histogram from Excel selection",
     "background": "white",
-    "config": { "view": { "stroke": "transparent" }},
     "data": { "values": numericData },
-
-    // ✅ Explicit bin transform produces bin_start and bin_end
-    "transform": [
-      {
-        "bin": { "extent": [niceMin, niceMax], "step": binWidth },
-        "field": "value",
-        "as": ["bin_start", "bin_end"]
-      }
-    ],
-
     "mark": { "type": "bar", "tooltip": true },
-
     "encoding": {
       "x": {
-        "field": "bin_start",
+        "field": "value",
+        "bin": true, // This automatically creates the histogram bins.
         "type": "quantitative",
-        "axis": { 
+        "axis": {
           "title": "Value",
           "labelFontSize": 12,
           "titleFontSize": 14,
@@ -2141,13 +2119,10 @@ else if (chartType === "histogram") {
           "titleColor": "#323130"
         }
       },
-      // ✅ bars extend to bin_end, no gaps
-      "x2": { "field": "bin_end" },
-
       "y": {
         "aggregate": "count",
         "type": "quantitative",
-        "axis": { 
+        "axis": {
           "title": "Count",
           "labelFontSize": 12,
           "titleFontSize": 14,
@@ -2158,8 +2133,8 @@ else if (chartType === "histogram") {
       },
       "color": { "value": "#0078d4" }
     },
-
     "config": {
+      "view": { "stroke": "transparent" },
       "font": "Segoe UI",
       "axis": {
         "labelColor": "#605e5c",
