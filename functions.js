@@ -2664,7 +2664,6 @@ function HISTOGRAM(data, invocation) {
       const niceMin = Math.floor(minVal / binWidth) * binWidth;
       const niceMax = Math.ceil(maxVal / binWidth) * binWidth;
 
-      // Use EXACT specification from taskpane.js histogram
       const spec = {
         "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
         "description": "Histogram from Excel selection",
@@ -2675,7 +2674,8 @@ function HISTOGRAM(data, invocation) {
           "type": "bar",
           "tooltip": true,
           "stroke": "white",
-          "strokeWidth": 1
+          "strokeWidth": 0.5,
+          "binSpacing": 0
         },
         "encoding": {
           "x": {
@@ -2683,7 +2683,7 @@ function HISTOGRAM(data, invocation) {
             "bin": { 
               "extent": [niceMin, niceMax],
               "step": binWidth,
-              "nice": false  // Prevent Vega from adjusting our nice boundaries
+              "nice": false
             },
             "type": "quantitative",
             "axis": { 
@@ -2692,12 +2692,6 @@ function HISTOGRAM(data, invocation) {
               "titleFontSize": 14,
               "labelColor": "#605e5c",
               "titleColor": "#323130"
-            },
-            "scale": {
-              "domain": [niceMin, niceMax],
-              "range": "width",
-              "paddingInner": 0.05,
-              "paddingOuter": 0.02
             }
           },
           "y": {
@@ -2725,6 +2719,7 @@ function HISTOGRAM(data, invocation) {
           }
         }
       };
+      
       const chartId = `histogram_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
       createChart(spec, "histogram", chartId)
         .then(() => resolve("Histogram"))
