@@ -438,53 +438,59 @@ else if (chartType === "step") {
     throw new Error("Step chart requires at least 2 columns: Date/Time (X-axis), Values (Y-axis)");
   }
 
-  // Convert rows to objects with proper data handling
-  const processedData = data.map(row => {
-    let obj = {};
-    headers.forEach((h, i) => {
-      obj[h] = row[i];
-    });
+  // Convert rows to objects with data cleaning
+  const processedData = [];
+  
+  data.forEach(row => {
+    // Skip rows with missing data
+    if (!row[headers[0]] || row[headers[1]] === null || row[headers[1]] === undefined || row[headers[1]] === "") {
+      return;
+    }
     
-    // Handle date conversion for first column if needed
-    const firstColValue = obj[headers[0]];
-    if (typeof firstColValue === 'number' && firstColValue > 25569) {
+    let obj = {};
+    
+    // Process date field
+    let dateValue = row[headers[0]];
+    if (typeof dateValue === 'number' && dateValue > 25569) {
       // Excel date serial number
-      obj[headers[0]] = new Date((firstColValue - 25569) * 86400 * 1000);
-    } else if (typeof firstColValue === 'string' && firstColValue.includes('-')) {
-      // String dates like "2020-01-01"
-      const parsedDate = new Date(firstColValue);
-      if (!isNaN(parsedDate.getTime())) {
-        obj[headers[0]] = parsedDate;
+      dateValue = new Date((dateValue - 25569) * 86400 * 1000);
+    } else if (typeof dateValue === 'string') {
+      // Try parsing as date string
+      dateValue = new Date(dateValue);
+      if (isNaN(dateValue.getTime())) {
+        return; // Skip invalid dates
       }
     }
+    obj[headers[0]] = dateValue;
     
-    // Ensure numeric value for second column
-    if (obj[headers[1]] !== null && obj[headers[1]] !== undefined) {
-      obj[headers[1]] = parseFloat(obj[headers[1]]) || 0;
+    // Process numeric value field
+    let numValue = parseFloat(row[headers[1]]);
+    if (isNaN(numValue)) {
+      return; // Skip non-numeric values
     }
+    obj[headers[1]] = numValue;
     
-    return obj;
-  }).filter(row => 
-    row[headers[0]] !== null && 
-    row[headers[0]] !== undefined && 
-    row[headers[1]] !== null && 
-    row[headers[1]] !== undefined
-  );
+    processedData.push(obj);
+  });
 
-  // Create step chart specification based on the provided JSON
+  if (processedData.length === 0) {
+    throw new Error("No valid data found for step chart");
+  }
+
+  // Create step chart specification matching the Google stocks example
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
     description: "Step chart from Excel selection",
     background: "white",
+    width: 500,
+    height: 300,
     config: { view: { stroke: "transparent" }},
     data: { values: processedData },
     mark: { 
       type: "line", 
       interpolate: "step-after",
-      point: true,
-      tooltip: true,
-      strokeWidth: 2,
-      color: "#0078d4"
+      point: false,
+      strokeWidth: 2
     },
     encoding: {
       x: { 
@@ -514,8 +520,8 @@ else if (chartType === "step") {
         }
       },
       tooltip: [
-        { field: headers[0], type: "temporal", format: "%Y-%m-%d" },
-        { field: headers[1], type: "quantitative", format: ",.2f" }
+        { field: headers[0], type: "temporal", title: headers[0], format: "%Y-%m-%d" },
+        { field: headers[1], type: "quantitative", title: headers[1], format: ",.2f" }
       ]
     }
   };
