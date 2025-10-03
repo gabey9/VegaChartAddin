@@ -4277,7 +4277,13 @@ else if (chartType === "chord") {
     }
   }
   
-  const totalSum = nodeTotals.reduce((sum, val) => sum + val, 0);
+  // Total should be sum of ALL values in matrix (each value counted once)
+  let totalSum = 0;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      totalSum += matrix[i][j];
+    }
+  }
 
   if (totalSum === 0) {
     alert("All values are zero. Please provide non-zero values.");
@@ -4301,9 +4307,11 @@ else if (chartType === "chord") {
     currentAngle += angleSize + padding;
   }
 
-  // Track outgoing and incoming ribbon positions separately for each chord
-  const outgoingAngles = chords.map(c => c.startAngle);
-  const incomingAngles = chords.map(c => c.startAngle);
+  // Track used portions of each chord for proper ribbon positioning
+  const usedAngles = chords.map(c => ({ 
+    start: c.startAngle, 
+    end: c.startAngle 
+  }));
 
   // Generate ribbon paths for connections
   const ribbonsPaths = [];
@@ -4317,17 +4325,17 @@ else if (chartType === "chord") {
         const sourceChord = chords[i];
         const targetChord = chords[j];
         
-        // Calculate angle span for this ribbon on source (outgoing)
+        // Calculate angle span for this ribbon on source
         const sourceAngleSpan = (value / nodeTotals[i]) * (sourceChord.endAngle - sourceChord.startAngle);
-        const sourceStart = outgoingAngles[i];
+        const sourceStart = usedAngles[i].end;
         const sourceEnd = sourceStart + sourceAngleSpan;
-        outgoingAngles[i] = sourceEnd;
+        usedAngles[i].end = sourceEnd;
         
-        // Calculate angle span for this ribbon on target (incoming)
+        // Calculate angle span for this ribbon on target
         const targetAngleSpan = (value / nodeTotals[j]) * (targetChord.endAngle - targetChord.startAngle);
-        const targetStart = incomingAngles[j];
+        const targetStart = usedAngles[j].end;
         const targetEnd = targetStart + targetAngleSpan;
-        incomingAngles[j] = targetEnd;
+        usedAngles[j].end = targetEnd;
 
         // Generate SVG path using inline polar to cartesian conversion
         const s0x = innerRadius * Math.cos(sourceStart - Math.PI / 2);
