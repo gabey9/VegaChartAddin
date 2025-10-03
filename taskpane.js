@@ -4290,9 +4290,11 @@ else if (chartType === "chord") {
   const chords = [];
   let currentAngle = 0;
   const padding = 0.05; // Gap between arc segments
+  const totalPadding = padding * n; // Total space used by all gaps
+  const availableAngle = (2 * Math.PI) - totalPadding; // Remaining angle for arcs
 
   for (let i = 0; i < n; i++) {
-    const angleSize = (nodeTotals[i] / totalSum) * 2 * Math.PI;
+    const angleSize = (nodeTotals[i] / totalSum) * availableAngle; // Use available angle, not full 2π
     chords.push({
       index: i,
       label: nodeLabels[i],
