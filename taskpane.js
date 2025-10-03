@@ -4277,13 +4277,9 @@ else if (chartType === "chord") {
     }
   }
   
-  // Total should be sum of ALL values in matrix (each value counted once)
-  let totalSum = 0;
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      totalSum += matrix[i][j];
-    }
-  }
+  // Total sum should also be the sum of all node totals (incoming + outgoing for all nodes)
+  // This ensures the proportions add up correctly
+  const totalSum = nodeTotals.reduce((sum, val) => sum + val, 0);
 
   if (totalSum === 0) {
     alert("All values are zero. Please provide non-zero values.");
