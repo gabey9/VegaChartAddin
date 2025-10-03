@@ -2119,17 +2119,17 @@ else if (chartType === "histogram") {
     "data": { "values": numericData },
     "mark": {
       "type": "bar",
-      "tooltip": true,
-      "binSpacing": 0   // ✅ removes gaps between bars
+      "tooltip": true
     },
     "encoding": {
+      // Bin field → provides bin_start and bin_end
       "x": {
-        "field": "value",
         "bin": { 
           "extent": [niceMin, niceMax],
           "step": binWidth,
           "nice": false
         },
+        "field": "value",
         "type": "quantitative",
         "axis": { 
           "title": "Value",
@@ -2137,12 +2137,11 @@ else if (chartType === "histogram") {
           "titleFontSize": 14,
           "labelColor": "#605e5c",
           "titleColor": "#323130"
-        },
-        "scale": {
-          "domain": [niceMin, niceMax],
-          "range": "width"
         }
       },
+      // ✅ Right edge of bar
+      "x2": { "field": "bin_end" },
+
       "y": {
         "aggregate": "count",
         "type": "quantitative",
