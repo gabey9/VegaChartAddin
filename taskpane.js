@@ -2104,7 +2104,7 @@ else if (chartType === "histogram") {
   const minVal = Math.min(...values);
   const maxVal = Math.max(...values);
   const range = maxVal - minVal;
-  
+
   // Calculate nice bin boundaries
   const binCount = 20;
   const binWidth = range / binCount;
@@ -2117,19 +2117,21 @@ else if (chartType === "histogram") {
     "background": "white",
     "config": { "view": { "stroke": "transparent" }},
     "data": { "values": numericData },
-    "mark": {
-      "type": "bar",
-      "tooltip": true
-    },
-    "encoding": {
-      // Bin field → provides bin_start and bin_end
-      "x": {
-        "bin": { 
-          "extent": [niceMin, niceMax],
-          "step": binWidth,
-          "nice": false
-        },
+
+    // ✅ Explicit bin transform produces bin_start and bin_end
+    "transform": [
+      {
+        "bin": { "extent": [niceMin, niceMax], "step": binWidth },
         "field": "value",
+        "as": ["bin_start", "bin_end"]
+      }
+    ],
+
+    "mark": { "type": "bar", "tooltip": true },
+
+    "encoding": {
+      "x": {
+        "field": "bin_start",
         "type": "quantitative",
         "axis": { 
           "title": "Value",
@@ -2139,7 +2141,7 @@ else if (chartType === "histogram") {
           "titleColor": "#323130"
         }
       },
-      // ✅ Right edge of bar
+      // ✅ bars extend to bin_end, no gaps
       "x2": { "field": "bin_end" },
 
       "y": {
@@ -2154,10 +2156,9 @@ else if (chartType === "histogram") {
           "gridColor": "#f3f2f1"
         }
       },
-      "color": {
-        "value": "#0078d4"
-      }
+      "color": { "value": "#0078d4" }
     },
+
     "config": {
       "font": "Segoe UI",
       "axis": {
