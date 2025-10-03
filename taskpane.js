@@ -2117,17 +2117,11 @@ else if (chartType === "histogram") {
     "background": "white",
     "config": { "view": { "stroke": "transparent" }},
     "data": { "values": numericData },
-    "mark": {
-      "type": "bar",
-      "tooltip": true
-    },
+    "mark": "bar",
     "encoding": {
       "x": {
-        "bin": { 
-          "step": binWidth
-        },
+        "bin": { "maxbins": 20 },
         "field": "value",
-        "type": "quantitative",
         "axis": { 
           "title": "Value",
           "labelFontSize": 12,
@@ -2136,15 +2130,8 @@ else if (chartType === "histogram") {
           "titleColor": "#323130"
         }
       },
-      "x2": {
-        "bin": { 
-          "step": binWidth
-        },
-        "field": "value"
-      },
       "y": {
         "aggregate": "count",
-        "type": "quantitative",
         "axis": { 
           "title": "Count",
           "labelFontSize": 12,
