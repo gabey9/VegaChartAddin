@@ -4203,70 +4203,42 @@ else if (chartType === "step") {
       }
 
 else if (chartType === "chord") {
-  // Chord diagram - accepts either matrix OR 3-column format (Source, Destination, Value)
+  // Chord diagram - accepts 3-column format (Source, Destination, Value)
   
-  // Detect format based on data structure
-  let matrix, nodeLabels, n;
-  
-  if (headers.length === 3) {
-    // SHORT FORMAT: 3 columns (Source, Destination, Value)
-    console.log("Detected 3-column format for chord diagram");
-    
-    // Get unique nodes from both source and destination columns
-    const nodeSet = new Set();
-    data.forEach(row => {
-      nodeSet.add(row[headers[0]]); // source
-      nodeSet.add(row[headers[1]]); // destination
-    });
-    nodeLabels = Array.from(nodeSet);
-    n = nodeLabels.length;
-    
-    // Create index mapping
-    const nodeIndex = {};
-    nodeLabels.forEach((label, i) => {
-      nodeIndex[label] = i;
-    });
-    
-    // Build matrix from edge list
-    matrix = Array(n).fill(0).map(() => Array(n).fill(0));
-    data.forEach(row => {
-      const source = row[headers[0]];
-      const dest = row[headers[1]];
-      const value = parseFloat(row[headers[2]]) || 0;
-      
-      const sourceIdx = nodeIndex[source];
-      const destIdx = nodeIndex[dest];
-      
-      if (sourceIdx !== undefined && destIdx !== undefined) {
-        matrix[sourceIdx][destIdx] = value;
-      }
-    });
-    
-  } else if (headers.length >= 2) {
-    // MATRIX FORMAT: Square matrix with labels in first row and column
-    console.log("Detected matrix format for chord diagram");
-    
-    // Extract matrix values (excluding first column which contains row labels)
-    matrix = data.map(row => {
-      return headers.slice(1).map((_, colIndex) => {
-        const value = parseFloat(row[headers[colIndex + 1]]);
-        return isNaN(value) ? 0 : value;
-      });
-    });
-    
-    // Node labels from column headers (excluding first column)
-    nodeLabels = headers.slice(1);
-    n = nodeLabels.length;
-    
-    // Validate matrix
-    if (matrix.length !== n) {
-      alert("Matrix format requires a square matrix (same number of rows and columns)");
-      return;
-    }
-  } else {
-    alert("Chord chart requires either:\n- 3 columns (Source, Destination, Value)\n- or Matrix format with labels in first row and column");
+  if (headers.length !== 3) {
+    alert("Chord chart requires exactly 3 columns: Source, Destination, Value");
     return;
   }
+
+  // Get unique nodes from both source and destination columns
+  const nodeSet = new Set();
+  data.forEach(row => {
+    nodeSet.add(row[headers[0]]); // source
+    nodeSet.add(row[headers[1]]); // destination
+  });
+  const nodeLabels = Array.from(nodeSet);
+  const n = nodeLabels.length;
+  
+  // Create index mapping
+  const nodeIndex = {};
+  nodeLabels.forEach((label, i) => {
+    nodeIndex[label] = i;
+  });
+  
+  // Build matrix from edge list
+  const matrix = Array(n).fill(0).map(() => Array(n).fill(0));
+  data.forEach(row => {
+    const source = row[headers[0]];
+    const dest = row[headers[1]];
+    const value = parseFloat(row[headers[2]]) || 0;
+    
+    const sourceIdx = nodeIndex[source];
+    const destIdx = nodeIndex[dest];
+    
+    if (sourceIdx !== undefined && destIdx !== undefined) {
+      matrix[sourceIdx][destIdx] = value;
+    }
+  });
 
   // Calculate totals for each node (sum of incoming + outgoing)
   const nodeTotals = new Array(n).fill(0);
