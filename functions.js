@@ -748,7 +748,7 @@ function CHORD(data, invocation) {
       // Generate chord arcs with angles
       const chords = [];
       let currentAngle = 0;
-      const padding = 0.05; // Gap between arc segments
+      const padding = 0.02; // Gap between arc segments
       const totalPadding = padding * n; // Total space used by all gaps
       const availableAngle = (2 * Math.PI) - totalPadding; // Remaining angle for arcs
 
