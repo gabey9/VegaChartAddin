@@ -2093,7 +2093,7 @@ else if (chartType === "step") {
         };
       }
 
-      else if (chartType === "histogram") {
+else if (chartType === "histogram") {
   // Expect a single numeric column
   const numericData = rows
     .filter(r => !isNaN(+r[0]))
@@ -2119,19 +2119,14 @@ else if (chartType === "step") {
     "data": { "values": numericData },
     "mark": {
       "type": "bar",
-      "tooltip": true,
-      "stroke": "white",
-      "strokeWidth": 0.5,
-      "binSpacing": 0
+      "tooltip": true
     },
     "encoding": {
       "x": {
-        "field": "value",
         "bin": { 
-          "extent": [niceMin, niceMax],
-          "step": binWidth,
-          "nice": false
+          "step": binWidth
         },
+        "field": "value",
         "type": "quantitative",
         "axis": { 
           "title": "Value",
@@ -2140,6 +2135,12 @@ else if (chartType === "step") {
           "labelColor": "#605e5c",
           "titleColor": "#323130"
         }
+      },
+      "x2": {
+        "bin": { 
+          "step": binWidth
+        },
+        "field": "value"
       },
       "y": {
         "aggregate": "count",
