@@ -143,7 +143,7 @@ function STEP(data, invocation) {
         return;
       }
 
-      // Convert rows -> objects (same as taskpane.js)
+      // Convert rows -> objects with proper data handling
       const processedData = rows.map(row => {
         let obj = {};
         headers.forEach((h, i) => {
@@ -163,8 +163,18 @@ function STEP(data, invocation) {
           }
         }
         
+        // Ensure numeric value for second column
+        if (obj[headers[1]] !== null && obj[headers[1]] !== undefined) {
+          obj[headers[1]] = parseFloat(obj[headers[1]]) || 0;
+        }
+        
         return obj;
-      });
+      }).filter(row => 
+        row[headers[0]] !== null && 
+        row[headers[0]] !== undefined && 
+        row[headers[1]] !== null && 
+        row[headers[1]] !== undefined
+      );
 
       // Use EXACT specification from taskpane.js step chart
       const spec = {
@@ -176,8 +186,10 @@ function STEP(data, invocation) {
         mark: { 
           type: "line", 
           interpolate: "step-after",
+          point: true,
           tooltip: true,
-          strokeWidth: 2
+          strokeWidth: 2,
+          color: "#0078d4"
         },
         encoding: {
           x: { 

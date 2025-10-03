@@ -438,7 +438,7 @@ else if (chartType === "step") {
     throw new Error("Step chart requires at least 2 columns: Date/Time (X-axis), Values (Y-axis)");
   }
 
-  // Convert rows to objects
+  // Convert rows to objects with proper data handling
   const processedData = data.map(row => {
     let obj = {};
     headers.forEach((h, i) => {
@@ -458,8 +458,18 @@ else if (chartType === "step") {
       }
     }
     
+    // Ensure numeric value for second column
+    if (obj[headers[1]] !== null && obj[headers[1]] !== undefined) {
+      obj[headers[1]] = parseFloat(obj[headers[1]]) || 0;
+    }
+    
     return obj;
-  });
+  }).filter(row => 
+    row[headers[0]] !== null && 
+    row[headers[0]] !== undefined && 
+    row[headers[1]] !== null && 
+    row[headers[1]] !== undefined
+  );
 
   // Create step chart specification based on the provided JSON
   spec = {
@@ -471,8 +481,10 @@ else if (chartType === "step") {
     mark: { 
       type: "line", 
       interpolate: "step-after",
+      point: true,
       tooltip: true,
-      strokeWidth: 2
+      strokeWidth: 2,
+      color: "#0078d4"
     },
     encoding: {
       x: { 
