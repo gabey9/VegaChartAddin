@@ -78,6 +78,25 @@
             }
         },
         {
+            "description": "FUNNEL custom function\nCreates a funnel chart from Excel data range showing conversion stages",
+            "id": "FUNNEL",
+            "name": "FUNNEL",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "GAUGE custom function \nCreates a gauge chart from Excel data range",
             "id": "GAUGE",
             "name": "GAUGE",
