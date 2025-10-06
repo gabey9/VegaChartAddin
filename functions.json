@@ -78,6 +78,25 @@
             }
         },
         {
+            "description": "BEESWARM custom function\nCreates a beeswarm chart from Excel data range",
+            "id": "BEESWARM",
+            "name": "BEESWARM",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "FUNNEL custom function\nCreates a funnel chart from Excel data range",
             "id": "FUNNEL",
             "name": "FUNNEL",
@@ -157,6 +176,25 @@
             "description": "CHORD custom function\nCreates a chord diagram from Excel data range",
             "id": "CHORD",
             "name": "CHORD",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "CIRCLEPACK custom function\nCreates a circle packing chart from Excel data range",
+            "id": "CIRCLEPACK",
+            "name": "CIRCLEPACK",
             "options": {
                 "requiresAddress": true
             },
@@ -401,9 +439,47 @@
             }
         },
         {
+            "description": "DENSITY custom function\nCreates a density plot from Excel data range",
+            "id": "DENSITY",
+            "name": "DENSITY",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "MAP custom function\nCreates a world map chart from Excel data range",
             "id": "MAP",
             "name": "MAP",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "CONTOUR custom function\nCreates a contour plot from Excel data range",
+            "id": "CONTOUR",
+            "name": "CONTOUR",
             "options": {
                 "requiresAddress": true
             },
