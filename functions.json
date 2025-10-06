@@ -78,7 +78,7 @@
             }
         },
         {
-            "description": "FUNNEL custom function\nCreates a funnel chart from Excel data range showing conversion stages",
+            "description": "FUNNEL custom function\nCreates a funnel chart from Excel data range",
             "id": "FUNNEL",
             "name": "FUNNEL",
             "options": {
