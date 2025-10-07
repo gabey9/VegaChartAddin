@@ -6202,17 +6202,18 @@ else if (chartType === "fan") {
 // Detect x type
   const isTemporalX = headers[0].toLowerCase().includes('date') ||
                       headers[0].toLowerCase().includes('time');
+
 const xEncoding = {
   field: headers[0],
   type: isTemporalX ? "temporal" : "ordinal",
   title: headers[0],
-  sort: null, // preserve original order (2020, 2021, 2022...)
+  sort: fanData.map(d => d[headers[0]]), // 🔹 preserve your input order
   axis: {
     labelAngle: isTemporalX ? -45 : 0,
     labelFontSize: 11,
     titleFontSize: 12,
-    format: "d",        // no commas or decimals
-    values: fanData.map(d => d[headers[0]]) // show exactly those tick labels
+    format: "d", // no commas or decimals
+    values: fanData.map(d => d[headers[0]]) // show exactly these tick labels
   }
 };
 
