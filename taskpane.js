@@ -6161,49 +6161,55 @@ export async function run() {
       }
 
 else if (chartType === "fan") {
-  if (headers.length < 4) {
-    console.warn("Fan chart requires at least 4 columns");
+  if (headers.length !== 5 && headers.length !== 7) {
+    console.warn("Fan chart requires exactly 5 or 7 columns of data.");
     return;
   }
+  const fanData = data.map(row => {
+    const obj = { [headers[0]]: row[headers[0]] }; // X-axis value
 
-  // Columns: Date | Actual | Forecast | P75 Low | P75 High | [P95 Low] | [P95 High]
-  const fanData = data.map(row => ({
-    [headers[0]]: row[headers[0]],
-    actual:   row[headers[1]] ? parseFloat(row[headers[1]]) : null,
-    p50:      row[headers[2]] ? parseFloat(row[headers[2]]) : null,
-    p75_low:  row[headers[3]] ? parseFloat(row[headers[3]]) : null,
-    p75_high: row[headers[4]] ? parseFloat(row[headers[4]]) : null,
-    p95_low:  headers.length >= 7 && row[headers[5]] ? parseFloat(row[headers[5]]) : null,
-    p95_high: headers.length >= 7 && row[headers[6]] ? parseFloat(row[headers[6]]) : null
-  }));
+    // Columns common to both 5 and 7-column layouts
+    obj.actual   = row[headers[1]] ? parseFloat(row[headers[1]]) : null;
+    obj.p50      = row[headers[2]] ? parseFloat(row[headers[2]]) : null;
+    obj.p75_low  = row[headers[3]] ? parseFloat(row[headers[3]]) : null;
+    obj.p75_high = row[headers[4]] ? parseFloat(row[headers[4]]) : null;
 
-  // Find first forecast year (first with p50 or p75 range)
+    // Add p95 interval data only if it's a 7-column layout
+    if (headers.length === 7) {
+      obj.p95_low  = row[headers[5]] ? parseFloat(row[headers[5]]) : null;
+      obj.p95_high = row[headers[6]] ? parseFloat(row[headers[6]]) : null;
+    } else {
+      // For the 5-column case, ensure p95 values are null
+      obj.p95_low  = null;
+      obj.p95_high = null;
+    }
+    return obj;
+  });
+
+  // Find the split point between actual and forecast data
   let splitYear = null;
   for (let i = 0; i < fanData.length; i++) {
-    if (fanData[i].p75_low != null || fanData[i].p50 != null) {
+    if ((fanData[i].p75_low != null) || (fanData[i].p95_low != null)) {
       splitYear = fanData[i][headers[0]];
       break;
     }
   }
 
-  // Merge actual + forecast into one continuous line
-  const mergedData = fanData.map(d => ({
-    [headers[0]]: d[headers[0]],
-    combined: d.actual != null ? d.actual : d.p50,
-    isForecast: d.actual == null && (d.p50 != null || d.p75_low != null)
-  }));
+  // Detect x-axis type (temporal or ordinal)
+  const isTemporalX = headers[0].toLowerCase().includes('date') ||
+                      headers[0].toLowerCase().includes('time');
 
   const xEncoding = {
     field: headers[0],
-    type: "ordinal",
+    type: isTemporalX ? "temporal" : "ordinal",
     title: headers[0],
-    sort: fanData.map(d => d[headers[0]]),
+    sort: fanData.map(d => d[headers[0]]), // Preserve input order
     axis: {
-      labelAngle: 0,
+      labelAngle: isTemporalX ? -45 : 0,
       labelFontSize: 11,
       titleFontSize: 12,
-      format: "d",
-      values: fanData.map(d => d[headers[0]])
+      format: "d", // No commas or decimals for non-temporal data
+      values: fanData.map(d => d[headers[0]]) // Show exact tick labels
     }
   };
 
@@ -6217,56 +6223,51 @@ else if (chartType === "fan") {
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Fan chart with continuous line and forecast bands",
+    description: "Fan chart with actual and forecast data",
     width: 700,
     height: 400,
     background: "white",
     data: { values: fanData },
     encoding: { x: xEncoding },
     layer: [
-      // --- 95% confidence band ---
       ...(fanData.some(d => d.p95_low != null) ? [{
-        transform: [{ filter: `datum['${headers[0]}'] >= '${splitYear}'` }],
+        transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
         mark: { type: "area", opacity: 0.2, color: "steelblue" },
         encoding: {
           y: { field: "p95_high", type: "quantitative", axis: yAxisConfig },
           y2: { field: "p95_low", type: "quantitative" }
         }
       }] : []),
-
-      // --- 75% confidence band ---
       {
-        transform: [{ filter: `datum['${headers[0]}'] >= '${splitYear}'` }],
+        transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
         mark: { type: "area", opacity: 0.35, color: "steelblue" },
         encoding: {
           y: { field: "p75_high", type: "quantitative", axis: yAxisConfig },
           y2: { field: "p75_low", type: "quantitative" }
         }
       },
-
-      // --- Continuous line with conditional dash ---
       {
-        data: { values: mergedData },
-        mark: { type: "line", color: "steelblue", strokeWidth: 2 },
+        transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
+        mark: { type: "line", color: "steelblue", strokeDash: [4, 2], strokeWidth: 2 },
         encoding: {
-          x: { field: headers[0], type: "ordinal", sort: mergedData.map(d => d[headers[0]]) },
-          y: { field: "combined", type: "quantitative", axis: yAxisConfig },
-          strokeDash: {
-            condition: { test: "datum.isForecast", value: [4, 2] },
-            value: [0, 0]
-          }
+          y: { field: "p50", type: "quantitative", axis: yAxisConfig }
         }
       },
-
-      // --- Actual points (for clarity) ---
       {
-        transform: [{ filter: splitYear ? `datum['${headers[0]}'] < '${splitYear}'` : "true" }],
+        transform: [{ filter: splitYear ? `datum['${headers[0]}'] <= ${splitYear}` : "datum.p75_low == null" }],
+        mark: { type: "line", color: "steelblue", strokeWidth: 2 },
+        encoding: {
+          y: { field: "actual", type: "quantitative", axis: yAxisConfig }
+        }
+      },
+      {
+        transform: [{ filter: splitYear ? `datum['${headers[0]}'] <= ${splitYear}` : "datum.p75_low == null" }],
         mark: { type: "circle", color: "steelblue", size: 50 },
         encoding: {
           y: { field: "actual", type: "quantitative" },
           tooltip: [
             { field: headers[0], title: headers[0] },
-            { field: "actual", title: "Actual", format: ".1f" }
+            { field: "actual", title: "Actual Value", format: ".1f" }
           ]
         }
       }
