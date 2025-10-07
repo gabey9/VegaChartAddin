@@ -6161,68 +6161,52 @@ export async function run() {
       }
 
 else if (chartType === "fan") {
-  // Fan chart expects data in one of two formats:
-  // Format 1 (simple): Year | Value | p75_low | p75_high | p95_low | p95_high
-  // Format 2 (with separate actual): Year | Actual | Forecast | p75_low | p75_high | p95_low | p95_high
-  
   if (headers.length < 4) {
     console.warn("Fan chart requires at least 4 columns");
     return;
   }
 
-  // Determine format based on column count
   const hasActualColumn = headers.length >= 7;
-  
-  // Process data
-  const fanData = data.map(row => {
-    const obj = {
-      [headers[0]]: row[headers[0]]
-    };
 
+  const fanData = data.map(row => {
+    const obj = { [headers[0]]: row[headers[0]] };
     if (hasActualColumn) {
-      // Format 2: Separate actual and forecast columns
-      obj.actual = row[headers[1]] !== null && row[headers[1]] !== "" ? parseFloat(row[headers[1]]) : null;
-      obj.p50 = row[headers[2]] !== null && row[headers[2]] !== "" ? parseFloat(row[headers[2]]) : null;
-      obj.p75_low = row[headers[3]] !== null && row[headers[3]] !== "" ? parseFloat(row[headers[3]]) : null;
-      obj.p75_high = row[headers[4]] !== null && row[headers[4]] !== "" ? parseFloat(row[headers[4]]) : null;
-      obj.p95_low = row[headers[5]] !== null && row[headers[5]] !== "" ? parseFloat(row[headers[5]]) : null;
-      obj.p95_high = row[headers[6]] !== null && row[headers[6]] !== "" ? parseFloat(row[headers[6]]) : null;
+      obj.actual   = row[headers[1]] ? parseFloat(row[headers[1]]) : null;
+      obj.p50      = row[headers[2]] ? parseFloat(row[headers[2]]) : null;
+      obj.p75_low  = row[headers[3]] ? parseFloat(row[headers[3]]) : null;
+      obj.p75_high = row[headers[4]] ? parseFloat(row[headers[4]]) : null;
+      obj.p95_low  = row[headers[5]] ? parseFloat(row[headers[5]]) : null;
+      obj.p95_high = row[headers[6]] ? parseFloat(row[headers[6]]) : null;
     } else {
-      // Format 1: Combined value column (actual if no bands, forecast if bands exist)
       const hasConfidenceBands = row[headers[2]] !== null && row[headers[2]] !== "";
-      obj.p50 = parseFloat(row[headers[1]]) || null;
-      obj.p75_low = hasConfidenceBands ? parseFloat(row[headers[2]]) : null;
+      obj.p50      = parseFloat(row[headers[1]]) || null;
+      obj.p75_low  = hasConfidenceBands ? parseFloat(row[headers[2]]) : null;
       obj.p75_high = hasConfidenceBands ? parseFloat(row[headers[3]]) : null;
-      
       if (headers.length >= 6) {
-        obj.p95_low = hasConfidenceBands ? parseFloat(row[headers[4]]) : null;
+        obj.p95_low  = hasConfidenceBands ? parseFloat(row[headers[4]]) : null;
         obj.p95_high = hasConfidenceBands ? parseFloat(row[headers[5]]) : null;
       }
     }
-
     return obj;
   });
 
-  // Find split point between actual and forecast
+  // Find split point
   let splitYear = null;
   for (let i = 0; i < fanData.length; i++) {
-    if ((fanData[i].p75_low !== null && fanData[i].p75_low !== undefined) ||
-        (fanData[i].p95_low !== null && fanData[i].p95_low !== undefined)) {
+    if ((fanData[i].p75_low != null) || (fanData[i].p95_low != null)) {
       splitYear = fanData[i][headers[0]];
       break;
     }
   }
 
-  // Detect temporal vs ordinal x-axis
-  const isTemporalX = headers[0].toLowerCase().includes('date') || 
-                      headers[0].toLowerCase().includes('time') ||
-                      headers[0].toLowerCase().includes('year') ||
-                      headers[0].toLowerCase().includes('month');
+  // Detect x type
+  const isTemporalX = headers[0].toLowerCase().includes('date') ||
+                      headers[0].toLowerCase().includes('time');
 
-  // Build Vega-Lite spec
+  // Force quantitative axis for numeric year values
   const xEncoding = {
     field: headers[0],
-    type: isTemporalX ? "temporal" : "ordinal",
+    type: isTemporalX ? "temporal" : "quantitative",
     title: headers[0],
     axis: {
       labelAngle: isTemporalX ? -45 : 0,
@@ -6245,52 +6229,51 @@ else if (chartType === "fan") {
     width: 700,
     height: 400,
     background: "white",
-    config: { view: { stroke: "transparent" }},
     data: { values: fanData },
     encoding: { x: xEncoding },
     layer: [
-      // 95% confidence interval (if exists)
-      ...(fanData.some(d => d.p95_low !== null) ? [{
-        transform: [{ filter: splitYear ? `datum['${headers[0]}'] >= ${isTemporalX ? `datetime(${splitYear})` : splitYear}` : "datum.p95_low != null" }],
+      // 95% interval
+      ...(fanData.some(d => d.p95_low != null) ? [{
+        transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
         mark: { type: "area", opacity: 0.2, color: "steelblue" },
         encoding: {
           y: { field: "p95_high", type: "quantitative", axis: yAxisConfig },
           y2: { field: "p95_low", type: "quantitative" }
         }
       }] : []),
-      // 75% confidence interval
+
+      // 75% interval
       {
-        transform: [{ filter: splitYear ? `datum['${headers[0]}'] >= ${isTemporalX ? `datetime(${splitYear})` : splitYear}` : "datum.p75_low != null" }],
+        transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
         mark: { type: "area", opacity: 0.35, color: "steelblue" },
         encoding: {
           y: { field: "p75_high", type: "quantitative", axis: yAxisConfig },
           y2: { field: "p75_low", type: "quantitative" }
         }
       },
+
       // Forecast line (dashed)
       {
-        transform: [{ filter: splitYear ? `datum['${headers[0]}'] >= ${isTemporalX ? `datetime(${splitYear})` : splitYear}` : "datum.p75_low != null" }],
-        mark: { type: "line", color: "steelblue", strokeDash: [4, 2], strokeWidth: 2, tooltip: true },
+        transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
+        mark: { type: "line", color: "steelblue", strokeDash: [4, 2], strokeWidth: 2 },
         encoding: {
           y: { field: "p50", type: "quantitative", axis: yAxisConfig }
         }
       },
-      // Actual line (solid)
+
+      // ✅ Actual line (solid) — extend one more year (<= splitYear)
       {
-        transform: [{ filter: splitYear ? `datum['${headers[0]}'] < ${isTemporalX ? `datetime(${splitYear})` : splitYear}` : "datum.p75_low == null" }],
-        mark: { type: "line", color: "steelblue", strokeWidth: 2, tooltip: true },
+        transform: [{ filter: splitYear ? `datum['${headers[0]}'] <= ${splitYear}` : "datum.p75_low == null" }],
+        mark: { type: "line", color: "steelblue", strokeWidth: 2 },
         encoding: {
-          y: { 
-            field: hasActualColumn ? "actual" : "p50", 
-            type: "quantitative", 
-            axis: yAxisConfig 
-          }
+          y: { field: hasActualColumn ? "actual" : "p50", type: "quantitative", axis: yAxisConfig }
         }
       },
-      // Points on actual line
+
+      // Actual points
       {
-        transform: [{ filter: splitYear ? `datum['${headers[0]}'] < ${isTemporalX ? `datetime(${splitYear})` : splitYear}` : "datum.p75_low == null" }],
-        mark: { type: "circle", color: "steelblue", size: 50, tooltip: true },
+        transform: [{ filter: splitYear ? `datum['${headers[0]}'] <= ${splitYear}` : "datum.p75_low == null" }],
+        mark: { type: "circle", color: "steelblue", size: 50 },
         encoding: {
           y: { field: hasActualColumn ? "actual" : "p50", type: "quantitative" },
           tooltip: [
@@ -6302,10 +6285,7 @@ else if (chartType === "fan") {
     ],
     config: {
       font: "Segoe UI",
-      axis: {
-        labelColor: "#605e5c",
-        titleColor: "#323130"
-      }
+      axis: { labelColor: "#605e5c", titleColor: "#323130" }
     }
   };
 }
