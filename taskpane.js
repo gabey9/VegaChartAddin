@@ -6166,8 +6166,7 @@ else if (chartType === "fan") {
     return;
   }
 
-  // Expected columns:
-  // Date | Actual | Forecast | P75 Low | P75 High | [P95 Low] | [P95 High]
+  // Columns: Date | Actual | Forecast | P75 Low | P75 High | [P95 Low] | [P95 High]
   const fanData = data.map(row => ({
     [headers[0]]: row[headers[0]],
     actual:   row[headers[1]] ? parseFloat(row[headers[1]]) : null,
@@ -6178,7 +6177,7 @@ else if (chartType === "fan") {
     p95_high: headers.length >= 7 && row[headers[6]] ? parseFloat(row[headers[6]]) : null
   }));
 
-  // Split year = first year with forecast values (p75_low not null)
+  // Split year = first with forecast (p75_low or p50 available)
   let splitYear = null;
   for (let i = 0; i < fanData.length; i++) {
     if (fanData[i].p75_low != null || fanData[i].p50 != null) {
@@ -6187,7 +6186,14 @@ else if (chartType === "fan") {
     }
   }
 
-  // Keep x order as in data, treat as ordinal text labels
+  // Merge actual + forecast into one continuous series for line
+  const mergedData = fanData.map(d => ({
+    [headers[0]]: d[headers[0]],
+    combined: d.actual != null ? d.actual : d.p50,
+    isForecast: d.p75_low != null || d.p50 != null
+  }));
+
+  // Keep x order exactly as in input
   const xEncoding = {
     field: headers[0],
     type: "ordinal",
@@ -6212,14 +6218,14 @@ else if (chartType === "fan") {
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Fan chart with actual and forecast data",
+    description: "Fan chart with continuous actual–forecast line",
     width: 700,
     height: 400,
     background: "white",
     data: { values: fanData },
     encoding: { x: xEncoding },
     layer: [
-      // 95% band (optional)
+      // --- 95% confidence band (optional) ---
       ...(fanData.some(d => d.p95_low != null) ? [{
         transform: [{ filter: `datum['${headers[0]}'] >= '${splitYear}'` }],
         mark: { type: "area", opacity: 0.2, color: "steelblue" },
@@ -6229,7 +6235,7 @@ else if (chartType === "fan") {
         }
       }] : []),
 
-      // 75% band
+      // --- 75% confidence band ---
       {
         transform: [{ filter: `datum['${headers[0]}'] >= '${splitYear}'` }],
         mark: { type: "area", opacity: 0.35, color: "steelblue" },
@@ -6239,25 +6245,25 @@ else if (chartType === "fan") {
         }
       },
 
-      // Forecast median (dashed)
+      // --- Combined actual + forecast line ---
       {
-        transform: [{ filter: `datum['${headers[0]}'] >= '${splitYear}'` }],
-        mark: { type: "line", color: "steelblue", strokeDash: [4, 2], strokeWidth: 2 },
+        data: { values: mergedData },
+        mark: {
+          type: "line",
+          color: "steelblue",
+          strokeWidth: 2
+        },
         encoding: {
-          y: { field: "p50", type: "quantitative", axis: yAxisConfig }
+          x: { field: headers[0], type: "ordinal", sort: mergedData.map(d => d[headers[0]]) },
+          y: { field: "combined", type: "quantitative", axis: yAxisConfig },
+          strokeDash: {
+            condition: { test: "datum.isForecast", value: [4, 2] },
+            value: [0, 0]
+          }
         }
       },
 
-      // Actual (solid line)
-      {
-        transform: [{ filter: splitYear ? `datum['${headers[0]}'] < '${splitYear}'` : "true" }],
-        mark: { type: "line", color: "steelblue", strokeWidth: 2 },
-        encoding: {
-          y: { field: "actual", type: "quantitative", axis: yAxisConfig }
-        }
-      },
-
-      // Actual dots
+      // --- Actual data points ---
       {
         transform: [{ filter: splitYear ? `datum['${headers[0]}'] < '${splitYear}'` : "true" }],
         mark: { type: "circle", color: "steelblue", size: 50 },
