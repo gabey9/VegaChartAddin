@@ -40,6 +40,44 @@
             }
         },
         {
+            "description": "FAN custom function\nCreates a fan chart from Excel data range",
+            "id": "FAN",
+            "name": "FAN",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "COLUMN custom function\nCreates a column chart from Excel data range",
+            "id": "COLUMN",
+            "name": "COLUMN",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "BAR custom function\nCreates a bar chart from Excel data range",
             "id": "BAR",
             "name": "BAR",
