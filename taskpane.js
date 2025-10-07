@@ -6199,6 +6199,9 @@ else if (chartType === "fan") {
     }
   }
 
+// Detect x type
+  const isTemporalX = headers[0].toLowerCase().includes('date') ||
+                      headers[0].toLowerCase().includes('time');
 const xEncoding = {
   field: headers[0],
   type: isTemporalX ? "temporal" : "ordinal",
