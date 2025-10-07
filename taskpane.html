@@ -231,6 +231,7 @@
                 <div class="chart-item" data-chart="mekko" data-folder="special">Mekko</div>
                 <div class="chart-item" data-chart="marimekko" data-folder="special">Marimekko</div>                
                 <div class="chart-item" data-chart="bump" data-folder="special">Bump</div>
+                <div class="chart-item" data-chart="fan" data-folder="special">Fan</div>
                 <div class="chart-item" data-chart="waffle" data-folder="special">Waffle</div>
                 <div class="chart-item" data-chart="lollipop" data-folder="special">Lollipop</div>
                 <div class="chart-item" data-chart="violin" data-folder="special">Violin</div>
@@ -287,6 +288,7 @@
         <option value="mekko">Mekko</option>
         <option value="marimekko">Marimekko</option>
         <option value="bump">Bump</option>
+        <option value="fan">Fan</option>
         <option value="waffle">Waffle</option>
         <option value="lollipop">Lollipop</option>
         <option value="violin">Violin</option>
@@ -649,6 +651,19 @@
             <li><strong>Column 3:</strong> Rank values (1, 2, 3, etc.)</li>
         </ul>
     </div>
+
+<div id="req-fan" class="data-requirements hidden">
+    <h4>Data Requirements:</h4>
+    <ul>
+        <li><strong>Column 1:</strong> Time periods (Year, Date, Month)</li>
+        <li><strong>Column 2:</strong> Value (actual for historical, forecast for future)</li>
+        <li><strong>Column 3:</strong> p75_low (75% confidence lower bound)</li>
+        <li><strong>Column 4:</strong> p75_high (75% confidence upper bound)</li>
+        <li><strong>Column 5 (optional):</strong> p95_low (95% confidence lower bound)</li>
+        <li><strong>Column 6 (optional):</strong> p95_high (95% confidence upper bound)</li>
+        <li><strong>Note:</strong> Leave confidence columns empty for actual data periods</li>
+    </ul>
+</div>
 
     <div id="req-violin" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
