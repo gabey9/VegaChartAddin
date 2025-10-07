@@ -187,6 +187,7 @@
                     <span>Standard</span>
                     <span class="folder-arrow">►</span>
                 </div>
+                <div class="chart-item" data-chart="column" data-folder="standard">Column</div>
                 <div class="chart-item" data-chart="bar" data-folder="standard">Bar</div>
                 <div class="chart-item" data-chart="line" data-folder="standard">Line</div>
                 <div class="chart-item" data-chart="area" data-folder="standard">Area</div>
@@ -250,6 +251,7 @@
     <!-- Hidden select for taskpane.js compatibility -->
     <select id="chartType" style="display: none;">
         <option value="">Choose a chart...</option>
+        <option value="column">Column</option>
         <option value="bar">Bar</option>
         <option value="butterfly">Butterfly</option>
         <option value="beeswarm">Beeswarm</option>
@@ -322,10 +324,19 @@
         </ul>
     </div>
 
-    <div id="req-bar" class="data-requirements hidden">
+    <div id="req-column" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
         <ul>
             <li><strong>Column 1:</strong> Categories or X-axis values</li>
+            <li><strong>Column 2:</strong> Values (numbers)</li>
+            <li><strong>Column 3 (optional):</strong> Grouping variable for grouped columns</li>
+        </ul>
+    </div>
+
+    <div id="req-bar" class="data-requirements hidden">
+        <h4>Data Requirements:</h4>
+        <ul>
+            <li><strong>Column 1:</strong> Categories or Y-axis values</li>
             <li><strong>Column 2:</strong> Values (numbers)</li>
             <li><strong>Column 3 (optional):</strong> Grouping variable for grouped bars</li>
         </ul>
@@ -658,10 +669,10 @@
         <li><strong>Column 1:</strong> Time periods</li>
         <li><strong>Column 2:</strong> Actual value</li>
         <li><strong>Column 3:</strong> Forecast Value</li>
-        <li><strong>Column 4:</strong> Low (75% confidence lower bound)</li>
-        <li><strong>Column 5:</strong> High (75% confidence upper bound)</li>
-        <li><strong>Column 6 (optional):</strong> Low (95% confidence lower bound)</li>
-        <li><strong>Column 7 (optional):</strong> High (95% confidence upper bound)</li>
+        <li><strong>Column 4:</strong> Forecast Low (75% confidence lower bound)</li>
+        <li><strong>Column 5:</strong> Forecast High (75% confidence upper bound)</li>
+        <li><strong>Column 6 (optional):</strong> Forecast Low (95% confidence lower bound)</li>
+        <li><strong>Column 7 (optional):</strong> Forecast High (95% confidence upper bound)</li>
     </ul>
 </div>
 

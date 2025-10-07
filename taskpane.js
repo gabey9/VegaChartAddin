@@ -5764,6 +5764,64 @@ export async function run() {
           },
           encoding: {
             x: { 
+              field: headers[1], 
+              type: "quantitative",
+              axis: {
+                title: headers[1],
+                labelFontSize: 12,
+                titleFontSize: 14
+              }
+            },
+            y: { 
+              field: headers[0], 
+              type: "nominal",
+              axis: {
+                title: headers[0],
+                labelFontSize: 12,
+                titleFontSize: 14
+              }
+            },
+            // Add color encoding for grouped bars if 3rd column exists
+            ...(headers.length >= 3 && {
+              color: { 
+                field: headers[2], 
+                type: "nominal",
+                legend: {
+                  title: headers[2],
+                  titleFontSize: 12,
+                  labelFontSize: 11
+                }
+              }
+            })
+          },
+          config: {
+            font: "Segoe UI",
+            axis: {
+              labelColor: "#605e5c",
+              titleColor: "#323130",
+              gridColor: "#f3f2f1"
+            },
+            legend: {
+              titleColor: "#323130",
+              labelColor: "#605e5c"
+            }
+          }
+        };
+      }
+
+      else if (chartType === "column") {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+          description: "Column chart from Excel selection",
+          background: "white",
+          config: { view: { stroke: "transparent" }},
+          data: { values: data },
+          mark: { 
+            type: "bar", 
+            tooltip: true
+          },
+          encoding: {
+            x: { 
               field: headers[0], 
               type: "nominal",
               axis: {
