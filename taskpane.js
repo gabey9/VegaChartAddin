@@ -6251,11 +6251,7 @@ else if (chartType === "fan") {
     layer: [
       // 95% confidence interval (if exists)
       ...(fanData.some(d => d.p95_low !== null) ? [{
-        transform: [{ 
-          filter: splitYear !== null 
-            ? `datum['${headers[0]}'] >= ${splitYear}` 
-            : "datum.p95_low != null" 
-        }],
+        transform: [{ filter: splitYear ? `datum['${headers[0]}'] >= ${isTemporalX ? `datetime(${splitYear})` : splitYear}` : "datum.p95_low != null" }],
         mark: { type: "area", opacity: 0.2, color: "steelblue" },
         encoding: {
           y: { field: "p95_high", type: "quantitative", axis: yAxisConfig },
