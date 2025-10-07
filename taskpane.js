@@ -6207,13 +6207,13 @@ const xEncoding = {
   field: headers[0],
   type: isTemporalX ? "temporal" : "ordinal",
   title: headers[0],
-  sort: fanData.map(d => d[headers[0]]), // 🔹 preserve your input order
+  sort: fanData.map(d => d[headers[0]]),
   axis: {
     labelAngle: isTemporalX ? -45 : 0,
     labelFontSize: 11,
     titleFontSize: 12,
     format: "d", // no commas or decimals
-    values: fanData.map(d => d[headers[0]]) // show exactly these tick labels
+    values: fanData.map(d => d[headers[0]])
   }
 };
 
@@ -6234,7 +6234,6 @@ const xEncoding = {
     data: { values: fanData },
     encoding: { x: xEncoding },
     layer: [
-      // 95% interval
       ...(fanData.some(d => d.p95_low != null) ? [{
         transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
         mark: { type: "area", opacity: 0.2, color: "steelblue" },
@@ -6243,8 +6242,6 @@ const xEncoding = {
           y2: { field: "p95_low", type: "quantitative" }
         }
       }] : []),
-
-      // 75% interval
       {
         transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
         mark: { type: "area", opacity: 0.35, color: "steelblue" },
@@ -6253,8 +6250,6 @@ const xEncoding = {
           y2: { field: "p75_low", type: "quantitative" }
         }
       },
-
-      // Forecast line (dashed)
       {
         transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
         mark: { type: "line", color: "steelblue", strokeDash: [4, 2], strokeWidth: 2 },
@@ -6262,8 +6257,6 @@ const xEncoding = {
           y: { field: "p50", type: "quantitative", axis: yAxisConfig }
         }
       },
-
-      // Actual line (solid) — extend one more year (<= splitYear)
       {
         transform: [{ filter: splitYear ? `datum['${headers[0]}'] <= ${splitYear}` : "datum.p75_low == null" }],
         mark: { type: "line", color: "steelblue", strokeWidth: 2 },
@@ -6271,8 +6264,6 @@ const xEncoding = {
           y: { field: hasActualColumn ? "actual" : "p50", type: "quantitative", axis: yAxisConfig }
         }
       },
-
-      // Actual points
       {
         transform: [{ filter: splitYear ? `datum['${headers[0]}'] <= ${splitYear}` : "datum.p75_low == null" }],
         mark: { type: "circle", color: "steelblue", size: 50 },
