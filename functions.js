@@ -262,84 +262,43 @@ function FAN(data, invocation) {
       const headers = data[0];
       const rows = data.slice(1);
 
-      if (headers.length < 4) {
-        resolve("Error: Fan chart requires at least 4 columns");
+      if (headers.length < 5) {
+        resolve("Error: Expected columns: Date | Actual | Forecast | P75 Low | P75 High | [P95 Low] | [P95 High]");
         return;
       }
 
-      const hasActualColumn = headers.length >= 7;
-
-      // Parse rows into objects
-      const fanData = rows
-        .map(row => {
-          const obj = { [headers[0]]: row[0] };
-
-          if (hasActualColumn) {
-            obj.actual   = row[1] !== "" ? parseFloat(row[1]) : null;
-            obj.p50      = row[2] !== "" ? parseFloat(row[2]) : null;
-            obj.p75_low  = row[3] !== "" ? parseFloat(row[3]) : null;
-            obj.p75_high = row[4] !== "" ? parseFloat(row[4]) : null;
-            obj.p95_low  = row[5] !== "" ? parseFloat(row[5]) : null;
-            obj.p95_high = row[6] !== "" ? parseFloat(row[6]) : null;
-          } else {
-            obj.p50      = row[1] !== "" ? parseFloat(row[1]) : null;
-            obj.p75_low  = row[2] !== "" ? parseFloat(row[2]) : null;
-            obj.p75_high = row[3] !== "" ? parseFloat(row[3]) : null;
-            obj.p95_low  = row[4] !== "" ? parseFloat(row[4]) : null;
-            obj.p95_high = row[5] !== "" ? parseFloat(row[5]) : null;
-          }
-
-          return obj;
-        })
-        .filter(d => d[headers[0]] !== null && d[headers[0]] !== undefined);
+      const fanData = rows.map((row) => ({
+        Date: row[0],
+        Actual: row[1] !== "" ? parseFloat(row[1]) : null,
+        Forecast: row[2] !== "" ? parseFloat(row[2]) : null,
+        P75_Low: row[3] !== "" ? parseFloat(row[3]) : null,
+        P75_High: row[4] !== "" ? parseFloat(row[4]) : null,
+        P95_Low: headers.length > 5 && row[5] !== "" ? parseFloat(row[5]) : null,
+        P95_High: headers.length > 6 && row[6] !== "" ? parseFloat(row[6]) : null
+      })).filter(d => d.Date !== null && d.Date !== undefined);
 
       if (fanData.length === 0) {
         resolve("Error: No valid data found");
         return;
       }
 
-      // Sort by year/period ascending (if numeric)
+      // Sort chronologically if numbers, otherwise keep input order
       fanData.sort((a, b) => {
-        const xA = isNaN(a[headers[0]]) ? a[headers[0]] : +a[headers[0]];
-        const xB = isNaN(b[headers[0]]) ? b[headers[0]] : +b[headers[0]];
-        return xA > xB ? 1 : xA < xB ? -1 : 0;
+        const aVal = isNaN(a.Date) ? a.Date : +a.Date;
+        const bVal = isNaN(b.Date) ? b.Date : +b.Date;
+        return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
       });
 
-      // Identify first forecast year
-      let splitYear = null;
-      for (let i = 0; i < fanData.length; i++) {
-        if (fanData[i].p75_low !== null || fanData[i].p95_low !== null) {
-          splitYear = fanData[i][headers[0]];
+      // Determine the first forecast year (start of fan)
+      let splitDate = null;
+      for (const row of fanData) {
+        if (row.Forecast !== null) {
+          splitDate = row.Date;
           break;
         }
       }
 
-      // Use ordinal x-axis
-      const isTemporalX = false;
-
-      const xValues = fanData.map(d => d[headers[0]]);
-
-      const xEncoding = {
-        field: headers[0],
-        type: isTemporalX ? "temporal" : "ordinal",
-        title: headers[0],
-        sort: xValues, // preserve correct order
-        axis: {
-          labelAngle: -45,
-          labelFontSize: 11,
-          titleFontSize: 12,
-          values: xValues,
-          format: "d"
-        }
-      };
-
-      const yAxisConfig = {
-        title: "Value",
-        labelFontSize: 11,
-        titleFontSize: 12,
-        grid: true,
-        gridColor: "#f3f2f1"
-      };
+      const xValues = fanData.map(d => d.Date);
 
       const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
@@ -347,61 +306,92 @@ function FAN(data, invocation) {
         width: 700,
         height: 400,
         background: "white",
-        config: { view: { stroke: "transparent" } },
         data: { values: fanData },
-        encoding: { x: xEncoding },
-        layer: [
-          ...(fanData.some(d => d.p95_low !== null) ? [{
-            transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
-            mark: { type: "area", opacity: 0.2, color: "steelblue" },
-            encoding: {
-              y: { field: "p95_high", type: "quantitative", axis: yAxisConfig },
-              y2: { field: "p95_low", type: "quantitative" }
+        encoding: {
+          x: {
+            field: "Date",
+            type: "ordinal",
+            title: "Date",
+            sort: xValues,
+            axis: {
+              labelAngle: -45,
+              labelFontSize: 11,
+              titleFontSize: 12,
+              values: xValues
             }
-          }] : []),
+          }
+        },
+        layer: [
+          // 95% confidence band
+          ...(fanData.some(d => d.P95_Low !== null)
+            ? [{
+                transform: [{ filter: `datum['Date'] >= '${splitDate}'` }],
+                mark: { type: "area", opacity: 0.2, color: "steelblue" },
+                encoding: {
+                  y: { field: "P95_High", type: "quantitative" },
+                  y2: { field: "P95_Low" }
+                }
+              }]
+            : []),
+
+          // 75% confidence band
           {
-            transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
+            transform: [{ filter: `datum['Date'] >= '${splitDate}'` }],
             mark: { type: "area", opacity: 0.35, color: "steelblue" },
             encoding: {
-              y: { field: "p75_high", type: "quantitative", axis: yAxisConfig },
-              y2: { field: "p75_low", type: "quantitative" }
+              y: { field: "P75_High", type: "quantitative" },
+              y2: { field: "P75_Low" }
             }
           },
+
+          // Forecast line (dashed)
           {
-            transform: [{ filter: `datum['${headers[0]}'] >= ${splitYear}` }],
-            mark: { type: "line", color: "steelblue", strokeDash: [4, 2], strokeWidth: 2, tooltip: true },
+            transform: [{ filter: `datum['Date'] >= '${splitDate}'` }],
+            mark: { type: "line", color: "steelblue", strokeDash: [4, 2], strokeWidth: 2 },
             encoding: {
-              y: { field: "p50", type: "quantitative", axis: yAxisConfig },
+              y: { field: "Forecast", type: "quantitative" },
               tooltip: [
-                { field: headers[0], title: headers[0] },
-                { field: "p50", title: "Forecast", format: ".1f" },
-                { field: "p75_low", title: "75% Lower", format: ".1f" },
-                { field: "p75_high", title: "75% Upper", format: ".1f" }
+                { field: "Date", title: "Date" },
+                { field: "Forecast", title: "Forecast", format: ".1f" },
+                { field: "P75_Low", title: "75% Lower", format: ".1f" },
+                { field: "P75_High", title: "75% Upper", format: ".1f" }
               ]
             }
           },
+
+          // Actual line (solid)
           {
-            transform: [{ filter: `datum['${headers[0]}'] < ${splitYear}` }],
-            mark: { type: "line", color: "steelblue", strokeWidth: 2, tooltip: true },
+            transform: [{ filter: `datum['Date'] < '${splitDate}'` }],
+            mark: { type: "line", color: "#444", strokeWidth: 2 },
             encoding: {
-              y: { field: hasActualColumn ? "actual" : "p50", type: "quantitative", axis: yAxisConfig }
+              y: { field: "Actual", type: "quantitative" },
+              tooltip: [
+                { field: "Date", title: "Date" },
+                { field: "Actual", title: "Actual", format: ".1f" }
+              ]
             }
           },
+
+          // Actual points
           {
-            transform: [{ filter: `datum['${headers[0]}'] < ${splitYear}` }],
-            mark: { type: "circle", color: "steelblue", size: 50, tooltip: true },
+            transform: [{ filter: `datum['Date'] < '${splitDate}'` }],
+            mark: { type: "circle", color: "#444", size: 50 },
             encoding: {
-              y: { field: hasActualColumn ? "actual" : "p50", type: "quantitative" },
+              y: { field: "Actual", type: "quantitative" },
               tooltip: [
-                { field: headers[0], title: headers[0] },
-                { field: hasActualColumn ? "actual" : "p50", title: "Actual", format: ".1f" }
+                { field: "Date", title: "Date" },
+                { field: "Actual", title: "Actual", format: ".1f" }
               ]
             }
           }
         ],
         config: {
           font: "Segoe UI",
-          axis: { labelColor: "#605e5c", titleColor: "#323130" }
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          }
         }
       };
 
