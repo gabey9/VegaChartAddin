@@ -6199,21 +6199,19 @@ else if (chartType === "fan") {
     }
   }
 
-  // Detect x type
-  const isTemporalX = headers[0].toLowerCase().includes('date') ||
-                      headers[0].toLowerCase().includes('time');
-
-  // Force quantitative axis for numeric year values
-  const xEncoding = {
-    field: headers[0],
-    type: isTemporalX ? "temporal" : "quantitative",
-    title: headers[0],
-    axis: {
-      labelAngle: isTemporalX ? -45 : 0,
-      labelFontSize: 11,
-      titleFontSize: 12
-    }
-  };
+const xEncoding = {
+  field: headers[0],
+  type: isTemporalX ? "temporal" : "ordinal",
+  title: headers[0],
+  sort: null, // preserve original order (2020, 2021, 2022...)
+  axis: {
+    labelAngle: isTemporalX ? -45 : 0,
+    labelFontSize: 11,
+    titleFontSize: 12,
+    format: "d",        // no commas or decimals
+    values: fanData.map(d => d[headers[0]]) // show exactly those tick labels
+  }
+};
 
   const yAxisConfig = {
     title: "Value",
@@ -6261,7 +6259,7 @@ else if (chartType === "fan") {
         }
       },
 
-      // ✅ Actual line (solid) — extend one more year (<= splitYear)
+      // Actual line (solid) — extend one more year (<= splitYear)
       {
         transform: [{ filter: splitYear ? `datum['${headers[0]}'] <= ${splitYear}` : "datum.p75_low == null" }],
         mark: { type: "line", color: "steelblue", strokeWidth: 2 },
