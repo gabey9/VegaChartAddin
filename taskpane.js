@@ -5812,40 +5812,27 @@ export async function run() {
 else if (chartType === "column") {
   const categoryField = headers[0];
   const valueField = headers[1];
-  const groupField = headers[2];
-
-  // Detect if stacking is needed (duplicate category+group combos)
-  let isStacked = false;
-  if (headers.length >= 3) {
-    const seen = new Set();
-    for (const d of data) {
-      const key = `${d[categoryField]}|${d[groupField]}`;
-      if (seen.has(key)) {
-        isStacked = true;
-        break;
-      }
-      seen.add(key);
-    }
-  }
-
-  // Add shadeLevel per stacked segment (lightens upper layers)
+  const groupField = headers.length >= 3 ? headers[2] : null;
+  
+  // Add shadeLevel to data (counts how many duplicates per category/group)
   let shadeCounter = {};
   const shadedData = data.map(d => {
-    const key = `${d[categoryField]}|${d[groupField]}`;
+    const key = `${d[categoryField]}|${groupField ? d[groupField] : "none"}`;
     const level = (shadeCounter[key] || 0);
     shadeCounter[key] = level + 1;
     return { ...d, shadeLevel: level };
   });
-
+  
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Grouped or Stacked Column Chart with centered bars and lighter stacks",
+    description: "Column / Grouped / Stacked Bar Chart with auto-lightened stacked colors",
     background: "white",
+    config: { view: { stroke: "transparent" } },
     data: { values: shadedData },
     mark: { type: "bar", tooltip: true },
     encoding: {
       x: { 
-        field: categoryField,
+        field: categoryField, 
         type: "nominal",
         axis: {
           title: categoryField,
@@ -5861,10 +5848,11 @@ else if (chartType === "column") {
           labelFontSize: 12,
           titleFontSize: 14
         },
-        stack: isStacked ? "zero" : null
+        stack: "zero" // stack when same category/group repeated
       },
-      ...(headers.length >= 3 && {
-        color: { 
+      ...(groupField && { 
+        xOffset: { field: groupField },
+        color: {
           field: groupField,
           type: "nominal",
           legend: {
@@ -5874,28 +5862,15 @@ else if (chartType === "column") {
           },
           scale: { scheme: "category10" }
         },
-        ...(isStacked
-          ? {} // stacked: no xOffset
-          : { xOffset: { field: groupField } }) // grouped: side-by-side
-      }),
-      // Lighter color for higher stack levels
-      ...(isStacked && {
         fillOpacity: {
           field: "shadeLevel",
           type: "quantitative",
-          scale: { domain: [0, 3], range: [1, 0.5] }
+          scale: { domain: [0, 3], range: [1, 0.5] } // lighter for higher stack index
         }
       })
     },
     config: {
       font: "Segoe UI",
-      view: { stroke: "transparent" },
-      bar: {
-        // narrower gaps between columns
-        discreteBandSize: 20,
-        continuousBandSize: 20
-      },
-      scale: { bandPaddingInner: 0.05, bandPaddingOuter: 0.05 }, // tighter spacing
       axis: {
         labelColor: "#605e5c",
         titleColor: "#323130",
