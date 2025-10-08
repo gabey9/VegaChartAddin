@@ -5812,13 +5812,26 @@ export async function run() {
 else if (chartType === "column") {
   const categoryField = headers[0];
   const valueField = headers[1];
-  const groupField = headers.length >= 3 ? headers[2] : null;
-  const colorField = headers.length >= 4 ? headers[3] : groupField;
+  const groupField = headers[2];
 
-  // Add shadeLevel to data (counts how many duplicates per category/color)
+  // Detect if stacking is needed (duplicate category+group combos)
+  let isStacked = false;
+  if (headers.length >= 3) {
+    const seen = new Set();
+    for (const d of data) {
+      const key = `${d[categoryField]}|${d[groupField]}`;
+      if (seen.has(key)) {
+        isStacked = true;
+        break;
+      }
+      seen.add(key);
+    }
+  }
+
+  // Add shadeLevel per stacked segment (lightens upper layers)
   let shadeCounter = {};
   const shadedData = data.map(d => {
-    const key = `${d[categoryField]}|${colorField ? d[colorField] : "none"}`;
+    const key = `${d[categoryField]}|${d[groupField]}`;
     const level = (shadeCounter[key] || 0);
     shadeCounter[key] = level + 1;
     return { ...d, shadeLevel: level };
@@ -5826,14 +5839,13 @@ else if (chartType === "column") {
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Column / Grouped / Stacked Bar Chart with auto-lightened stacked colors",
+    description: "Grouped or Stacked Column Chart with centered bars and lighter stacks",
     background: "white",
-    config: { view: { stroke: "transparent" } },
     data: { values: shadedData },
     mark: { type: "bar", tooltip: true },
     encoding: {
       x: { 
-        field: categoryField, 
+        field: categoryField,
         type: "nominal",
         axis: {
           title: categoryField,
@@ -5849,32 +5861,41 @@ else if (chartType === "column") {
           labelFontSize: 12,
           titleFontSize: 14
         },
-        stack: "zero" // stack when same category/group repeated
+        stack: isStacked ? "zero" : null
       },
-      ...(groupField && { xOffset: { field: groupField } }),
-      ...(colorField && {
-        color: {
-          // Combine base color + shade level into one scale
-          field: colorField,
+      ...(headers.length >= 3 && {
+        color: { 
+          field: groupField,
           type: "nominal",
           legend: {
-            title: colorField,
+            title: groupField,
             titleFontSize: 12,
             labelFontSize: 11
           },
-          // Base categorical palette
           scale: { scheme: "category10" }
         },
-        // Apply lightness variation per shadeLevel
+        ...(isStacked
+          ? {} // stacked: no xOffset
+          : { xOffset: { field: groupField } }) // grouped: side-by-side
+      }),
+      // Lighter color for higher stack levels
+      ...(isStacked && {
         fillOpacity: {
           field: "shadeLevel",
           type: "quantitative",
-          scale: { domain: [0, 3], range: [1, 0.5] } // lighter for higher stack index
+          scale: { domain: [0, 3], range: [1, 0.5] }
         }
       })
     },
     config: {
       font: "Segoe UI",
+      view: { stroke: "transparent" },
+      bar: {
+        // narrower gaps between columns
+        discreteBandSize: 20,
+        continuousBandSize: 20
+      },
+      scale: { bandPaddingInner: 0.05, bandPaddingOuter: 0.05 }, // tighter spacing
       axis: {
         labelColor: "#605e5c",
         titleColor: "#323130",
