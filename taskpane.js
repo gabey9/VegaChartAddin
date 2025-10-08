@@ -3359,7 +3359,7 @@ export async function run() {
           description: "Arc diagram from Excel selection",
           width: Math.max(600, nodes.length * 40),
           height: 300,
-          padding: { top: 20, bottom: 80, left: 20, right: 20 },
+          padding: { top: 20, bottom: 20, left: 20, right: 20 },
           background: "white",
           config: { view: { stroke: "transparent" }},
           data: [
