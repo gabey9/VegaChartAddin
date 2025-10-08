@@ -4028,7 +4028,10 @@ else if (chartType === "heatmap") {
         },
         legend: {
           direction: "vertical",
-          gradientLength: 120
+          gradientLength: 120,
+          orient: "right",
+          titleAlign: "center",
+          labelAlign: "center"
         }
       }
     },
@@ -4051,7 +4054,9 @@ else if (chartType === "heatmap") {
         titleColor: "#605E5C",
         labelFont: "Segoe UI",
         labelFontSize: 12,
-        labelColor: "#605E5C"
+        labelColor: "#605E5C",
+        titleAlign: "center",
+        labelAlign: "center"
       }
     }
   };
