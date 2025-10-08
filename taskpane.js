@@ -5638,63 +5638,82 @@ else if (chartType === "bump") {
       }
 
       else if (chartType === "area") {
-        spec = {
-          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-          description: "Area chart from Excel selection",
-          background: "white",
-          config: { view: { stroke: "transparent" }},
-          data: { values: data },
-          mark: { 
-            type: "area", 
-            tooltip: true,
-            opacity: 0.7
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Area chart from Excel selection",
+    background: "white",
+    data: { values: data },
+    mark: { 
+      type: "area", 
+      tooltip: true,
+      line: {
+        color: "#0078d4"
+      },
+      color: {
+        x1: 1,
+        y1: 1,
+        x2: 1,
+        y2: 0,
+        gradient: "linear",
+        stops: [
+          {
+            offset: 0,
+            color: "white"
           },
-          encoding: {
-            x: { 
-              field: headers[0], 
-              type: "ordinal",
-              axis: {
-                title: headers[0],
-                labelFontSize: 12,
-                titleFontSize: 14
-              }
-            },
-            y: { 
-              field: headers[1], 
-              type: "quantitative",
-              axis: {
-                title: headers[1],
-                labelFontSize: 12,
-                titleFontSize: 14
-              }
-            },
-            // Add color encoding for multiple areas if 3rd column exists
-            ...(headers.length >= 3 && {
-              color: { 
-                field: headers[2], 
-                type: "nominal",
-                legend: {
-                  title: headers[2],
-                  titleFontSize: 12,
-                  labelFontSize: 11
-                }
-              }
-            })
-          },
-          config: {
-            font: "Segoe UI",
-            axis: {
-              labelColor: "#605e5c",
-              titleColor: "#323130",
-              gridColor: "#f3f2f1"
-            },
-            legend: {
-              titleColor: "#323130",
-              labelColor: "#605e5c"
-            }
+          {
+            offset: 1,
+            color: "#0078d4"
           }
-        };
+        ]
       }
+    },
+    encoding: {
+      x: { 
+        field: headers[0], 
+        type: "ordinal",
+        axis: {
+          title: headers[0],
+          labelFontSize: 12,
+          titleFontSize: 14
+        }
+      },
+      y: { 
+        field: headers[1], 
+        type: "quantitative",
+        axis: {
+          title: headers[1],
+          labelFontSize: 12,
+          titleFontSize: 14
+        }
+      },
+      // Add color encoding for multiple areas if 3rd column exists
+      ...(headers.length >= 3 && {
+        color: { 
+          field: headers[2], 
+          type: "nominal",
+          legend: {
+            title: headers[2],
+            titleFontSize: 12,
+            labelFontSize: 11
+          }
+        }
+      })
+    },
+    config: {
+      view: { stroke: "transparent" },
+      font: "Segoe UI",
+      axis: {
+        labelColor: "#605e5c",
+        titleColor: "#323130",
+        gridColor: "#f3f2f1"
+      },
+      legend: {
+        titleColor: "#323130",
+        labelColor: "#605e5c"
+      }
+    }
+  };
+}
 
 else if (chartType === "bar") {
   const categoryField = headers[0];
