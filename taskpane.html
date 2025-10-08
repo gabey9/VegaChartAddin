@@ -241,7 +241,15 @@
                 <div class="chart-item" data-chart="ribbon" data-folder="special">Ribbon</div>
                 <div class="chart-item" data-chart="ridgeline" data-folder="special">Ridgeline</div>
                 <div class="chart-item" data-chart="deviation" data-folder="special">Deviation</div>
-                <div class="chart-item" data-chart="variance" data-folder="special">Variance</div>               
+                <div class="chart-item" data-chart="variance" data-folder="special">Variance</div>
+
+                <div class="folder-item" data-folder="combo">
+                    <span>Combo</span>
+                    <span class="folder-arrow">►</span>
+                </div>
+                <div class="chart-item" data-chart="heatmapbar" data-folder="combo">Heatmap with Bars</div>
+                <div class="chart-item" data-chart="scatterline" data-folder="combo">Scatter with Loess Regression</div>   
+                <div class="chart-item" data-chart="linerectangle" data-folder="combo">Line with Highlighted Rectangles</div>
             </div>
         </div>
     </div>
@@ -301,6 +309,9 @@
         <option value="deviation">Deviation</option>
         <option value="variance">Variance</option>
         <option value="waterfall">Waterfall</option>
+        <option value="heatmapbar">Heatmap with Bars</option>
+        <option value="scatterline">Scatter with Loess Regression</option>
+        <option value="linerectangle">Line with Highlighted Rectangles</option>
     </select>
     
     <!-- Data Requirements for each chart type -->
@@ -744,6 +755,15 @@
             <li><strong>Column 1:</strong> Categories/Labels (e.g., "Begin", "Q1", "Q2", "End")</li>
             <li><strong>Column 2:</strong> Amount values (positive/negative numbers), 0 for total, except for beginning total</li>
             <li><strong>Column 3:</strong> Type (total or not)</li>
+        </ul>
+    </div>
+
+    <div id="req-heatmapbar" class="data-requirements hidden">
+        <h4>Data Requirements:</h4>
+        <ul>
+            <li><strong>Column 1:</strong> Y-axis categories (e.g., "Months", "Products", "Regions")</li>
+            <li><strong>Column 2:</strong> X-axis categories (e.g., "Days", "Quarters", "Sales Reps")</li>
+            <li><strong>Column 3:</strong> Values (numbers for color intensity)</li>
         </ul>
     </div>
     

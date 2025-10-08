@@ -224,7 +224,7 @@ export async function run() {
         }
 
         // Calculate legend dimensions and positioning
-        const legendWidth = 80; // Fixed width for legend area
+        const legendWidth = 100; // Fixed width for legend area
         const legendItemHeight = 25; // Height per legend item
         const totalLegendHeight = numRings * legendItemHeight;
         const chartCenterY = maxRadius + 50; // Y center of the chart
@@ -6495,6 +6495,143 @@ else if (chartType === "column") {
               }
             }
           ]
+        };
+      }
+
+      else if (chartType === "heatmapbar") {
+        spec = {
+          $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+          description: "Heatmap with bars from Excel selection",
+          background: "white",
+          config: { view: { stroke: "transparent" }},
+          data: { values: data },
+          spacing: 15,
+          bounds: "flush",
+          vconcat: [
+            {
+              height: 60,
+              mark: {
+                type: "bar",
+                stroke: null,
+                cornerRadiusEnd: 2,
+                tooltip: true,
+                color: "lightgrey"
+              },
+              encoding: {
+                x: {
+                  field: headers[1],
+                  type: "ordinal",
+                  axis: null
+                },
+                y: {
+                  field: headers[2],
+                  aggregate: "mean",
+                  type: "quantitative",
+                  axis: null
+                }
+              }
+            },
+            {
+              spacing: 15,
+              bounds: "flush",
+              hconcat: [
+                {
+                  mark: {
+                    type: "rect",
+                    stroke: "white",
+                    tooltip: true
+                  },
+                  encoding: {
+                    y: {
+                      field: headers[0],
+                      type: "ordinal",
+                      title: headers[0],
+                      axis: {
+                        domain: false,
+                        ticks: false,
+                        labels: true,
+                        labelAngle: 0,
+                        labelPadding: 5
+                      }
+                    },
+                    x: {
+                      field: headers[1],
+                      type: "ordinal",
+                      title: headers[1],
+                      axis: {
+                        domain: false,
+                        ticks: false,
+                        labels: true,
+                        labelAngle: 0
+                      }
+                    },
+                    color: {
+                      aggregate: "mean",
+                      field: headers[2],
+                      type: "quantitative",
+                      title: headers[2],
+                      scale: {
+                        scheme: "blues"
+                      },
+                      legend: {
+                        direction: "vertical",
+                        gradientLength: 120
+                      }
+                    }
+                  }
+                },
+                {
+                  mark: {
+                    type: "bar",
+                    stroke: null,
+                    cornerRadiusEnd: 2,
+                    tooltip: true,
+                    color: "lightgrey"
+                  },
+                  width: 60,
+                  encoding: {
+                    y: {
+                      field: headers[0],
+                      type: "ordinal",
+                      axis: null
+                    },
+                    x: {
+                      field: headers[2],
+                      type: "quantitative",
+                      aggregate: "mean",
+                      axis: null
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          config: {
+            autosize: {
+              type: "fit",
+              contains: "padding"
+            },
+            view: { stroke: "transparent" },
+            font: "Segoe UI",
+            text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+            axis: {
+              ticks: false,
+              grid: false,
+              domain: false,
+              labelColor: "#605E5C",
+              labelFontSize: 12,
+              titleFontSize: 14,
+              titleColor: "#323130"
+            },
+            legend: {
+              titleFont: "Segoe UI",
+              titleFontWeight: "bold",
+              titleColor: "#605E5C",
+              labelFont: "Segoe UI",
+              labelFontSize: 12,
+              labelColor: "#605E5C"
+            }
+          }
         };
       }
 
