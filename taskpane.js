@@ -5814,50 +5814,44 @@ else if (chartType === "column") {
   const valueField = headers[1];
   const groupField = headers[2];
 
-  // Detect if stacked or grouped
+  // Detect stacked vs grouped
   const groupedBy = {};
   let isStacked = false;
   if (headers.length >= 3) {
     for (const row of data) {
-      const key = `${row[categoryField]}|${row[groupField]}`;
+      const key = row[categoryField];
       groupedBy[key] = (groupedBy[key] || 0) + 1;
-      if (groupedBy[key] > 1) {
-        isStacked = true;
-        break;
-      }
     }
+    // If each category has multiple entries -> stacked
+    isStacked = Object.values(groupedBy).some(v => v > 1);
   }
 
+  // build Vega-Lite spec
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Grouped or Stacked Column Chart with Lighter Stack Colors",
+    description: "Grouped or Stacked Column Chart with lighter stacked colors",
     background: "white",
     config: { view: { stroke: "transparent" } },
     data: { values: data },
-    // Compute stack rank for lightness control
+
     ...(isStacked && {
       transform: [
+        // assign an index for lightening shades
         {
-          window: [{ op: "rank", as: "stackRank" }],
+          window: [{ op: "rank", as: "stackIndex" }],
           sort: [{ field: valueField }]
         },
         {
+          // dynamically compute lighter colors by HSL manipulation
           calculate:
-            // Base hue depends on group, lightness on stackRank
-            "datum.groupColor = " +
-            "datum." + groupField + " === 'X' ? 210 : " +
-            "datum." + groupField + " === 'Y' ? 140 : " +
-            "datum." + groupField + " === 'Z' ? 30 : 260",
-          as: "groupHue"
-        },
-        {
-          calculate:
-            "hsl(datum.groupHue, '60%', (35 + datum.stackRank * 10) + '%')",
+            "hsl(20 + (abs(hash(datum['" + groupField + "'])) % 300), '60%', (40 + datum.stackIndex * 10) + '%')",
           as: "stackColor"
         }
       ]
     }),
+
     mark: { type: "bar", tooltip: true },
+
     encoding: {
       x: {
         field: categoryField,
@@ -5883,7 +5877,7 @@ else if (chartType === "column") {
           ? {
               field: "stackColor",
               type: "nominal",
-              legend: null // disable legend (since each tint is just variation)
+              legend: null // stacked shades are within same hue
             }
           : {
               field: groupField,
@@ -5896,10 +5890,11 @@ else if (chartType === "column") {
               scale: { scheme: "category10" }
             },
         ...(isStacked
-          ? {} // stacked: use tinting, no offset
+          ? {} // stacked: no offset
           : { xOffset: { field: groupField } }) // grouped: separate bars
       })
     },
+
     config: {
       font: "Segoe UI",
       axis: {
