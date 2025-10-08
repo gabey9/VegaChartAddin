@@ -5812,49 +5812,24 @@ export async function run() {
 else if (chartType === "column") {
   const categoryField = headers[0];
   const valueField = headers[1];
-  const groupField = headers[2];
+  // 3rd column used for grouping (xOffset). May be null if only 2 columns.
+  const groupField = headers.length >= 3 ? headers[2] : null;
+  // 4th column (if present) used for color grouping. If absent, color falls back to groupField.
+  const colorField = headers.length >= 4 ? headers[3] : groupField;
 
-  // Detect stacked vs grouped
-  const groupedBy = {};
-  let isStacked = false;
-  if (headers.length >= 3) {
-    for (const row of data) {
-      const key = row[categoryField];
-      groupedBy[key] = (groupedBy[key] || 0) + 1;
-    }
-    // If each category has multiple entries -> stacked
-    isStacked = Object.values(groupedBy).some(v => v > 1);
-  }
-
-  // build Vega-Lite spec
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Grouped or Stacked Column Chart with lighter stacked colors",
+    description: "Column or Grouped Bar Chart from Excel selection (supports separate color column)",
     background: "white",
     config: { view: { stroke: "transparent" } },
     data: { values: data },
-
-    ...(isStacked && {
-      transform: [
-        // assign an index for lightening shades
-        {
-          window: [{ op: "rank", as: "stackIndex" }],
-          sort: [{ field: valueField }]
-        },
-        {
-          // dynamically compute lighter colors by HSL manipulation
-          calculate:
-            "hsl(20 + (abs(hash(datum['" + groupField + "'])) % 300), '60%', (40 + datum.stackIndex * 10) + '%')",
-          as: "stackColor"
-        }
-      ]
-    }),
-
-    mark: { type: "bar", tooltip: true },
-
+    mark: { 
+      type: "bar", 
+      tooltip: true
+    },
     encoding: {
-      x: {
-        field: categoryField,
+      x: { 
+        field: categoryField, 
         type: "nominal",
         axis: {
           title: categoryField,
@@ -5862,39 +5837,32 @@ else if (chartType === "column") {
           titleFontSize: 14
         }
       },
-      y: {
-        field: valueField,
+      y: { 
+        field: valueField, 
         type: "quantitative",
         axis: {
           title: valueField,
           labelFontSize: 12,
           titleFontSize: 14
-        },
-        stack: isStacked ? "zero" : null
+        }
       },
-      ...(headers.length >= 3 && {
-        color: isStacked
-          ? {
-              field: "stackColor",
-              type: "nominal",
-              legend: null // stacked shades are within same hue
-            }
-          : {
-              field: groupField,
-              type: "nominal",
-              legend: {
-                title: groupField,
-                titleFontSize: 12,
-                labelFontSize: 11
-              },
-              scale: { scheme: "category10" }
-            },
-        ...(isStacked
-          ? {} // stacked: no offset
-          : { xOffset: { field: groupField } }) // grouped: separate bars
+      // apply grouping offset if a 3rd column exists
+      ...(groupField && { xOffset: { field: groupField } }),
+      // apply color using the explicit 4th column if present, otherwise use the 3rd column (if any)
+      ...(colorField && {
+        color: {
+          field: colorField,
+          type: "nominal",
+          legend: {
+            title: colorField,
+            titleFontSize: 12,
+            labelFontSize: 11
+          },
+          // choose a categorical color scheme; change scheme as desired
+          scale: { scheme: "category10" }
+        }
       })
     },
-
     config: {
       font: "Segoe UI",
       axis: {
