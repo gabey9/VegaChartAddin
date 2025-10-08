@@ -224,7 +224,7 @@ export async function run() {
         }
 
         // Calculate legend dimensions and positioning
-        const legendWidth = 120; // Fixed width for legend area
+        const legendWidth = 80; // Fixed width for legend area
         const legendItemHeight = 25; // Height per legend item
         const totalLegendHeight = numRings * legendItemHeight;
         const chartCenterY = maxRadius + 50; // Y center of the chart
