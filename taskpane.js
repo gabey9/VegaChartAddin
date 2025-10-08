@@ -6635,6 +6635,162 @@ else if (chartType === "column") {
         };
       }
 
+else if (chartType === "linerectangle") {
+  const transformedData = [];
+  
+  // Transform data for line chart
+  data.forEach(row => {
+    if (row[headers[1]] !== null && row[headers[1]] !== undefined && row[headers[1]] !== "") {
+      transformedData.push({
+        [headers[0]]: row[headers[0]], // Period
+        value: parseFloat(row[headers[1]]) || 0  // Value
+      });
+    }
+  });
+
+  // Extract rectangle regions from Highlight column
+  const rectangleData = [];
+  let currentHighlight = null;
+  let startPeriod = null;
+  
+  data.forEach((row, index) => {
+    const highlight = row[headers[2]]; // Highlight column
+    const period = row[headers[0]];
+    
+    if (highlight && highlight !== "") {
+      if (currentHighlight !== highlight) {
+        // Save previous rectangle if exists
+        if (currentHighlight !== null && startPeriod !== null) {
+          rectangleData.push({
+            start: startPeriod,
+            end: data[index - 1][headers[0]],
+            event: currentHighlight
+          });
+        }
+        // Start new rectangle
+        currentHighlight = highlight;
+        startPeriod = period;
+      }
+      
+      // If last row, close the rectangle
+      if (index === data.length - 1) {
+        rectangleData.push({
+          start: startPeriod,
+          end: period,
+          event: currentHighlight
+        });
+      }
+    } else {
+      // Empty highlight, close current rectangle if exists
+      if (currentHighlight !== null && startPeriod !== null) {
+        rectangleData.push({
+          start: startPeriod,
+          end: data[index - 1][headers[0]],
+          event: currentHighlight
+        });
+        currentHighlight = null;
+        startPeriod = null;
+      }
+    }
+  });
+
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Line chart with highlighted periods",
+    background: "white",
+    config: { view: { stroke: "transparent" }},
+    layer: [
+      {
+        mark: { type: "rect", opacity: 0.2 },
+        data: { values: rectangleData },
+        encoding: {
+          x: { 
+            field: "start", 
+            type: "ordinal",
+            axis: null
+          },
+          x2: { 
+            field: "end", 
+            type: "ordinal"
+          },
+          color: {
+            field: "event", 
+            type: "nominal",
+            scale: { scheme: "pastel1" },
+            legend: {
+              title: "Highlights",
+              titleFontSize: 12,
+              labelFontSize: 11
+            }
+          }
+        }
+      },
+      {
+        mark: { 
+          type: "line", 
+          point: false,
+          tooltip: true,
+          strokeWidth: 2,
+          color: "#323130"
+        },
+        data: { values: transformedData },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14,
+              labelAngle: 0
+            }
+          },
+          y: { 
+            field: "value", 
+            type: "quantitative",
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          }
+        }
+      },
+      {
+        mark: { 
+          type: "point",
+          filled: true,
+          size: 60,
+          color: "#323130"
+        },
+        data: { values: transformedData },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "ordinal"
+          },
+          y: { 
+            field: "value", 
+            type: "quantitative"
+          }
+        }
+      }
+    ],
+    config: {
+      font: "Segoe UI",
+      axis: {
+        labelColor: "#605e5c",
+        titleColor: "#323130",
+        gridColor: "#f3f2f1"
+      },
+      legend: {
+        titleColor: "#323130",
+        labelColor: "#605e5c"
+      }
+    }
+  };
+}
+
       // Render hidden chart
       const hiddenDiv = document.createElement("div");
       hiddenDiv.style.display = "none";
