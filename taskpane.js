@@ -5823,6 +5823,9 @@ else if (chartType === "column") {
     return { ...d, shadeLevel: level };
   });
   
+  // Determine if we need grouping (xOffset) based on whether there are multiple groups per category
+  const needsGrouping = groupField && shadedData.some(d => d.shadeLevel > 0);
+  
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
     description: "Column / Grouped / Stacked Bar Chart with auto-lightened stacked colors",
@@ -5850,8 +5853,8 @@ else if (chartType === "column") {
         },
         stack: "zero" // stack when same category/group repeated
       },
-      ...(groupField && { 
-        xOffset: { field: groupField },
+      ...(needsGrouping && { xOffset: { field: groupField } }),
+      ...(groupField && {
         color: {
           field: groupField,
           type: "nominal",
