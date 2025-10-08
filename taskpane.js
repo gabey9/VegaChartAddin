@@ -5810,47 +5810,83 @@ export async function run() {
       }
 
 else if (chartType === "column") {
+  const categoryField = headers[0];
+  const valueField = headers[1];
+  const groupField = headers[2];
+  const stackField = headers[3]; // optional 4th column for stacking
+
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Column or Grouped Bar Chart from Excel selection",
+    description: "Grouped + Stacked Column Chart from Excel selection",
     background: "white",
     config: { view: { stroke: "transparent" } },
     data: { values: data },
-    mark: { 
-      type: "bar", 
-      tooltip: true
-    },
+    transform: [
+      // Assign brightness index based on category order
+      {
+        window: [{ op: "rank", as: "catIndex" }],
+        sort: [{ field: categoryField }]
+      },
+      // Normalize catIndex to 0–1 range for lightness interpolation
+      {
+        calculate: "datum.catIndex / (max(datum.catIndex) || 1)",
+        as: "lightness"
+      }
+    ],
+    mark: { type: "bar", tooltip: true },
     encoding: {
-      x: { 
-        field: headers[0], 
+      x: {
+        field: categoryField,
         type: "nominal",
         axis: {
-          title: headers[0],
+          title: categoryField,
           labelFontSize: 12,
           titleFontSize: 14
         }
       },
-      y: { 
-        field: headers[1], 
+      y: {
+        field: valueField,
         type: "quantitative",
         axis: {
-          title: headers[1],
+          title: valueField,
           labelFontSize: 12,
           titleFontSize: 14
         }
       },
-      // If third column exists, interpret as grouping key
+      // Group by groupField (3rd column)
       ...(headers.length >= 3 && {
-        color: { 
-          field: headers[2], 
+        xOffset: { field: groupField },
+      }),
+      // Stack by stackField (4th column)
+      ...(headers.length >= 4 && {
+        color: {
+          field: stackField,
           type: "nominal",
           legend: {
-            title: headers[2],
+            title: stackField,
             titleFontSize: 12,
             labelFontSize: 11
-          }
+          },
+          scale: { scheme: "blues" }
         },
-        xOffset: { field: headers[2] } // group separation
+        order: { field: stackField }
+      }),
+      // If no stack field, color by group but lighten across categories
+      ...(headers.length === 3 && {
+        color: {
+          field: groupField,
+          type: "nominal",
+          legend: {
+            title: groupField,
+            titleFontSize: 12,
+            labelFontSize: 11
+          },
+          scale: {
+            // generate dynamic lightening per category
+            domain: [...new Set(data.map(d => d[groupField]))],
+            range: ["#1565C0", "#42A5F5", "#90CAF9"]
+          }
+        }
       })
     },
     config: {
