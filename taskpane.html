@@ -247,9 +247,9 @@
                     <span>Combo</span>
                     <span class="folder-arrow">►</span>
                 </div>
-                <div class="chart-item" data-chart="heatmapbar" data-folder="combo">Heatmap with Bars</div>
-                <div class="chart-item" data-chart="scatterline" data-folder="combo">Scatter with Loess Regression</div>   
-                <div class="chart-item" data-chart="linerectangle" data-folder="combo">Line with Highlighted Rectangles</div>
+                <div class="chart-item" data-chart="heatmap_bar" data-folder="combo">Heatmap with Bars</div>
+                <div class="chart-item" data-chart="scatter_line" data-folder="combo">Scatter with Loess Regression</div>   
+                <div class="chart-item" data-chart="line_rectangle" data-folder="combo">Line with Highlighted Rectangles</div>
             </div>
         </div>
     </div>
@@ -309,9 +309,9 @@
         <option value="deviation">Deviation</option>
         <option value="variance">Variance</option>
         <option value="waterfall">Waterfall</option>
-        <option value="heatmapbar">Heatmap with Bars</option>
-        <option value="scatterline">Scatter with Loess Regression</option>
-        <option value="linerectangle">Line with Highlighted Rectangles</option>
+        <option value="heatmap_bar">Heatmap with Bars</option>
+        <option value="scatter_line">Scatter with Loess Regression</option>
+        <option value="line_rectangle">Line with Highlighted Rectangles</option>
     </select>
     
     <!-- Data Requirements for each chart type -->
@@ -758,7 +758,7 @@
         </ul>
     </div>
 
-    <div id="req-heatmapbar" class="data-requirements hidden">
+    <div id="req-heatmap_bar" class="data-requirements hidden">
         <h4>Data Requirements:</h4>
         <ul>
             <li><strong>Column 1:</strong> Y-axis categories (e.g., "Months", "Products", "Regions")</li>
@@ -766,7 +766,16 @@
             <li><strong>Column 3:</strong> Values (numbers for color intensity)</li>
         </ul>
     </div>
-    
+ 
+    <div id="req-line_rectangle" class="data-requirements hidden">
+        <h4>Data Requirements:</h4>
+        <ul>
+            <li><strong>Column 1:</strong> Periods</li>
+            <li><strong>Column 2:</strong> Values</li>
+            <li><strong>Column 3:</strong> Texts for highlighted periods</li>
+        </ul>
+    </div>
+   
     <div id="chart"></div>
 
     <script>

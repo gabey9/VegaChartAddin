@@ -6498,7 +6498,7 @@ else if (chartType === "column") {
         };
       }
 
-      else if (chartType === "heatmapbar") {
+      else if (chartType === "heatmap_bar") {
         spec = {
           $schema: "https://vega.github.io/schema/vega-lite/v5.json",
           description: "Heatmap with bars from Excel selection",
@@ -6635,7 +6635,105 @@ else if (chartType === "column") {
         };
       }
 
-else if (chartType === "linerectangle") {
+if (chartType === "scatter_line") {
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Colored scatter plot with Loess regression from Excel selection",
+    background: "white",
+    config: { 
+      view: { stroke: "transparent" },
+      font: "Segoe UI",
+      axis: {
+        labelColor: "#605e5c",
+        titleColor: "#323130",
+        gridColor: "#f3f2f1"
+      },
+      legend: {
+        titleColor: "#323130",
+        labelColor: "#605e5c"
+      }
+    },
+    data: { values: data },
+    layer: [
+      {
+        // Scatter plot layer
+        mark: { type: "point", size: 100, tooltip: true },
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative",
+            scale: { zero: false },
+            axis: {
+              title: headers[1],
+              labelFontSize: 12,
+              titleFontSize: 14
+            }
+          },
+          // Add color encoding if 3rd column exists
+          ...(headers.length >= 3 && {
+            color: { 
+              field: headers[2], 
+              type: "nominal",
+              legend: {
+                title: headers[2],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          }),
+          // Add shape encoding if 4th column exists
+          ...(headers.length >= 4 && {
+            shape: { 
+              field: headers[3], 
+              type: "nominal",
+              legend: {
+                title: headers[3],
+                titleFontSize: 12,
+                labelFontSize: 11
+              }
+            }
+          })
+        }
+      },
+      {
+        // Loess regression line layer
+        mark: { 
+          type: "line", 
+          color: "firebrick",
+          strokeWidth: 2
+        },
+        transform: [
+          {
+            loess: headers[1],
+            on: headers[0]
+          }
+        ],
+        encoding: {
+          x: { 
+            field: headers[0], 
+            type: "quantitative"
+          },
+          y: { 
+            field: headers[1], 
+            type: "quantitative"
+          }
+        }
+      }
+    ]
+  };
+}
+
+else if (chartType === "line_rectangle") {
   const transformedData = [];
   
   // Transform data for line chart

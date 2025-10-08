@@ -1150,14 +1150,14 @@ function GAUGE(data, invocation) {
         "$schema": "https://vega.github.io/schema/vega/v5.json",
         "description": "Gauge chart from Excel selection",
         "width": 400,
-        "height": 300,
+        "height": 220,
         "background": "white",
         "config": { "view": { "stroke": "transparent" }},
         
         "signals": [
           {"name": "centerX", "update": "width / 2"},
-          {"name": "centerY", "update": "height / 2"},
-          {"name": "outerRadius", "update": "min(width, height) / 2 - 10"},
+          {"name": "centerY", "update": "height - 20"},
+          {"name": "outerRadius", "update": "min(width / 2, height) - 20"},
           {"name": "innerRadius", "update": "outerRadius - outerRadius * 0.25"},
           {"name": "mainValue", "value": mainValue},
           {"name": "minValue", "value": minValue},
@@ -1735,7 +1735,7 @@ function CHORD(data, invocation) {
 }
 
 /**
- * CIRCLEPACK custom function
+ * CIRCLEPACKING custom function
  * Creates a circle packing chart from Excel data range
  * 
  * @customfunction
@@ -1744,7 +1744,7 @@ function CHORD(data, invocation) {
  * @param {CustomFunctions.Invocation} invocation Invocation object
  * @returns {string} Status message
  */
-function CIRCLEPACK(data, invocation) {
+function CIRCLEPACKING(data, invocation) {
   return new Promise((resolve) => {
     try {
       if (!data || data.length < 2) {
@@ -1756,7 +1756,7 @@ function CIRCLEPACK(data, invocation) {
       const rows = data.slice(1);
 
       if (headers.length < 2) {
-        resolve("Error: Circlepack requires at least 2 columns (Parent, Child, Size optional)");
+        resolve("Error: Circlepacking requires at least 2 columns (Parent, Child, Size optional)");
         return;
       }
 
@@ -1897,9 +1897,9 @@ function CIRCLEPACK(data, invocation) {
         ]
       };
 
-      const chartId = `circlepack_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
-      createChart(spec, "circlepack", chartId)
-        .then(() => resolve("Circlepack"))
+      const chartId = `circlepacking_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
+      createChart(spec, "circlepacking", chartId)
+        .then(() => resolve("Circle Packing"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -1925,10 +1925,8 @@ function AREA(data, invocation) {
         resolve("Error: Need at least header row + one data row");
         return;
       }
-
       const headers = data[0];
       const rows = data.slice(1);
-
       // Convert rows -> objects (same as taskpane.js)
       const processedData = rows.map(row => {
         let obj = {};
@@ -1937,18 +1935,35 @@ function AREA(data, invocation) {
         });
         return obj;
       });
-
-      // Use EXACT specification from taskpane.js area chart
+      // Use EXACT specification from taskpane.js area chart with gradient
       const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
         description: "Area chart from Excel selection",
         background: "white",
-        config: { view: { stroke: "transparent" }},
         data: { values: processedData },
         mark: { 
           type: "area", 
           tooltip: true,
-          opacity: 0.7
+          line: {
+            color: "#0078d4"
+          },
+          color: {
+            x1: 1,
+            y1: 1,
+            x2: 1,
+            y2: 0,
+            gradient: "linear",
+            stops: [
+              {
+                offset: 0,
+                color: "white"
+              },
+              {
+                offset: 1,
+                color: "#0078d4"
+              }
+            ]
+          }
         },
         encoding: {
           x: { 
@@ -1983,6 +1998,7 @@ function AREA(data, invocation) {
           })
         },
         config: {
+          view: { stroke: "transparent" },
           font: "Segoe UI",
           axis: {
             labelColor: "#605e5c",
@@ -1999,7 +2015,6 @@ function AREA(data, invocation) {
       createChart(spec, "area", chartId)
         .then(() => resolve("Area"))
         .catch((error) => resolve(`Error: ${error.message}`));
-
     } catch (error) {
       resolve(`Error: ${error.message}`);
     }
@@ -2458,7 +2473,7 @@ function RING(data, invocation) {
       }
 
       // Calculate legend dimensions and positioning
-      const legendWidth = 120; // Fixed width for legend area
+      const legendWidth = 100; // Fixed width for legend area
       const legendItemHeight = 25; // Height per legend item
       const totalLegendHeight = numRings * legendItemHeight;
       const chartCenterY = maxRadius + 50; // Y center of the chart
@@ -4615,9 +4630,9 @@ function ARC(data, invocation) {
       const spec = {
         $schema: "https://vega.github.io/schema/vega/v5.json",
         description: "Arc diagram from Excel selection",
-        width: Math.max(600, nodes.length * 40),
-        height: 300,
-        padding: { top: 20, bottom: 80, left: 20, right: 20 },
+        width: Math.max(600, nodes.length * 30),
+        height: 100,
+        padding: { top: 20, bottom: 20, left: 20, right: 20 },
         background: "white",
         config: { view: { stroke: "transparent" }},
         data: [
@@ -5101,7 +5116,7 @@ function WORDCLOUD(data, invocation) {
       };
       const chartId = `wordcloud_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
       createChart(spec, "wordcloud", chartId)
-        .then(() => resolve("Wordcloud"))
+        .then(() => resolve("Word Cloud"))
         .catch((error) => resolve(`Error: ${error.message}`));
 
     } catch (error) {
@@ -8363,6 +8378,389 @@ function RIBBON(data, invocation) {
 }
 
 /**
+ * HEATMAP_BAR custom function
+ * Creates a heatmap with bars from Excel data range
+ * 
+ * @customfunction
+ * @requiresAddress
+ * @param {any[][]} data The data range including headers
+ * @param {CustomFunctions.Invocation} invocation Invocation object
+ * @returns {string} Status message
+ */
+function HEATMAP_BAR(data, invocation) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+
+      const headers = data[0];
+      const rows = data.slice(1);
+
+      if (headers.length < 3) {
+        resolve("Error: Heatmap requires 3 columns (Y-categories, X-categories, Values)");
+        return;
+      }
+
+      // Convert rows -> objects (same as taskpane.js)
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+
+      // Use EXACT specification from taskpane.js heatmap chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+        description: "Heatmap with marginal bars from Excel selection",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        data: { values: processedData },
+        spacing: 15,
+        bounds: "flush",
+        vconcat: [
+          {
+            height: 60,
+            mark: {
+              type: "bar",
+              stroke: null,
+              cornerRadiusEnd: 2,
+              tooltip: true,
+              color: "lightgrey"
+            },
+            encoding: {
+              x: {
+                field: headers[1],
+                type: "ordinal",
+                axis: null
+              },
+              y: {
+                field: headers[2],
+                aggregate: "mean",
+                type: "quantitative",
+                axis: null
+              }
+            }
+          },
+          {
+            spacing: 15,
+            bounds: "flush",
+            hconcat: [
+              {
+                mark: {
+                  type: "rect",
+                  stroke: "white",
+                  tooltip: true
+                },
+                encoding: {
+                  y: {
+                    field: headers[0],
+                    type: "ordinal",
+                    title: headers[0],
+                    axis: {
+                      domain: false,
+                      ticks: false,
+                      labels: true,
+                      labelAngle: 0,
+                      labelPadding: 5
+                    }
+                  },
+                  x: {
+                    field: headers[1],
+                    type: "ordinal",
+                    title: headers[1],
+                    axis: {
+                      domain: false,
+                      ticks: false,
+                      labels: true,
+                      labelAngle: 0
+                    }
+                  },
+                  color: {
+                    aggregate: "mean",
+                    field: headers[2],
+                    type: "quantitative",
+                    title: headers[2],
+                    scale: {
+                      scheme: "blues"
+                    },
+                    legend: {
+                      direction: "vertical",
+                      gradientLength: 120
+                    }
+                  }
+                }
+              },
+              {
+                mark: {
+                  type: "bar",
+                  stroke: null,
+                  cornerRadiusEnd: 2,
+                  tooltip: true,
+                  color: "lightgrey"
+                },
+                width: 60,
+                encoding: {
+                  y: {
+                    field: headers[0],
+                    type: "ordinal",
+                    axis: null
+                  },
+                  x: {
+                    field: headers[2],
+                    type: "quantitative",
+                    aggregate: "mean",
+                    axis: null
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        config: {
+          autosize: {
+            type: "fit",
+            contains: "padding"
+          },
+          view: { stroke: "transparent" },
+          font: "Segoe UI",
+          text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+          axis: {
+            ticks: false,
+            grid: false,
+            domain: false,
+            labelColor: "#605E5C",
+            labelFontSize: 12,
+            titleFontSize: 14,
+            titleColor: "#323130"
+          },
+          legend: {
+            titleFont: "Segoe UI",
+            titleFontWeight: "bold",
+            titleColor: "#605E5C",
+            labelFont: "Segoe UI",
+            labelFontSize: 12,
+            labelColor: "#605E5C"
+          }
+        }
+      };
+      const chartId = `heatmap_bar_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
+      createChart(spec, "heatmap_bar", chartId)
+        .then(() => resolve("Heatmap with Bars"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
+ * LINE_RECTANGLE custom function
+ * Creates a line chart with highlighted periods from Excel data range
+ * 
+ * @customfunction
+ * @requiresAddress
+ * @param {any[][]} data The data range including headers (3 columns: Period, Value, Highlight)
+ * @param {CustomFunctions.Invocation} invocation Invocation object
+ * @returns {string} Status message
+ */
+function LINE_RECTANGLE(data, invocation) {
+  return new Promise((resolve) => {
+    try {
+      if (!data || data.length < 2) {
+        resolve("Error: Need at least header row + one data row");
+        return;
+      }
+      
+      const headers = data[0];
+      const rows = data.slice(1);
+      
+      // Convert rows -> objects
+      const processedData = rows.map(row => {
+        let obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i];
+        });
+        return obj;
+      });
+      
+      // Transform data for line chart
+      const transformedData = [];
+      processedData.forEach(row => {
+        if (row[headers[1]] !== null && row[headers[1]] !== undefined && row[headers[1]] !== "") {
+          transformedData.push({
+            [headers[0]]: row[headers[0]], // Period
+            value: parseFloat(row[headers[1]]) || 0  // Value
+          });
+        }
+      });
+      
+      // Extract rectangle regions from Highlight column (3rd column)
+      const rectangleData = [];
+      let currentHighlight = null;
+      let startPeriod = null;
+      
+      processedData.forEach((row, index) => {
+        const highlight = row[headers[2]]; // Highlight column
+        const period = row[headers[0]];
+        
+        if (highlight && highlight !== "") {
+          if (currentHighlight !== highlight) {
+            // Save previous rectangle if exists
+            if (currentHighlight !== null && startPeriod !== null) {
+              rectangleData.push({
+                start: startPeriod,
+                end: processedData[index - 1][headers[0]],
+                event: currentHighlight
+              });
+            }
+            // Start new rectangle
+            currentHighlight = highlight;
+            startPeriod = period;
+          }
+          
+          // If last row, close the rectangle
+          if (index === processedData.length - 1) {
+            rectangleData.push({
+              start: startPeriod,
+              end: period,
+              event: currentHighlight
+            });
+          }
+        } else {
+          // Empty highlight, close current rectangle if exists
+          if (currentHighlight !== null && startPeriod !== null) {
+            rectangleData.push({
+              start: startPeriod,
+              end: processedData[index - 1][headers[0]],
+              event: currentHighlight
+            });
+            currentHighlight = null;
+            startPeriod = null;
+          }
+        }
+      });
+      
+      // Create Vega-Lite spec with layered chart
+      const spec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+        description: "Line chart with highlighted periods",
+        background: "white",
+        config: { view: { stroke: "transparent" }},
+        layer: [
+          {
+            mark: { type: "rect", opacity: 0.2 },
+            data: { values: rectangleData },
+            encoding: {
+              x: { 
+                field: "start", 
+                type: "ordinal"
+              },
+              x2: { 
+                field: "end", 
+                type: "ordinal"
+              },
+              color: {
+                field: "event", 
+                type: "nominal",
+                scale: { scheme: "pastel1" },
+                legend: {
+                  title: headers[2] || "Highlights",  // Use 3rd column header
+                  titleFontSize: 12,
+                  labelFontSize: 11
+                }
+              }
+            }
+          },
+          {
+            mark: { 
+              type: "line", 
+              point: false,
+              tooltip: true,
+              strokeWidth: 2,
+              color: "#323130"
+            },
+            data: { values: transformedData },
+            encoding: {
+              x: { 
+                field: headers[0], 
+                type: "ordinal",
+                axis: {
+                  title: headers[0],
+                  labelFontSize: 12,
+                  titleFontSize: 14,
+                  labelAngle: -45,
+                  labelAlign: "right"
+                }
+              },
+              y: { 
+                field: "value", 
+                type: "quantitative",
+                axis: {
+                  title: headers[1],
+                  labelFontSize: 12,
+                  titleFontSize: 14
+                }
+              }
+            }
+          },
+          {
+            mark: { 
+              type: "point",
+              filled: true,
+              size: 60,
+              color: "#323130"
+            },
+            data: { values: transformedData },
+            encoding: {
+              x: { 
+                field: headers[0], 
+                type: "ordinal",
+                axis: {
+                  title: headers[0],
+                  labelFontSize: 12,
+                  titleFontSize: 14,
+                  labelAngle: -45,
+                  labelAlign: "right"
+                }
+              },
+              y: { 
+                field: "value", 
+                type: "quantitative"
+              }
+            }
+          }
+        ],
+        config: {
+          font: "Segoe UI",
+          axis: {
+            labelColor: "#605e5c",
+            titleColor: "#323130",
+            gridColor: "#f3f2f1"
+          },
+          legend: {
+            titleColor: "#323130",
+            labelColor: "#605e5c"
+          }
+        }
+      };
+      
+      const chartId = `line_rectangle_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
+      createChart(spec, "line_rectangle", chartId)
+        .then(() => resolve("Line with Rectangles"))
+        .catch((error) => resolve(`Error: ${error.message}`));
+        
+    } catch (error) {
+      resolve(`Error: ${error.message}`);
+    }
+  });
+}
+
+/**
  * Create chart
  */
 async function createChart(spec, chartType, chartId) {
@@ -8522,7 +8920,7 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("BUBBLE", BUBBLE);
   CustomFunctions.associate("RADIAL", RADIAL);
   CustomFunctions.associate("CHORD", CHORD);
-  CustomFunctions.associate("CIRCLEPACK", CIRCLEPACK);
+  CustomFunctions.associate("CIRCLEPACKING", CIRCLEPACKING);
   CustomFunctions.associate("RING", RING);
   CustomFunctions.associate("BOX", BOX);
   CustomFunctions.associate("RADAR", RADAR);
@@ -8557,4 +8955,7 @@ if (typeof CustomFunctions !== 'undefined') {
   CustomFunctions.associate("RIDGELINE", RIDGELINE);
   CustomFunctions.associate("DEVIATION", DEVIATION);
   CustomFunctions.associate("VARIANCE", VARIANCE);
+  CustomFunctions.associate("HEATMAP_BAR", HEATMAP_BAR);
+  CustomFunctions.associate("LINE_RECTANGLE", LINE_RECTANGLE);
+  CustomFunctions.associate("SCATTER_LINE", SCATTER_LINE);
 }
