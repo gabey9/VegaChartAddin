@@ -5751,63 +5751,92 @@ export async function run() {
         };
       }
 
-      else if (chartType === "bar") {
-        spec = {
-          $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-          description: "Bar chart from Excel selection",
-          background: "white",
-          config: { view: { stroke: "transparent" }},
-          data: { values: data },
-          mark: { 
-            type: "bar", 
-            tooltip: true
+else if (chartType === "bar") {
+  const categoryField = headers[0];
+  const valueField = headers[1];
+  const groupField = headers.length >= 3 ? headers[2] : null;
+  
+  // Determine if we need grouping by checking if any category has multiple groups
+  let categoryGroups = {};
+  if (groupField) {
+    data.forEach(d => {
+      const cat = d[categoryField];
+      const grp = d[groupField];
+      if (!categoryGroups[cat]) categoryGroups[cat] = new Set();
+      categoryGroups[cat].add(grp);
+    });
+  }
+  const needsGrouping = groupField && Object.values(categoryGroups).some(groups => groups.size > 1);
+  
+  // Add shadeLevel to data (counts how many duplicates per category/group)
+  let shadeCounter = {};
+  const shadedData = data.map(d => {
+    const key = `${d[categoryField]}|${groupField ? d[groupField] : "none"}`;
+    const level = (shadeCounter[key] || 0);
+    shadeCounter[key] = level + 1;
+    return { ...d, shadeLevel: level };
+  });
+  
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Bar chart from Excel selection",
+    background: "white",
+    config: { view: { stroke: "transparent" } },
+    data: { values: shadedData },
+    mark: { type: "bar", tooltip: true },
+    encoding: {
+      y: { 
+        field: categoryField, 
+        type: "nominal",
+        axis: {
+          title: categoryField,
+          labelFontSize: 12,
+          titleFontSize: 14
+        }
+      },
+      x: { 
+        field: valueField, 
+        type: "quantitative",
+        axis: {
+          title: valueField,
+          labelFontSize: 12,
+          titleFontSize: 14
+        },
+        stack: "zero" // stack when same category/group repeated
+      },
+      ...(needsGrouping && { yOffset: { field: groupField } }),
+      ...(groupField && {
+        color: {
+          field: groupField,
+          type: "nominal",
+          legend: {
+            title: groupField,
+            titleFontSize: 12,
+            labelFontSize: 11
           },
-          encoding: {
-            x: { 
-              field: headers[1], 
-              type: "quantitative",
-              axis: {
-                title: headers[1],
-                labelFontSize: 12,
-                titleFontSize: 14
-              }
-            },
-            y: { 
-              field: headers[0], 
-              type: "nominal",
-              axis: {
-                title: headers[0],
-                labelFontSize: 12,
-                titleFontSize: 14
-              }
-            },
-            // Add color encoding for grouped bars if 3rd column exists
-            ...(headers.length >= 3 && {
-              color: { 
-                field: headers[2], 
-                type: "nominal",
-                legend: {
-                  title: headers[2],
-                  titleFontSize: 12,
-                  labelFontSize: 11
-                }
-              }
-            })
-          },
-          config: {
-            font: "Segoe UI",
-            axis: {
-              labelColor: "#605e5c",
-              titleColor: "#323130",
-              gridColor: "#f3f2f1"
-            },
-            legend: {
-              titleColor: "#323130",
-              labelColor: "#605e5c"
-            }
-          }
-        };
+          scale: { scheme: "category10" }
+        },
+        fillOpacity: {
+          field: "shadeLevel",
+          type: "quantitative",
+          scale: { domain: [0, 3], range: [1, 0.5] } // lighter for higher stack index
+        }
+      })
+    },
+    config: {
+      font: "Segoe UI",
+      axis: {
+        labelColor: "#605e5c",
+        titleColor: "#323130",
+        gridColor: "#f3f2f1"
+      },
+      legend: {
+        titleColor: "#323130",
+        labelColor: "#605e5c"
       }
+    }
+  };
+}
 
 else if (chartType === "column") {
   const categoryField = headers[0];
@@ -5837,7 +5866,7 @@ else if (chartType === "column") {
   
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Column / Grouped / Stacked Bar Chart with auto-lightened stacked colors",
+    description: "Column chart from Excel selection",
     background: "white",
     config: { view: { stroke: "transparent" } },
     data: { values: shadedData },
