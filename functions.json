@@ -230,9 +230,9 @@
             }
         },
         {
-            "description": "CIRCLEPACK custom function\nCreates a circle packing chart from Excel data range",
-            "id": "CIRCLEPACK",
-            "name": "CIRCLEPACK",
+            "description": "CIRCLEPACKING custom function\nCreates a circle packing chart from Excel data range",
+            "id": "CIRCLEPACKING",
+            "name": "CIRCLEPACKING",
             "options": {
                 "requiresAddress": true
             },
