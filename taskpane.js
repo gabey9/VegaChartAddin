@@ -6340,7 +6340,7 @@ else if (chartType === "column") {
         };
       }
 
-      else if (chartType === "circlepack") {
+      else if (chartType === "circlepacking") {
         // Process hierarchical data for circle packing
         const nodes = new Map();
 
