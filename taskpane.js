@@ -6706,8 +6706,7 @@ else if (chartType === "linerectangle") {
         encoding: {
           x: { 
             field: "start", 
-            type: "ordinal",
-            axis: null
+            type: "ordinal"
           },
           x2: { 
             field: "end", 
@@ -6718,7 +6717,7 @@ else if (chartType === "linerectangle") {
             type: "nominal",
             scale: { scheme: "pastel1" },
             legend: {
-              title: "Highlights",
+              title: headers[2] || "Highlights",  // Use 3rd column header
               titleFontSize: 12,
               labelFontSize: 11
             }
@@ -6742,7 +6741,8 @@ else if (chartType === "linerectangle") {
               title: headers[0],
               labelFontSize: 12,
               titleFontSize: 14,
-              labelAngle: 0
+              labelAngle: -45,
+              labelAlign: "right"
             }
           },
           y: { 
@@ -6767,7 +6767,14 @@ else if (chartType === "linerectangle") {
         encoding: {
           x: { 
             field: headers[0], 
-            type: "ordinal"
+            type: "ordinal",
+            axis: {
+              title: headers[0],
+              labelFontSize: 12,
+              titleFontSize: 14,
+              labelAngle: -45,
+              labelAlign: "right"
+            }
           },
           y: { 
             field: "value", 
