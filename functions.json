@@ -950,6 +950,63 @@
             "result": {
                 "type": "string"
             }
+        },
+        {
+            "description": "HEATMAP_BAR custom function\nCreates a heatmap with bars from Excel data range",
+            "id": "HEATMAP_BAR",
+            "name": "HEATMAP_BAR",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "SCATTER_LINE custom function\nCreates a scatter plot with regression line from Excel data range",
+            "id": "SCATTER_LINE",
+            "name": "SCATTER_LINE",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "LINE_RECTANGLE custom function\nCreates a line chart with highlighted rectangles from Excel data range",
+            "id": "LINE_RECTANGLE",
+            "name": "LINE_RECTANGLE",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
         }
     ]
 }
