@@ -3983,142 +3983,79 @@ export async function run() {
         };
       }
 
-      else if (chartType === "heatmap") {
-        spec = {
-          $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-          description: "Heatmap with marginal bars from Excel selection",
-          background: "white",
-          config: { view: { stroke: "transparent" }},
-          data: { values: data },
-          spacing: 15,
-          bounds: "flush",
-          vconcat: [
-            {
-              height: 60,
-              mark: {
-                type: "bar",
-                stroke: null,
-                cornerRadiusEnd: 2,
-                tooltip: true,
-                color: "lightgrey"
-              },
-              encoding: {
-                x: {
-                  field: headers[1],
-                  type: "ordinal",
-                  axis: null
-                },
-                y: {
-                  field: headers[2],
-                  aggregate: "mean",
-                  type: "quantitative",
-                  axis: null
-                }
-              }
-            },
-            {
-              spacing: 15,
-              bounds: "flush",
-              hconcat: [
-                {
-                  mark: {
-                    type: "rect",
-                    stroke: "white",
-                    tooltip: true
-                  },
-                  encoding: {
-                    y: {
-                      field: headers[0],
-                      type: "ordinal",
-                      title: headers[0],
-                      axis: {
-                        domain: false,
-                        ticks: false,
-                        labels: true,
-                        labelAngle: 0,
-                        labelPadding: 5
-                      }
-                    },
-                    x: {
-                      field: headers[1],
-                      type: "ordinal",
-                      title: headers[1],
-                      axis: {
-                        domain: false,
-                        ticks: false,
-                        labels: true,
-                        labelAngle: 0
-                      }
-                    },
-                    color: {
-                      aggregate: "mean",
-                      field: headers[2],
-                      type: "quantitative",
-                      title: headers[2],
-                      scale: {
-                        scheme: "blues"
-                      },
-                      legend: {
-                        direction: "vertical",
-                        gradientLength: 120
-                      }
-                    }
-                  }
-                },
-                {
-                  mark: {
-                    type: "bar",
-                    stroke: null,
-                    cornerRadiusEnd: 2,
-                    tooltip: true,
-                    color: "lightgrey"
-                  },
-                  width: 60,
-                  encoding: {
-                    y: {
-                      field: headers[0],
-                      type: "ordinal",
-                      axis: null
-                    },
-                    x: {
-                      field: headers[2],
-                      type: "quantitative",
-                      aggregate: "mean",
-                      axis: null
-                    }
-                  }
-                }
-              ]
-            }
-          ],
-          config: {
-            autosize: {
-              type: "fit",
-              contains: "padding"
-            },
-            view: { stroke: "transparent" },
-            font: "Segoe UI",
-            text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
-            axis: {
-              ticks: false,
-              grid: false,
-              domain: false,
-              labelColor: "#605E5C",
-              labelFontSize: 12,
-              titleFontSize: 14,
-              titleColor: "#323130"
-            },
-            legend: {
-              titleFont: "Segoe UI",
-              titleFontWeight: "bold",
-              titleColor: "#605E5C",
-              labelFont: "Segoe UI",
-              labelFontSize: 12,
-              labelColor: "#605E5C"
-            }
-          }
-        };
+else if (chartType === "heatmap") {
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    description: "Heatmap from Excel selection",
+    background: "white",
+    data: { values: data },
+    mark: {
+      type: "rect",
+      stroke: "white",
+      tooltip: true
+    },
+    encoding: {
+      y: {
+        field: headers[0],
+        type: "ordinal",
+        title: headers[0],
+        axis: {
+          domain: false,
+          ticks: false,
+          labels: true,
+          labelAngle: 0,
+          labelPadding: 5
+        }
+      },
+      x: {
+        field: headers[1],
+        type: "ordinal",
+        title: headers[1],
+        axis: {
+          domain: false,
+          ticks: false,
+          labels: true,
+          labelAngle: 0
+        }
+      },
+      color: {
+        aggregate: "mean",
+        field: headers[2],
+        type: "quantitative",
+        title: headers[2],
+        scale: {
+          scheme: "blues"
+        },
+        legend: {
+          direction: "vertical",
+          gradientLength: 120
+        }
       }
+    },
+    config: {
+      view: { stroke: "transparent" },
+      font: "Segoe UI",
+      text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+      axis: {
+        ticks: false,
+        grid: false,
+        domain: false,
+        labelColor: "#605E5C",
+        labelFontSize: 12,
+        titleFontSize: 14,
+        titleColor: "#323130"
+      },
+      legend: {
+        titleFont: "Segoe UI",
+        titleFontWeight: "bold",
+        titleColor: "#605E5C",
+        labelFont: "Segoe UI",
+        labelFontSize: 12,
+        labelColor: "#605E5C"
+      }
+    }
+  };
+}
 
       else if (chartType === "variance") {
       if (headers.length < 3) {
