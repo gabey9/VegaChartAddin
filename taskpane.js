@@ -4721,111 +4721,115 @@ else if (chartType === "heatmap") {
         };
       }
 
-      else if (chartType === "bump") {
-      // calculate width based on number of unique x-values
-      const uniqueX = [...new Set(data.map(d => d[headers[0]]))];
-      const dynamicWidth = Math.max(400, uniqueX.length * 80);
-
-      spec = {
-        $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Bump chart from Excel selection",
-        background: "white",
-        config: { view: { stroke: "transparent" }},
-        data: { values: data },
-        width: dynamicWidth,
-        height: 200,   // give it some room
+else if (chartType === "bump") {
+  // calculate width based on number of unique x-values
+  const uniqueX = [...new Set(data.map(d => d[headers[0]]))];
+  const dynamicWidth = Math.max(400, uniqueX.length * 80);
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v6.json",
+    description: "Bump chart from Excel selection",
+    background: "white",
+    config: { view: { stroke: "transparent" }},
+    data: { values: data },
+    width: dynamicWidth,
+    height: 200,
+    autosize: {
+      type: "fit",
+      contains: "padding"
+    },
+    padding: { left: 10, right: 10, top: 5, bottom: 5 },
+    encoding: {
+      x: {
+        field: headers[0],
+        type: "nominal",
+        axis: { title: "" },
+        scale: { type: "point", padding: 0.2 }   // reduced from 1 to 0.2
+      },
+      y: {
+        field: headers[2],      
+        type: "ordinal",
+        axis: false
+      }
+    },
+    layer: [
+      {
+        mark: { type: "line", interpolate: "monotone" },
         encoding: {
-          x: {
-            field: headers[0],
+          color: {
+            field: headers[1],   
             type: "nominal",
-            axis: { title: "" },
-            scale: { type: "point", padding: 1 }   // padding 1 for more spread
-          },
-          y: {
-            field: headers[2],      
-            type: "ordinal",
-            axis: false
-          }
-        },
-        layer: [
-          {
-            mark: { type: "line", interpolate: "monotone" },
-            encoding: {
-              color: {
-                field: headers[1],   
-                type: "nominal",
-                legend: false
-              }
-            }
-          },
-          {
-            mark: { type: "circle", size: 400, tooltip: true },
-            encoding: {
-              color: {
-                field: headers[1],
-                type: "nominal",
-                legend: false
-              }
-            }
-          },
-          {
-            mark: { type: "text", color: "white" },
-            encoding: {
-              text: { field: headers[2] }
-            }
-          },
-          {
-            // Left-side labels
-            transform: [
-              { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "descending" }] },
-              { filter: "datum.rank === 1" }
-            ],
-            mark: {
-              type: "text",
-              align: "left",
-              baseline: "middle",
-              dx: 15,
-              fontWeight: "bold",
-              fontSize: 12
-            },
-            encoding: {
-              text: { field: headers[1], type: "nominal" },
-              color: { field: headers[1], type: "nominal", legend: false }
-            }
-          },
-          {
-            // Right-side labels
-            transform: [
-              { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "ascending" }] },
-              { filter: "datum.rank === 1" }
-            ],
-            mark: {
-              type: "text",
-              align: "right",
-              baseline: "middle",
-              dx: -15,
-              fontWeight: "bold",
-              fontSize: 12
-            },
-            encoding: {
-              text: { field: headers[1], type: "nominal" },
-              color: { field: headers[1], type: "nominal", legend: false }
-            }
-          }
-        ],
-        config: {
-          view: { stroke: "transparent" },
-          line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
-          axis: {
-            ticks: false,
-            grid: false,
-            domain: false,
-            labelColor: "#666666",
-            labelFontSize: 12
+            legend: false
           }
         }
-      };
+      },
+      {
+        mark: { type: "circle", size: 400, tooltip: true },
+        encoding: {
+          color: {
+            field: headers[1],
+            type: "nominal",
+            legend: false
+          }
+        }
+      },
+      {
+        mark: { type: "text", color: "white" },
+        encoding: {
+          text: { field: headers[2] }
+        }
+      },
+      {
+        // Left-side labels
+        transform: [
+          { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "descending" }] },
+          { filter: "datum.rank === 1" }
+        ],
+        mark: {
+          type: "text",
+          align: "left",
+          baseline: "middle",
+          dx: 15,
+          fontWeight: "bold",
+          fontSize: 12
+        },
+        encoding: {
+          text: { field: headers[1], type: "nominal" },
+          color: { field: headers[1], type: "nominal", legend: false }
+        }
+      },
+      {
+        // Right-side labels
+        transform: [
+          { window: [{ op: "rank", as: "rank" }], sort: [{ field: headers[0], order: "ascending" }] },
+          { filter: "datum.rank === 1" }
+        ],
+        mark: {
+          type: "text",
+          align: "right",
+          baseline: "middle",
+          dx: -15,
+          fontWeight: "bold",
+          fontSize: 12
+        },
+        encoding: {
+          text: { field: headers[1], type: "nominal" },
+          color: { field: headers[1], type: "nominal", legend: false }
+        }
       }
+    ],
+    config: {
+      view: { stroke: "transparent" },
+      line: { strokeWidth: 3, strokeCap: "round", strokeJoin: "round" },
+      axis: {
+        ticks: false,
+        grid: false,
+        domain: false,
+        labelColor: "#666666",
+        labelFontSize: 12
+      }
+    }
+  };
+}
 
       else if (chartType === "sankey") {
       // Parse links from Source-Target-Value format
