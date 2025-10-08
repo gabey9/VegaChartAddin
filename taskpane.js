@@ -5814,9 +5814,7 @@ else if (chartType === "column") {
   const valueField = headers[1];
   const groupField = headers[2];
 
-  // Determine chart behavior:
-  // If the same (category, group) pair appears more than once → stacked.
-  // Otherwise, grouped.
+  // Detect if stacked or grouped
   const groupedBy = {};
   let isStacked = false;
   if (headers.length >= 3) {
@@ -5832,14 +5830,37 @@ else if (chartType === "column") {
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Grouped or Stacked Column Chart from Excel selection",
+    description: "Grouped or Stacked Column Chart with Lighter Stack Colors",
     background: "white",
     config: { view: { stroke: "transparent" } },
     data: { values: data },
+    // Compute stack rank for lightness control
+    ...(isStacked && {
+      transform: [
+        {
+          window: [{ op: "rank", as: "stackRank" }],
+          sort: [{ field: valueField }]
+        },
+        {
+          calculate:
+            // Base hue depends on group, lightness on stackRank
+            "datum.groupColor = " +
+            "datum." + groupField + " === 'X' ? 210 : " +
+            "datum." + groupField + " === 'Y' ? 140 : " +
+            "datum." + groupField + " === 'Z' ? 30 : 260",
+          as: "groupHue"
+        },
+        {
+          calculate:
+            "hsl(datum.groupHue, '60%', (35 + datum.stackRank * 10) + '%')",
+          as: "stackColor"
+        }
+      ]
+    }),
     mark: { type: "bar", tooltip: true },
     encoding: {
-      x: { 
-        field: categoryField, 
+      x: {
+        field: categoryField,
         type: "nominal",
         axis: {
           title: categoryField,
@@ -5847,32 +5868,36 @@ else if (chartType === "column") {
           titleFontSize: 14
         }
       },
-      y: { 
-        field: valueField, 
+      y: {
+        field: valueField,
         type: "quantitative",
         axis: {
           title: valueField,
           labelFontSize: 12,
           titleFontSize: 14
         },
-        // stack only when required
         stack: isStacked ? "zero" : null
       },
       ...(headers.length >= 3 && {
-        color: { 
-          field: groupField, 
-          type: "nominal",
-          legend: {
-            title: groupField,
-            titleFontSize: 12,
-            labelFontSize: 11
-          },
-          // clear, distinct colors for stacked or grouped
-          scale: { scheme: isStacked ? "tableau10" : "category10" }
-        },
+        color: isStacked
+          ? {
+              field: "stackColor",
+              type: "nominal",
+              legend: null // disable legend (since each tint is just variation)
+            }
+          : {
+              field: groupField,
+              type: "nominal",
+              legend: {
+                title: groupField,
+                titleFontSize: 12,
+                labelFontSize: 11
+              },
+              scale: { scheme: "category10" }
+            },
         ...(isStacked
-          ? {} // stacked: bars overlaid by color
-          : { xOffset: { field: groupField } }) // grouped: side-by-side bars
+          ? {} // stacked: use tinting, no offset
+          : { xOffset: { field: groupField } }) // grouped: separate bars
       })
     },
     config: {
