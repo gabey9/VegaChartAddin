@@ -5814,26 +5814,29 @@ else if (chartType === "column") {
   const valueField = headers[1];
   const groupField = headers[2];
 
-  // Detect unique combination of category/group
-  const uniqueCategories = [...new Set(data.map(d => d[categoryField]))];
-  const uniqueGroups = headers.length >= 3 ? [...new Set(data.map(d => d[groupField]))] : [];
-
-  // Automatically decide stacking vs grouping:
-  // If multiple entries per category → stacked
-  const isStacked = headers.length >= 3 && data.some(
-    (d, i, arr) => arr.filter(r => r[categoryField] === d[categoryField]).length > 1
-  );
+  // Determine chart behavior:
+  // If the same (category, group) pair appears more than once → stacked.
+  // Otherwise, grouped.
+  const groupedBy = {};
+  let isStacked = false;
+  if (headers.length >= 3) {
+    for (const row of data) {
+      const key = `${row[categoryField]}|${row[groupField]}`;
+      groupedBy[key] = (groupedBy[key] || 0) + 1;
+      if (groupedBy[key] > 1) {
+        isStacked = true;
+        break;
+      }
+    }
+  }
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Column or Stacked Column Chart from Excel selection",
+    description: "Grouped or Stacked Column Chart from Excel selection",
     background: "white",
     config: { view: { stroke: "transparent" } },
     data: { values: data },
-    mark: { 
-      type: "bar", 
-      tooltip: true 
-    },
+    mark: { type: "bar", tooltip: true },
     encoding: {
       x: { 
         field: categoryField, 
@@ -5852,7 +5855,8 @@ else if (chartType === "column") {
           labelFontSize: 12,
           titleFontSize: 14
         },
-        stack: isStacked ? "zero" : null // stack bars if multiple per category
+        // stack only when required
+        stack: isStacked ? "zero" : null
       },
       ...(headers.length >= 3 && {
         color: { 
@@ -5863,12 +5867,12 @@ else if (chartType === "column") {
             titleFontSize: 12,
             labelFontSize: 11
           },
-          // use a color palette that differentiates stacked parts clearly
-          scale: { scheme: "tableau10" }
+          // clear, distinct colors for stacked or grouped
+          scale: { scheme: isStacked ? "tableau10" : "category10" }
         },
         ...(isStacked
-          ? {} // stacked: no offset
-          : { xOffset: { field: groupField } }) // grouped: side-by-side
+          ? {} // stacked: bars overlaid by color
+          : { xOffset: { field: groupField } }) // grouped: side-by-side bars
       })
     },
     config: {
