@@ -5812,21 +5812,25 @@ export async function run() {
 else if (chartType === "column") {
   const categoryField = headers[0];
   const valueField = headers[1];
-  // 3rd column used for grouping (xOffset). May be null if only 2 columns.
   const groupField = headers.length >= 3 ? headers[2] : null;
-  // 4th column (if present) used for color grouping. If absent, color falls back to groupField.
   const colorField = headers.length >= 4 ? headers[3] : groupField;
+
+  // Add shadeLevel to data (counts how many duplicates per category/color)
+  let shadeCounter = {};
+  const shadedData = data.map(d => {
+    const key = `${d[categoryField]}|${colorField ? d[colorField] : "none"}`;
+    const level = (shadeCounter[key] || 0);
+    shadeCounter[key] = level + 1;
+    return { ...d, shadeLevel: level };
+  });
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Column or Grouped Bar Chart from Excel selection (supports separate color column)",
+    description: "Column / Grouped / Stacked Bar Chart with auto-lightened stacked colors",
     background: "white",
     config: { view: { stroke: "transparent" } },
-    data: { values: data },
-    mark: { 
-      type: "bar", 
-      tooltip: true
-    },
+    data: { values: shadedData },
+    mark: { type: "bar", tooltip: true },
     encoding: {
       x: { 
         field: categoryField, 
@@ -5844,13 +5848,13 @@ else if (chartType === "column") {
           title: valueField,
           labelFontSize: 12,
           titleFontSize: 14
-        }
+        },
+        stack: "zero" // stack when same category/group repeated
       },
-      // apply grouping offset if a 3rd column exists
       ...(groupField && { xOffset: { field: groupField } }),
-      // apply color using the explicit 4th column if present, otherwise use the 3rd column (if any)
       ...(colorField && {
         color: {
+          // Combine base color + shade level into one scale
           field: colorField,
           type: "nominal",
           legend: {
@@ -5858,8 +5862,14 @@ else if (chartType === "column") {
             titleFontSize: 12,
             labelFontSize: 11
           },
-          // choose a categorical color scheme; change scheme as desired
+          // Base categorical palette
           scale: { scheme: "category10" }
+        },
+        // Apply lightness variation per shadeLevel
+        fillOpacity: {
+          field: "shadeLevel",
+          type: "quantitative",
+          scale: { domain: [0, 3], range: [1, 0.5] } // lighter for higher stack index
         }
       })
     },
