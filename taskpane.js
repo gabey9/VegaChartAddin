@@ -4028,7 +4028,6 @@ else if (chartType === "heatmap") {
         },
         legend: {
           direction: "vertical",
-          gradientLength: 120,
           orient: "right",
           titleAlign: "center",
           labelAlign: "center"
