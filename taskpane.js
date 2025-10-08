@@ -1901,14 +1901,14 @@ export async function run() {
         "$schema": "https://vega.github.io/schema/vega/v5.json",
         "description": "Gauge chart from Excel selection",
         "width": 400,
-        "height": 250,
+        "height": 220,
         "background": "white",
         "config": { "view": { "stroke": "transparent" }},
         
         "signals": [
           {"name": "centerX", "update": "width / 2"},
-          {"name": "centerY", "update": "height - 30"},
-          {"name": "outerRadius", "update": "min(width, height - 40) / 2"},
+          {"name": "centerY", "update": "height - 20"},
+          {"name": "outerRadius", "update": "min(width / 2, height) - 20"},
           {"name": "innerRadius", "update": "outerRadius - outerRadius * 0.25"},
           {"name": "mainValue", "value": mainValue},
           {"name": "minValue", "value": minValue},
