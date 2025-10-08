@@ -5250,119 +5250,57 @@ function HEATMAP(data, invocation) {
         return obj;
       });
 
-      // Use EXACT specification from taskpane.js heatmap chart
       const spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-        description: "Heatmap with marginal bars from Excel selection",
+        description: "Heatmap from Excel selection",
         background: "white",
-        config: { view: { stroke: "transparent" }},
         data: { values: processedData },
-        spacing: 15,
-        bounds: "flush",
-        vconcat: [
-          {
-            height: 60,
-            mark: {
-              type: "bar",
-              stroke: null,
-              cornerRadiusEnd: 2,
-              tooltip: true,
-              color: "lightgrey"
-            },
-            encoding: {
-              x: {
-                field: headers[1],
-                type: "ordinal",
-                axis: null
-              },
-              y: {
-                field: headers[2],
-                aggregate: "mean",
-                type: "quantitative",
-                axis: null
-              }
+        mark: {
+          type: "rect",
+          stroke: "white",
+          tooltip: true
+        },
+        encoding: {
+          y: {
+            field: headers[0],
+            type: "ordinal",
+            title: headers[0],
+            axis: {
+              domain: false,
+              ticks: false,
+              labels: true,
+              labelAngle: 0,
+              labelPadding: 5
             }
           },
-          {
-            spacing: 15,
-            bounds: "flush",
-            hconcat: [
-              {
-                mark: {
-                  type: "rect",
-                  stroke: "white",
-                  tooltip: true
-                },
-                encoding: {
-                  y: {
-                    field: headers[0],
-                    type: "ordinal",
-                    title: headers[0],
-                    axis: {
-                      domain: false,
-                      ticks: false,
-                      labels: true,
-                      labelAngle: 0,
-                      labelPadding: 5
-                    }
-                  },
-                  x: {
-                    field: headers[1],
-                    type: "ordinal",
-                    title: headers[1],
-                    axis: {
-                      domain: false,
-                      ticks: false,
-                      labels: true,
-                      labelAngle: 0
-                    }
-                  },
-                  color: {
-                    aggregate: "mean",
-                    field: headers[2],
-                    type: "quantitative",
-                    title: headers[2],
-                    scale: {
-                      scheme: "blues"
-                    },
-                    legend: {
-                      direction: "vertical",
-                      gradientLength: 120
-                    }
-                  }
-                }
-              },
-              {
-                mark: {
-                  type: "bar",
-                  stroke: null,
-                  cornerRadiusEnd: 2,
-                  tooltip: true,
-                  color: "lightgrey"
-                },
-                width: 60,
-                encoding: {
-                  y: {
-                    field: headers[0],
-                    type: "ordinal",
-                    axis: null
-                  },
-                  x: {
-                    field: headers[2],
-                    type: "quantitative",
-                    aggregate: "mean",
-                    axis: null
-                  }
-                }
-              }
-            ]
-          }
-        ],
-        config: {
-          autosize: {
-            type: "fit",
-            contains: "padding"
+          x: {
+            field: headers[1],
+            type: "ordinal",
+            title: headers[1],
+            axis: {
+              domain: false,
+              ticks: false,
+              labels: true,
+              labelAngle: 0
+            }
           },
+          color: {
+            aggregate: "mean",
+            field: headers[2],
+            type: "quantitative",
+            title: headers[2],
+            scale: {
+              scheme: "blues"
+            },
+            legend: {
+              direction: "vertical",
+              orient: "right",
+              titleAlign: "center",
+              labelAlign: "center"
+            }
+          }
+        },
+        config: {
           view: { stroke: "transparent" },
           font: "Segoe UI",
           text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
@@ -5381,10 +5319,13 @@ function HEATMAP(data, invocation) {
             titleColor: "#605E5C",
             labelFont: "Segoe UI",
             labelFontSize: 12,
-            labelColor: "#605E5C"
+            labelColor: "#605E5C",
+            titleAlign: "center",
+            labelAlign: "center"
           }
         }
       };
+
       const chartId = `heatmap_${invocation.address.replace(/[^A-Za-z0-9]/g, "_")}`;
       createChart(spec, "heatmap", chartId)
         .then(() => resolve("Heatmap"))
@@ -6641,13 +6582,18 @@ function BUMP(data, invocation) {
         config: { view: { stroke: "transparent" }},
         data: { values: processedData },
         width: dynamicWidth,
-        height: 200,   // give it some room
+        height: 200,
+        autosize: {
+          type: "fit",
+          contains: "padding"
+        },
+        padding: { left: 10, right: 10, top: 5, bottom: 5 },
         encoding: {
           x: {
             field: headers[0],
             type: "nominal",
             axis: { title: "" },
-            scale: { type: "point", padding: 1 }   // padding 1 for more spread
+            scale: { type: "point", padding: 0.2 }   // reduced from 1 to 0.2
           },
           y: {
             field: headers[2],      
