@@ -3358,7 +3358,7 @@ export async function run() {
           $schema: "https://vega.github.io/schema/vega/v5.json",
           description: "Arc diagram from Excel selection",
           width: Math.max(600, nodes.length * 40),
-          height: 300,
+          height: 150,
           padding: { top: 20, bottom: 20, left: 20, right: 20 },
           background: "white",
           config: { view: { stroke: "transparent" }},
