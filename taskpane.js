@@ -5813,30 +5813,30 @@ else if (chartType === "column") {
   const categoryField = headers[0];
   const valueField = headers[1];
   const groupField = headers[2];
-  const stackField = headers[3]; // optional 4th column for stacking
+
+  // Detect unique combination of category/group
+  const uniqueCategories = [...new Set(data.map(d => d[categoryField]))];
+  const uniqueGroups = headers.length >= 3 ? [...new Set(data.map(d => d[groupField]))] : [];
+
+  // Automatically decide stacking vs grouping:
+  // If multiple entries per category → stacked
+  const isStacked = headers.length >= 3 && data.some(
+    (d, i, arr) => arr.filter(r => r[categoryField] === d[categoryField]).length > 1
+  );
 
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-    description: "Grouped + Stacked Column Chart from Excel selection",
+    description: "Column or Stacked Column Chart from Excel selection",
     background: "white",
     config: { view: { stroke: "transparent" } },
     data: { values: data },
-    transform: [
-      // Assign brightness index based on category order
-      {
-        window: [{ op: "rank", as: "catIndex" }],
-        sort: [{ field: categoryField }]
-      },
-      // Normalize catIndex to 0–1 range for lightness interpolation
-      {
-        calculate: "datum.catIndex / (max(datum.catIndex) || 1)",
-        as: "lightness"
-      }
-    ],
-    mark: { type: "bar", tooltip: true },
+    mark: { 
+      type: "bar", 
+      tooltip: true 
+    },
     encoding: {
-      x: {
-        field: categoryField,
+      x: { 
+        field: categoryField, 
         type: "nominal",
         axis: {
           title: categoryField,
@@ -5844,49 +5844,31 @@ else if (chartType === "column") {
           titleFontSize: 14
         }
       },
-      y: {
-        field: valueField,
+      y: { 
+        field: valueField, 
         type: "quantitative",
         axis: {
           title: valueField,
           labelFontSize: 12,
           titleFontSize: 14
-        }
-      },
-      // Group by groupField (3rd column)
-      ...(headers.length >= 3 && {
-        xOffset: { field: groupField },
-      }),
-      // Stack by stackField (4th column)
-      ...(headers.length >= 4 && {
-        color: {
-          field: stackField,
-          type: "nominal",
-          legend: {
-            title: stackField,
-            titleFontSize: 12,
-            labelFontSize: 11
-          },
-          scale: { scheme: "blues" }
         },
-        order: { field: stackField }
-      }),
-      // If no stack field, color by group but lighten across categories
-      ...(headers.length === 3 && {
-        color: {
-          field: groupField,
+        stack: isStacked ? "zero" : null // stack bars if multiple per category
+      },
+      ...(headers.length >= 3 && {
+        color: { 
+          field: groupField, 
           type: "nominal",
           legend: {
             title: groupField,
             titleFontSize: 12,
             labelFontSize: 11
           },
-          scale: {
-            // generate dynamic lightening per category
-            domain: [...new Set(data.map(d => d[groupField]))],
-            range: ["#1565C0", "#42A5F5", "#90CAF9"]
-          }
-        }
+          // use a color palette that differentiates stacked parts clearly
+          scale: { scheme: "tableau10" }
+        },
+        ...(isStacked
+          ? {} // stacked: no offset
+          : { xOffset: { field: groupField } }) // grouped: side-by-side
       })
     },
     config: {
