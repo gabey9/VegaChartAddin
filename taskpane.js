@@ -5814,6 +5814,18 @@ else if (chartType === "column") {
   const valueField = headers[1];
   const groupField = headers.length >= 3 ? headers[2] : null;
   
+  // Determine if we need grouping by checking if any category has multiple groups
+  let categoryGroups = {};
+  if (groupField) {
+    data.forEach(d => {
+      const cat = d[categoryField];
+      const grp = d[groupField];
+      if (!categoryGroups[cat]) categoryGroups[cat] = new Set();
+      categoryGroups[cat].add(grp);
+    });
+  }
+  const needsGrouping = groupField && Object.values(categoryGroups).some(groups => groups.size > 1);
+  
   // Add shadeLevel to data (counts how many duplicates per category/group)
   let shadeCounter = {};
   const shadedData = data.map(d => {
@@ -5822,9 +5834,6 @@ else if (chartType === "column") {
     shadeCounter[key] = level + 1;
     return { ...d, shadeLevel: level };
   });
-  
-  // Determine if we need grouping (xOffset) based on whether there are multiple groups per category
-  const needsGrouping = groupField && shadedData.some(d => d.shadeLevel > 0);
   
   spec = {
     $schema: "https://vega.github.io/schema/vega-lite/v6.json",
