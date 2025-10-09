@@ -4452,18 +4452,17 @@ else if (chartType === "polarbar") {
     // Calculate theta positions and widths for polar bars
     const dataWithPolar = data.map((d, i) => {
         const n = data.length;
-        const theta = (i / n) * 2 * Math.PI; // Evenly spaced angles
-        const thetaDegrees = (theta * 180) / Math.PI;
-        // Variable width: random or could be based on data
-        // For simplicity, using equal widths here, but can be randomized
-        const widthRadians = (2 * Math.PI) / n * 0.8; // 80% of available space
-        const widthDegrees = (widthRadians * 180) / Math.PI;
+        const anglePerBar = 360 / n;
+        const theta = i * anglePerBar; // Evenly spaced angles in degrees
+        
+        // Variable width: use 70% of available space (can be randomized)
+        const barWidth = anglePerBar * 0.7;
         
         return {
             ...d,
-            theta: thetaDegrees,
-            thetaStart: thetaDegrees - widthDegrees / 2,
-            thetaEnd: thetaDegrees + widthDegrees / 2
+            theta: theta,
+            thetaStart: theta - barWidth / 2,
+            thetaEnd: theta + barWidth / 2
         };
     });
 
@@ -4473,11 +4472,7 @@ else if (chartType === "polarbar") {
         background: "white",
         config: { 
             view: { stroke: "transparent" },
-            font: "Segoe UI",
-            legend: {
-                titleColor: "#323130",
-                labelColor: "#605e5c"
-            }
+            font: "Segoe UI"
         },
         data: { values: dataWithPolar },
         layer: [{
@@ -4491,18 +4486,23 @@ else if (chartType === "polarbar") {
                 theta: { 
                     field: "thetaStart", 
                     type: "quantitative",
-                    scale: { domain: [0, 360] }
+                    scale: { domain: [0, 360], type: "linear" },
+                    stack: null  // CRITICAL: Disable stacking
                 },
-                theta2: { field: "thetaEnd" },
+                theta2: { 
+                    field: "thetaEnd",
+                    type: "quantitative"
+                },
                 radius: { 
                     field: headers[1], 
                     type: "quantitative",
                     scale: { type: "linear", zero: true, rangeMin: 20 }
                 },
+                radius2: { value: 20 },  // Inner radius
                 color: { 
                     field: headers[0], 
                     type: "nominal",
-                    scale: { scheme: "viridis" },
+                    scale: { scheme: "tableau20" },
                     legend: {
                         title: headers[0],
                         titleFontSize: 12,
@@ -4525,7 +4525,7 @@ else if (chartType === "polarbar") {
                 theta: { 
                     field: "theta", 
                     type: "quantitative",
-                    scale: { domain: [0, 360] }
+                    scale: { domain: [0, 360], type: "linear" }
                 },
                 radius: { 
                     field: headers[1], 
