@@ -113,10 +113,19 @@
             color: #323130;
             border-bottom: 1px solid #f0f0f0;
             display: none;
+            align-items: center;
+            gap: 8px;
         }
         
         .chart-item.visible {
-            display: block;
+            display: flex;
+        }
+        
+        .chart-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            object-fit: contain;
         }
         
         .chart-item:hover {
@@ -187,71 +196,181 @@
                     <span>Standard</span>
                     <span class="folder-arrow">►</span>
                 </div>
-                <div class="chart-item" data-chart="column" data-folder="standard">Column</div>
-                <div class="chart-item" data-chart="bar" data-folder="standard">Bar</div>
-                <div class="chart-item" data-chart="line" data-folder="standard">Line</div>
-                <div class="chart-item" data-chart="area" data-folder="standard">Area</div>
-                <div class="chart-item" data-chart="scatter" data-folder="standard">Scatter</div>
-                <div class="chart-item" data-chart="bubble" data-folder="standard">Bubble</div>
-                <div class="chart-item" data-chart="pie" data-folder="standard">Pie</div>
-                <div class="chart-item" data-chart="donut" data-folder="standard">Donut</div>
-                <div class="chart-item" data-chart="box" data-folder="standard">Box</div>
-                <div class="chart-item" data-chart="radar" data-folder="standard">Radar</div>
-                <div class="chart-item" data-chart="map" data-folder="standard">Map</div>
-                <div class="chart-item" data-chart="contour" data-folder="standard">Contour</div>
-                <div class="chart-item" data-chart="histogram" data-folder="standard">Histogram</div>
-                <div class="chart-item" data-chart="funnel" data-folder="standard">Funnel</div>
-                <div class="chart-item" data-chart="candlestick" data-folder="standard">Candlestick</div>                          
-                <div class="chart-item" data-chart="treemap" data-folder="standard">Treemap</div>
-                <div class="chart-item" data-chart="sunburst" data-folder="standard">Sunburst</div>
-                <div class="chart-item" data-chart="waterfall" data-folder="standard">Waterfall</div>                
+                <div class="chart-item" data-chart="column" data-folder="standard">
+                    <img src="./assets/column.png" class="chart-icon" alt="">Column
+                </div>
+                <div class="chart-item" data-chart="bar" data-folder="standard">
+                    <img src="./assets/bar.png" class="chart-icon" alt="">Bar
+                </div>
+                <div class="chart-item" data-chart="line" data-folder="standard">
+                    <img src="./assets/line.png" class="chart-icon" alt="">Line
+                </div>
+                <div class="chart-item" data-chart="area" data-folder="standard">
+                    <img src="./assets/area.png" class="chart-icon" alt="">Area
+                </div>
+                <div class="chart-item" data-chart="scatter" data-folder="standard">
+                    <img src="./assets/scatter.png" class="chart-icon" alt="">Scatter
+                </div>
+                <div class="chart-item" data-chart="bubble" data-folder="standard">
+                    <img src="./assets/bubble.png" class="chart-icon" alt="">Bubble
+                </div>
+                <div class="chart-item" data-chart="pie" data-folder="standard">
+                    <img src="./assets/pie.png" class="chart-icon" alt="">Pie
+                </div>
+                <div class="chart-item" data-chart="donut" data-folder="standard">
+                    <img src="./assets/donut.png" class="chart-icon" alt="">Donut
+                </div>
+                <div class="chart-item" data-chart="box" data-folder="standard">
+                    <img src="./assets/box.png" class="chart-icon" alt="">Box
+                </div>
+                <div class="chart-item" data-chart="radar" data-folder="standard">
+                    <img src="./assets/radar.png" class="chart-icon" alt="">Radar
+                </div>
+                <div class="chart-item" data-chart="map" data-folder="standard">
+                    <img src="./assets/map.png" class="chart-icon" alt="">Map
+                </div>
+                <div class="chart-item" data-chart="contour" data-folder="standard">
+                    <img src="./assets/contour.png" class="chart-icon" alt="">Contour
+                </div>
+                <div class="chart-item" data-chart="histogram" data-folder="standard">
+                    <img src="./assets/histogram.png" class="chart-icon" alt="">Histogram
+                </div>
+                <div class="chart-item" data-chart="funnel" data-folder="standard">
+                    <img src="./assets/funnel.png" class="chart-icon" alt="">Funnel
+                </div>
+                <div class="chart-item" data-chart="candlestick" data-folder="standard">
+                    <img src="./assets/candlestick.png" class="chart-icon" alt="">Candlestick
+                </div>
+                <div class="chart-item" data-chart="treemap" data-folder="standard">
+                    <img src="./assets/treemap.png" class="chart-icon" alt="">Treemap
+                </div>
+                <div class="chart-item" data-chart="sunburst" data-folder="standard">
+                    <img src="./assets/sunburst.png" class="chart-icon" alt="">Sunburst
+                </div>
+                <div class="chart-item" data-chart="waterfall" data-folder="standard">
+                    <img src="./assets/waterfall.png" class="chart-icon" alt="">Waterfall
+                </div>
                 
                 <div class="folder-item" data-folder="special">
                     <span>Special</span>
                     <span class="folder-arrow">►</span>
                 </div>
-                <div class="chart-item" data-chart="step" data-folder="special">Step</div>
-                <div class="chart-item" data-chart="butterfly" data-folder="special">Butterfly</div>
-                <div class="chart-item" data-chart="beeswarm" data-folder="special">Beeswarm</div>
-                <div class="chart-item" data-chart="radial" data-folder="special">Radial</div>
-                <div class="chart-item" data-chart="polarbar" data-folder="special">Polar Bar</div>
-                <div class="chart-item" data-chart="gauge" data-folder="special">Gauge</div>
-                <div class="chart-item" data-chart="ring" data-folder="special">Ring</div>
-                <div class="chart-item" data-chart="tree" data-folder="special">Tree</div>                
-                <div class="chart-item" data-chart="arc" data-folder="special">Arc</div>
-                <div class="chart-item" data-chart="chord" data-folder="special">Chord</div>
-                <div class="chart-item" data-chart="circlepacking" data-folder="special">Circle Packing</div>
-                <div class="chart-item" data-chart="wordcloud" data-folder="special">Word Cloud</div>
-                <div class="chart-item" data-chart="gantt" data-folder="special">Gantt</div>
-                <div class="chart-item" data-chart="strip" data-folder="special">Strip</div>
-                <div class="chart-item" data-chart="density" data-folder="special">Density</div>
-                <div class="chart-item" data-chart="heatmap" data-folder="special">Heatmap</div>
-                <div class="chart-item" data-chart="tablebubble" data-folder="special">Table Bubble</div>
-                <div class="chart-item" data-chart="bullet" data-folder="special">Bullet</div>
-                <div class="chart-item" data-chart="horizon" data-folder="special">Horizon</div>
-                <div class="chart-item" data-chart="dumbbell" data-folder="special">Dumbbell</div>
-                <div class="chart-item" data-chart="slope" data-folder="special">Slope</div>
-                <div class="chart-item" data-chart="mekko" data-folder="special">Mekko</div>
-                <div class="chart-item" data-chart="marimekko" data-folder="special">Marimekko</div>                
-                <div class="chart-item" data-chart="bump" data-folder="special">Bump</div>
-                <div class="chart-item" data-chart="fan" data-folder="special">Fan</div>
-                <div class="chart-item" data-chart="waffle" data-folder="special">Waffle</div>
-                <div class="chart-item" data-chart="lollipop" data-folder="special">Lollipop</div>
-                <div class="chart-item" data-chart="violin" data-folder="special">Violin</div>
-                <div class="chart-item" data-chart="sankey" data-folder="special">Sankey</div>
-                <div class="chart-item" data-chart="streamgraph" data-folder="special">Streamgraph</div>
-                <div class="chart-item" data-chart="ribbon" data-folder="special">Ribbon</div>
-                <div class="chart-item" data-chart="ridgeline" data-folder="special">Ridgeline</div>
-                <div class="chart-item" data-chart="deviation" data-folder="special">Deviation</div>
-                <div class="chart-item" data-chart="variance" data-folder="special">Variance</div>
+                <div class="chart-item" data-chart="step" data-folder="special">
+                    <img src="./assets/step.png" class="chart-icon" alt="">Step
+                </div>
+                <div class="chart-item" data-chart="butterfly" data-folder="special">
+                    <img src="./assets/butterfly.png" class="chart-icon" alt="">Butterfly
+                </div>
+                <div class="chart-item" data-chart="beeswarm" data-folder="special">
+                    <img src="./assets/beeswarm.png" class="chart-icon" alt="">Beeswarm
+                </div>
+                <div class="chart-item" data-chart="radial" data-folder="special">
+                    <img src="./assets/radial.png" class="chart-icon" alt="">Radial
+                </div>
+                <div class="chart-item" data-chart="polarbar" data-folder="special">
+                    <img src="./assets/polarbar.png" class="chart-icon" alt="">Polar Bar
+                </div>
+                <div class="chart-item" data-chart="gauge" data-folder="special">
+                    <img src="./assets/gauge.png" class="chart-icon" alt="">Gauge
+                </div>
+                <div class="chart-item" data-chart="ring" data-folder="special">
+                    <img src="./assets/ring.png" class="chart-icon" alt="">Ring
+                </div>
+                <div class="chart-item" data-chart="tree" data-folder="special">
+                    <img src="./assets/tree.png" class="chart-icon" alt="">Tree
+                </div>
+                <div class="chart-item" data-chart="arc" data-folder="special">
+                    <img src="./assets/arc.png" class="chart-icon" alt="">Arc
+                </div>
+                <div class="chart-item" data-chart="chord" data-folder="special">
+                    <img src="./assets/chord.png" class="chart-icon" alt="">Chord
+                </div>
+                <div class="chart-item" data-chart="circlepacking" data-folder="special">
+                    <img src="./assets/circlepacking.png" class="chart-icon" alt="">Circle Packing
+                </div>
+                <div class="chart-item" data-chart="wordcloud" data-folder="special">
+                    <img src="./assets/wordcloud.png" class="chart-icon" alt="">Word Cloud
+                </div>
+                <div class="chart-item" data-chart="gantt" data-folder="special">
+                    <img src="./assets/gantt.png" class="chart-icon" alt="">Gantt
+                </div>
+                <div class="chart-item" data-chart="strip" data-folder="special">
+                    <img src="./assets/strip.png" class="chart-icon" alt="">Strip
+                </div>
+                <div class="chart-item" data-chart="density" data-folder="special">
+                    <img src="./assets/density.png" class="chart-icon" alt="">Density
+                </div>
+                <div class="chart-item" data-chart="heatmap" data-folder="special">
+                    <img src="./assets/heatmap.png" class="chart-icon" alt="">Heatmap
+                </div>
+                <div class="chart-item" data-chart="tablebubble" data-folder="special">
+                    <img src="./assets/tablebubble.png" class="chart-icon" alt="">Table Bubble
+                </div>
+                <div class="chart-item" data-chart="bullet" data-folder="special">
+                    <img src="./assets/bullet.png" class="chart-icon" alt="">Bullet
+                </div>
+                <div class="chart-item" data-chart="horizon" data-folder="special">
+                    <img src="./assets/horizon.png" class="chart-icon" alt="">Horizon
+                </div>
+                <div class="chart-item" data-chart="dumbbell" data-folder="special">
+                    <img src="./assets/dumbbell.png" class="chart-icon" alt="">Dumbbell
+                </div>
+                <div class="chart-item" data-chart="slope" data-folder="special">
+                    <img src="./assets/slope.png" class="chart-icon" alt="">Slope
+                </div>
+                <div class="chart-item" data-chart="mekko" data-folder="special">
+                    <img src="./assets/mekko.png" class="chart-icon" alt="">Mekko
+                </div>
+                <div class="chart-item" data-chart="marimekko" data-folder="special">
+                    <img src="./assets/marimekko.png" class="chart-icon" alt="">Marimekko
+                </div>
+                <div class="chart-item" data-chart="bump" data-folder="special">
+                    <img src="./assets/bump.png" class="chart-icon" alt="">Bump
+                </div>
+                <div class="chart-item" data-chart="fan" data-folder="special">
+                    <img src="./assets/fan.png" class="chart-icon" alt="">Fan
+                </div>
+                <div class="chart-item" data-chart="waffle" data-folder="special">
+                    <img src="./assets/waffle.png" class="chart-icon" alt="">Waffle
+                </div>
+                <div class="chart-item" data-chart="lollipop" data-folder="special">
+                    <img src="./assets/lollipop.png" class="chart-icon" alt="">Lollipop
+                </div>
+                <div class="chart-item" data-chart="violin" data-folder="special">
+                    <img src="./assets/violin.png" class="chart-icon" alt="">Violin
+                </div>
+                <div class="chart-item" data-chart="sankey" data-folder="special">
+                    <img src="./assets/sankey.png" class="chart-icon" alt="">Sankey
+                </div>
+                <div class="chart-item" data-chart="streamgraph" data-folder="special">
+                    <img src="./assets/streamgraph.png" class="chart-icon" alt="">Streamgraph
+                </div>
+                <div class="chart-item" data-chart="ribbon" data-folder="special">
+                    <img src="./assets/ribbon.png" class="chart-icon" alt="">Ribbon
+                </div>
+                <div class="chart-item" data-chart="ridgeline" data-folder="special">
+                    <img src="./assets/ridgeline.png" class="chart-icon" alt="">Ridgeline
+                </div>
+                <div class="chart-item" data-chart="deviation" data-folder="special">
+                    <img src="./assets/deviation.png" class="chart-icon" alt="">Deviation
+                </div>
+                <div class="chart-item" data-chart="variance" data-folder="special">
+                    <img src="./assets/variance.png" class="chart-icon" alt="">Variance
+                </div>
 
                 <div class="folder-item" data-folder="combo">
                     <span>Combo</span>
                     <span class="folder-arrow">►</span>
                 </div>
-                <div class="chart-item" data-chart="heatmap_bar" data-folder="combo">Heatmap with Bars</div>
-                <div class="chart-item" data-chart="scatter_line" data-folder="combo">Scatter with Regression Line</div>   
-                <div class="chart-item" data-chart="line_rectangle" data-folder="combo">Line with Highlighted Rectangles</div>              
+                <div class="chart-item" data-chart="heatmap_bar" data-folder="combo">
+                    <img src="./assets/heatmap_bar.png" class="chart-icon" alt="">Heatmap with Bars
+                </div>
+                <div class="chart-item" data-chart="scatter_line" data-folder="combo">
+                    <img src="./assets/scatter_line.png" class="chart-icon" alt="">Scatter with Regression Line
+                </div>
+                <div class="chart-item" data-chart="line_rectangle" data-folder="combo">
+                    <img src="./assets/line_rectangle.png" class="chart-icon" alt="">Line with Highlighted Rectangles
+                </div>
             </div>
         </div>
     </div>
@@ -674,6 +793,15 @@
             <li><strong>Column 1:</strong> Y-axis categories (e.g., "Months", "Products", "Regions")</li>
             <li><strong>Column 2:</strong> X-axis categories (e.g., "Days", "Quarters", "Sales Reps")</li>
             <li><strong>Column 3:</strong> Values (numbers for color intensity)</li>
+        </ul>
+    </div>
+
+    <div id="req-tablebubble" class="data-requirements hidden">
+        <h4>Data Requirements:</h4>
+        <ul>
+            <li><strong>Column 1:</strong> Y-axis categories</li>
+            <li><strong>Column 2:</strong> X-axis categories</li>
+            <li><strong>Column 3:</strong> Values</li>
         </ul>
     </div>
    
