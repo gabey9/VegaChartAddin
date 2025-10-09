@@ -4534,7 +4534,7 @@ else if (chartType === "tablebubble") {
         };
       }
 
-else if (chartType === "polarbar") {
+else if (chartType === "circularbar") {
     // Calculate theta positions and widths for polar bars
     const dataWithPolar = data.map((d, i) => {
         const n = data.length;
@@ -4554,7 +4554,7 @@ else if (chartType === "polarbar") {
 
     spec = {
         $schema: "https://vega.github.io/schema/vega-lite/v6.json",
-        description: "Polar bar chart from Excel selection",
+        description: "Circular bar chart from Excel selection",
         background: "white",
         config: { 
             view: { stroke: "transparent" },
