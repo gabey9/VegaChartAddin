@@ -4058,6 +4058,92 @@ export async function run() {
         };
       }
 
+else if (chartType === "tablebubble") {
+  spec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    description: "Table Bubble Chart from Excel selection",
+    background: "white",
+    data: { values: data },
+    mark: {
+      type: "circle",
+      opacity: 0.9,
+      stroke: "transparent",
+      tooltip: true
+    },
+    encoding: {
+      y: {
+        field: headers[0],
+        type: "ordinal",
+        sort: "descending",
+        title: headers[0],
+        axis: {
+          domain: false,
+          ticks: false,
+          labels: true,
+          labelAngle: 0,
+          labelPadding: 5
+        }
+      },
+      x: {
+        field: headers[1],
+        type: "ordinal",
+        title: headers[1],
+        axis: {
+          domain: false,
+          ticks: false,
+          labels: true,
+          labelAngle: 0
+        }
+      },
+      size: {
+        aggregate: "sum",
+        field: headers[2],
+        type: "quantitative",
+        legend: {
+          title: headers[2],
+          direction: "vertical",
+          orient: "right",
+          titleAlign: "center",
+          labelAlign: "center"
+        }
+      },
+      color: {
+        aggregate: "sum",
+        field: headers[2],
+        type: "quantitative",
+        scale: {
+          range: ["#2999AA", "orange"]
+        },
+        legend: null
+      }
+    },
+    config: {
+      view: { stroke: "transparent" },
+      font: "Segoe UI",
+      text: { font: "Segoe UI", fontSize: 12, fill: "#605E5C" },
+      axis: {
+        ticks: false,
+        grid: false,
+        domain: false,
+        labelColor: "#605E5C",
+        labelFontSize: 12,
+        titleFontSize: 14,
+        titleColor: "#323130"
+      },
+      legend: {
+        titleFont: "Segoe UI",
+        titleFontWeight: "bold",
+        titleColor: "#605E5C",
+        labelFont: "Segoe UI",
+        labelFontSize: 12,
+        labelColor: "#605E5C",
+        titleAlign: "center",
+        labelAlign: "center"
+      }
+    }
+  };
+}
+
       else if (chartType === "variance") {
       if (headers.length < 3) {
         console.warn("Variance chart requires 3 columns: Business Unit, First Metric, Second Metric");
