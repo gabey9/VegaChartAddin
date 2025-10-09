@@ -5818,10 +5818,11 @@ else if (chartType === "polarbar") {
           background: "white",
           data: { values: data },
           mark: { 
-            type: "area", 
+            type: "area",
+	    interpolate: "monotone",
             tooltip: true,
             line: {
-              color: "#0078d4"
+              color: "#3A3D56"
             },
             color: {
               x1: 1,
@@ -5831,12 +5832,12 @@ else if (chartType === "polarbar") {
               gradient: "linear",
               stops: [
                 {
-                  offset: 0,
+                  offset: 0.1,
                   color: "white"
                 },
                 {
                   offset: 1,
-                  color: "#0078d4"
+                  color: "blue"
                 }
               ]
             }
