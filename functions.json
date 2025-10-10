@@ -249,6 +249,25 @@
             }
         },
         {
+            "description": "CIRCULARBAR custom function\nCreates a circular bar chart from Excel data range",
+            "id": "CIRCULARBAR",
+            "name": "CIRCULARBAR",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
             "description": "AREA custom function\nCreates an area chart from Excel data range",
             "id": "AREA",
             "name": "AREA",
@@ -632,6 +651,25 @@
             "description": "HEATMAP custom function\nCreates a heatmap from Excel data range",
             "id": "HEATMAP",
             "name": "HEATMAP",
+            "options": {
+                "requiresAddress": true
+            },
+            "parameters": [
+                {
+                    "description": "The data range including headers",
+                    "dimensionality": "matrix",
+                    "name": "data",
+                    "type": "any"
+                }
+            ],
+            "result": {
+                "type": "string"
+            }
+        },
+        {
+            "description": "TABLEBUBBLE custom function\nCreates a table bubble chart from Excel data range",
+            "id": "TABLEBUBBLE",
+            "name": "TABLEBUBBLE",
             "options": {
                 "requiresAddress": true
             },
